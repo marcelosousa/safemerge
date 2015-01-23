@@ -3,12 +3,15 @@ module Merger where
 import Language.C 
 import Language.C.System.GCC  -- preprocessor used
 import Language.C.Data.Ident
-import qualified Language as SC
+import qualified Language.SimpleC.AST as SC
+import Language.SimpleC.Converter
+import Language.SimpleC.Printer
+
 import qualified Data.Map as M
 import Data.Map (Map)
-import Converter
-import Printer
+import Data.List
 import Control.Monad.State.Strict
+
 import qualified Debug.Trace as T
 
 --trace = T.trace
@@ -91,10 +94,11 @@ mergeBin Branches    s1 s2 = error "mergeBin: can't do it yet"
 mergeBin BranchLeft  sb s1 = return $ Just s1
 mergeBin BranchRight sb s2 = return $ Just s2
 
+-- step symbolically runs one atomic statement of each program
 step :: SC.Statement -> SC.Statement -> SC.Statement -> State MergeState (Maybe SC.Statement)
-step sb v1 v2 = -- trace( "step: " ++ show sb ++ " |-| " ++ show v1 ++ " |-| " ++ show v2 ++ "\n") $ 
+step sb v1 v2 = trace( "step: " ++ show sb ++ " |-| " ++ show v1 ++ " |-| " ++ show v2 ++ "\n") $ 
  do
-  check <- execute sb v1 v2 -- symbolically runs the statements in the contexts and checks if the final context is valid
+  check <- execute sb v1 v2 
   s <- get
   if check 
   then if sb == v1 && sb == v2
@@ -106,19 +110,26 @@ step sb v1 v2 = -- trace( "step: " ++ show sb ++ " |-| " ++ show v1 ++ " |-| " +
                  else return $ Just $ SC.Sequence v1 v2
   else error "" -- $ "step: Failed with " ++ show sb ++ " |-| " ++ show v1 ++ " |-| " ++ show v2 ++ "\n" ++ show s
 
+-- symbolically runs the statements in the contexts and checks if the final context is valid
 execute :: SC.Statement -> SC.Statement -> SC.Statement -> State MergeState Bool
 execute base v1 v2 = do
   triplets <- get
-  let triplets' = concatMap (run base v1 v2) triplets
-  put triplets'
+  let triplets' = T.trace ("executing with: " ++ show triplets) $ concatMap (run base v1 v2) triplets
+  T.trace ("Putting triplets: " ++ show triplets') $ put triplets'
   if all isValid triplets'
   then return True
-  else error $ "execute: Failed with \n" ++ show base ++ " |-|\n " ++ show v1 ++ " |-|\n" ++ show v2 ++ "\n" ++ show triplets'
-  
+  else error $ "execute: Failed with \n" ++ show base ++ " |-|\n " ++ show v1 ++ " |-|\n" ++ show v2 ++ "\n" ++ foldr (\t s -> show t ++ "\n" ++ s) "" triplets'
+ 
 run :: SC.Statement -> SC.Statement -> SC.Statement -> Triplet -> [Triplet]
 run base v1 v2 (be,v1e,v2e) = 
-  [(be',v1e',v2e') | be' <- runStat be base, v1e' <- runStat v1e v1, v2e' <- runStat v2e v2]
-    
+ -- [(be',v1e',v2e') | be' <- runStat be base, v1e' <- runStat v1e v1, v2e' <- runStat v2e v2]
+  let be' = runStat be base
+      v1e' = runStat v1e v1
+      v2e' = runStat v2e v2
+      r = zip3 be' v1e' v2e'
+  in (T.trace $ "run: " ++ show base ++"\n" ++ show be' ++ "\n" ++ show v1e' ++ "\n" ++ show v2e' ++ "\n" ++ show r) $ r
+
+-- Symbolic execution engine 
 runStat :: Context -> SC.Statement -> [Context]
 runStat env s = trace ("running " ++ show s )$ case s of
     SC.Assign _ x expr -> 
@@ -155,7 +166,7 @@ runStat env s = trace ("running " ++ show s )$ case s of
       in if env `satisfy` cond 
          then let env' = runStat env s1 
               in if env `satisfy` ncond -- needs to change
-                 then env:env'
+                 then nub $ env:env'
                  else env'
          else [env]
     SC.Return _ expr -> [env]   

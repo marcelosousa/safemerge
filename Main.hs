@@ -3,12 +3,13 @@ module Main where
 import Language.C 
 import Language.C.System.GCC  -- preprocessor used
 import Language.C.Data.Ident
-import qualified Language as SC
+import qualified Language.SimpleC.AST as SC
+import Language.SimpleC.Converter
+import Language.SimpleC.Printer
+import Merger
+
 import qualified Data.Map as M
 import Data.Map (Map)
-import Converter
-import Printer
-import Merger
 import Control.Monad.State.Strict
 import Debug.Trace
 
