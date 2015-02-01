@@ -1,4 +1,4 @@
 void f(){
-  int x=2;
+  int x=1;
   int y=0;
 }
