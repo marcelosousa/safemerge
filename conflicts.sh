@@ -24,8 +24,8 @@ for line in `git log --merges --pretty=format:%P`; do
   # Dry run
   result=`git merge-tree $base $line`
   # If the result contains the string changed in both
-  # its very likely that there is a conflict 
-  if [[ $result == *"+<<<<<<<"* ]]
+  # its very likely that there is a conflict
+  if [[ $result =~ "changed in both"[[:space:]]+"base"[[:space:]]+[0-9]+[[:space:]]+[a-zA-Z0-9]+[[:space:]]+[^[:space:]]+(\.[ch])[[:space:]](.*)"+<<<<<<<" ]]
   then 
     NC=$((NC+1))
     echo "Conflict $NC!"
@@ -35,5 +35,5 @@ for line in `git log --merges --pretty=format:%P`; do
   NM=$((NM+1))
 done
 
-echo "Number of merges=$NM, number of conflicts=$NC" >> conflict_log.txt
+echo "Number of merges=$NM, number of conflicts=$NC"
 echo "Done"
