@@ -1,49 +1,76 @@
+-- from suremerge/blobs benchmark
+
 module RearViewMirror where
 
 import Data.Map
 import Types
 
--- parent:
--- assume x == 1 
--- y = 2
+{- 
+parent:
+if (x == 1) { y = 2; } else {}
 
--- edit a:
--- assume x == 1 && z == 3
--- y = 2
+n0: goto n1, n4;
+n1: assume x == 1;
+n2: skip;
+n3: y = 2;
+n4: goto exit;
+n5: goto exit;
+Exit: skip;
 
--- edit b:
--- assume x == 1
--- assume z == 3
--- y = 2
+edit a:
+if (x == 1 && z == 3) { y = 2; } else {}
 
--- merge candidate:
--- assume x == 1 && z == 3
--- y = 2
+n1_1a: assume x == 1 && z == 3;
+n1_2a: y = 2;
+n1_3a: goto exit;
+
+edit b:
+if (x == 1) { 
+  if (z == 3) { 
+    y = 2;
+  }
+}
+else
+{}
+
+n2_1b: goto n2_2b, n2_5b;
+n2_2b: assume z == 3;
+n2_3b: y = 2;
+n2_4b: goto exit;
+n2_5b: goto exit;
+
+merge candidate: edit a
+-}
 
 p :: Program
 p =
-  let n0 = ("n0", Goto [1])
+  let n0 = ("n0", Goto ["n1", "n4"])
       n1 = ("n1", Assume $ Op (V "x") Eq (C 1))
-      n2 = ("n2", Assign "y" (C 2))
-      n3 = ("n3", Skip)
+      n2 = ("n2", Skip)
+      n3 = ("n3", Assign "y" (C 2))
+      n4 = ("n4", Goto ["exit"])
+      n5 = ("n5", Goto ["exit"])
       exit = ("exit", Skip)
-      prog = fromList [n0, n1, n2, n3, exit]
+      prog = fromList [n0, n1, n2, n3, n4, n5, exit]
   in ("n0", prog, "exit") 
 
 a :: Edit
 a = 
-  let n1_a1 = ("n1_a1", Assume $ Op (Op (V "x") Eq (C 1)) And (Op (V "z") Eq (C 3)))
-      eprog = ("n1_a1", fromList [n1_a1], "n1_a1")
-  in fromList [("n1_a1", eprog)]
+  let n1_1a = ("n1_1a", Assume $ Op (Op (V "x") Eq (C 1)) And (Op (V "z") Eq (C 3)))
+      n1_2a = ("n1_2a", Assign "y" (C 2))
+      n1_3a = ("n1_3a", Goto ["exit"])
+      eprog = ("n1_1a", fromList [n1_1a, n1_2a, n1_3a], "n1_3a")
+  in fromList [("n1", eprog)] -- replace parent program starting at n1
 
 b :: Edit
 b =
-  let n3_b1 = ("n3_b1", Assume $ Op (V "z") Eq (C 3)) 
-      eprog = ("n3_b1", fromList [n3_b1], "n3_b1")
-  in fromList [("n3_b1", eprog)]
+  let n2_1b = ("n2_1b", Goto ["n2_2b", "n2_5b"])
+      n2_2b = ("n2_2b", Assume $ Op (V "z") Eq (C 3)) 
+      n2_3b = ("n2_3b", Assign "y" (C 2))
+      n2_4b = ("n2_4b", Goto ["exit"])
+      n2_5b = ("n2_5b", Goto ["exit"])
+      eprog = ("n2_1b", fromList [n2_1b, n2_2b, n2_3b, n2_4b, n2_5b], "n2_5b")
+  in fromList [("n2", eprog)] -- replace parent program starting at n2
 
 m :: Edit
-m =
-  let n1_m1 = ("n1_m1", Assume $ Op (Op (V "x") Eq (C 1)) And (Op (V "z") Eq (C 3)))
-      eprog = ("n1_m1", fromList [n1_m1], "n1_m1")
-  in fromList [("n1_m1", eprog)]
+m = a
