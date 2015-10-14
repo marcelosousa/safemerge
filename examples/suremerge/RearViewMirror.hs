@@ -14,7 +14,8 @@ n1: assume x == 1;
 n2: skip;
 n3: y = 2;
 n4: goto exit;
-n5: goto exit;
+n5: assume x != 1;
+n6: goto exit;
 Exit: skip;
 
 edit a:
@@ -37,7 +38,8 @@ n2_1b: goto n2_2b, n2_5b;
 n2_2b: assume z == 3;
 n2_3b: y = 2;
 n2_4b: goto exit;
-n2_5b: goto exit;
+n2_5b: assume z != 3;
+n2_6b: goto exit;
 
 merge candidate: edit a
 -}
@@ -49,9 +51,10 @@ p =
       n2 = ("n2", Skip)
       n3 = ("n3", Assign "y" (C 2))
       n4 = ("n4", Goto ["exit"])
-      n5 = ("n5", Goto ["exit"])
+      n5 = ("n5", Assume $ Op (V "x") Neq (C 1))
+      n6 = ("n6", Goto ["exit"])
       exit = ("exit", Skip)
-      prog = fromList [n0, n1, n2, n3, n4, n5, exit]
+      prog = fromList [n0, n1, n2, n3, n4, n5, n6, exit]
   in ("n0", prog, "exit") 
 
 a :: Edit
@@ -68,8 +71,9 @@ b =
       n2_2b = ("n2_2b", Assume $ Op (V "z") Eq (C 3)) 
       n2_3b = ("n2_3b", Assign "y" (C 2))
       n2_4b = ("n2_4b", Goto ["exit"])
-      n2_5b = ("n2_5b", Goto ["exit"])
-      eprog = ("n2_1b", fromList [n2_1b, n2_2b, n2_3b, n2_4b, n2_5b], "n2_5b")
+      n2_5b = ("n2_5b", Assume $ Op (V "z") Neq (C 3))
+      n2_6b = ("n2_6b", Goto ["exit"])
+      eprog = ("n2_1b", fromList [n2_1b, n2_2b, n2_3b, n2_4b, n2_5b, n2_6b], "n2_6b")
   in fromList [("n2", eprog)] -- replace parent program starting at n2
 
 m :: Edit
