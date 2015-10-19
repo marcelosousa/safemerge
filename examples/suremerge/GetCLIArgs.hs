@@ -9,7 +9,7 @@ parent:
 n0: goto n1, n9;
 
 n1: assume argi < args_length;
-n2: arg = getArg(argi);
+n2: arg = getArg(args, argi);   -- retrieves argi'th entry from args
 
 n3: goto n4, n7;
 n4: assume arg = 0;
@@ -51,7 +51,7 @@ p :: Program
 p =
   let n0 = ("n0", Goto ["n1", "n9"])
       n1 = ("n1", Assume $ Op (V "argi") Le (V "args_length"))
-      n2 = ("n2", Assign "arg" (F "getArg" (V "argi")))
+      n2 = ("n2", Assign "arg" (F "getArg" (V "args") (V "argi")))
       
       n3 = ("n3", Goto ["n4", "n7"])
       n4 = ("n4", Assume $ Op (V "arg") Eq (C 0))

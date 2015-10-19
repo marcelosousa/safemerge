@@ -13,7 +13,7 @@ data Stat = Skip | Assume Expr | Assign Var Expr | Goto [Label]
 data Expr = Op Expr OpCode Expr
           | C Value
           | V Var
-          | F Var Expr 
+          | F Var Expr Expr 
   deriving (Show, Eq, Ord)
 data OpCode =
   And | Or | Add | Sub | Mult | Div | Le | Ge | Leq | Geq | Eq | Neq
