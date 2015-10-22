@@ -16,7 +16,7 @@ data Expr = Op Expr OpCode Expr
           | F Var Expr Expr 
   deriving (Show, Eq, Ord)
 data OpCode =
-  And | Or | Add | Sub | Mult | Div | Le | Ge | Leq | Geq | Eq | Neq
+  And | Or | Add | Sub | Mult | Div | Mod | Le | Ge | Leq | Geq | Eq | Neq
   deriving (Show, Eq, Ord)
 
 type Prog = Map Label Stat
