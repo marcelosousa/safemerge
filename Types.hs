@@ -24,3 +24,4 @@ type Prog = Map Label Stat
 type Program = (Label, Prog, Label)
 
 type Edit = Map Label Program
+
