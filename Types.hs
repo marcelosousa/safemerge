@@ -25,3 +25,4 @@ type Program = (Label, Prog, Label)
 
 type Edit = Map Label Program
 
+type Vars = [Var]
