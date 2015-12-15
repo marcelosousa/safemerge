@@ -19,7 +19,7 @@ data OpCode =
   And | Or | Add | Sub | Mult | Div | Mod | Le | Ge | Leq | Geq | Eq | Neq
   deriving (Show, Eq, Ord)
 
-type Prog = Map Label Stat
+type Prog = Map Label [(Stat, Label)]
 -- A program is (entry_node, graph, exit_node, initial_state)
 type Program = (Label, Prog, Label)
 
