@@ -117,18 +117,40 @@ get_vars_e e = case e of
   V v -> [v]
   F v e1 e2 -> [v] ++ get_vars_e e1 ++ get_vars_e e2
 
+type VarMap = Map Var Vars
+
+toVarMap :: Vars -> Map Var Vars
+toVarMap =
+  foldr (\v r -> M.insert v (variants_var v) r) M.empty
+
+variants_var :: Var -> Vars
+variants_var v = [v++"o", v++"a", v++"b", v++"m"]
+
 -- Encoding for the product program P'
 -- Start node: Eq of all vars implies the predicate of the start node
 -- Similar for exit node: postcondition implies merge criteria.
 --  For each edge e \in P', e = (base, a, b, m)
 --   Define an encoding for each type of statements
-main_encoding :: ProdProgram -> Vars -> SMod
-main_encoding prodprogram@(ne,prod,nx) vars =
-  let h = header prodprogram vars
+main_encoding :: ProdProgram -> SMod
+main_encoding prodprogram@(ne,prod,nx) =
+  let vars = get_vars prodprogram
+      varmap = toVarMap vars
+      h = header prodprogram vars
       i = initial_state ne vars
       f = final_state nx vars
       prog = M.foldWithKey (encode_stat vars) [] prod
   in h ++ i ++ f
+
+node_sig :: Label -> [SSortExpr] -> SMod
+node_sig n sig = SE $ DeclFun (SimpleSym $ "Q_"++n) sig (SymSort "Bool")
+
+header :: ProdProgram -> Vars -> SMod
+header (n_e,prodprogram,n_x) vars = 
+  let nodes = nub $ n_e:n_x:(M.keys prodprogram)
+      sig = concatMap (\v -> replicate 4 (SymSort "Int")) vars
+      nodes_enc = map (\n -> node_sig n sig) nodes
+      logic = setlogic HORN
+  in logic:nodes_enc
 
 encode_Q :: Vars -> Label -> SExpr
 encode_Q vars label =
@@ -136,9 +158,33 @@ encode_Q vars label =
       enc_vars = map to_var vars
   in FnAppExpr q_label enc_vars
 
+mod_var :: Stat -> String -> Vars
+mod_var (Assign v _) e = [v ++ e ++ "1"]
+mod_var _ _ = []
+
+encode_s :: Stat -> String -> (Maybe SExpr, Maybe Var)
+encode_s Skip _version = (Nothing, Nothing)
+encode_s (Assume e) _version = (Just $ encode_e e _version, Nothing) 
+encode_s (Assign v e) _version =
+ let s_e = encode_e e _version
+     var = v ++ _version ++ "1"
+     a_enc = mk_e "=" (to_var var) s_e 
+ in (Just a_enc, Just var)
+
+encode_e :: Expr -> String -> SExpr
+encode_e e _version = case e of
+  C i -> LitExpr $ NumLit i
+  _ -> undefined 
+ 
 encode_stat :: Vars -> Label -> [(Stat, [Label])] -> SMod -> SMod
 encode_stat vars n_e [(s_o,n_o), (s_a,n_a), (s_b,n_b), (s_c,n_c)] rest =
-  undefined
+  let _var = map forall_var vars -- [[xa, xb, xc, xd], ... ]
+      (s_o_e, v_o) = encode_s s_o "o"
+      (s_a_e, v_a) = encode_s s_a "a"
+      (s_b_e, v_b) = encode_s s_b "b"
+      (s_c_e, v_c) = encode_s s_c "m"
+      pos_v_o =  fromMaybe 
+  in undefined
 {-
   let node_e = SimpleSym $ "Q_"++n_e
       node_xx = delete n_e $ nub [s_o, s_a, s_b, s_c]
@@ -158,16 +204,6 @@ encode_stat vars n_e [(s_o,n_o), (s_a,n_a), (s_b,n_b), (s_c,n_c)] rest =
   in [SE $ Assert $ ForallExpr vars_for for_expr]
 --}
 
-header :: ProdProgram -> Vars -> SMod
-header (n_e,prodprogram,n_x) vars = 
-  let nodes = nub $ n_e:n_x:(M.keys prodprogram)
-      sig = concatMap (\v -> replicate 4 (SymSort "Int")) vars
-      nodes_enc = map (\n -> SE $ DeclFun (SimpleSym $ "Q_"++n) sig (SymSort "Bool")) nodes
-      logic = setlogic HORN
-  in logic:nodes_enc
-
-forall_var :: Var -> Vars
-forall_var v = [v++"o", v++"a", v++"b", v++"m"]
 
 to_var a = FnAppExpr (SymIdent $ SimpleSym a) []
 mk_e op a b = FnAppExpr (SymIdent $ SimpleSym op)
