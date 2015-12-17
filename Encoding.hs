@@ -10,6 +10,7 @@ import Prelude hiding (product)
 import Data.Maybe
 import Examples.SimpleEncoding
 import Data.List hiding (product)
+import Data.Map (Map)
 
 -- Pre-processing: get the number of variables. the number of nodes is computed on the fly.
 -- Pre-process unedited edges to have id edits.
@@ -24,6 +25,9 @@ import Data.List hiding (product)
 --  let prodprogram = generate_product base a b merge
 --      vars = get_vars prodprogram      
 --  in show $ prettyprint $ main_encoding prodprogram vars
+
+main_merge :: Program -> Edit -> Edit -> Edit -> SMod
+main_merge base a b m = main_encoding $ generate_product base a b m
 
 generate_product :: Program -> Edit -> Edit -> Edit -> ProdProgram
 generate_product base a b m = flatten_product base $ gen_product base a b m
@@ -141,7 +145,7 @@ main_encoding prodprogram@(ne,prod,nx) =
       prog = M.foldWithKey (encode_stat vars) [] prod
   in h ++ i ++ f
 
-node_sig :: Label -> [SSortExpr] -> SMod
+node_sig :: Label -> [SSortExpr] -> SExpression
 node_sig n sig = SE $ DeclFun (SimpleSym $ "Q_"++n) sig (SymSort "Bool")
 
 header :: ProdProgram -> Vars -> SMod
@@ -151,6 +155,17 @@ header (n_e,prodprogram,n_x) vars =
       nodes_enc = map (\n -> node_sig n sig) nodes
       logic = setlogic HORN
   in logic:nodes_enc
+
+initial_state :: Label -> Vars -> SMod
+initial_state ne vars = 
+  let _vars = toVarMap vars
+      vars_ = concat $ M.elems _vars
+      and_vars = map (\[a,b,c,d] -> [mk_eq a b, mk_eq b c, mk_eq c d]) $ M.elems _vars
+      vars_for = map (\v -> (SimpleSym v, "Int")) vars_
+      pre = FnAppExpr (SymIdent $ SimpleSym "and") $ concat and_vars 
+      post = encode_Q vars_ ne
+      for_expr = mk_e "=>" pre post
+  in [SE $ Assert $ ForallExpr vars_for for_expr]
 
 encode_Q :: Vars -> Label -> SExpr
 encode_Q vars label =
@@ -162,48 +177,51 @@ mod_var :: Stat -> String -> Vars
 mod_var (Assign v _) e = [v ++ e ++ "1"]
 mod_var _ _ = []
 
-encode_s :: Stat -> String -> (Maybe SExpr, Maybe Var)
+encode_s :: Stat -> String -> (Maybe SExpr, Maybe (Var, Var, Var))
 encode_s Skip _version = (Nothing, Nothing)
 encode_s (Assume e) _version = (Just $ encode_e e _version, Nothing) 
 encode_s (Assign v e) _version =
  let s_e = encode_e e _version
      var = v ++ _version ++ "1"
      a_enc = mk_e "=" (to_var var) s_e 
- in (Just a_enc, Just var)
+ in (Just a_enc, Just (v, v++_version, var))
 
 encode_e :: Expr -> String -> SExpr
 encode_e e _version = case e of
   C i -> LitExpr $ NumLit i
   _ -> undefined 
- 
+
+replace :: Eq a => a -> a -> [a] -> [a]
+replace a x' [] = []
+replace a x' (x:xs)
+ | x' == x = a:xs
+ | otherwise = x:(replace a x' xs)
+                
+s_subst :: Maybe (Var, Var, Var) -> VarMap -> VarMap
+s_subst Nothing varmap = varmap
+s_subst (Just (x,x_k,nx_k)) varmap = M.update (\l -> Just $ replace x_k nx_k l) x varmap
+
 encode_stat :: Vars -> Label -> [(Stat, [Label])] -> SMod -> SMod
 encode_stat vars n_e [(s_o,n_o), (s_a,n_a), (s_b,n_b), (s_c,n_c)] rest =
-  let _var = map forall_var vars -- [[xa, xb, xc, xd], ... ]
+  let _vars = toVarMap vars -- [[xa, xb, xc, xd], ... ]
+      vars_ = concat $ M.elems _vars
+      preQ = encode_Q vars_ n_e
       (s_o_e, v_o) = encode_s s_o "o"
       (s_a_e, v_a) = encode_s s_a "a"
       (s_b_e, v_b) = encode_s s_b "b"
       (s_c_e, v_c) = encode_s s_c "m"
-      pos_v_o =  fromMaybe 
-  in undefined
-{-
-  let node_e = SimpleSym $ "Q_"++n_e
-      node_xx = delete n_e $ nub [s_o, s_a, s_b, s_c]
-  in case node_xx of
-    [n_x] ->
-      let node_x = SimpleSym $ "Q_" ++ n_x
-          _vars = map forall_var vars -- [[xa, xb, xc, xd], ...]
-      
-    _ -> error "encode_s" 
-      _vars = map forall_var vars
-      vars_ = concat _vars
-      and_vars = map (\[a,b,c,d] -> [mk_eq a b, mk_eq b c, mk_eq c d]) _vars
-      vars_for = map (\v -> (SimpleSym v, "Int")) vars_
-      pre = FnAppExpr (SymIdent $ SimpleSym "and") $ concat and_vars 
-      post = FnAppExpr (SymIdent node_e) $ map (\v -> FnAppExpr (SymIdent $ SimpleSym v) []) vars_
-      for_expr = FnAppExpr (SymIdent $ SimpleSym "=>") [pre, post]
-  in [SE $ Assert $ ForallExpr vars_for for_expr]
---}
-
+      _vars' = concat $ M.elems $ foldr s_subst _vars [v_o, v_a, v_b, v_c]
+      preStat = foldr (\s_k_e r -> maybe [] (:[]) s_k_e ++ r) [preQ] [s_o_e, s_a_e, s_b_e, s_c_e]
+      pre = FnAppExpr (SymIdent $ SimpleSym "and") preStat 
+      vars_for = map (\v -> (SimpleSym v, "Int")) $ nub $ vars_ ++ _vars'
+      succ_labels = nub [n_o, n_a, n_b, n_c]
+  in if succ_labels == [n_o]
+     then
+       let postQ' = map (encode_Q _vars') n_o
+           post = FnAppExpr (SymIdent $ SimpleSym "and") postQ'
+           for_expr = mk_e "=>" pre post
+       in [SE $ Assert $ ForallExpr vars_for for_expr]       
+     else error "encode_stat: label error"
 
 to_var a = FnAppExpr (SymIdent $ SimpleSym a) []
 mk_e op a b = FnAppExpr (SymIdent $ SimpleSym op)
@@ -213,18 +231,6 @@ mk_eq a b = mk_e "=" (to_var a) (to_var b)
 mk_or a b = mk_e "or" a b 
 mk_ors l = FnAppExpr (SymIdent $ SimpleSym "or") l
 mknot l =  FnAppExpr (SymIdent $ SimpleSym "not") [l]
-
-initial_state :: Label -> Vars -> SMod
-initial_state ne vars = 
-  let node_e = SimpleSym $ "Q_"++ne
-      _vars = map forall_var vars
-      vars_ = concat _vars
-      and_vars = map (\[a,b,c,d] -> [mk_eq a b, mk_eq b c, mk_eq c d]) _vars
-      vars_for = map (\v -> (SimpleSym v, "Int")) vars_
-      pre = FnAppExpr (SymIdent $ SimpleSym "and") $ concat and_vars 
-      post = FnAppExpr (SymIdent node_e) $ map (\v -> FnAppExpr (SymIdent $ SimpleSym v) []) vars_
-      for_expr = FnAppExpr (SymIdent $ SimpleSym "=>") [pre, post]
-  in [SE $ Assert $ ForallExpr vars_for for_expr]
 
 -- condition
 exit_condition :: Vars -> SExpr
@@ -237,14 +243,14 @@ exit_condition [xo,xa,xb,xc] =
                                          ] 
   
 final_state :: Label -> Vars -> SMod
-final_state nx vars = 
+final_state nx vars =
   let node_x = SimpleSym $ "Q_"++nx
-      _vars = map forall_var vars -- [[xa, xb, xc, xd], ...]
-      vars_ = concat _vars
+      _vars = toVarMap vars -- [[xa, xb, xc, xd], ...]
+      vars_ = concat $ M.elems _vars
       vars_for = map (\v -> (SimpleSym v, "Int")) vars_
-      pre = FnAppExpr (SymIdent node_x) $ map to_var vars_
+      pre = encode_Q vars_ nx
       -- post condition
-      and_vars = map (\l -> exit_condition l) _vars
+      and_vars = map (\l -> exit_condition l) $ M.elems _vars
       post = FnAppExpr (SymIdent $ SimpleSym "and") and_vars 
       for_expr = FnAppExpr (SymIdent $ SimpleSym "=>") [pre, post]
   in [SE $ Assert $ ForallExpr vars_for for_expr]
