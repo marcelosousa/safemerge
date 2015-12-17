@@ -5,8 +5,9 @@ import Data.Maybe
 import Types
 import qualified Data.Map as M
 
-type ProdProg = Map Label [[(Stat, Label)]]
+type ProdProg = Map Label [(Stat, [Label])]
 type ProdProgram = (Label, ProdProg, Label)
+type EditMap = Map Label ProdProgram
 
 -- Product construction
 -- 4-way product construction
@@ -17,15 +18,15 @@ product ((_,base,_), (_,a,_), (_,b,_), merge@(n_e,cmerge,n_x)) =
   let pprog = M.mapWithKey (product_prog (base, a, b)) cmerge
   in (n_e, pprog, n_x)
   
-product_prog :: (Prog, Prog, Prog) -> Label -> [(Stat, Label)] -> [[(Stat, Label)]]
-product_prog (base, a, b) node_label node_merge =
+product_prog :: (Prog, Prog, Prog) -> Label -> (Stat, [Label]) -> [(Stat, [Label])]
+product_prog (base, a, b) node_label node_merge@(stat, succs) =
   let node_base' = M.lookup node_label base -- [(Stat, Label)]
       node_a' = M.lookup node_label a
       node_b' = M.lookup node_label b
-      node_base = fromMaybe [(Skip, node_label)] node_base'
-      node_a = fromMaybe [(Skip, node_label)] node_a'
-      node_b = fromMaybe [(Skip, node_label)] node_b'
-  in combine node_base node_a node_b node_merge
+      node_base = fromMaybe (Skip, succs) node_base'
+      node_a = fromMaybe (Skip, succs) node_a'
+      node_b = fromMaybe (Skip, succs) node_b'
+  in [node_base, node_a, node_b, node_merge]
 
 combine :: [(Stat, Label)] -> [(Stat, Label)] -> [(Stat, Label)] -> [(Stat, Label)] -> [[(Stat, Label)]]
 combine base a b merge = [ [_base, _a, _b, _m] | _base <- base, _a <- a, _b <- b, _m <- merge]

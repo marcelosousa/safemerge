@@ -32,19 +32,16 @@ showProdProg :: ProdProgram -> String
 showProdProg (n_e, m, n_x) = 
   let n_e_s = "Entry label: " ++ n_e
       n_x_s = "Exit label: " ++ n_x
-      prog_s = M.foldWithKey showProdProg' "" m
-  in unlines [n_e_s, prog_s, n_x_s]
+      prog_s = M.foldWithKey showProdProgLine "" m
+  in n_e_s ++ "\n" ++ prog_s ++ n_x_s
 
-showProdProg' :: Label -> [[(Stat, Label)]] -> String -> String
-showProdProg' pre list rest = foldr (showProdProgLine pre) rest list
-
-showProdProgLine :: Label -> [(Stat, Label)] -> String -> String
+showProdProgLine :: Label -> [(Stat, [Label])] -> String -> String
 showProdProgLine pre [(ba,pos_ba), (a,pos_a), (b,pos_b), (m,pos_m)] rest =
-  let ba_s = "\t" ++ pre ++ ": " ++ show ba ++ ": " ++ pos_ba
-      a_s = "\t" ++ pre ++ ": " ++ show a ++ ": " ++ pos_a
-      b_s = "\t" ++ pre ++ ": " ++ show b ++ ": " ++ pos_b
-      m_s = "\t" ++ pre ++ ": " ++ show m ++ ": " ++ pos_m
-  in unlines [ba_s, a_s, b_s, m_s, rest]
+  let ba_s = "\t" ++ pre ++ ": " ++ show ba ++ ": " ++ show pos_ba
+      a_s = "\t" ++ pre ++ ": " ++ show a ++ ": " ++ show pos_a
+      b_s = "\t" ++ pre ++ ": " ++ show b ++ ": " ++ show pos_b
+      m_s = "\t" ++ pre ++ ": " ++ show m ++ ": " ++ show pos_m
+  in unlines [ba_s, a_s, b_s, m_s] ++ rest
 
 print_gen_product :: (Label, M.Map Label ProdProgram, Label) -> String
 print_gen_product (n_e, p, n_x) =
@@ -65,9 +62,9 @@ gen_product (n_e, base, n_x) e_a e_b e_m =
   in (n_e, prod_base, n_x)
   
 id_prog :: Label -> Program
-id_prog label = (label, M.fromList [(label, [(Skip, label)])], label)
+id_prog label = (label, M.fromList [(label, (Skip, [label]))], label)
 
-generate_product' :: Edit -> Edit -> Edit -> Label -> [(Stat, Label)] -> ProdProgram
+generate_product' :: Edit -> Edit -> Edit -> Label -> (Stat, [Label]) -> ProdProgram
 generate_product' e_a e_b e_m node_label node_stat =
   let prog_a' = M.lookup node_label e_a
       prog_b' = M.lookup node_label e_b
@@ -82,29 +79,29 @@ flatten_product :: Program -> (Label, M.Map Label ProdProgram, Label) -> ProdPro
 flatten_product (n_e, base, n_x) (_, mapToEdits, _) =
   (n_e, flatten_product' n_e n_x base mapToEdits M.empty, n_x)
 
-flatten_product' :: Label -> Label -> Prog -> M.Map Label ProdProgram -> ProdProg -> ProdProg
+flatten_product' :: Label -> Label -> Prog -> EditMap -> ProdProg -> ProdProg
 flatten_product' n_c n_x base editsMap current =
-  if n_c == n_x
-  then current
-  else case M.lookup n_c editsMap of
-    Nothing -> error "flatten_product"
-    Just (n_e, prodprog, n_xx) ->
-      let goto_e = M.fromList [(n_c, [[(Skip, n_e), (Skip, n_e), (Skip, n_e), (Skip, n_e)]])]
-          current' = M.union goto_e $ M.union prodprog current
-      in case M.lookup n_c base of
-        Nothing -> error "flatten_product base"
-        Just list ->
-          let listSnd = map snd list
-              goto_x = map (\n_k -> M.fromList [(n_xx, [[(Skip, n_k), (Skip, n_k), (Skip, n_k), (Skip, n_k)]])]) listSnd
-              goto_x_final = foldr M.union current' goto_x
-              rest = map (\n_k -> flatten_product' n_k n_x base editsMap goto_x_final) listSnd
-          in foldr M.union M.empty rest
+ if n_c == n_x
+ then current
+ else case M.lookup n_c editsMap of
+  Nothing -> error "flatten_product"
+  Just (n_e, prodprog, n_xx) ->
+   let goto_e = M.fromList [(n_c, replicate 4 (Skip, [n_e]))] 
+       current' = M.union goto_e $ M.union prodprog current
+   in case M.lookup n_c base of
+    Nothing -> error "flatten_product base"
+    Just list ->
+     let succs = snd list
+         goto_x = map (\n_k -> M.fromList [(n_xx, replicate 4 (Skip, [n_k]))]) succs
+         goto_x_final = foldr M.union current' goto_x
+         rest = map (\n_k -> flatten_product' n_k n_x base editsMap goto_x_final) succs
+     in foldr M.union M.empty rest
 
 get_vars :: ProdProgram -> Vars
 get_vars (a, prog, b) = nub $ M.fold (\l r -> (concatMap get_vars_p l) ++ r) [] prog
 
-get_vars_p :: [(Stat, Label)] -> Vars
-get_vars_p = concatMap (get_vars_s . fst)
+get_vars_p :: (Stat, [Label]) -> Vars
+get_vars_p = (get_vars_s . fst)
 
 get_vars_s :: Stat -> Vars
 get_vars_s s = case s of
@@ -129,7 +126,37 @@ main_encoding :: ProdProgram -> Vars -> SMod
 main_encoding prodprogram@(ne,prod,nx) vars =
   let h = header prodprogram vars
       i = initial_state ne vars
-  in h ++ i
+      f = final_state nx vars
+      prog = M.foldWithKey (encode_stat vars) [] prod
+  in h ++ i ++ f
+
+encode_Q :: Vars -> Label -> SExpr
+encode_Q vars label =
+  let q_label = SymIdent $ SimpleSym $ "Q_" ++ label
+      enc_vars = map to_var vars
+  in FnAppExpr q_label enc_vars
+
+encode_stat :: Vars -> Label -> [(Stat, [Label])] -> SMod -> SMod
+encode_stat vars n_e [(s_o,n_o), (s_a,n_a), (s_b,n_b), (s_c,n_c)] rest =
+  undefined
+{-
+  let node_e = SimpleSym $ "Q_"++n_e
+      node_xx = delete n_e $ nub [s_o, s_a, s_b, s_c]
+  in case node_xx of
+    [n_x] ->
+      let node_x = SimpleSym $ "Q_" ++ n_x
+          _vars = map forall_var vars -- [[xa, xb, xc, xd], ...]
+      
+    _ -> error "encode_s" 
+      _vars = map forall_var vars
+      vars_ = concat _vars
+      and_vars = map (\[a,b,c,d] -> [mk_eq a b, mk_eq b c, mk_eq c d]) _vars
+      vars_for = map (\v -> (SimpleSym v, "Int")) vars_
+      pre = FnAppExpr (SymIdent $ SimpleSym "and") $ concat and_vars 
+      post = FnAppExpr (SymIdent node_e) $ map (\v -> FnAppExpr (SymIdent $ SimpleSym v) []) vars_
+      for_expr = FnAppExpr (SymIdent $ SimpleSym "=>") [pre, post]
+  in [SE $ Assert $ ForallExpr vars_for for_expr]
+--}
 
 header :: ProdProgram -> Vars -> SMod
 header (n_e,prodprogram,n_x) vars = 
@@ -149,7 +176,7 @@ mk_e op a b = FnAppExpr (SymIdent $ SimpleSym op)
 mk_eq a b = mk_e "=" (to_var a) (to_var b)
 mk_or a b = mk_e "or" a b 
 mk_ors l = FnAppExpr (SymIdent $ SimpleSym "or") l
-mknot l =  FnAppExpr (SymIdent $ SimpleSym "not") l
+mknot l =  FnAppExpr (SymIdent $ SimpleSym "not") [l]
 
 initial_state :: Label -> Vars -> SMod
 initial_state ne vars = 
@@ -182,6 +209,6 @@ final_state nx vars =
       pre = FnAppExpr (SymIdent node_x) $ map to_var vars_
       -- post condition
       and_vars = map (\l -> exit_condition l) _vars
-      post = FnAppExpr (SymIdent $ SimpleSym "and") $ concat and_vars 
+      post = FnAppExpr (SymIdent $ SimpleSym "and") and_vars 
       for_expr = FnAppExpr (SymIdent $ SimpleSym "=>") [pre, post]
   in [SE $ Assert $ ForallExpr vars_for for_expr]

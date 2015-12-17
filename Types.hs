@@ -19,7 +19,20 @@ data OpCode =
   And | Or | Add | Sub | Mult | Div | Mod | Le | Ge | Leq | Geq | Eq | Neq
   deriving (Show, Eq, Ord)
 
-type Prog = Map Label [(Stat, Label)]
+-- n0: if (x > 0)
+-- n1: then 
+ -- n11: stat_1
+-- n2: else stat_2
+
+-- n0: (Skip, [n1, n2])
+-- n1: (assume (x>0), [n11])
+-- n11: (stat_1, [n3])
+-- n2: (assume (x<=0), [n21])
+-- n21: (stat_2, [n3])
+
+-- n0: prog
+
+type Prog = Map Label (Stat, [Label])
 -- A program is (entry_node, graph, exit_node, initial_state)
 type Program = (Label, Prog, Label)
 
