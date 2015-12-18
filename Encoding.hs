@@ -11,6 +11,7 @@ import Data.Maybe
 import Examples.SimpleEncoding
 import Data.List hiding (product)
 import Data.Map (Map)
+import Debug.Trace
 
 -- Pre-processing: get the number of variables. the number of nodes is computed on the fly.
 -- Pre-process unedited edges to have id edits.
@@ -143,7 +144,8 @@ main_encoding prodprogram@(ne,prod,nx) =
       i = initial_state ne vars
       f = final_state nx vars
       prog = M.foldWithKey (encode_stat vars) [] prod
-  in h ++ i ++ f
+      csat = SE $ CheckSat
+  in h ++ i ++ prog ++ f ++ [csat]
 
 node_sig :: Label -> [SSortExpr] -> SExpression
 node_sig n sig = SE $ DeclFun (SimpleSym $ "Q_"++n) sig (SymSort "Bool")
@@ -199,7 +201,7 @@ replace a x' (x:xs)
                 
 s_subst :: Maybe (Var, Var, Var) -> VarMap -> VarMap
 s_subst Nothing varmap = varmap
-s_subst (Just (x,x_k,nx_k)) varmap = M.update (\l -> Just $ replace x_k nx_k l) x varmap
+s_subst (Just (x,x_k,nx_k)) varmap = M.update (\l -> Just $ replace nx_k x_k l) x varmap
 
 encode_stat :: Vars -> Label -> [(Stat, [Label])] -> SMod -> SMod
 encode_stat vars n_e [(s_o,n_o), (s_a,n_a), (s_b,n_b), (s_c,n_c)] rest =
@@ -211,19 +213,24 @@ encode_stat vars n_e [(s_o,n_o), (s_a,n_a), (s_b,n_b), (s_c,n_c)] rest =
       (s_b_e, v_b) = encode_s s_b "b"
       (s_c_e, v_c) = encode_s s_c "m"
       _vars' = concat $ M.elems $ foldr s_subst _vars [v_o, v_a, v_b, v_c]
-      preStat = foldr (\s_k_e r -> maybe [] (:[]) s_k_e ++ r) [preQ] [s_o_e, s_a_e, s_b_e, s_c_e]
-      pre = FnAppExpr (SymIdent $ SimpleSym "and") preStat 
+      preStat = foldl (\r s_k_e -> maybe [] (:[]) s_k_e ++ r) [preQ] [s_o_e, s_a_e, s_b_e, s_c_e]
+      pre = if length preStat == 1
+            then head $ preStat
+            else FnAppExpr (SymIdent $ SimpleSym "and") preStat 
       vars_for = map (\v -> (SimpleSym v, "Int")) $ nub $ vars_ ++ _vars'
       succ_labels = nub [n_o, n_a, n_b, n_c]
   in if succ_labels == [n_o]
      then
        let postQ' = map (encode_Q _vars') n_o
-           post = FnAppExpr (SymIdent $ SimpleSym "and") postQ'
+           post = if length postQ' == 1
+                  then head $ postQ'
+                  else FnAppExpr (SymIdent $ SimpleSym "and") postQ'
            for_expr = mk_e "=>" pre post
-       in [SE $ Assert $ ForallExpr vars_for for_expr]       
+       in (SE $ Assert $ ForallExpr vars_for for_expr):rest
      else error "encode_stat: label error"
 
-to_var a = FnAppExpr (SymIdent $ SimpleSym a) []
+--to_var a = FnAppExpr (SymIdent $ SimpleSym a) []
+to_var a = IdentExpr $ SymIdent $ SimpleSym a
 mk_e op a b = FnAppExpr (SymIdent $ SimpleSym op)
   [a, b]
 
