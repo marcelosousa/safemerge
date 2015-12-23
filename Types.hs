@@ -34,7 +34,7 @@ data OpCode =
 
 type Prog = Map Label (Stat, [Label])
 -- A program is (entry_node, graph, exit_node, initial_state)
-type Program = (Label, Prog, Label)
+type Program = (Label, Prog, [Label])
 
 type Edit = Map Label Program
 

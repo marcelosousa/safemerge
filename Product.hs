@@ -6,8 +6,8 @@ import Types
 import qualified Data.Map as M
 
 type ProdProg = Map Label [(Stat, [Label])]
-type ProdProgram = (Label, ProdProg, Label)
-type EditMap = Map Label ProdProgram
+type ProdProgram = (Label, ProdProg, [Label])
+type EditMap = Map Label (ProdProgram, Bool)
 
 -- Product construction
 -- 4-way product construction
@@ -24,8 +24,8 @@ product_prog (base, a, b) node_label node_merge@(stat, succs) =
       node_a' = M.lookup node_label a
       node_b' = M.lookup node_label b
       node_base = fromMaybe (Skip, succs) node_base'
-      node_a = fromMaybe (Skip, succs) node_a'
-      node_b = fromMaybe (Skip, succs) node_b'
+      node_a = fromMaybe node_base node_a'
+      node_b = fromMaybe node_base node_b'
   in [node_base, node_a, node_b, node_merge]
 
 combine :: [(Stat, Label)] -> [(Stat, Label)] -> [(Stat, Label)] -> [(Stat, Label)] -> [[(Stat, Label)]]

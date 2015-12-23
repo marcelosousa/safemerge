@@ -8,7 +8,8 @@ import Product
 import Types
 import Prelude hiding (product)
 import Data.Maybe
-import Examples.SimpleEncoding
+import qualified Examples.SimpleEncoding as SE
+import qualified Examples.ToyLoop as TL
 import Data.List hiding (product)
 import Data.Map (Map)
 import Debug.Trace
@@ -33,74 +34,78 @@ main_merge base a b m = main_encoding $ generate_product base a b m
 generate_product :: Program -> Edit -> Edit -> Edit -> ProdProgram
 generate_product base a b m = flatten_product base $ gen_product base a b m
 
-showProdProg :: ProdProgram -> String
-showProdProg (n_e, m, n_x) = 
+pp_prod_prog :: ProdProgram -> String
+pp_prod_prog (n_e, m, n_x) = 
   let n_e_s = "Entry label: " ++ n_e
-      n_x_s = "Exit label: " ++ n_x
-      prog_s = M.foldWithKey showProdProgLine "" m
+      n_x_s = "Exit label: " ++ show n_x
+      prog_s = M.foldWithKey pp_prod_prog_line "" m
   in n_e_s ++ "\n" ++ prog_s ++ n_x_s
-
-showProdProgLine :: Label -> [(Stat, [Label])] -> String -> String
-showProdProgLine pre [(ba,pos_ba), (a,pos_a), (b,pos_b), (m,pos_m)] rest =
+  where
+pp_prod_prog_line pre r@[(ba,pos_ba), (a,pos_a), (b,pos_b), (m,pos_m)] rest =
   let ba_s = "\t" ++ pre ++ ": " ++ show ba ++ ": " ++ show pos_ba
-      a_s = "\t" ++ pre ++ ": " ++ show a ++ ": " ++ show pos_a
-      b_s = "\t" ++ pre ++ ": " ++ show b ++ ": " ++ show pos_b
-      m_s = "\t" ++ pre ++ ": " ++ show m ++ ": " ++ show pos_m
-  in unlines [ba_s, a_s, b_s, m_s] ++ rest
+      a_s = "; " ++ show a ++ ": " ++ show pos_a
+      b_s = "; " ++ show b ++ ": " ++ show pos_b
+      m_s = "; " ++ show m ++ ": " ++ show pos_m
+  in ba_s ++ a_s ++ b_s ++ m_s ++ "\n" ++ rest
 
-print_gen_product :: (Label, M.Map Label ProdProgram, Label) -> String
-print_gen_product (n_e, p, n_x) =
+pp_gen_product :: (Label, EditMap, [Label]) -> String
+pp_gen_product (n_e, p, n_x) =
   let n_e_s = "Entry label: " ++ n_e
-      n_x_s = "Exit label: " ++ n_x
-      prog_s = M.foldWithKey print_gen_product' "" p
+      n_x_s = "Exit label: " ++ show n_x
+      prog_s = M.foldWithKey pp_edit_map "" p
   in unlines [n_e_s, prog_s, n_x_s]
-
-print_gen_product' :: Label -> ProdProgram -> String -> String
-print_gen_product' n_e prodprog rest =
+ where
+pp_edit_map n_e (prodprog, b) rest =
   let n_e_s = "Label from Base: " ++ n_e
-      prodprog_s = unlines $ map (\t -> "\t" ++ t) $ lines $ showProdProg prodprog
+      prodprog_s = unlines $ map (\t -> "\t" ++ t) $ lines $ pp_prod_prog prodprog
   in unlines [n_e_s, prodprog_s, rest]
 
-gen_product :: Program -> Edit -> Edit -> Edit -> (Label, M.Map Label ProdProgram, Label)
+-- Main Product Generation
+gen_product :: Program -> Edit -> Edit -> Edit -> (Label, EditMap, [Label])
 gen_product (n_e, base, n_x) e_a e_b e_m = 
   let prod_base = M.mapWithKey (generate_product' e_a e_b e_m) base
   in (n_e, prod_base, n_x)
   
-id_prog :: Label -> Program
-id_prog label = (label, M.fromList [(label, (Skip, [label]))], label)
-
-generate_product' :: Edit -> Edit -> Edit -> Label -> (Stat, [Label]) -> ProdProgram
-generate_product' e_a e_b e_m node_label node_stat =
+generate_product' :: Edit -> Edit -> Edit -> Label -> (Stat, [Label]) -> (ProdProgram, Bool)
+generate_product' e_a e_b e_m node_label node_stat@(stat, succs) =
   let prog_a' = M.lookup node_label e_a
       prog_b' = M.lookup node_label e_b
       prog_m' = M.lookup node_label e_m
-      prog_a = fromMaybe (id_prog node_label) prog_a' 
-      prog_b = fromMaybe (id_prog node_label) prog_b'
-      prog_m = fromMaybe (id_prog node_label) prog_m'
-      base = (node_label, M.fromList [(node_label, node_stat)], node_label)
-  in product (base, prog_a, prog_b, prog_m)
+      (b, prog_m@(m_entry, m_prog, m_exit)) =
+       case prog_m' of
+        Nothing -> (False, (node_label, M.fromList [(node_label, node_stat)], succs))
+        Just m_edit -> (True, m_edit)
+      succ_first =
+       case M.lookup m_entry m_prog of
+        Nothing -> error "generate_product': getting first"
+        Just v -> snd v 
+      id_edit = (node_label, M.fromList [(m_entry, (stat, succ_first))], succs)
+      prog_a = fromMaybe id_edit prog_a'
+      prog_b = fromMaybe id_edit prog_b'
+      base = id_edit
+  in (product (base, prog_a, prog_b, prog_m), b)
 
-flatten_product :: Program -> (Label, M.Map Label ProdProgram, Label) -> ProdProgram
+flatten_product :: Program -> (Label, EditMap, [Label]) -> ProdProgram
 flatten_product (n_e, base, n_x) (_, mapToEdits, _) =
-  (n_e, flatten_product' n_e n_x base mapToEdits M.empty, n_x)
+  let entry = n_e
+      exit = n_x
+      prog = M.foldWithKey (\k v m -> local_flatten_product k v m mapToEdits) M.empty base
+  in (entry, prog, exit)
+--  (n_e, flatten_product' n_e n_x base mapToEdits [] M.empty, n_x)
 
-flatten_product' :: Label -> Label -> Prog -> EditMap -> ProdProg -> ProdProg
-flatten_product' n_c n_x base editsMap current =
- if n_c == n_x
- then current
- else case M.lookup n_c editsMap of
-  Nothing -> error "flatten_product"
-  Just (n_e, prodprog, n_xx) ->
-   let goto_e = M.fromList [(n_c, replicate 4 (Skip, [n_e]))] 
-       current' = M.union goto_e $ M.union prodprog current
-   in case M.lookup n_c base of
-    Nothing -> error "flatten_product base"
-    Just list ->
-     let succs = snd list
-         goto_x = map (\n_k -> M.fromList [(n_xx, replicate 4 (Skip, [n_k]))]) succs
-         goto_x_final = foldr M.union current' goto_x
-         rest = map (\n_k -> flatten_product' n_k n_x base editsMap goto_x_final) succs
-     in foldr M.union M.empty rest
+local_flatten_product :: Label -> (Stat, [Label]) -> ProdProg -> EditMap -> ProdProg
+local_flatten_product n_c (stat, succs) prog editsMap =
+ case M.lookup n_c editsMap of
+  Nothing -> error "local_flatten_product"
+  Just ((n_e, prodprog, n_x), ch) ->
+   if ch
+   then
+     let goto_e = [(n_c, replicate 4 (Skip, [n_e]))]
+         goto_x = map (\n_xx -> (n_xx, replicate 4 (Skip, succs))) n_x
+         gotos = M.fromList $ goto_e ++ goto_x
+     in M.union gotos $ M.union prodprog prog 
+   else M.union prodprog prog 
+     
 
 get_vars :: ProdProgram -> Vars
 get_vars (a, prog, b) = nub $ M.fold (\l r -> (concatMap get_vars_p l) ++ r) [] prog
@@ -152,7 +157,7 @@ node_sig n sig = SE $ DeclFun (SimpleSym $ "Q_"++n) sig (SymSort "Bool")
 
 header :: ProdProgram -> Vars -> SMod
 header (n_e,prodprogram,n_x) vars = 
-  let nodes = nub $ n_e:n_x:(M.keys prodprogram)
+  let nodes = nub $ n_e:(n_x ++ M.keys prodprogram)
       sig = concatMap (\v -> replicate 4 (SymSort "Int")) vars
       nodes_enc = map (\n -> node_sig n sig) nodes
       logic = setlogic HORN
@@ -249,8 +254,12 @@ exit_condition [xo,xa,xb,xc] =
                                                  ,mknot $ mk_eq xc xo]
                                          ] 
   
-final_state :: Label -> Vars -> SMod
+final_state :: [Label] -> Vars -> SMod
 final_state nx vars =
+  foldr (\n_x r -> single_final_state n_x vars ++ r) [] nx
+
+single_final_state :: Label -> Vars -> SMod
+single_final_state nx vars =
   let node_x = SimpleSym $ "Q_"++nx
       _vars = toVarMap vars -- [[xa, xb, xc, xd], ...]
       vars_ = concat $ M.elems _vars
