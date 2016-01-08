@@ -1,0 +1,20 @@
+Name:               wiz 
+Version:            0.1
+Cabal-Version:      >= 1.2
+Author:             Marcelo Sousa
+Synopsis:           wiz 
+Description:        Semantic merge. 
+Build-Type:         Simple
+
+Executable wiz 
+    Main-Is:          Main.hs
+    Build-Depends:    base          
+                    , containers    
+                    , filepath   
+                    , directory
+                    , mtl           
+                    , cmdargs
+                    , smtlib 
+    Hs-Source-Dirs:   src/
+    ghc-options:      -O3 -rtsopts
+    Extensions:       DoAndIfThenElse

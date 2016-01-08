@@ -24,8 +24,8 @@ product_prog (base, a, b) node_label node_merge@(stat, succs) =
       node_a' = M.lookup node_label a
       node_b' = M.lookup node_label b
       node_base = fromMaybe (Skip, succs) node_base'
-      node_a = fromMaybe node_base node_a'
-      node_b = fromMaybe node_base node_b'
+      node_a = (fst $ fromMaybe node_base node_a', succs)
+      node_b = (fst $ fromMaybe node_base node_b', succs)
   in [node_base, node_a, node_b, node_merge]
 
 combine :: [(Stat, Label)] -> [(Stat, Label)] -> [(Stat, Label)] -> [(Stat, Label)] -> [[(Stat, Label)]]

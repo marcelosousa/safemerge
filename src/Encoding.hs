@@ -8,8 +8,6 @@ import Product
 import Types
 import Prelude hiding (product)
 import Data.Maybe
-import qualified Examples.SimpleEncoding as SE
-import qualified Examples.ToyLoop as TL
 import Data.List hiding (product)
 import Data.Map (Map)
 import Debug.Trace
@@ -61,6 +59,7 @@ pp_edit_map n_e (prodprog, b) rest =
   in unlines [n_e_s, prodprog_s, rest]
 
 -- Main Product Generation
+-- For each label in the base program, generate the product program associated with it.
 gen_product :: Program -> Edit -> Edit -> Edit -> (Label, EditMap, [Label])
 gen_product (n_e, base, n_x) e_a e_b e_m = 
   let prod_base = M.mapWithKey (generate_product' e_a e_b e_m) base
@@ -85,6 +84,7 @@ generate_product' e_a e_b e_m node_label node_stat@(stat, succs) =
       base = id_edit
   in (product (base, prog_a, prog_b, prog_m), b)
 
+-- Flatten the product for each label in the base program
 flatten_product :: Program -> (Label, EditMap, [Label]) -> ProdProgram
 flatten_product (n_e, base, n_x) (_, mapToEdits, _) =
   let entry = n_e
@@ -93,19 +93,21 @@ flatten_product (n_e, base, n_x) (_, mapToEdits, _) =
   in (entry, prog, exit)
 --  (n_e, flatten_product' n_e n_x base mapToEdits [] M.empty, n_x)
 
+-- For each label in the original program, produce the product program
 local_flatten_product :: Label -> (Stat, [Label]) -> ProdProg -> EditMap -> ProdProg
 local_flatten_product n_c (stat, succs) prog editsMap =
  case M.lookup n_c editsMap of
   Nothing -> error "local_flatten_product"
-  Just ((n_e, prodprog, n_x), ch) ->
+  Just ((n_e, prodprog, n_x), ch) -> --trace ("flt: " ++ show (n_c, n_e, n_x, succs) ++ "\n") $ 
    if ch
    then
      let goto_e = [(n_c, replicate 4 (Skip, [n_e]))]
-         goto_x = map (\n_xx -> (n_xx, replicate 4 (Skip, succs))) n_x
+         goto_x = if n_x == succs
+                  then []
+                  else  map (\n_xx -> (n_xx, replicate 4 (Skip, succs))) n_x
          gotos = M.fromList $ goto_e ++ goto_x
      in M.union gotos $ M.union prodprog prog 
    else M.union prodprog prog 
-     
 
 get_vars :: ProdProgram -> Vars
 get_vars (a, prog, b) = nub $ M.fold (\l r -> (concatMap get_vars_p l) ++ r) [] prog
@@ -196,7 +198,30 @@ encode_s (Assign v e) _version =
 encode_e :: Expr -> String -> SExpr
 encode_e e _version = case e of
   C i -> LitExpr $ NumLit i
-  _ -> undefined 
+  V var -> IdentExpr $ SymIdent $ SimpleSym $ var ++ _version
+  Op lhs opcode rhs ->
+    let lhs_e = encode_e lhs _version
+        rhs_e = encode_e rhs _version
+        op_s = toOpcode opcode
+    in case opcode of
+      Neq -> let eq_e = FnAppExpr (SymIdent $ SimpleSym "=") [lhs_e, rhs_e]
+             in FnAppExpr (SymIdent $ SimpleSym "not") [eq_e]
+      _ -> FnAppExpr (SymIdent $ SimpleSym op_s) [lhs_e, rhs_e] 
+  _ -> undefined
+
+toOpcode :: OpCode -> String
+toOpcode op = case op of
+  And -> "and"
+  Or -> "or"
+  Add -> "+"
+  Sub -> "-"
+  Mult -> "*"
+  Le -> "<"
+  Ge -> ">"
+  Leq -> "<="
+  Geq -> ">="
+  Eq -> "="
+  _ -> error $ "toOpcode: " ++ show op ++ " not supported" 
 
 replace :: Eq a => a -> a -> [a] -> [a]
 replace a x' [] = []
@@ -227,12 +252,9 @@ encode_stat vars n_e [(s_o,n_o), (s_a,n_a), (s_b,n_b), (s_c,n_c)] rest =
   in if succ_labels == [n_o]
      then
        let postQ' = map (encode_Q _vars') n_o
-           post = if length postQ' == 1
-                  then head $ postQ'
-                  else FnAppExpr (SymIdent $ SimpleSym "and") postQ'
-           for_expr = mk_e "=>" pre post
-       in (SE $ Assert $ ForallExpr vars_for for_expr):rest
-     else error "encode_stat: label error"
+           ass = map (\post -> SE $ Assert $ ForallExpr vars_for $ mk_e "=>" pre post) postQ'
+       in ass ++ rest
+     else error $ "encode_stat: label error " ++ show (n_e, succ_labels, n_o) 
 
 --to_var a = FnAppExpr (SymIdent $ SimpleSym a) []
 to_var a = IdentExpr $ SymIdent $ SimpleSym a
