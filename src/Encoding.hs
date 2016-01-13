@@ -109,6 +109,26 @@ local_flatten_product n_c (stat, succs) prog editsMap =
      in M.union gotos $ M.union prodprog prog 
    else M.union prodprog prog 
 
+get_fns :: ProdProgram -> [(Var, Int)]
+get_fns (a, prog, b) = nub $ M.fold (\l r -> (concatMap get_fns_p l) ++ r) [] prog
+
+get_fns_p :: (Stat, [Label]) -> [(Var, Int)]
+get_fns_p = (get_fns_s . fst)
+
+get_fns_s :: Stat -> [(Var, Int)]
+get_fns_s s = case s of
+  Skip -> []
+  Assume e -> get_fns_e e 
+  Assign v e -> get_fns_e e
+
+get_fns_e :: Expr -> [(Var, Int)]
+get_fns_e e = case e of 
+  Op lhs _ rhs -> get_fns_e lhs ++ get_fns_e rhs
+  C _ -> []
+  V v -> []
+  F v es -> (v, length es):(concatMap get_fns_e es)
+  A v e -> get_fns_e e
+
 get_vars :: ProdProgram -> Vars
 get_vars (a, prog, b) = nub $ M.fold (\l r -> (concatMap get_vars_p l) ++ r) [] prog
 
@@ -119,15 +139,19 @@ get_vars_s :: Stat -> Vars
 get_vars_s s = case s of
   Skip -> []
   Assume e -> get_vars_e e
-  Assign v e -> v:(get_vars_e e) 
-  Goto _ -> []
+  Assign v e -> get_vars_lhs v ++ get_vars_e e
+
+get_vars_lhs :: Lhs -> Vars
+get_vars_lhs (LhsVar v) = [v]
+get_vars_lhs (LhsArray v e) = v:(get_vars_e e)
 
 get_vars_e :: Expr -> Vars
 get_vars_e e = case e of
   Op lhs _ rhs -> get_vars_e lhs ++ get_vars_e rhs
   C _ -> []
   V v -> [v]
-  F v e1 e2 -> [v] ++ get_vars_e e1 ++ get_vars_e e2
+  F v es -> concatMap get_vars_e es
+  A v e -> v:(get_vars_e e)
 
 type VarMap = Map Var Vars
 
@@ -147,7 +171,8 @@ main_encoding :: ProdProgram -> SMod
 main_encoding prodprogram@(ne,prod,nx) =
   let vars = get_vars prodprogram
       varmap = toVarMap vars
-      h = header prodprogram vars
+      fns = ("get",2):get_fns prodprogram -- the get function is for arrays
+      h = header prodprogram vars fns
       i = initial_state ne vars
       f = final_state nx vars
       prog = M.foldWithKey (encode_stat vars) [] prod
@@ -157,13 +182,19 @@ main_encoding prodprogram@(ne,prod,nx) =
 node_sig :: Label -> [SSortExpr] -> SExpression
 node_sig n sig = SE $ DeclFun (SimpleSym $ "Q_"++n) sig (SymSort "Bool")
 
-header :: ProdProgram -> Vars -> SMod
-header (n_e,prodprogram,n_x) vars = 
+fn_sig :: (Var, Int) -> SExpression
+fn_sig (fn_name, fn_arity) =
+  let sig = replicate fn_arity $ SymSort "Int"
+  in SE $ DeclFun (SimpleSym fn_name) sig (SymSort "Int")
+
+header :: ProdProgram -> Vars -> [(Var, Int)] -> SMod
+header (n_e,prodprogram,n_x) vars fns = 
   let nodes = nub $ n_e:(n_x ++ M.keys prodprogram)
       sig = concatMap (\v -> replicate 4 (SymSort "Int")) vars
       nodes_enc = map (\n -> node_sig n sig) nodes
+      fns_enc = map fn_sig fns
       logic = setlogic HORN
-  in logic:nodes_enc
+  in logic:(fns_enc ++ nodes_enc)
 
 initial_state :: Label -> Vars -> SMod
 initial_state ne vars = 
@@ -182,18 +213,28 @@ encode_Q vars label =
       enc_vars = map to_var vars
   in FnAppExpr q_label enc_vars
 
+get_var :: Lhs -> Var
+get_var lhs = case lhs of
+  LhsVar v -> v
+  LhsArray v _ -> v
+
 mod_var :: Stat -> String -> Vars
-mod_var (Assign v _) e = [v ++ e ++ "1"]
+mod_var (Assign v _) e = [get_var v ++ e ++ "1"]
 mod_var _ _ = []
 
 encode_s :: Stat -> String -> (Maybe SExpr, Maybe (Var, Var, Var))
 encode_s Skip _version = (Nothing, Nothing)
 encode_s (Assume e) _version = (Just $ encode_e e _version, Nothing) 
-encode_s (Assign v e) _version =
+encode_s (Assign (LhsVar v) e) _version =
  let s_e = encode_e e _version
      var = v ++ _version ++ "1"
      a_enc = mk_e "=" (to_var var) s_e 
  in (Just a_enc, Just (v, v++_version, var))
+encode_s (Assign (LhsArray v ev) e) _version = undefined
+-- let s_e = encode_e e _version
+--     var = v ++ _version ++ "1"
+--     a_enc = mk_e "=" (to_var var) s_e 
+-- in (Just a_enc, Just (v, v++_version, var))
 
 encode_e :: Expr -> String -> SExpr
 encode_e e _version = case e of
@@ -206,8 +247,14 @@ encode_e e _version = case e of
     in case opcode of
       Neq -> let eq_e = FnAppExpr (SymIdent $ SimpleSym "=") [lhs_e, rhs_e]
              in FnAppExpr (SymIdent $ SimpleSym "not") [eq_e]
-      _ -> FnAppExpr (SymIdent $ SimpleSym op_s) [lhs_e, rhs_e] 
-  _ -> undefined
+      _ -> FnAppExpr (SymIdent $ SimpleSym op_s) [lhs_e, rhs_e]
+  F v es ->
+    let es_e = map (\e -> encode_e e _version) es 
+    in FnAppExpr (SymIdent $ SimpleSym v) es_e 
+  A v e ->
+    let s_v = IdentExpr $ SymIdent $ SimpleSym $ v ++ _version
+        enc_e = encode_e e _version
+    in FnAppExpr (SymIdent $ SimpleSym "get") [s_v, enc_e]
 
 toOpcode :: OpCode -> String
 toOpcode op = case op of
