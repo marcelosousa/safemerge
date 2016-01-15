@@ -36,7 +36,3 @@ type Program = (Label, Prog, [Label])
 type Edit = Map Label Program
 
 type Vars = [Var]
-
--- methods to assist
-(~=) :: Lhs -> Expr -> Stat
-(~=) lhs expr = Assign lhs expr

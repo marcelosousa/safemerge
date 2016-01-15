@@ -29,6 +29,9 @@ pSpaces1 =  pList1 pSpace
 pString :: Parser String
 pString = pList1 pAlphaNumeric
 
+pVar :: Parser String
+pVar = (:) <$> pLower <*> pList pAlphaNumeric
+
 pLSquare, pRSquare :: Parser Char
 pLSquare = pSym '['
 pRSquare = pSym ']'
@@ -41,13 +44,13 @@ pLabels = (:) <$> pLSquare **> pSpaces **> pString <*> pSpaces **> pList (pSym '
 
 -- Parse statements
 pStat :: Parser Stat
-pStat = const Skip <$> pToken "skip"
-    <|> Assume <$> pToken "assume"  **> pSpaces1 **> pParens pExpr
-    <|> Assign <$> pLhs <*> pSpaces **> pSym '=' **> pSpaces **> pExpr
+pStat =  const Skip <$> pToken "skip"
+     <|> Assume <$> pToken "assume"  **> pSpaces1 **> pParens pExpr
+     <|> Assign <$> pLhs <*> pSpaces **> pSym '=' **> pSpaces **> pExpr
 
 pLhs :: Parser Lhs
-pLhs =  LhsVar <$> pString
-    <|> LhsArray <$> pString <*> pLSquare **> pExpr <* pRSquare 
+pLhs =  LhsVar <$> pVar 
+    <|> LhsArray <$> pVar <*> pLSquare **> pExpr <* pRSquare 
 
 opCodes :: [String]
 opCodes = ["&&", "||", "+", "-", "*", "/", "%", "<", "<=", ">", ">=", "==", "!="]
@@ -81,14 +84,14 @@ toOp s = case s of
   "!=" -> Neq
   
 pExpr :: Parser Expr
-pExpr =  (\lhs op rhs -> Op lhs (toOp op) rhs) <$> pExpr <*> pSpaces **> pAny pToken opCodes <*> pSpaces **> pExpr 
+pExpr =  pParens ((\lhs op rhs -> Op lhs (toOp op) rhs) <$> pExpr <*> pSpaces **> pAny pToken opCodes <*> pSpaces **> pExpr <* pSpaces) 
      <|> C <$> pSNumeral
-     <|> V <$> pString
-     <|> A <$> pString <*> pLSquare **> pExpr <* pRSquare 
-     <|> F <$> pString <*> pParens (pList (pExpr <* pSym ','))  -- fix this one
+     <|> V <$> pVar 
+     <|> A <$> pVar <*> pLSquare **> pExpr <* pRSquare 
+     <|> F <$> pVar <*> pParens (pList (pExpr <* pSym ','))  -- fix this one
 
 pProgLine :: Parser (Label, (Stat, [Label]))
-pProgLine = (\a b c -> (a, (b,c))) <$> pLabel <*> pSpaces **> pStat <*> pSpaces **> pLabels
+pProgLine = (\a b c -> (a, (b,c))) <$> pLabel <*> pSpaces **> pStat <*> pSpaces **> pLabels <* pSpaces
 
 {-
 Program Syntax:
@@ -114,3 +117,10 @@ parseProg = runParser "Error" pProg
 
 parseEdit :: String -> Edit
 parseEdit = runParser "Error" pEdit
+
+testProgLine = runParser "Error" (pList pProgLine)
+
+testParser :: FilePath -> IO ()
+testParser t = do
+ s <- readFile t
+ print $ parseProg s

@@ -1,4 +1,3 @@
 [n0]
-[n0] i = 1 [n1]
-[n1] j = 2 [exit]
+[n0] skip [n1]
 [exit]
