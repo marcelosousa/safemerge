@@ -26,8 +26,8 @@ import Debug.Trace
 --      vars = get_vars prodprogram      
 --  in show $ prettyprint $ main_encoding prodprogram vars
 
-main_merge :: Program -> Edit -> Edit -> Edit -> SMod
-main_merge base a b m = main_encoding $ generate_product base a b m
+encode :: Program -> Edit -> Edit -> Edit -> SMod
+encode base a b m = main_encoding $ generate_product base a b m
 
 generate_product :: Program -> Edit -> Edit -> Edit -> ProdProgram
 generate_product base a b m = flatten_product base $ gen_product base a b m

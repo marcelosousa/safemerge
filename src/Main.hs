@@ -7,11 +7,9 @@
 module Main where
 
 import Encoding
-import qualified Examples.SimpleEncoding as SE
-import qualified Examples.ToyLoop as TL
 import Language.SMTLib2.Base
 import Language.SMTLib2.Printer
-
+import Parser
 import Prelude hiding (product)
 import System.Console.CmdArgs
 import System.FilePath.Posix
@@ -21,22 +19,31 @@ _summary = unlines ["wiz - v0.1","Semantic program merging."
                    ,"Copyright 2016 @ Marcelo Sousa"]
 _program = "wiz"
 _help    = "No input files supported yet."
-_helpProduct = unlines ["wiz product -t=test_nr"]
-_helpMerge = unlines ["wiz merge -t=test_nr -o=file.smt2"]
-                   
-data Option = Product {test_nr :: Int}
-            | Merge {test_nr :: Int, output :: FilePath}
+_helpParse = unlines ["wiz parse -m={program|edit} -f=file"]
+_helpProduct = unlines ["wiz product -p=prog.txt -a=variant-a.txt -b=variant-b.txt -m=merge.txt"]
+_helpMerge = unlines ["wiz merge -p=prog.txt -a=variant-a.txt -b=variant-b.txt -m=merge.txt -o=file.smt2"]
+
+data ParseOption = Program | Edit
   deriving (Show, Data, Typeable, Eq)
 
-productMode :: Option
-productMode = Product { test_nr = def } &= help _helpProduct
+instance Default ParseOption where
+  def = Program
+ 
+data Option = Parse { mode :: ParseOption, file :: FilePath }
+            | Product {prog :: FilePath, vari_a :: FilePath, vari_b :: FilePath, merge :: FilePath }
+            | Merge { prog :: FilePath, vari_a :: FilePath, vari_b :: FilePath, merge :: FilePath, output :: FilePath }
+  deriving (Show, Data, Typeable, Eq)
 
-mergeMode :: Option
-mergeMode = Merge { test_nr = def 
-                  , output = def } &= help _helpMerge
+parseMode, productMode, mergeMode :: Option
+
+parseMode = Parse { mode = def, file = def } &= help _helpParse
+productMode = Product { prog = def, vari_a = def
+                      , vari_b = def, merge = def } &= help _helpProduct
+mergeMode = Merge { prog = def, vari_a = def, vari_b = def
+                  , merge = def, output = def } &= help _helpMerge
 
 progModes :: Mode (CmdArgs Option)
-progModes = cmdArgsMode $ modes [productMode, mergeMode]
+progModes = cmdArgsMode $ modes [parseMode, productMode, mergeMode]
          &= help _help
          &= program _program
          &= summary _summary
@@ -47,16 +54,22 @@ main = do options <- cmdArgsRun progModes
           runOption options
           
 runOption :: Option -> IO ()
-runOption (Product t) = product t
-runOption (Merge t o) = merge t o 
-
-product :: Int -> IO ()
-product 0 = putStrLn $ pp_prod_prog $ generate_product SE.p SE.a SE.b SE.m 
-product 1 = putStrLn $ pp_prod_prog $ generate_product TL.p TL.a TL.b TL.m 
-
-merge :: Int -> FilePath -> IO ()
-merge t o = writeFile o $ show $ prettyprint $ encode t
-
-encode :: Int -> SMod
-encode 0 = main_merge SE.p SE.a SE.b SE.m
-encode 1 = main_merge TL.p TL.a TL.b TL.m 
+runOption (Parse m f) = do
+  s <- readFile f
+  case m of
+    Program -> print $ parseProg s
+    Edit -> print $ parseEdit s
+runOption (Product p a b m) = do
+  p_s <- readFile p >>= return . parseProg
+  a_s <- readFile a >>= return . parseEdit
+  b_s <- readFile b >>= return . parseEdit
+  m_s <- readFile m >>= return . parseEdit
+  let pprod = generate_product p_s a_s b_s m_s
+  putStrLn $ pp_prod_prog pprod
+runOption (Merge p a b m o) = do
+  p_s <- readFile p >>= return . parseProg
+  a_s <- readFile a >>= return . parseEdit
+  b_s <- readFile b >>= return . parseEdit
+  m_s <- readFile m >>= return . parseEdit
+  let enc = encode p_s a_s b_s m_s
+  writeFile o $ show $ prettyprint enc 

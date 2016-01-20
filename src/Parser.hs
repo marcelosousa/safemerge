@@ -137,13 +137,3 @@ parseProg = runParser "Error" pProg
 
 parseEdit :: String -> Edit
 parseEdit = runParser "Error" pEdit
-
-testParseProg:: FilePath -> IO ()
-testParseProg t = do
- s <- readFile t
- print $ parseProg s
-
-testParseEdit :: FilePath -> IO ()
-testParseEdit t = do
- s <- readFile t
- print $ parseEdit s
