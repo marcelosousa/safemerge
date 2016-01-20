@@ -15,6 +15,7 @@ Executable wiz
                     , mtl           
                     , cmdargs
                     , smtlib 
+                    , uu-parsinglib 
     Hs-Source-Dirs:   src/
     ghc-options:      -O3 -rtsopts
     Extensions:       DoAndIfThenElse

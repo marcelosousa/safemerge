@@ -53,7 +53,7 @@ pFLabels = (:) <$> pLSquare **> pSpaces **> pString <*> pSpaces **> pList (pSym 
 -- Parse statements
 pStat :: Parser Stat
 pStat =  const Skip <$> pToken "skip"
-     <|> Assume <$> pToken "assume"  **> pSpaces1 **> pParens pExpr
+     <|> Assume <$> pToken "assume"  **> pSpaces **> pExpr
      <|> Assign <$> pLhs <*> pSpaces **> pSym '=' **> pSpaces **> pExpr
 
 pLhs :: Parser Lhs
