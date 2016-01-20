@@ -1,0 +1,7 @@
+This example takes an original program that only contains a skip
+statement and variant "a" modifies the skip with an assignment to x
+and variant "b" introduces an assignment to y after the skip.
+
+The goal of this example is to test if the tool is able to handle 
+a variant which extends the exit nodes of the program by introducing
+a statement at the end of the program.
