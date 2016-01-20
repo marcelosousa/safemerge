@@ -1,0 +1,12 @@
+{start}
+--
+{start} x = 0 {start1}
+{start1} y = 10 {n0}
+{n0} skip {n1, n2}
+{n1} assume(i < n) {n11}
+{n11} i = (i + 1) {n12}
+{n12} skip {n0}
+{n2} assume(i >= n) {n21}
+{n21} skip {exit}
+--
+{exit}
