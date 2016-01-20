@@ -6,7 +6,7 @@ import qualified Data.Map as M
 
 import Types
 
-import Text.ParserCombinators.UU hiding (parse, (<$$>))
+import Text.ParserCombinators.UU hiding (parse, (<$$>), pEnd)
 import Text.ParserCombinators.UU.Utils hiding (pLParen, pRParen)
 import Text.ParserCombinators.UU.BasicInstances
 import Text.ParserCombinators.UU.Demo.Examples (run)
@@ -27,20 +27,28 @@ pSpaces1 :: Parser String
 pSpaces1 =  pList1 pSpace
 
 pString :: Parser String
-pString = pList1 pAlphaNumeric
+pString = pList1 (pAlphaNumeric <|> pSym '_')
 
 pVar :: Parser String
 pVar = (:) <$> pLower <*> pList pAlphaNumeric
+
+pLCurly, pRCurly :: Parser Char
+pLCurly = pSym '{'
+pRCurly = pSym '}'
 
 pLSquare, pRSquare :: Parser Char
 pLSquare = pSym '['
 pRSquare = pSym ']'
 
 pLabel :: Parser Label
-pLabel = pLSquare *> pSpaces *> pString <* pSpaces <* pRSquare
+pLabel = pLCurly *> pSpaces *> pString <* pSpaces <* pRCurly
 
 pLabels :: Parser [Label]
-pLabels = (:) <$> pLSquare **> pSpaces **> pString <*> pSpaces **> pList (pSym ',' **> pSpaces **> pString <* pSpaces) <* pRSquare
+pLabels = (:) <$> pLCurly **> pSpaces **> pString <*> pSpaces **> pList (pSym ',' **> pSpaces **> pString <* pSpaces) <* pRCurly
+        <|> pure []
+
+pFLabels :: Parser [Label]
+pFLabels = (:) <$> pLSquare **> pSpaces **> pString <*> pSpaces **> pList (pSym ',' **> pSpaces **> pString <* pSpaces) <* pRSquare
 
 -- Parse statements
 pStat :: Parser Stat
@@ -50,7 +58,7 @@ pStat =  const Skip <$> pToken "skip"
 
 pLhs :: Parser Lhs
 pLhs =  LhsVar <$> pVar 
-    <|> LhsArray <$> pVar <*> pLSquare **> pExpr <* pRSquare 
+    <|> LhsArray <$> pVar <*> pLCurly **> pExpr <* pRCurly 
 
 opCodes :: [String]
 opCodes = ["&&", "||", "+", "-", "*", "/", "%", "<", "<=", ">", ">=", "==", "!="]
@@ -87,20 +95,32 @@ pExpr :: Parser Expr
 pExpr =  pParens ((\lhs op rhs -> Op lhs (toOp op) rhs) <$> pExpr <*> pSpaces **> pAny pToken opCodes <*> pSpaces **> pExpr <* pSpaces) 
      <|> C <$> pSNumeral
      <|> V <$> pVar 
-     <|> A <$> pVar <*> pLSquare **> pExpr <* pRSquare 
+     <|> A <$> pVar <*> pLCurly **> pExpr <* pRCurly 
      <|> F <$> pVar <*> pParens (pList (pExpr <* pSym ','))  -- fix this one
 
 pProgLine :: Parser (Label, (Stat, [Label]))
-pProgLine = (\a b c -> (a, (b,c))) <$> pLabel <*> pSpaces **> pStat <*> pSpaces **> pLabels <* pSpaces
+pProgLine = (\a b c -> (a, (b,c))) <$> pLabel <*> pSpaces **> pStat <*> pSpaces **> pLabels <* pSpaces 
 
+pProgLines :: Parser [(Label, (Stat, [Label]))]
+pProgLines = pSome pProgLine
+         <|> pure []
+ 
 {-
 Program Syntax:
   [label] -- initial label
+  --
   [label] Statement [label, label]
-  [label] -- final label
+  --
+  {label} -- final label
 -}
+pBeg :: Parser Label
+pBeg = (\a _ _ _ -> a) <$> pLabel <*> pSpaces <*> pToken "--" <*> pSpaces
+
+pEnd :: Parser [Label]
+pEnd = pToken "--" **> pSpaces **> pLabels <* pSpaces
+
 pProg :: Parser Program 
-pProg = (\a b c -> (a, M.fromList b, c)) <$> pLabel <*> pSpaces **> pList pProgLine <*> pSpaces **> pLabels 
+pProg = (\a b c -> (a, M.fromList b, c)) <$> pBeg <*> pList pProgLine <*> pEnd 
 
 {-
    [label] |->
@@ -118,9 +138,12 @@ parseProg = runParser "Error" pProg
 parseEdit :: String -> Edit
 parseEdit = runParser "Error" pEdit
 
-testProgLine = runParser "Error" (pList pProgLine)
-
-testParser :: FilePath -> IO ()
-testParser t = do
+testParseProg:: FilePath -> IO ()
+testParseProg t = do
  s <- readFile t
  print $ parseProg s
+
+testParseEdit :: FilePath -> IO ()
+testParseEdit t = do
+ s <- readFile t
+ print $ parseEdit s

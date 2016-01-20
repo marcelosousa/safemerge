@@ -11,8 +11,8 @@ import Types
 -- [exit]
 p :: Program
 p =
-  let n0 = ("n0",(Assign "i" (C 1), ["n1"]))
-      n1 = ("n1",(Assign "j" (C 2), ["exit"]))
+  let n0 = ("n0",(Assign (LhsVar "i") (C 1), ["n1"]))
+      n1 = ("n1",(Assign (L"j" (C 2), ["exit"]))
       prog = fromList [n0,n1]
   in ("n0", prog, ["exit"])
 
