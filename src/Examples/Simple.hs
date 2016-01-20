@@ -12,7 +12,7 @@ import Types
 p :: Program
 p =
   let n0 = ("n0",(Assign (LhsVar "i") (C 1), ["n1"]))
-      n1 = ("n1",(Assign (L"j" (C 2), ["exit"]))
+      n1 = ("n1",(Assign (LhsVar "j") (C 2), ["exit"]))
       prog = fromList [n0,n1]
   in ("n0", prog, ["exit"])
 
@@ -23,7 +23,7 @@ p =
 --    [n1]
 a :: Edit
 a =
-  let n0_a = ("n0_a",(Assign "x" (C 0), ["n1"]))
+  let n0_a = ("n0_a",(Assign (LhsVar "x") (C 0), ["n1"]))
       eprog = ("n0_a",fromList [n0_a],["n1"])
   in fromList [("n0",eprog)]
 
@@ -34,7 +34,7 @@ a =
 --    [exit]
 b :: Edit
 b =
-  let n1_b = ("n1_b",(Assign "y" (C 1), ["exit"]))
+  let n1_b = ("n1_b",(Assign (LhsVar "y") (C 1), ["exit"]))
       eprog = ("n1_b",fromList [n1_b],["exit"])
   in fromList [("n1",eprog)]
 
