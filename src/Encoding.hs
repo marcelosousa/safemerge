@@ -321,7 +321,8 @@ exit_condition [xo,xa,xb,xc] =
                                          ,mk_or (mk_eq xo xb) (mk_eq xc xb)
                                          ,mk_ors [mknot $ mk_eq xo xa
                                                  ,mknot $ mk_eq xo xb
-                                                 ,mknot $ mk_eq xc xo]
+--                                                 ,mknot $ mk_eq xc xo]
+                                                 , (mk_eq xc xo)]
                                          ] 
   
 final_state :: [Label] -> Vars -> SMod
