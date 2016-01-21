@@ -11,6 +11,7 @@ import Language.SMTLib2.Base
 import Language.SMTLib2.Printer
 import Parser
 import Prelude hiding (product)
+import Printer
 import System.Console.CmdArgs
 import System.FilePath.Posix
 

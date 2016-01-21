@@ -4,6 +4,7 @@ import qualified Data.Map as M
 import Language.SMTLib2.Base
 import Language.SMTLib2.Builder
 import Language.SMTLib2.Printer
+import Printer
 import Product
 import Types
 import Prelude hiding (product)
