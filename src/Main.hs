@@ -30,16 +30,16 @@ instance Default ParseOption where
   def = Program
  
 data Option = Parse { mode :: ParseOption, file :: FilePath }
-            | Product {prog :: FilePath, vari_a :: FilePath, vari_b :: FilePath, merge :: FilePath }
-            | Merge { prog :: FilePath, vari_a :: FilePath, vari_b :: FilePath, merge :: FilePath, output :: FilePath }
+            | Product {prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath }
+            | Merge { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath, output :: FilePath }
   deriving (Show, Data, Typeable, Eq)
 
 parseMode, productMode, mergeMode :: Option
 
 parseMode = Parse { mode = def, file = def } &= help _helpParse
-productMode = Product { prog = def, vari_a = def
-                      , vari_b = def, merge = def } &= help _helpProduct
-mergeMode = Merge { prog = def, vari_a = def, vari_b = def
+productMode = Product { prog = def, a = def
+                      , b = def, merge = def } &= help _helpProduct
+mergeMode = Merge { prog = def, a = def, b = def
                   , merge = def, output = def } &= help _helpMerge
 
 progModes :: Mode (CmdArgs Option)
