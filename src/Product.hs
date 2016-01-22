@@ -3,22 +3,57 @@ module Product where
 import Data.Map (Map)
 import Data.Maybe
 import qualified Data.Map as M
+import Debug.Trace
 import Prelude hiding (product)
+import Printer
 import Types
 
-type ProdProg = Map Label [(Stat, [Label])]
-type ProdProgram = (Label, ProdProg, [Label])
-type EditMap = Map Label (ProdProgram, Bool)
-
 generate_product :: Program -> Edit -> Edit -> Edit -> ProdProgram
-generate_product base a b m = flatten_product base $ gen_product base a b m
+generate_product base a b m = flatten_product base m $ gen_product base a b m
 
 -- Main Product Generation
 -- For each label in the base program, generate the product program associated with it.
+-- Note that it is possible that merge edit is going to change the exit label
+changed_labels :: [Label] -> Edit -> [(Label, [Label])]
+changed_labels [] edit = []
+changed_labels (x:xs) edit =
+  case M.lookup x edit of
+    Nothing -> changed_labels xs edit
+    Just (_,_,y) -> (x,y):(changed_labels xs edit)
+
+changed_labels' :: [Label] -> Prog -> [(Label, [Label])]
+changed_labels' [] p = []
+changed_labels' (x:xs) p =
+  case M.lookup x p of
+    Nothing -> changed_labels' xs p 
+    Just (_,y) -> (x,y):(changed_labels' xs p)
+
+-- Retrieve all labels in x and not in y. 
+difference :: [(Label, [Label])] -> [Label] -> [(Label, [Label])]
+difference [] y = []
+difference ((x,nx):xs) y =
+  if x `elem` y
+  then difference xs y
+  else (x,nx):difference xs y 
+
+missing_base :: [(Label, [Label])] -> Prog
+missing_base nx =
+  let nx' = map (\(e,n_x) -> (e, (Skip, n_x))) nx
+  in M.fromList nx'
+
+-- Generate the product program. Modifications to the exit labels require special attention.
 gen_product :: Program -> Edit -> Edit -> Edit -> (Label, EditMap, [Label])
 gen_product (n_e, base, n_x) e_a e_b e_m =
   let prod_base = M.mapWithKey (generate_product' e_a e_b e_m) base
-  in (n_e, prod_base, n_x)
+      base_changed = changed_labels' n_x base
+      merge_changed = changed_labels n_x e_m
+      n_x' = concat $ snd $ unzip merge_changed
+      nbase = missing_base $ difference merge_changed (fst $ unzip base_changed)
+  in case merge_changed of
+    [] -> (n_e, prod_base, n_x)
+    _ -> 
+      let prod_nbase = M.mapWithKey (generate_product' e_a e_b e_m) nbase
+      in (n_e, M.union prod_base prod_nbase, n_x') 
 
 generate_product' :: Edit -> Edit -> Edit -> Label -> (Stat, [Label]) -> (ProdProgram, Bool)
 generate_product' e_a e_b e_m node_label node_stat@(stat, succs) =
@@ -40,20 +75,24 @@ generate_product' e_a e_b e_m node_label node_stat@(stat, succs) =
   in (product (base, prog_a, prog_b, prog_m), b)
 
 -- Flatten the product for each label in the base program
-flatten_product :: Program -> (Label, EditMap, [Label]) -> ProdProgram
-flatten_product (n_e, base, n_x) (_, mapToEdits, _) =
+flatten_product :: Program -> Edit -> (Label, EditMap, [Label]) -> ProdProgram
+flatten_product (_, base, _n_x) e_m (n_e, mapToEdits, n_x) =
   let entry = n_e
       exit = n_x
-      prog = M.foldWithKey (\k v m -> local_flatten_product k v m mapToEdits) M.empty base
+      base_changed = changed_labels' _n_x base
+      merge_changed = changed_labels _n_x e_m
+      n_x' = concat $ snd $ unzip merge_changed
+      nbase = missing_base $ difference merge_changed (fst $ unzip base_changed)
+      new_base = M.union base nbase
+      prog = M.foldWithKey (\k v m -> local_flatten_product k v m mapToEdits) M.empty new_base
   in (entry, prog, exit)
---  (n_e, flatten_product' n_e n_x base mapToEdits [] M.empty, n_x)
 
 -- For each label in the original program, produce the product program
 local_flatten_product :: Label -> (Stat, [Label]) -> ProdProg -> EditMap -> ProdProg
 local_flatten_product n_c (stat, succs) prog editsMap =
  case M.lookup n_c editsMap of
   Nothing -> error "local_flatten_product"
-  Just ((n_e, prodprog, n_x), ch) -> --trace ("flt: " ++ show (n_c, n_e, n_x, succs) ++ "\n") $
+  Just ((n_e, prodprog, n_x), ch) -> 
    if ch
    then
      let goto_e = [(n_c, replicate 4 (Skip, [n_e]))]

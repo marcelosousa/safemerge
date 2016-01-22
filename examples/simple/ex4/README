@@ -1,0 +1,5 @@
+This example takes an original program that only contains a skip
+statement and variant "a" modifies the skip with an assignment to x
+and variant "b" modifies the skip with also an assignment to x.
+
+The goal is to verify that the tool is able to detect buggy examples.

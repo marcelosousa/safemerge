@@ -3,7 +3,6 @@ module Printer where
 
 import qualified Data.Map as M
 import Types
-import Product
 
 pp_prod_prog :: ProdProgram -> String
 pp_prod_prog (n_e, m, n_x) =
