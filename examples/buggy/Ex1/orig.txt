@@ -1,0 +1,7 @@
+{n0}
+--
+{n0} skip {n1}
+{n1} skip {n2}
+{n2} r = x {exit}
+--
+{exit}
