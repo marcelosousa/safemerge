@@ -1,0 +1,21 @@
+{n0} |->
+  {n0_1b}
+  --
+  {n0_1b} k=3 {n1}
+  --
+  {n1}
+
+{n2} |->
+  {n2_1b}
+  --
+  {n2_1b} skip {n2_2b, n2_0b}
+  {n2_2b} assume(y == 2) {n2_3b}
+  {n2_3b} skip {n2_4b, n2_7b}
+  {n2_4b} assume(z == 3) {n2_5b}
+  {n2_5b} a = 4 {n2_6b}
+  {n2_6b} skip {exit}
+  {n2_7b} assume(z != 3) {exit}
+  {n2_9b} assume(y != 2) {n2_10b}
+  {n2_10b} c = 5 {exit}
+  --
+  {exit}
