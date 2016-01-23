@@ -1,3 +1,4 @@
+{-#LANGUAGE TypeSynonymInstances, FlexibleInstances #-}
 module Encoding where
 
 import qualified Data.Map as M
@@ -35,25 +36,33 @@ encode base a b m = main_encoding Whole $ generate_product base a b m
 fine_encode :: Program -> Edit -> Edit -> Edit -> SMod
 fine_encode base a b m = main_encoding Fine $ generate_product base a b m
 
-get_fns :: ProdProgram -> [(Var, Int)]
-get_fns (a, prog, b) = nub $ M.fold (\l r -> (concatMap get_fns_p l) ++ r) [] prog
+-- Class to retrieve all the function signatures from a.
+-- A Function Signature is a pair (Function Name, Arity)
+type FunctionSig = (Var, Int)
 
-get_fns_p :: (Stat, [Label]) -> [(Var, Int)]
-get_fns_p = (get_fns_s . fst)
+class GetFunctionSig a where
+  getFunctionSig :: a -> [FunctionSig]
 
-get_fns_s :: Stat -> [(Var, Int)]
-get_fns_s s = case s of
-  Skip -> []
-  Assume e -> get_fns_e e 
-  Assign v e -> get_fns_e e
+instance GetFunctionSig ProdProgram where
+  getFunctionSig (a, prog, b) =
+    nub $ M.fold (\l r -> (concatMap getFunctionSig l) ++ r) [] prog
 
-get_fns_e :: Expr -> [(Var, Int)]
-get_fns_e e = case e of 
-  Op lhs _ rhs -> get_fns_e lhs ++ get_fns_e rhs
-  C _ -> []
-  V v -> []
-  F v es -> (v, length es):(concatMap get_fns_e es)
-  A v e -> get_fns_e e
+instance GetFunctionSig (Stat, [Label]) where
+  getFunctionSig = (getFunctionSig . fst)
+
+instance GetFunctionSig Stat where
+  getFunctionSig s = case s of
+    Skip -> []
+    Assume e -> getFunctionSig e 
+    Assign v e -> getFunctionSig e
+
+instance GetFunctionSig Expr where
+  getFunctionSig e = case e of 
+    Op lhs _ rhs -> getFunctionSig lhs ++ getFunctionSig rhs
+    C _ -> []
+    V v -> []
+    F v es -> (v, length es):(concatMap getFunctionSig es)
+    A v e -> getFunctionSig e
 
 get_vars :: ProdProgram -> Vars
 get_vars (a, prog, b) = nub $ M.fold (\l r -> (concatMap get_vars_p l) ++ r) [] prog
@@ -97,7 +106,7 @@ main_encoding :: EncodeOpt -> ProdProgram -> SMod
 main_encoding opt prodprogram@(ne,prod,nx) =
   let vars = get_vars prodprogram
       varmap = toVarMap vars
-      fns = get_fns prodprogram 
+      fns = getFunctionSig prodprogram 
       h = header prodprogram vars fns
       i = initial_state ne vars
       f = final_state nx vars
