@@ -1,0 +1,15 @@
+{start}
+--
+{start} skip {n0}
+{n0} x = a {n1}
+{n1} y = b {n2}
+{n2} prod = 0 {n3}
+{n3} skip {n4, n5}
+{n4} assume (y > 0) {n6}
+{n6} prod = (prod + x) {n7}
+{n7} y = (y - 1) {n9}
+{n5} assume (y <= 0) {n9}
+{n9} printvar = prod {n10}
+{n10} skip {exit}
+--
+{exit}
