@@ -26,9 +26,14 @@ import Debug.Trace
 --  let prodprogram = generate_product base a b merge
 --      vars = get_vars prodprogram      
 --  in show $ prettyprint $ main_encoding prodprogram vars
+data EncodeOpt = Whole | Fine
+ deriving Eq
 
 encode :: Program -> Edit -> Edit -> Edit -> SMod
-encode base a b m = main_encoding $ generate_product base a b m
+encode base a b m = main_encoding Whole $ generate_product base a b m
+
+fine_encode :: Program -> Edit -> Edit -> Edit -> SMod
+fine_encode base a b m = main_encoding Fine $ generate_product base a b m
 
 get_fns :: ProdProgram -> [(Var, Int)]
 get_fns (a, prog, b) = nub $ M.fold (\l r -> (concatMap get_fns_p l) ++ r) [] prog
@@ -88,15 +93,15 @@ variants_var v = [v++"o", v++"a", v++"b", v++"m"]
 -- Similar for exit node: postcondition implies merge criteria.
 --  For each edge e \in P', e = (base, a, b, m)
 --   Define an encoding for each type of statements
-main_encoding :: ProdProgram -> SMod
-main_encoding prodprogram@(ne,prod,nx) =
+main_encoding :: EncodeOpt -> ProdProgram -> SMod
+main_encoding opt prodprogram@(ne,prod,nx) =
   let vars = get_vars prodprogram
       varmap = toVarMap vars
-      fns = ("get",2):get_fns prodprogram -- the get function is for arrays
+      fns = get_fns prodprogram 
       h = header prodprogram vars fns
       i = initial_state ne vars
       f = final_state nx vars
-      prog = M.foldWithKey (encode_stat vars) [] prod
+      prog = M.foldWithKey (encode_stat opt vars) [] prod
       csat = SE $ CheckSat
   in h ++ i ++ prog ++ f ++ [csat]
 
@@ -143,6 +148,7 @@ mod_var :: Stat -> String -> Vars
 mod_var (Assign v _) e = [get_var v ++ e ++ "1"]
 mod_var _ _ = []
 
+-- Encoding of a statement
 encode_s :: Stat -> String -> (Maybe SExpr, Maybe (Var, Var, Var))
 encode_s Skip _version = (Nothing, Nothing)
 encode_s (Assume e) _version = (Just $ encode_e e _version, Nothing) 
@@ -172,6 +178,7 @@ encode_e e _version = case e of
   F v es ->
     let es_e = map (\e -> encode_e e _version) es 
     in FnAppExpr (SymIdent $ SimpleSym v) es_e 
+  -- TODO: Encode with the array theory
   A v e ->
     let s_v = IdentExpr $ SymIdent $ SimpleSym $ v ++ _version
         enc_e = encode_e e _version
@@ -201,8 +208,9 @@ s_subst :: Maybe (Var, Var, Var) -> VarMap -> VarMap
 s_subst Nothing varmap = varmap
 s_subst (Just (x,x_k,nx_k)) varmap = M.update (\l -> Just $ replace nx_k x_k l) x varmap
 
-encode_stat :: Vars -> Label -> [(Stat, [Label])] -> SMod -> SMod
-encode_stat vars n_e [(s_o,n_o), (s_a,n_a), (s_b,n_b), (s_c,n_c)] rest =
+-- Encoding of a 4-way statement
+encode_stat :: EncodeOpt -> Vars -> Label -> [(Stat, [Label])] -> SMod -> SMod
+encode_stat opt vars n_e [(s_o,n_o), (s_a,n_a), (s_b,n_b), (s_c,n_c)] rest =
   let _vars = toVarMap vars -- [[xa, xb, xc, xd], ... ]
       vars_ = concat $ M.elems _vars
       preQ = encode_Q vars_ n_e
@@ -218,10 +226,12 @@ encode_stat vars n_e [(s_o,n_o), (s_a,n_a), (s_b,n_b), (s_c,n_c)] rest =
       vars_for = map (\v -> (SimpleSym v, "Int")) $ nub $ vars_ ++ _vars'
       succ_labels = nub [n_o, n_a, n_b, n_c]
   in if succ_labels == [n_o]
-     then
-       let postQ' = map (encode_Q _vars') n_o
-           ass = map (\post -> SE $ Assert $ ForallExpr vars_for $ mk_e "=>" pre post) postQ'
-       in ass ++ rest
+     then let postQ' = map (encode_Q _vars') n_o
+              ass = map (\post -> SE $ Assert $ ForallExpr vars_for $ mk_e "=>" pre post) postQ'
+          in if opt == Whole
+             then ass ++ rest
+             else let f = final_state n_o vars
+                  in ass ++ f ++ rest
      else error $ "encode_stat: label error " ++ show (n_e, succ_labels, n_o) 
 
 --to_var a = FnAppExpr (SymIdent $ SimpleSym a) []
@@ -244,7 +254,8 @@ exit_condition [xo,xa,xb,xc] =
 --                                                 ,mknot $ mk_eq xc xo]
                                                  , (mk_eq xc xo)]
                                          ] 
-  
+
+-- Generate the final state  
 final_state :: [Label] -> Vars -> SMod
 final_state nx vars =
   foldr (\n_x r -> single_final_state n_x vars ++ r) [] nx
