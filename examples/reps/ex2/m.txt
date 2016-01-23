@@ -1,0 +1,32 @@
+{n6} |->
+  {n6_a}
+  --
+  {n6_a} skip {n6_1_a, n6_2_a}
+ {n6_1_a} assume even(y) {n6_3_a}
+ {n6_3_a} x = (x + x) {n6_4_a}
+ {n6_4_a} y = (y/2)   {n6_5_a}
+ {n6_2_a} assume !even(y) {n6_6_a}
+ {n6_6_a} prod =prod + x {n6_7_a}
+ {n6_7_a} y = y - 1 {n6_5_a}
+ {n6_5_a} skip {n7}
+  --
+  {n7}
+
+{n7} |->
+   {n7_a}
+  --
+  {n7_a} skip {n9}
+  --
+  {n9}
+
+{n10} |->
+   {n10_b}
+  --
+   {n10_b} skip {n10_1_b, n10_2_b}
+   {n10_1_b} assume a*b == prod {n10_3_b}
+   {n10_3_b} print 1 {n10_4_b}
+   {n10_2_b} assume a*b != prod {n10_5_b}
+   {n10_5_b} print 0 {n10_4_b} 
+   {n10_4_b} skip {exit}
+  --
+    {exit}
