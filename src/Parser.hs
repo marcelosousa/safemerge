@@ -58,7 +58,7 @@ pStat =  const Skip <$> pToken "skip"
 
 pLhs :: Parser Lhs
 pLhs =  LhsVar <$> pVar 
-    <|> LhsArray <$> pVar <*> pLCurly **> pExpr <* pRCurly 
+    <|> LhsArray <$> pVar <*> pLSquare **> pExpr <* pRSquare
 
 opCodes :: [String]
 opCodes = ["&&", "||", "+", "-", "*", "/", "%", "<", "<=", ">", ">=", "==", "!="]
@@ -69,7 +69,7 @@ digit2Num a = fromInteger $ toInteger $ ord a - ord '0'
 
 -- | 'pNumeralStr' ~=> @(0|([1-9][0-9]*))@ 
 pNumeralStr :: Parser String
-pNumeralStr =  pList pDigit
+pNumeralStr =  pList1 pDigit
 
 -- | 'pSNumeral' converts a string form of a <numeral> into a Num @a@.
 pSNumeral :: Num a => Parser a
@@ -95,9 +95,14 @@ pExpr :: Parser Expr
 pExpr =  pParens ((\lhs op rhs -> Op lhs (toOp op) rhs) <$> pExpr <*> pSpaces **> pAny pToken opCodes <*> pSpaces **> pExpr <* pSpaces) 
      <|> C <$> pSNumeral
      <|> V <$> pVar 
-     <|> A <$> pVar <*> pLCurly **> pExpr <* pRCurly 
-     <|> F <$> pVar <*> pParens (pList (pExpr <* pSym ','))  -- fix this one
+     <|> A <$> pVar <*> pLSquare **> pExpr <* pRSquare 
+     <|> F <$> pVar <*> pParens pFnArgs
 
+pFnArgs :: Parser [Expr]
+pFnArgs =  (:[]) <$> pExpr
+       <|> (:) <$> pExpr <* pSpaces <* pSym ',' <* pSpaces <*> pFnArgs 
+       <|> pure []
+      
 pProgLine :: Parser (Label, (Stat, [Label]))
 pProgLine = (\a b c -> (a, (b,c))) <$> pLabel <*> pSpaces **> pStat <*> pSpaces **> pLabels <* pSpaces 
 

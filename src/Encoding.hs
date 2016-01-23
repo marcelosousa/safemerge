@@ -177,7 +177,9 @@ encode_e e _version = case e of
       _ -> FnAppExpr (SymIdent $ SimpleSym op_s) [lhs_e, rhs_e]
   F v es ->
     let es_e = map (\e -> encode_e e _version) es 
-    in FnAppExpr (SymIdent $ SimpleSym v) es_e 
+    in case es_e of
+      [] -> IdentExpr $ SymIdent $ SimpleSym v 
+      _ -> FnAppExpr (SymIdent $ SimpleSym v) es_e 
   -- TODO: Encode with the array theory
   A v e ->
     let s_v = IdentExpr $ SymIdent $ SimpleSym $ v ++ _version
