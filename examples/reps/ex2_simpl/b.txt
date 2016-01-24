@@ -1,0 +1,11 @@
+{n10} |->
+   {n10_b}
+  --
+   {n10_b} skip {n10_1_b, n10_2_b}
+   {n10_1_b} assume (mymult(a, b) == prod) {n10_3_b}
+   {n10_3_b} printvar = 1 {n10_4_b}
+   {n10_2_b} assume (mymult(a, b) != prod) {n10_5_b}
+   {n10_5_b} printvar = 0 {n10_4_b} 
+   {n10_4_b} skip {exit}
+  --
+    {exit}
