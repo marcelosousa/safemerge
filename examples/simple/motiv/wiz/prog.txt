@@ -1,0 +1,9 @@
+{start}
+--
+{start} skip {n0}
+{n0}    skip {n1}
+{n1}    x = 1{n2}
+{n2}    skip {n3}
+{n3}    skip {exit}
+--
+{exit}
