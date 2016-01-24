@@ -44,7 +44,7 @@ instance Show OpCode where
     Leq -> "<="
     Geq -> ">="
     Eq -> "=="
-    Neq -> "!"
+    Neq -> "!="
 
 instance Show Lhs where
   show lhs = case lhs of
