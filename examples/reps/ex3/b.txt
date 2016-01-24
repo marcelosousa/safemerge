@@ -1,13 +1,13 @@
 {n6} |-> 
  {n6_b}
  --
-  {n6_b} leni = mymult(i, 10) {n61}
+  {n6_b} leni = (i * 10) {n61}
  --
  {n61}
 
 {n8} |->
   {n8_b}
   --
-  {n8_b} k = myplus(k, myplus(leni, j)) {n10}
+  {n8_b} k = myplus(k, myplus(leni, j)) {n10} 
   --
   {n10}

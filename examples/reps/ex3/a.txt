@@ -15,6 +15,6 @@
 {n11} |->
   {n11_a}
   --
-   {n11_a} twoi = myplus(twoi, 2) {n12}
+   {n11_a} twoi = (twoi + 2) {n12}
   --
   {n12}
