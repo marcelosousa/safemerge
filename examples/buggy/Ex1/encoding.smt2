@@ -1,5 +1,4 @@
 (set-logic HORN)
-(declare-fun get (Int Int) Int)
 (declare-fun Q_n0 (Int Int Int Int Int Int Int Int) Bool)
 (declare-fun Q_exit (Int Int Int Int Int Int Int Int) Bool)
 (declare-fun Q_n0_1 (Int Int Int Int Int Int Int Int) Bool)
