@@ -56,7 +56,7 @@ gen_product (n_e, base, n_x) e_a e_b e_m =
       in (n_e, M.union prod_base prod_nbase, n_x') 
 
 generate_product' :: Edit -> Edit -> Edit -> Label -> (Stat, [Label]) -> (ProdProgram, Bool)
-generate_product' e_a e_b e_m node_label node_stat@(stat, succs) =
+generate_product' e_a e_b e_m node_label node_stat@(stat, succs) = 
   let prog_a' = M.lookup node_label e_a
       prog_b' = M.lookup node_label e_b
       prog_m' = M.lookup node_label e_m
@@ -76,7 +76,7 @@ generate_product' e_a e_b e_m node_label node_stat@(stat, succs) =
 
 -- Flatten the product for each label in the base program
 flatten_product :: Program -> Edit -> (Label, EditMap, [Label]) -> ProdProgram
-flatten_product (_, base, _n_x) e_m (n_e, mapToEdits, n_x) =
+flatten_product (_, base, _n_x) e_m (n_e, mapToEdits, n_x) = 
   let entry = n_e
       exit = n_x
       base_changed = changed_labels' _n_x base
@@ -108,7 +108,7 @@ local_flatten_product n_c (stat, succs) prog editsMap =
 -- receives the base, variant_A, variant_B, variant_C and merge
 -- returns the product construction
 product :: (Program, Program, Program, Program) -> ProdProgram
-product ((_,base,_), (_,a,_), (_,b,_), merge@(n_e,cmerge,n_x)) =
+product ((_,base,_), (_,a,_), (_,b,_), merge@(n_e,cmerge,n_x)) = 
   let pprog = M.mapWithKey (product_prog (base, a, b)) cmerge
   in (n_e, pprog, n_x)
   
@@ -118,8 +118,8 @@ product_prog (base, a, b) node_label node_merge@(stat, succs) =
       node_a' = M.lookup node_label a
       node_b' = M.lookup node_label b
       node_base = fromMaybe (Skip, succs) node_base'
-      node_a = (fst $ fromMaybe node_base node_a', succs)
-      node_b = (fst $ fromMaybe node_base node_b', succs)
+      node_a = (fst $ fromMaybe (Skip, undefined) node_a', succs)
+      node_b = (fst $ fromMaybe (Skip, undefined) node_b', succs)
   in [node_base, node_a, node_b, node_merge]
 
 combine :: [(Stat, Label)] -> [(Stat, Label)] -> [(Stat, Label)] -> [(Stat, Label)] -> [[(Stat, Label)]]
