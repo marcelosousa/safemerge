@@ -161,6 +161,10 @@ final_state nx vars =
         exit_condition (_,[xo,xa,xb,xc]) =
           FnAppExpr (SymIdent $ SimpleSym "and") [mk_or (mk_eq xo xa) (mk_eq xc xa)
                                                  ,mk_or (mk_eq xo xb) (mk_eq xc xb)
+                                                 ,mk_ors [mknot $ mk_eq xo xa
+                                                         ,mknot $ mk_eq xo xb
+        --                                                 ,mknot $ mk_eq xc xo]
+                                                         ,mk_eq xc xo]
                                                  ] 
 
 -- Encode the Node
