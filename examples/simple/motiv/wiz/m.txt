@@ -2,9 +2,9 @@
    {n0_a}
    --
      {n0_a} skip {n0_1_a, n0_2_a}
-     {n0_1_a} assume (y < 0) {n0_3_a}
+     {n0_1_a} assume (y <= 0) {n0_3_a}
      {n0_3_a} w = (w - 1)   {n0_4_a}
-     {n0_2_a} assume (y >= 0)  {n0_4_a}
+     {n0_2_a} assume (y > 0)  {n0_4_a}
      {n0_4_a} skip {n1}
    --
    {n1}
@@ -13,9 +13,9 @@
    {n2_b}
    --
      {n2_b} skip {n2_1_b, n2_2_b}
-     {n2_1_b} assume (y >= 0) {n2_3_b}
+     {n2_1_b} assume (y > 0) {n2_3_b}
      {n2_3_b} w = (w + 1)   {n2_4_b}
-     {n2_2_b} assume (y < 0)  {n2_4_b}
+     {n2_2_b} assume (y <= 0)  {n2_4_b}
      {n2_4_b} skip {n3}
    --
    {n3}
