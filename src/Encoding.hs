@@ -98,12 +98,16 @@ initial_state :: Label -> Variables -> SMod
 initial_state ne vars = 
   let _vars = toVarMap vars
       vars_ = concatMap (\(v,l) -> map (\k -> (v,k)) l) $ M.elems _vars
-      and_vars = map (\[a,b,c,d] -> [mk_eq a b, mk_eq b c, mk_eq c d]) $ snd $ unzip $ M.elems _vars 
+      --and_vars = map (\[a,b,c,d] -> [mk_eq a b, mk_eq b c, mk_eq c d]) $ M.elems _vars 
+      and_vars = map enc_begin $ M.elems _vars 
       vars_for = map enc_var vars_
       pre = FnAppExpr (SymIdent $ SimpleSym "and") $ concat and_vars 
       post = encode_Q (snd $ unzip $ vars_) ne
       for_expr = mk_e "=>" pre post
   in [SE $ Assert $ ForallExpr vars_for for_expr]
+ where enc_begin :: (VarType, [Var]) -> [SExpr]
+       enc_begin (SimpleVar, [a,b,c,d]) = [mk_eq a b, mk_eq b c, mk_eq c d]
+       enc_begin (ArrayVar, [a,b,c,d]) = [mk_eq_arr a b, mk_eq_arr b c, mk_eq_arr c d] 
 
 -- Encoding of a 4-way statement
 encode_stat :: EncodeOpt -> Variables -> Label -> [(Stat, [Label])] -> SMod -> SMod
@@ -158,7 +162,7 @@ final_state nx vars =
           in [SE $ Assert $ ForallExpr vars_for for_expr]
         -- condition
         exit_condition :: (VarType, Vars) -> SExpr
-        exit_condition (_,[xo,xa,xb,xc]) =
+        exit_condition (SimpleVar, [xo,xa,xb,xc]) =
           FnAppExpr (SymIdent $ SimpleSym "and") [mk_or (mk_eq xo xa) (mk_eq xc xa)
                                                  ,mk_or (mk_eq xo xb) (mk_eq xc xb)
                                                  ,mk_ors [mknot $ mk_eq xo xa
@@ -166,7 +170,24 @@ final_state nx vars =
         --                                                 ,mknot $ mk_eq xc xo]
                                                          ,mk_eq xc xo]
                                                  ] 
+        exit_condition (ArrayVar, [xo,xa,xb,xc]) =
+          FnAppExpr (SymIdent $ SimpleSym "and") [mk_or (mk_eq_arr xo xa) (mk_eq_arr xc xa)
+                                                 ,mk_or (mk_eq_arr xo xb) (mk_eq_arr xc xb)
+                                                 ,mk_ors [mknot $ mk_eq_arr xo xa
+                                                         ,mknot $ mk_eq_arr xo xb
+                                                         ,mk_eq_arr xc xo]
+                                                 ] 
 
+mk_eq_arr :: Var -> Var -> SExpr
+mk_eq_arr l r = 
+  let i = to_var "i"
+      l_e = to_var l
+      r_e = to_var r
+      lhs = FnAppExpr (SymIdent $ SimpleSym "select") [l_e, i]
+      rhs = FnAppExpr (SymIdent $ SimpleSym "select") [r_e, i]
+      for_expr = mk_e "=" lhs rhs 
+  in ForallExpr [(SimpleSym "i", "Int")] for_expr
+ 
 -- Encode the Node
 encode_Q :: Vars -> Label -> SExpr
 encode_Q vars label =
@@ -187,9 +208,10 @@ encode_s (Assign (LhsArray v ev) e) _version =
  let s_e = encode_e e _version
      ev_e = encode_e ev _version
      var = v ++ _version ++ "1"
-     array_var = to_var var
+     array_var = to_var $ v ++ _version
+     array_var_mod = to_var var
      store = FnAppExpr (SymIdent $ SimpleSym "store") [array_var, ev_e, s_e]
-     a_enc = mk_e "=" store array_var 
+     a_enc = mk_e "=" store array_var_mod 
  in (Just a_enc, Just (ArrayVar, v, v++_version, var))
 
 encode_e :: Expr -> String -> SExpr
@@ -227,6 +249,7 @@ toOpcode op = case op of
   Geq -> ">="
   Eq -> "="
   Mod -> "mod"
+  Div -> "div"
   _ -> error $ "toOpcode: " ++ show op ++ " not supported" 
 
 to_var a = IdentExpr $ SymIdent $ SimpleSym a
