@@ -47,6 +47,18 @@ pp_edit_map n_e (prodprog, b) rest =
       prodprog_s = unlines $ map (\t -> "\t" ++ t) $ lines $ pp_prod_prog prodprog
   in unlines [n_e_s, prodprog_s, rest]
 
+pp_program :: Program -> String
+pp_program (n_e, m, n_x) =
+  let n_e_s = "digraph product {" 
+      n_x_s = "}"
+      prog_s = M.foldWithKey pp_dot_program_line "" m
+  in n_e_s ++ "\n" ++ prog_s ++ n_x_s
+  where
+pp_dot_program_line pre (ba,pos_ba) rest =
+  let node = pre ++ " [label=< <B>" ++ pre ++ "</B>: (" ++ show ba ++ ")>, shape=box]"
+      edge = unlines $ map (\pos -> pre ++ " -> " ++ pos) pos_ba
+  in node ++ "\n" ++ edge ++ rest
+
 instance Show OpCode where
   show op = case op of
     And -> "&&"
