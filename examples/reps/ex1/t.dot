@@ -1,9 +1,9 @@
 digraph product {
-n0 [label="< <B>n0</B> >rad:=2, rad:=2, rad:=2, rad:=2", shape=box]
+n0 [label="< <B> n0 </B> >rad:=2, rad:=2, rad:=2, rad:=2", shape=box]
 n0 -> n1
-n00 [label="< <B>n00</B> >skip, skip, skip, skip", shape=box]
+n00 [label="< <B> n00 </B> >skip, skip, skip, skip", shape=box]
 n00 -> n00_a
-n00_a [label="< <B>n00_a</B> >p:=3, pi:=3, p:=3, pi:=3", shape=box]
+n00_a [label="< <B> n00_a </B> >p:=3, pi:=3, p:=3, pi:=3", shape=box]
 n00_a -> n0
 n1 [label="< <B>n1</B> >skip, skip, skip, skip", shape=box]
 n1 -> n2
