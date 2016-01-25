@@ -4,6 +4,23 @@ module Printer where
 import qualified Data.Map as M
 import Types
 
+pp_dot_prod_prog :: ProdProgram -> String
+pp_dot_prod_prog (n_e, m, n_x) =
+  let n_e_s = "digraph product {" 
+      n_x_s = "}"
+      prog_s = M.foldWithKey pp_dot_prod_prog_line "" m
+  in n_e_s ++ "\n" ++ prog_s ++ n_x_s
+  where
+pp_dot_prod_prog_line pre r@[(ba,pos_ba), (a,pos_a), (b,pos_b), (m,pos_m)] rest =
+  let ba_s = pre ++ " [label=\"" ++ show ba ++ ", " 
+      a_s = ", " ++ show a 
+      b_s = ", " ++ show b
+      m_s = ", " ++ show m ++ "\"]"
+      node = ba_s ++ a_s ++ b_s ++ m_s
+      edge = unlines $ map (\pos -> pre ++ " -> " ++ pos) pos_m
+  in node ++ "\n" ++ edge ++ rest
+
+
 pp_prod_prog :: ProdProgram -> String
 pp_prod_prog (n_e, m, n_x) =
   let n_e_s = "Entry label: " ++ n_e
