@@ -7,8 +7,8 @@
  {n3}    assume (myleq(i, 100) != 0) {n5}
  {n5}    j = (i * 2) {n6}
  {n6}    skip {n61} 
- {n61}   skip {n7, n8}
- {n7}    assume (mylt(j, 1000) != 0) {n8, n9}
+ {n61}   skip {n7, n9}
+ {n7}    assume (mylt(j, 1000) != 0) {n8}
  {n8}    k = myplus(k, myplus((i*10), j)) {n10}
  {n10}   j = myplus(j,1)  {n61}
  {n9}    assume (mylt(j, 1000) == 0) {n11}
