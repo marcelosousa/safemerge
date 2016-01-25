@@ -30,7 +30,7 @@ pString :: Parser String
 pString = pList1 (pAlphaNumeric <|> pSym '_')
 
 pVar :: Parser String
-pVar = (:) <$> pLower <*> pList pAlphaNumeric
+pVar = (:) <$> (pLower <|> pUpper) <*> pList pAlphaNumeric
 
 pLCurly, pRCurly :: Parser Char
 pLCurly = pSym '{'
