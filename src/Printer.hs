@@ -15,7 +15,7 @@ pp_dot_prod_prog_line pre r@[(ba,pos_ba), (a,pos_a), (b,pos_b), (m,pos_m)] rest 
   let ba_s = pre ++ " [label=\"" ++ show ba ++ ", " 
       a_s = ", " ++ show a 
       b_s = ", " ++ show b
-      m_s = ", " ++ show m ++ "\"]"
+      m_s = ", " ++ show m ++ "\", shape=box]"
       node = ba_s ++ a_s ++ b_s ++ m_s
       edge = unlines $ map (\pos -> pre ++ " -> " ++ pos) pos_m
   in node ++ "\n" ++ edge ++ rest
