@@ -12,7 +12,7 @@ pp_dot_prod_prog (n_e, m, n_x) =
   in n_e_s ++ "\n" ++ prog_s ++ n_x_s
   where
 pp_dot_prod_prog_line pre r@[(ba,pos_ba), (a,pos_a), (b,pos_b), (m,pos_m)] rest =
-  let ba_s = pre ++ " [label=\"" ++ show ba ++ ", " 
+  let ba_s = pre ++ " [label=\"<B>" ++ pre ++ "</B>" ++ show ba 
       a_s = ", " ++ show a 
       b_s = ", " ++ show b
       m_s = ", " ++ show m ++ "\", shape=box]"
