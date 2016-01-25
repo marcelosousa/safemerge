@@ -1,41 +1,41 @@
 digraph product {
-n0 [label="< <B> n0 </B> >rad:=2, rad:=2, rad:=2, rad:=2", shape=box]
+n0 [label=< <B>n0</B>rad:=2, rad:=2, rad:=2, rad:=2>, shape=box]
 n0 -> n1
-n00 [label="< <B> n00 </B> >skip, skip, skip, skip", shape=box]
+n00 [label=< <B>n00</B>skip, skip, skip, skip>, shape=box]
 n00 -> n00_a
-n00_a [label="< <B> n00_a </B> >p:=3, pi:=3, p:=3, pi:=3", shape=box]
+n00_a [label=< <B>n00_a</B>p:=3, pi:=3, p:=3, pi:=3>, shape=box]
 n00_a -> n0
-n1 [label="< <B>n1</B> >skip, skip, skip, skip", shape=box]
+n1 [label=< <B>n1</B>skip, skip, skip, skip>, shape=box]
 n1 -> n2
 n1 -> n3
-n2 [label="< <B>n2</B> >assume(debug==1), assume(debug==1), assume(debug==1), assume(debug==1)", shape=box]
+n2 [label=< <B>n2</B>assume(debug==1), assume(debug==1), assume(debug==1), assume(debug==1)>, shape=box]
 n2 -> n21
-n21 [label="< <B>n21</B> >rad:=4, rad:=4, rad:=4, rad:=4", shape=box]
+n21 [label=< <B>n21</B>rad:=4, rad:=4, rad:=4, rad:=4>, shape=box]
 n21 -> n4
-n3 [label="< <B>n3</B> >assume(debug!=1), assume(debug!=1), assume(debug!=1), assume(debug!=1)", shape=box]
+n3 [label=< <B>n3</B>assume(debug!=1), assume(debug!=1), assume(debug!=1), assume(debug!=1)>, shape=box]
 n3 -> n31
-n31 [label="< <B>n31</B> >skip, skip, skip, skip", shape=box]
+n31 [label=< <B>n31</B>skip, skip, skip, skip>, shape=box]
 n31 -> n31_a
-n31_a [label="< <B>n31_a</B> >skip, rad:=2, skip, rad:=2", shape=box]
+n31_a [label=< <B>n31_a</B>skip, rad:=2, skip, rad:=2>, shape=box]
 n31_a -> n4
-n4 [label="< <B>n4</B> >skip, skip, skip, skip", shape=box]
+n4 [label=< <B>n4</B>skip, skip, skip, skip>, shape=box]
 n4 -> n4_a
-n4_a [label="< <B>n4_a</B> >area:=p*mypow(rad,2), area:=pi*mypow(rad,2), area:=p*mypow(rad,2), area:=pi*mypow(rad,2)", shape=box]
+n4_a [label=< <B>n4_a</B>area:=p*mypow(rad,2), area:=pi*mypow(rad,2), area:=p*mypow(rad,2), area:=pi*mypow(rad,2)>, shape=box]
 n4_a -> n5
-n5 [label="< <B>n5</B> >skip, skip, skip, skip", shape=box]
+n5 [label=< <B>n5</B>skip, skip, skip, skip>, shape=box]
 n5 -> n5_b
-n51 [label="< <B>n51</B> >prinvar1:=area, prinvar1:=area, prinvar1:=area, prinvar1:=area", shape=box]
+n51 [label=< <B>n51</B>prinvar1:=area, prinvar1:=area, prinvar1:=area, prinvar1:=area>, shape=box]
 n51 -> n6
-n5_1_b [label="< <B>n5_1_b</B> >skip, skip, vol:=height*area, vol:=height*area", shape=box]
+n5_1_b [label=< <B>n5_1_b</B>skip, skip, vol:=height*area, vol:=height*area>, shape=box]
 n5_1_b -> n51
-n5_b [label="< <B>n5_b</B> >skip, skip, height:=10, height:=10", shape=box]
+n5_b [label=< <B>n5_b</B>skip, skip, height:=10, height:=10>, shape=box]
 n5_b -> n5_1_b
-n6 [label="< <B>n6</B> >skip, skip, skip, skip", shape=box]
+n6 [label=< <B>n6</B>skip, skip, skip, skip>, shape=box]
 n6 -> n6_b
-n61 [label="< <B>n61</B> >skip, skip, skip, skip", shape=box]
+n61 [label=< <B>n61</B>skip, skip, skip, skip>, shape=box]
 n61 -> exit
-n6_b [label="< <B>n6_b</B> >skip, skip, printvar2:=vol, printvar2:=vol", shape=box]
+n6_b [label=< <B>n6_b</B>skip, skip, printvar2:=vol, printvar2:=vol>, shape=box]
 n6_b -> n61
-start [label="< <B>start</B> >skip, skip, skip, skip", shape=box]
+start [label=< <B>start</B>skip, skip, skip, skip>, shape=box]
 start -> n00
 }
