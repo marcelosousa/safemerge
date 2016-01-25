@@ -1,0 +1,2 @@
+DupFix:
+Buggy example where an unwanted duplication of the change is propagated to the merge.
