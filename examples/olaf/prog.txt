@@ -1,0 +1,15 @@
+{n0}
+--
+{n0} skip {n1, n10}
+{n1} assume (n != 1) {n2}
+{n2} skip {n3, n6}
+{n3} assume (n % 2 == 0) {n4}
+{n4} n = n / 2 {n5}
+{n5} skip {n9}
+{n6} assume (n % 2 != 0) {n7}
+{n7} n = 3*n + 1 {n8}
+{n8} skip {n9}
+{n9} skip {n0}
+{n10} assume n == 1 {exit}
+--
+{exit}

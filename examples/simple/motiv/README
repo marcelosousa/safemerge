@@ -1,0 +1,3 @@
+kdiff3 base.c a.c b.c -o m.c
+
+//will say that all conflicts are resolved and generates a merge free m.c
