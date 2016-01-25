@@ -1,0 +1,11 @@
+{start}
+--
+ {start} skip {n0, n1}
+ {n0}  assume (x > 0) {n01}
+ {n01} w = 1 {n02}
+ {n02} skip  {n2}
+ {n1}  assume (x <= 0) {n11}
+ {n11} skip  {n2}
+ {n2}  skip  {exit}
+--
+{exit}
