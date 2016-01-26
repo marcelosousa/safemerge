@@ -14,7 +14,10 @@ n0_1a: y = 42;
 edit b:
 n0_1b: z = 42;
 
-merge candidate: edit a
+merge candidate: 
+x = 42
+y = 42
+z = 42
 -}
 
 p :: Program
