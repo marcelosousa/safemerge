@@ -63,7 +63,7 @@ runOption (Parse m f) = do
   s <- readFile f
   case m of
     Program -> putStrLn $ pp_program $ parseProg s
-    Edit -> print $ parseEdit s
+    Edit -> putStrLn $ pp_edit $ parseEdit s
 runOption (Product p a b m) = do
   p_s <- readFile p >>= return . parseProg
   a_s <- readFile a >>= return . parseEdit

@@ -53,7 +53,20 @@ pp_program (n_e, m, n_x) =
       n_x_s = "}"
       prog_s = M.foldWithKey pp_dot_program_line "" m
   in n_e_s ++ "\n" ++ prog_s ++ n_x_s
-  where
+
+pp_edit :: Edit -> String
+pp_edit edit =
+  let n_e_s = "digraph product {" 
+      n_x_s = "}"
+      prog_s = M.foldWithKey pp_edit_prog "" edit
+  in n_e_s ++ "\n" ++ prog_s ++ n_x_s
+ where 
+pp_edit_prog n (n_e, m, n_x) rest =
+  let node = n ++ " [fontsize=20, shape=doublecircle]\n"
+      edge = n ++ " -> " ++ n_e ++ "[style=\"dashed\"];"
+      prog = M.foldWithKey pp_dot_program_line "" m
+  in node ++ edge ++ "\n" ++ prog  ++ rest
+
 pp_dot_program_line pre (ba,pos_ba) rest =
   let node = pre ++ " [label=< <B>" ++ pre ++ "</B>: (" ++ show ba ++ ")>, shape=box]"
       edge = unlines $ map (\pos -> pre ++ " -> " ++ pos) pos_ba

@@ -3,7 +3,7 @@ n0 [label=< <B>n0</B>: (x:=a, x:=a, x:=a, x:=a)>, shape=box]
 n0 -> n1
 n1 [label=< <B>n1</B>: (y:=b, y:=b, y:=b, y:=b)>, shape=box]
 n1 -> n2
-n10 [label=< <B>n10</B>: (skip, skip, skip, skip)>, shape=box]
+n10 [label=< <B>n10</B>: (skip, <BR/> skip, skip, skip)>, shape=box]
 n10 -> n10_b
 n10_1_b [label=< <B>n10_1_b</B>: (skip, skip, assume(a*b==prod), assume(a*b==prod))>, shape=box]
 n10_1_b -> n10_3_b
