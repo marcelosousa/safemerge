@@ -3,10 +3,10 @@
   --
   {n8_1a} skip {n8_2a, n8_5a}
   {n8_2a} assume(arg == 1) {n8_3a}
-  {n8_3a} rvm_Fb = arg {n8_4a}
+  {n8_3a} rvmFb = arg {n8_4a}
   {n8_4a} skip {n8_6a}
   {n8_5a} assume(arg != 1) {n8_6a}
-  {n8_6a} argi = argi + 1 {n8_7a}
+  {n8_6a} argi = (argi + 1) {n8_7a}
   {n8_7a} skip {n0}
   --
   {n0}

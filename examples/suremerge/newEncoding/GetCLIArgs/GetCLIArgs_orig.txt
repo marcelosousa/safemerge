@@ -1,15 +1,15 @@
 {n0}
 --
 {n0} skip {n1, n9}
-{n1} assume(argi < args_length) {n2}
+{n1} assume(argi < argsLength) {n2}
 {n2} arg = getArg(args, argi) {n3}
 {n3} skip {n4, n7}
 {n4} assume(arg == 0) {n5}
-{n5} rvm_Ab = arg {n6}
+{n5} rvmAb = arg {n6}
 {n6} skip {n8}
 {n7} assume(arg != 0) {n8}
-{n8} argi = argi + 1 {n9}
+{n8} argi = (argi + 1) {n9}
 {n9} skip {n0}
-{n10} assume(argi >= args_length) {exit}
+{n10} assume(argi >= argsLength) {exit}
 --
 {exit}

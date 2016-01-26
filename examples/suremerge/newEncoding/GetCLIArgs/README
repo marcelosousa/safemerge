@@ -1,0 +1,1 @@
+run generated z3 with fixedpoint.engine=duality
