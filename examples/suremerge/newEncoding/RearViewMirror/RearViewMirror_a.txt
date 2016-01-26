@@ -1,7 +1,8 @@
 {n1} |->
   {n1_1a}
   --
-  {n1_1a} assume(x == 1 && z == 3) {n1_2a}
-  {n1_2a} y = 2 {exit}
+  {n1_1a} assume(x == 1) {n1_2a}
+  {n1_2a} assume(z == 3) {n1_3a}
+  {n1_3a} y = 2 {exit}
   --
   {exit}
