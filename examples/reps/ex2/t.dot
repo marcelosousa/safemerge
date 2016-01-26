@@ -1,0 +1,57 @@
+digraph product {
+n0 [label=< <B>n0</B>: (x:=a, x:=a, x:=a, x:=a)>, shape=box]
+n0 -> n1
+n1 [label=< <B>n1</B>: (y:=b, y:=b, y:=b, y:=b)>, shape=box]
+n1 -> n2
+n10 [label=< <B>n10</B>: (skip, skip, skip, skip)>, shape=box]
+n10 -> n10_b
+n10_1_b [label=< <B>n10_1_b</B>: (skip, skip, assume(a*b==prod), assume(a*b==prod))>, shape=box]
+n10_1_b -> n10_3_b
+n10_2_b [label=< <B>n10_2_b</B>: (skip, skip, assume(a*b!=prod), assume(a*b!=prod))>, shape=box]
+n10_2_b -> n10_5_b
+n10_3_b [label=< <B>n10_3_b</B>: (skip, skip, printvar:=1, printvar:=1)>, shape=box]
+n10_3_b -> n10_4_b
+n10_4_b [label=< <B>n10_4_b</B>: (skip, skip, skip, skip)>, shape=box]
+n10_4_b -> exit
+n10_5_b [label=< <B>n10_5_b</B>: (skip, skip, printvar:=0, printvar:=0)>, shape=box]
+n10_5_b -> n10_4_b
+n10_b [label=< <B>n10_b</B>: (skip, skip, skip, skip)>, shape=box]
+n10_b -> n10_1_b
+n10_b -> n10_2_b
+n2 [label=< <B>n2</B>: (prod:=0, prod:=0, prod:=0, prod:=0)>, shape=box]
+n2 -> n3
+n3 [label=< <B>n3</B>: (skip, skip, skip, skip)>, shape=box]
+n3 -> n4
+n3 -> n5
+n4 [label=< <B>n4</B>: (assume(y&#62;0), assume(y&#62;0), assume(y&#62;0), assume(y&#62;0))>, shape=box]
+n4 -> n6
+n5 [label=< <B>n5</B>: (assume(y&#60;=0), assume(y&#60;=0), assume(y&#60;=0), assume(y&#60;=0))>, shape=box]
+n5 -> n9
+n6 [label=< <B>n6</B>: (skip, skip, skip, skip)>, shape=box]
+n6 -> n6_a
+n6_1_a [label=< <B>n6_1_a</B>: (skip, assume(even(y)!=0), skip, assume(even(y)!=0))>, shape=box]
+n6_1_a -> n6_3_a
+n6_2_a [label=< <B>n6_2_a</B>: (skip, assume(even(y)==0), skip, assume(even(y)==0))>, shape=box]
+n6_2_a -> n6_6_a
+n6_3_a [label=< <B>n6_3_a</B>: (skip, x:=x+x, skip, x:=x+x)>, shape=box]
+n6_3_a -> n6_4_a
+n6_4_a [label=< <B>n6_4_a</B>: (skip, y:=mydiv(y,2), skip, y:=mydiv(y,2))>, shape=box]
+n6_4_a -> n6_5_a
+n6_5_a [label=< <B>n6_5_a</B>: (skip, skip, skip, skip)>, shape=box]
+n6_5_a -> n7
+n6_6_a [label=< <B>n6_6_a</B>: (skip, prod:=prod+x, skip, prod:=prod+x)>, shape=box]
+n6_6_a -> n6_7_a
+n6_7_a [label=< <B>n6_7_a</B>: (skip, y:=y-1, skip, y:=y-1)>, shape=box]
+n6_7_a -> n6_5_a
+n6_a [label=< <B>n6_a</B>: (prod:=prod+x, skip, prod:=prod+x, skip)>, shape=box]
+n6_a -> n6_1_a
+n6_a -> n6_2_a
+n7 [label=< <B>n7</B>: (skip, skip, skip, skip)>, shape=box]
+n7 -> n7_a
+n7_a [label=< <B>n7_a</B>: (y:=y-1, skip, y:=y-1, skip)>, shape=box]
+n7_a -> n9
+n9 [label=< <B>n9</B>: (printvar:=prod, printvar:=prod, printvar:=prod, printvar:=prod)>, shape=box]
+n9 -> n10
+start [label=< <B>start</B>: (skip, skip, skip, skip)>, shape=box]
+start -> n0
+}

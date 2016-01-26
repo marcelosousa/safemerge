@@ -1,0 +1,25 @@
+digraph product {
+n0 [label=< <B>n0</B>: (x:=a)>, shape=box]
+n0 -> n1
+n1 [label=< <B>n1</B>: (y:=b)>, shape=box]
+n1 -> n2
+n10 [label=< <B>n10</B>: (skip)>, shape=box]
+n10 -> exit
+n2 [label=< <B>n2</B>: (prod:=0)>, shape=box]
+n2 -> n3
+n3 [label=< <B>n3</B>: (skip)>, shape=box]
+n3 -> n4
+n3 -> n5
+n4 [label=< <B>n4</B>: (assume(y&#62;0))>, shape=box]
+n4 -> n6
+n5 [label=< <B>n5</B>: (assume(y&#60;=0))>, shape=box]
+n5 -> n9
+n6 [label=< <B>n6</B>: (prod:=prod+x)>, shape=box]
+n6 -> n7
+n7 [label=< <B>n7</B>: (y:=y-1)>, shape=box]
+n7 -> n9
+n9 [label=< <B>n9</B>: (printvar:=prod)>, shape=box]
+n9 -> n10
+start [label=< <B>start</B>: (skip)>, shape=box]
+start -> n0
+}
