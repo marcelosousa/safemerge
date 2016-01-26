@@ -8,7 +8,7 @@
 {n2} |->
   {n2_1b}
   --
-  {n2_1b} skip {n2_2b, n2_0b}
+  {n2_1b} skip {n2_2b, n2_9b}
   {n2_2b} assume(y == 2) {n2_3b}
   {n2_3b} skip {n2_4b, n2_7b}
   {n2_4b} assume(z == 3) {n2_5b}
