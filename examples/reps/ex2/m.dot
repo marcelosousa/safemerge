@@ -1,4 +1,5 @@
 digraph product {
+n10 [fontsize=30, shape=doublecircle]
 n10 -> n10_b[style="dashed"];
 n10_1_b [label=< <B>n10_1_b</B>: (assume(a*b==prod))>, shape=box]
 n10_1_b -> n10_3_b
@@ -13,6 +14,7 @@ n10_5_b -> n10_4_b
 n10_b [label=< <B>n10_b</B>: (skip)>, shape=box]
 n10_b -> n10_1_b
 n10_b -> n10_2_b
+n6 [fontsize=30, shape=doublecircle]
 n6 -> n6_a[style="dashed"];
 n6_1_a [label=< <B>n6_1_a</B>: (assume(even(y)!=0))>, shape=box]
 n6_1_a -> n6_3_a
@@ -31,6 +33,7 @@ n6_7_a -> n6_5_a
 n6_a [label=< <B>n6_a</B>: (skip)>, shape=box]
 n6_a -> n6_1_a
 n6_a -> n6_2_a
+n7 [fontsize=30, shape=doublecircle]
 n7 -> n7_a[style="dashed"];
 n7_a [label=< <B>n7_a</B>: (skip)>, shape=box]
 n7_a -> n9

@@ -62,9 +62,10 @@ pp_edit edit =
   in n_e_s ++ "\n" ++ prog_s ++ n_x_s
  where 
 pp_edit_prog n (n_e, m, n_x) rest =
-  let edge = n ++ " -> " ++ n_e ++ "[style=\"dashed\"];"
+  let node = n ++ " [fontsize=30, shape=doublecircle]\n"
+      edge = n ++ " -> " ++ n_e ++ "[style=\"dashed\"];"
       prog = M.foldWithKey pp_dot_program_line "" m
-  in edge ++ "\n" ++ prog  ++ rest
+  in node ++ edge ++ "\n" ++ prog  ++ rest
 
 pp_dot_program_line pre (ba,pos_ba) rest =
   let node = pre ++ " [label=< <B>" ++ pre ++ "</B>: (" ++ show ba ++ ")>, shape=box]"
