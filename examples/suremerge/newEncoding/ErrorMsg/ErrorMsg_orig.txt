@@ -1,5 +1,7 @@
 {n0}
 --
-{n0} x=42 {exit}
+{n0} x = 42 {n1}
+{n1} skip {n2}
+{n2} skip {exit}
 --
 {exit}
