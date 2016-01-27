@@ -4,6 +4,6 @@
 {n1} assume (x == 1) {n1_1}
 {n1_1} r = 1 {exit}
 {n2} assume (x != 1) {n2_1}
-{n2_1} r = 0 {exit} 
+{n2_1} r = 0 {exit}
 --
 {exit}
