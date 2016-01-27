@@ -56,15 +56,17 @@ variants_var v = [v++"o", v++"a", v++"b", v++"m"]
 -- Similar for exit node: postcondition implies merge criteria.
 --  For each edge e \in P', e = (base, a, b, m)
 --   Define an encoding for each type of statements
-main_encoding :: EncodeOpt -> ProdProgram -> SMod
-main_encoding opt prodprogram@(ne,prod,nx) =
+main_encoding :: EncodeOpt -> (ProdProgram, [Label]) -> SMod
+main_encoding opt (prodprogram@(ne,prod,nx), checks) =
   let vars = getVariable prodprogram
       fns = getFunctionSig prodprogram
       -- Relevant Encoding Functions
       h = header prodprogram vars fns
       i = initial_state ne vars
-      prog = M.foldWithKey (encode_stat opt vars) [] prod
-      f = final_state nx vars
+      prog = M.foldWithKey (encode_stat Whole vars) [] prod
+      f = if opt == Whole
+          then final_state nx vars
+          else final_state (nub $ nx ++ checks) vars
       csat = SE $ CheckSat
   in h ++ i ++ prog ++ f ++ [csat]
 

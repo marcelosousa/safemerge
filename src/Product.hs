@@ -8,8 +8,14 @@ import Prelude hiding (product)
 import Printer
 import Types
 
-generate_product :: Program -> Edit -> Edit -> Edit -> ProdProgram
-generate_product base a b m = flatten_product base m $ gen_product base a b m
+generate_product :: Program -> Edit -> Edit -> Edit -> (ProdProgram, [Label])
+generate_product base a b m =
+  let r@(n_e, prod, n_x) = gen_product base a b m
+      checkPoints = getVerificationPoints prod       
+  in (flatten_product base m r, checkPoints)
+
+getVerificationPoints :: EditMap -> [Label]
+getVerificationPoints = M.fold (\((n_e,_,n_x),_) r -> n_x ++ r) [] 
 
 -- Main Product Generation
 -- For each label in the base program, generate the product program associated with it.
