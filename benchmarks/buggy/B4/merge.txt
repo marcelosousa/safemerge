@@ -24,6 +24,7 @@
   --
   {n3_b} skip {n3_a, n4}
   {n3_a} assume (g == 0) {n3_1}
-  {n4} r = g {exit}
+  {n4} assume (grade == 4) {n4_a}
+  {n4_a} r = g {exit}
   --
   {exit}
