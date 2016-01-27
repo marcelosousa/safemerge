@@ -1,11 +1,12 @@
 {n0}
 --
-{n0} skip {n1, n2, n3}
-{n1} assume (grade == 2) {n1_1}
-{n1_1} r = 2 {exit}
-{n2} assume (grade == 1) {n2_1}
-{n2_1} r = 1 {exit}
-{n3} assume (grade == 0) {n3_1}
-{n3_1} r = 0 {exit}
+{n0} skip {n1, n2}
+{n1} assume (grade == 1) {n1_1}
+{n1_1} r = 1 {exit}
+{n2} assume (grade != 1) {n2_1, n2_2}
+{n2_1} assume (grade == 2) {n2_1t} 
+{n2_1t} r = 1 {exit}
+{n2_2} assume (grade != 2) {n2_2t}
+{n2_2t} r = 0 {exit} 
 --
 {exit}
