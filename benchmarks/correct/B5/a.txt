@@ -1,16 +1,16 @@
 {n1_1} |->
   {n1_a}
   --
-  {n1_a} res = 1 {n3}
+  {n1_a} res = 1 {exit}
   --
-  {n3}
+  {exit}
 
 {n2_1} |->
   {n2_a}
   --
-  {n2_a} res = 2 {n3}
+  {n2_a} res = 2 {exit}
   --
-  {n3}
+  {exit}
 
 {n3} |->
   {n3_a}

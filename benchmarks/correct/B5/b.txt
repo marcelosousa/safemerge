@@ -2,7 +2,8 @@
   {n0_b}
   --
   {n0_b} skip {n1, n2, n4}
-  {n4} r = 0 {n3}
+  {n4} assume (grade == 0) {n4_b}
+  {n4_b} r = 0 {n3}
   --
   {n3}
 
