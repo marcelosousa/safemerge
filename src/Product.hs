@@ -55,6 +55,7 @@ gen_product (n_e, base, n_x) e_a e_b e_m =
       let prod_nbase = M.mapWithKey (generate_product' e_a e_b e_m) nbase
       in (n_e, M.union prod_base prod_nbase, n_x') 
 
+-- This is the function that for each node_label of the base generates a product program
 generate_product' :: Edit -> Edit -> Edit -> Label -> (Stat, [Label]) -> (ProdProgram, Bool)
 generate_product' e_a e_b e_m node_label node_stat@(stat, succs) = 
   let prog_a' = M.lookup node_label e_a
@@ -76,7 +77,7 @@ generate_product' e_a e_b e_m node_label node_stat@(stat, succs) =
 
 -- Flatten the product for each label in the base program
 flatten_product :: Program -> Edit -> (Label, EditMap, [Label]) -> ProdProgram
-flatten_product (_, base, _n_x) e_m (n_e, mapToEdits, n_x) = 
+flatten_product (_, base, _n_x) e_m f@(n_e, mapToEdits, n_x) = -- trace (pp_gen_product f) $  
   let entry = n_e
       exit = n_x
       base_changed = changed_labels' _n_x base
@@ -86,20 +87,21 @@ flatten_product (_, base, _n_x) e_m (n_e, mapToEdits, n_x) =
       new_base = M.union base nbase
       prog = M.foldWithKey (\k v m -> local_flatten_product k v m mapToEdits) M.empty new_base
   in (entry, prog, exit)
+  --in trace ("New base: " ++ pp_prog new_base) $ (entry, prog, exit)
 
 -- For each label in the original program, produce the product program
 local_flatten_product :: Label -> (Stat, [Label]) -> ProdProg -> EditMap -> ProdProg
-local_flatten_product n_c (stat, succs) prog editsMap =
+local_flatten_product n_c (stat, succs) prog editsMap = -- trace ("local : " ++ show (n_c, stat, succs, prog) ++"\n") $
  case M.lookup n_c editsMap of
   Nothing -> error "local_flatten_product"
   Just ((n_e, prodprog, n_x), ch) -> 
    if ch
    then
      let goto_e = [(n_c, replicate 4 (Skip, [n_e]))]
-         goto_x = if n_x == succs
-                  then []
-                  else map (\n_xx -> (n_xx, replicate 4 (Skip, succs))) n_x
-         gotos = M.fromList $ goto_e ++ goto_x
+       --  goto_x = if n_x == succs
+       --           then []
+       --           else map (\n_xx -> (n_xx, replicate 4 (Skip, succs))) n_x
+         gotos = M.fromList $ goto_e -- ++ goto_x
      in M.union gotos $ M.union prodprog prog
    else M.union prodprog prog
 

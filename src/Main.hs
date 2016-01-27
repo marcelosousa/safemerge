@@ -70,7 +70,8 @@ runOption (Product p a b m) = do
   b_s <- readFile b >>= return . parseEdit
   m_s <- readFile m >>= return . parseEdit
   let pprod = generate_product p_s a_s b_s m_s
-  putStrLn $ pp_dot_prod_prog pprod -- pp_prod_prog pprod
+  putStrLn $ pp_dot_prod_prog pprod  
+  --putStrLn $ pp_prod_prog pprod 
 runOption (Merge p a b m o) = do
   p_s <- readFile p >>= return . parseProg
   a_s <- readFile a >>= return . parseEdit

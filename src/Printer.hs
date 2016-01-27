@@ -47,6 +47,12 @@ pp_edit_map n_e (prodprog, b) rest =
       prodprog_s = unlines $ map (\t -> "\t" ++ t) $ lines $ pp_prod_prog prodprog
   in unlines [n_e_s, prodprog_s, rest]
 
+pp_prog :: Prog -> String
+pp_prog m = M.foldWithKey pp_prog_line "" m
+ where
+pp_prog_line pre (ba,pos_ba) rest =
+  pre ++ ": " ++ show ba ++ ": " ++ show pos_ba ++ "\n" ++ rest
+
 pp_program :: Program -> String
 pp_program (n_e, m, n_x) =
   let n_e_s = "digraph product {" 
