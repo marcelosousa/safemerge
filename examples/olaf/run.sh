@@ -16,5 +16,5 @@ echo "generating the encodings";
 wiz merge -p=prog_orig.txt -a=prog_a.txt -b=prog_b.txt -m=prog_merge.txt -o=vcs/merge_enc.smt2;
 wiz finermerge -p=prog_orig.txt -a=prog_a.txt -b=prog_b.txt -m=prog_merge.txt -o=vcs/finermerge_enc.smt2;
 echo "calling solver";
-time /home/msousa/z3/build/z3 vcs/merge_enc.smt2 fixedpoint.engine=duality;
-time /home/msousa/z3/build/z3 vcs/finermerge_enc.smt2 fixedpoint.engine=duality;
+time z3 vcs/merge_enc.smt2 fixedpoint.engine=duality;
+time z3 vcs/finermerge_enc.smt2 fixedpoint.engine=duality;

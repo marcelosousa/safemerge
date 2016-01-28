@@ -112,10 +112,27 @@ initial_state ne vars =
        enc_begin (SimpleVar, [a,b,c,d]) = [mk_eq a b, mk_eq b c, mk_eq c d]
        enc_begin (ArrayVar, [a,b,c,d]) = [mk_eq_arr a b, mk_eq_arr b c, mk_eq_arr c d] 
 
+-- Given the four statements return the list of boolean conditions in
+-- assumes and also the number of assignments. We have a condition that states
+-- that we cannot have assumes with assigments.
+partitionStat :: [(Stat,String)] -> ([(Expr,String)],Int)
+partitionStat = foldr (\(s,str) (es,n) ->
+   case s of
+      Assume e -> ((e,str):es,n)
+      Assign _ _ -> (es,n+1)
+      _ -> (es,n)) ([],0)
+
 -- Encoding of a 4-way statement
 encode_stat :: EncodeOpt -> Variables -> Label -> [(Stat, [Label])] -> SMod -> SMod
 encode_stat opt vars n_e [(s_o,n_o), (s_a,n_a), (s_b,n_b), (s_c,n_c)] rest =
-  let _vars = toVarMap vars -- [[xa, xb, xc, xd], ... ]
+  let (g_es, a_nr) = partitionStat [(s_o,"o"),(s_a,"a"),(s_b,"b"),(s_c,"m")]
+      guard_cond =
+        if g_es == []
+        then mkTrue
+        else if a_nr > 0
+             then error "Syntactic criteria of assume with assignment in product is not satisfied"
+             else mkEqs $ map (\(a,b) -> encode_e a b) g_es 
+      _vars = toVarMap vars -- [[xa, xb, xc, xd], ... ]
       vars_ = concatMap (\(v,l) -> map (\k -> (v,k)) l) $ M.elems _vars
       preQ = encode_Q (snd $ unzip $ vars_) n_e
       (s_o_e, v_o) = encode_s s_o "o"
@@ -129,13 +146,14 @@ encode_stat opt vars n_e [(s_o,n_o), (s_a,n_a), (s_b,n_b), (s_c,n_c)] rest =
             else FnAppExpr (SymIdent $ SimpleSym "and") preStat 
       vars_for = map enc_var $ nub $ vars_ ++ _vars'
       succ_labels = nub [n_o, n_a, n_b, n_c]
+      guard = SE $ Assert $ ForallExpr vars_for $ mkImplies preQ guard_cond 
   in if succ_labels == [n_o]
      then let postQ' = map (encode_Q (snd $ unzip $ _vars')) n_o
               ass = map (\post -> SE $ Assert $ ForallExpr vars_for $ mk_e "=>" pre post) postQ'
           in if opt == Whole
-             then ass ++ rest
+             then guard:ass ++ rest
              else let f = final_state n_o vars
-                  in ass ++ f ++ rest
+                  in guard:ass ++ f ++ rest
      else error $ "encode_stat: label error " ++ show (n_e, succ_labels, n_o) 
  where s_subst :: Maybe (VarType, Var, Var, Var) -> VarMap -> VarMap
        s_subst Nothing varmap = varmap
@@ -258,6 +276,12 @@ toOpcode op = case op of
 to_var a = IdentExpr $ SymIdent $ SimpleSym a
 mk_e op a b = FnAppExpr (SymIdent $ SimpleSym op)
   [a, b]
+
+mkTrue = IdentExpr $ SymIdent $ SimpleSym "true"
+mkImplies a b = mk_e "=>" a b
+mkEquiv a b = mk_e "=" a b
+mkAnd l = FnAppExpr (SymIdent $ SimpleSym "and") l
+mkEqs l = FnAppExpr (SymIdent $ SimpleSym "=") l
 
 mk_eq a b = mk_e "=" (to_var a) (to_var b)
 mk_or a b = mk_e "or" a b 

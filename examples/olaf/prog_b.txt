@@ -17,6 +17,6 @@
   {n0_13b} n = ((3*n) + 1) {n0_14b}
   {n0_14b} skip {n0_15b}
   {n0_15b} skip {n0_6b}
-  {n0_16b} assume (n == 1) {exit}
+  {n0_16b} assume (n == 1) {n1}
   --
-  {exit}
+  {n1}
