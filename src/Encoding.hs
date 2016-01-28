@@ -67,6 +67,7 @@ main_encoding opt (prodprogram@(ne,prod,nx), checks) =
       f = if opt == Whole
           then final_state nx vars
           else final_state (nub $ nx ++ checks) vars
+        --  else final_state nx vars
       csat = SE $ CheckSat
   in h ++ i ++ prog ++ f ++ [csat]
 

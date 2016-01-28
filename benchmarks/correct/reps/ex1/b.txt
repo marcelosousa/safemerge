@@ -1,0 +1,14 @@
+{n5} |->
+    {n5_b}
+    --
+     {n5_b} height = 10 {n5_1_b}
+     {n5_1_b} vol = (height * area) {n51}
+    --
+    {n51}
+
+{n6} |->
+    {n6_b}
+    --
+    {n6_b} printvar2 = vol {n61}
+    --
+    {n61}
