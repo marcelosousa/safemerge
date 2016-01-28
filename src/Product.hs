@@ -15,7 +15,7 @@ generate_product base a b m =
   in (flatten_product base m r, checkPoints)
 
 getVerificationPoints :: EditMap -> [Label]
-getVerificationPoints = M.fold (\((n_e,_,n_x),_) r -> n_x ++ r) [] 
+getVerificationPoints = M.fold (\((n_e,_,n_x),b) r -> if b then n_x ++ r else r) [] 
 
 -- Main Product Generation
 -- For each label in the base program, generate the product program associated with it.

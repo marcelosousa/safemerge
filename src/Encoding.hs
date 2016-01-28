@@ -57,7 +57,7 @@ variants_var v = [v++"o", v++"a", v++"b", v++"m"]
 --  For each edge e \in P', e = (base, a, b, m)
 --   Define an encoding for each type of statements
 main_encoding :: EncodeOpt -> (ProdProgram, [Label]) -> SMod
-main_encoding opt (prodprogram@(ne,prod,nx), checks) =
+main_encoding opt (prodprogram@(ne,prod,nx), checks) = -- trace ("CHECKS AT " ++ show checks) $
   let vars = getVariable prodprogram
       fns = getFunctionSig prodprogram
       -- Relevant Encoding Functions
