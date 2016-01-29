@@ -1,16 +1,27 @@
 {n0} |->
   {n0_0a}
   --
-  {n0_0a} skip {n0_1a, n0_10a}
-  {n0_1a} assume (a != 1) {n0_2a}
-  {n0_2a} skip {n0_3a, n0_6a}
-  {n0_3a} assume ((a % 2) == 0) {n0_4a}
-  {n0_4a} a = (a / 2) {n0_5a}
-  {n0_5a} skip {n0_9a}
-  {n0_6a} assume ((a % 2) != 0) {n0_7a}
-  {n0_7a} a = ((3*a) + 1) {n0_8a}
-  {n0_8a} skip {n0_9a}
-  {n0_9a} skip {n0_0a}
-  {n0_10a} assume (a == 1) {n1}
+  {n0_0a} a = 0 {n1}
   --
   {n1}
+
+{n2} |->
+  {n2_0a}
+  --
+  {n2_0a} assume (a <= 10) {n3}
+  --
+  {n3}
+
+{n3} |->
+  {n3_0a}
+  --
+  {n3_0a} a = (a + 1) {n1}
+  --
+  {n1}
+
+{n4} |->
+  {n4_0a}
+  --
+  {n4_0a} assume (a > 10) {exit}
+  --
+  {exit}

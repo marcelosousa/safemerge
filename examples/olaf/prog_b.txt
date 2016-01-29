@@ -1,22 +1,9 @@
 {n0} |->
   {n0_0b}
   --
-  {n0_0b} skip {n0_1b, n0_4b} 
+  {n0_0b} skip {n0_1b, n0_3b} 
   {n0_1b} assume (n < 0) {n0_2b}
-  {n0_2b} n = (n * (42 *1)) {n0_3b}
-  {n0_3b} skip {n0_6b}
-  {n0_4b} assume (n >= 0) {n0_5b}
-  {n0_5b} skip {n0_6b}
-  {n0_6b} skip {n0_7b, n0_16b}
-  {n0_7b} assume (n != 1) {n0_8b}
-  {n0_8b} skip {n0_9b, n0_12b}
-  {n0_9b} assume ((n % 2) == 0) {n0_10b}
-  {n0_10b} n = (n / 2) {n0_11b}
-  {n0_11b} skip {n0_15b}
-  {n0_12b} assume ((n % 2) != 0) {n0_13b}
-  {n0_13b} n = ((3*n) + 1) {n0_14b}
-  {n0_14b} skip {n0_15b}
-  {n0_15b} skip {n0_6b}
-  {n0_16b} assume (n == 1) {n1}
+  {n0_2b} n = 1 {n1}
+  {n0_3b} assume (n >= 0) {n1}
   --
   {n1}
