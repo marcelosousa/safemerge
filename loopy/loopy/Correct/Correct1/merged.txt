@@ -1,0 +1,25 @@
+int foo(int* a, int *b, int n){  
+  for(int i=0; i<n; i++) 
+    a[i] = b[i];
+  
+  return n;
+}
+
+
+
+{n5} |-> 
+  {n5_a}
+  --
+  {n5_a} ret = n {n6}
+  --
+  {n6} 
+
+{n3} |-> 
+   {n3_a}
+   -- 
+   {n3_a} a[i] = b[i] {n4}
+   -- 
+   {n4}
+
+
+
