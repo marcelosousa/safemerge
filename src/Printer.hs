@@ -80,7 +80,7 @@ pp_dot_program_line pre (ba,pos_ba) rest =
 
 instance Show OpCode where
   show op = case op of
-    And -> "&&"
+    And -> "&amp;&amp;"
     Or -> "||"
     Add -> "+"
     Sub -> "-"

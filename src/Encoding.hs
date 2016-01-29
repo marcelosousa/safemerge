@@ -121,6 +121,25 @@ partitionStat = foldr (\(s,str) (es,n) ->
       Assign _ _ -> (es,n+1)
       _ -> (es,n)) ([],0)
 
+{-
+encode_guard :: [(SExpr,String)] -> SExpr
+encode_guard l = mkEqs $ fst $ unzip l
+encode_guard l = 
+  let (a,b) = (init l, last l)
+  in case b of  
+    (e, "o") -> 
+    _ -> 
+encode_guard [a,b] = mk_eq a b
+encode_guard [a,b,c] = mkEqs [a,b,c] 
+encode_guard [a,b,c,d] =
+  let ab = mk_eq a b
+      ac = mk_eq a c
+      ad = mk_eq a d
+      bc = mk_eq b c
+      bd = mk_eq b d
+      cd = mk_eq c d
+  in mk_or (mk_and ab cd) (mk_and  
+-}
 -- Encoding of a 4-way statement
 encode_stat :: Variables -> Label -> [(Stat, [Label])] -> SMod -> SMod
 encode_stat vars n_e [(s_o,n_o), (s_a,n_a), (s_b,n_b), (s_c,n_c)] rest =
@@ -133,6 +152,7 @@ encode_stat vars n_e [(s_o,n_o), (s_a,n_a), (s_b,n_b), (s_c,n_c)] rest =
              else if length g_es == 1
                   then uncurry encode_e $ head g_es
                   else mkEqs $ map (\(a,b) -> encode_e a b) g_es 
+                  --else encode_guard $ sortBy (\(a,b) (c,d) -> compare b d) $ map (\(a,b) -> (encode_e a b,b)) g_es 
       _vars = toVarMap vars -- [[xa, xb, xc, xd], ... ]
       vars_ = concatMap (\(v,l) -> map (\k -> (v,k)) l) $ M.elems _vars
       preQ = encode_Q (snd $ unzip $ vars_) n_e
