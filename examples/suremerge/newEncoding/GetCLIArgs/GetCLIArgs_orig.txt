@@ -8,8 +8,7 @@
 {n5} rvmAb = arg {n6}
 {n6} skip {n8}
 {n7} assume(arg != 0) {n8}
-{n8} argi = (argi + 1) {n9}
-{n9} skip {n0}
-{n10} assume(argi >= argsLength) {exit}
+{n8} argi = (argi + 1) {n0}
+{n9} assume(argi >= argsLength) {exit}
 --
 {exit}

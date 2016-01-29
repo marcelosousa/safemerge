@@ -15,7 +15,6 @@
   {n8_4b} errorCodeFb = arg {n8_5b}
   {n8_5b} skip {n8_7b}
   {n8_6b} assume(arg != 1) {n8_7b}
-  {n8_7b} argi = (argi + 1) {n8_8b}
-  {n8_8b} skip {n0}
+  {n8_7b} argi = (argi + 1) {n0}
   --
   {n0}
