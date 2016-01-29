@@ -1,0 +1,15 @@
+{n0}
+--
+{n0} skip {n1, n2}
+{n1} assume (x == 1) {n1_1}
+{n1_1} r = 1 {n3}
+{n2} assume (x != 1) {n2_1}
+{n2_1} skip {n3}
+{n3} skip {n4, n5}
+{n4} skip {n4_1}
+{n4_1} skip {exit}
+{n5} skip {n5_1}
+{n5_1} skip {exit}
+--
+{exit}
+
