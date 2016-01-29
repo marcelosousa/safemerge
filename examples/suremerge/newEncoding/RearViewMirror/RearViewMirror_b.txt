@@ -3,8 +3,8 @@
   --
   {n2_1b} skip {n2_2b, n2_5b}
   {n2_2b} assume(z == 3) {n2_3b}
-  {n2_3b} y = 2 {exit}
-  {n2_5b} assume(z != 3) {exit}
+  {n2_3b} y = 2 {n6}
+  {n2_5b} assume(z != 3) {n6}
   --
-  {exit}
+  {n6}
 
