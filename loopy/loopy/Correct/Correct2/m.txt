@@ -1,3 +1,10 @@
+{n6} |-> 
+  {n6_a}
+  --
+  {n6_a} ret = n {n7}
+  --
+  {n7} 
+
 {n5} |-> 
   {nb0}
   --
@@ -6,6 +13,7 @@
   {nb2} assume (j < n) {nb3}
   {nb3} b[j] = i {nb4}
   {nb4} j = (j+1) {nb1}
-  {nb5} ret = n {n6}
+  {nb5} skip {n6}
   --
   {n6}
+
