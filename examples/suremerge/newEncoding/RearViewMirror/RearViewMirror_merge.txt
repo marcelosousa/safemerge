@@ -2,17 +2,17 @@
   {n1_1a}
   --
   {n1_1a} assume((x == 1) && (z == 3)) {n1_2a}
-  {n1_2a} skip {n2}
+  {n1_2a} y = 2 {n6}
   --
-  {n2}
+  {n6}
 
   
 {n2} |->
-  {n2_3b}
+  {n2_1b}
   --
-  {n2_3b} y = 2 {n2_1b}
-  {n2_1b} skip {n2_2b}
-  {n2_2b} skip {n2_5b}
+  {n2_1b} skip {n2_2b, n2_5b}
+  {n2_2b} skip {n2_3b}
+  {n2_3b} skip {n6}
   {n2_5b} skip {n6}
   --
   {n6}
