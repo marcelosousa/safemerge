@@ -2,8 +2,8 @@
   {n2_b}
   --
   {n2_b} skip {n2_t, n2_e}
-  {n2_t} assume (y >= 0) {n2_t1}
+  {n2_t} assume (y > 0) {n2_t1}
   {n2_t1} w = (w - 1) {n3}
-  {n2_e} assume (y < 0) {n3}
+  {n2_e} assume (y <= 0) {n3}
   --
   {n3}

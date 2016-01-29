@@ -36,7 +36,6 @@ data Option = Parse { mode :: ParseOption, file :: FilePath }
             | Product {prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath }
             | Merge { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath, output :: FilePath }
             | FinerMerge { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath, output :: FilePath }
-            | WithGuardFinerMerge { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath, output :: FilePath }
   deriving (Show, Data, Typeable, Eq)
 
 parseMode, productMode, mergeMode, finermergeMode :: Option
@@ -47,11 +46,9 @@ mergeMode = Merge { prog = def, a = def, b = def
                   , merge = def, output = def } &= help _helpMerge
 finermergeMode = FinerMerge { prog = def, a = def, b = def
                             , merge = def, output = def } &= help _helpFMerge
-withfinermergeMode = WithGuardFinerMerge { prog = def, a = def, b = def
-                            , merge = def, output = def } &= help _helpFMerge
 
 progModes :: Mode (CmdArgs Option)
-progModes = cmdArgsMode $ modes [parseMode, productMode, mergeMode, finermergeMode, withfinermergeMode]
+progModes = cmdArgsMode $ modes [parseMode, productMode, mergeMode, finermergeMode]
          &= help _help
          &= program _program
          &= summary _summary
@@ -80,19 +77,12 @@ runOption (Merge p a b m o) = do
   a_s <- readFile a >>= return . parseEdit
   b_s <- readFile b >>= return . parseEdit
   m_s <- readFile m >>= return . parseEdit
-  let enc = encode False p_s a_s b_s m_s
+  let enc = encode p_s a_s b_s m_s
   writeFile o $ show $ prettyprint enc 
 runOption (FinerMerge p a b m o) = do
   p_s <- readFile p >>= return . parseProg
   a_s <- readFile a >>= return . parseEdit
   b_s <- readFile b >>= return . parseEdit
   m_s <- readFile m >>= return . parseEdit
-  let enc = fine_encode False p_s a_s b_s m_s
-  writeFile o $ show $ prettyprint enc 
-runOption (WithGuardFinerMerge p a b m o) = do
-  p_s <- readFile p >>= return . parseProg
-  a_s <- readFile a >>= return . parseEdit
-  b_s <- readFile b >>= return . parseEdit
-  m_s <- readFile m >>= return . parseEdit
-  let enc = encode True p_s a_s b_s m_s
+  let enc = fine_encode p_s a_s b_s m_s
   writeFile o $ show $ prettyprint enc 

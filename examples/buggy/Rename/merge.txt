@@ -1,0 +1,17 @@
+{n0} |->
+  {n0_b}
+  --
+  {n0_b} g = 4 {n1, n2, n3}
+  --
+  {n1, n2, n3}
+
+{n3} |->
+  {n3_b}
+  --
+  {n3_b} skip {n3_a,n4}
+  {n3_a} assume (grade == 0) {n3_1}
+  {n3_1} r = 0 {exit}
+  {n4} r = g {exit}
+  --
+  {exit}
+
