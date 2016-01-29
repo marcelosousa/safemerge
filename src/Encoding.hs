@@ -131,7 +131,9 @@ encode_stat opt vars n_e [(s_o,n_o), (s_a,n_a), (s_b,n_b), (s_c,n_c)] rest =
         then mkTrue
         else if a_nr > 0
              then error "Syntactic criteria of assume with assignment in product is not satisfied"
-             else mkEqs $ map (\(a,b) -> encode_e a b) g_es 
+             else if length g_es == 1
+                  then uncurry encode_e $ head g_es
+                  else mkEqs $ map (\(a,b) -> encode_e a b) g_es 
       _vars = toVarMap vars -- [[xa, xb, xc, xd], ... ]
       vars_ = concatMap (\(v,l) -> map (\k -> (v,k)) l) $ M.elems _vars
       preQ = encode_Q (snd $ unzip $ vars_) n_e
