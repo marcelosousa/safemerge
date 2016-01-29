@@ -1,0 +1,12 @@
+digraph product {
+n0 [label=< <B>n0</B>: (x:=42, x:=42, x:=42, x:=42)>, shape=box]
+n0 -> n1
+n1 [label=< <B>n1</B>: (skip, skip, skip, skip)>, shape=box]
+n1 -> n1_1a
+n1_1a [label=< <B>n1_1a</B>: (skip, y:=42, skip, y:=42)>, shape=box]
+n1_1a -> n2
+n2 [label=< <B>n2</B>: (skip, skip, skip, skip)>, shape=box]
+n2 -> n2_1b
+n2_1b [label=< <B>n2_1b</B>: (skip, skip, z:=42, z:=42)>, shape=box]
+n2_1b -> exit
+}

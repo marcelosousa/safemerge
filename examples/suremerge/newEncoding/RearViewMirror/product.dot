@@ -1,0 +1,23 @@
+digraph product {
+n0 [label=< <B>n0</B>: (skip, skip, skip, skip)>, shape=box]
+n0 -> n1
+n0 -> n4
+n1 [label=< <B>n1</B>: (skip, skip, skip, skip)>, shape=box]
+n1 -> n1_1a
+n1_1a [label=< <B>n1_1a</B>: (assume(x==1), assume(x==1&amp;&amp;z==3), assume(x==1), assume(x==1&amp;&amp;z==3))>, shape=box]
+n1_1a -> n3
+n2_1b [label=< <B>n2_1b</B>: (skip, skip, skip, skip)>, shape=box]
+n2_1b -> n6
+n3 [label=< <B>n3</B>: (y:=2, y:=2, y:=2, y:=2)>, shape=box]
+n3 -> n9
+n4 [label=< <B>n4</B>: (skip, skip, skip, skip)>, shape=box]
+n4 -> n4_1a
+n4_1a [label=< <B>n4_1a</B>: (assume(x!=1), assume(x!=1||z!=3), assume(x!=1), assume(x!=1||z!=3))>, shape=box]
+n4_1a -> n5
+n5 [label=< <B>n5</B>: (skip, skip, skip, skip)>, shape=box]
+n5 -> n2_1b
+n6 [label=< <B>n6</B>: (skip, skip, skip, skip)>, shape=box]
+n6 -> exit
+n9 [label=< <B>n9</B>: (skip, skip, skip, skip)>, shape=box]
+n9 -> exit
+}

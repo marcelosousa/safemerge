@@ -1,0 +1,26 @@
+digraph product {
+n2 [fontsize=20, shape=doublecircle]
+n2 -> n2_1a[style="dashed"];
+n2_10a [label=< <B>n2_10a</B>: (b:=5)>, shape=box]
+n2_10a -> exit
+n2_1a [label=< <B>n2_1a</B>: (skip)>, shape=box]
+n2_1a -> n2_2a
+n2_1a -> n2_9a
+n2_2a [label=< <B>n2_2a</B>: (assume(y==2))>, shape=box]
+n2_2a -> n2_3a
+n2_3a [label=< <B>n2_3a</B>: (skip)>, shape=box]
+n2_3a -> n2_4a
+n2_3a -> n2_7a
+n2_4a [label=< <B>n2_4a</B>: (assume(z==3))>, shape=box]
+n2_4a -> n2_5a
+n2_5a [label=< <B>n2_5a</B>: (a:=4)>, shape=box]
+n2_5a -> n2_6a
+n2_6a [label=< <B>n2_6a</B>: (skip)>, shape=box]
+n2_6a -> exit
+n2_7a [label=< <B>n2_7a</B>: (assume(z!=3))>, shape=box]
+n2_7a -> n2_8a
+n2_8a [label=< <B>n2_8a</B>: (skip)>, shape=box]
+n2_8a -> exit
+n2_9a [label=< <B>n2_9a</B>: (assume(y!=2))>, shape=box]
+n2_9a -> n2_10a
+}

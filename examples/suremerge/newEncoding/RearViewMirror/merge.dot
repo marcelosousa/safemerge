@@ -1,0 +1,14 @@
+digraph product {
+n1 [fontsize=20, shape=doublecircle]
+n1 -> n1_1a[style="dashed"];
+n1_1a [label=< <B>n1_1a</B>: (assume(x==1&amp;&amp;z==3))>, shape=box]
+n1_1a -> n3
+n4 [fontsize=20, shape=doublecircle]
+n4 -> n4_1a[style="dashed"];
+n4_1a [label=< <B>n4_1a</B>: (assume(x!=1||z!=3))>, shape=box]
+n4_1a -> n5
+n5 [fontsize=20, shape=doublecircle]
+n5 -> n2_1b[style="dashed"];
+n2_1b [label=< <B>n2_1b</B>: (skip)>, shape=box]
+n2_1b -> n6
+}

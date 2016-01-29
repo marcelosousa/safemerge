@@ -1,0 +1,25 @@
+digraph product {
+n6 [fontsize=20, shape=doublecircle]
+n6 -> n6_1b[style="dashed"];
+n6_1b [label=< <B>n6_1b</B>: (errorCodeAb:=arg)>, shape=box]
+n6_1b -> n6_2b
+n6_2b [label=< <B>n6_2b</B>: (assume(arg==1))>, shape=box]
+n6_2b -> n0
+n8 [fontsize=20, shape=doublecircle]
+n8 -> n8_1b[style="dashed"];
+n8_1b [label=< <B>n8_1b</B>: (skip)>, shape=box]
+n8_1b -> n8_2b
+n8_1b -> n8_6b
+n8_2b [label=< <B>n8_2b</B>: (assume(arg==1))>, shape=box]
+n8_2b -> n8_3b
+n8_3b [label=< <B>n8_3b</B>: (rvmFb:=arg)>, shape=box]
+n8_3b -> n8_4b
+n8_4b [label=< <B>n8_4b</B>: (errorCodeFb:=arg)>, shape=box]
+n8_4b -> n8_5b
+n8_5b [label=< <B>n8_5b</B>: (skip)>, shape=box]
+n8_5b -> n8_7b
+n8_6b [label=< <B>n8_6b</B>: (assume(arg!=1))>, shape=box]
+n8_6b -> n8_7b
+n8_7b [label=< <B>n8_7b</B>: (argi:=argi+1)>, shape=box]
+n8_7b -> n0
+}

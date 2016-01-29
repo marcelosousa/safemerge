@@ -1,0 +1,28 @@
+digraph product {
+n0 [fontsize=20, shape=doublecircle]
+n0 -> n0_1b[style="dashed"];
+n0_1b [label=< <B>n0_1b</B>: (k:=3)>, shape=box]
+n0_1b -> n1
+n2 [fontsize=20, shape=doublecircle]
+n2 -> n2_1b[style="dashed"];
+n2_10b [label=< <B>n2_10b</B>: (c:=5)>, shape=box]
+n2_10b -> exit
+n2_1b [label=< <B>n2_1b</B>: (skip)>, shape=box]
+n2_1b -> n2_2b
+n2_1b -> n2_9b
+n2_2b [label=< <B>n2_2b</B>: (assume(y==2))>, shape=box]
+n2_2b -> n2_3b
+n2_3b [label=< <B>n2_3b</B>: (skip)>, shape=box]
+n2_3b -> n2_4b
+n2_3b -> n2_7b
+n2_4b [label=< <B>n2_4b</B>: (assume(z==3))>, shape=box]
+n2_4b -> n2_5b
+n2_5b [label=< <B>n2_5b</B>: (a:=4)>, shape=box]
+n2_5b -> n2_6b
+n2_6b [label=< <B>n2_6b</B>: (skip)>, shape=box]
+n2_6b -> exit
+n2_7b [label=< <B>n2_7b</B>: (assume(z!=3))>, shape=box]
+n2_7b -> exit
+n2_9b [label=< <B>n2_9b</B>: (assume(y!=2))>, shape=box]
+n2_9b -> n2_10b
+}

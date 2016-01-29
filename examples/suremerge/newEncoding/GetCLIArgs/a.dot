@@ -1,0 +1,17 @@
+digraph product {
+n8 [fontsize=20, shape=doublecircle]
+n8 -> n8_1a[style="dashed"];
+n8_1a [label=< <B>n8_1a</B>: (skip)>, shape=box]
+n8_1a -> n8_2a
+n8_1a -> n8_5a
+n8_2a [label=< <B>n8_2a</B>: (assume(arg==1))>, shape=box]
+n8_2a -> n8_3a
+n8_3a [label=< <B>n8_3a</B>: (rvmFb:=arg)>, shape=box]
+n8_3a -> n8_4a
+n8_4a [label=< <B>n8_4a</B>: (skip)>, shape=box]
+n8_4a -> n8_6a
+n8_5a [label=< <B>n8_5a</B>: (assume(arg!=1))>, shape=box]
+n8_5a -> n8_6a
+n8_6a [label=< <B>n8_6a</B>: (argi:=argi+1)>, shape=box]
+n8_6a -> n0
+}

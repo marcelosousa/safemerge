@@ -1,0 +1,32 @@
+digraph product {
+n0 [label=< <B>n0</B>: (skip, skip, skip, skip)>, shape=box]
+n0 -> n0_1b
+n0_1b [label=< <B>n0_1b</B>: (skip, skip, k:=3, k:=3)>, shape=box]
+n0_1b -> n1
+n1 [label=< <B>n1</B>: (x:=1, x:=1, x:=1, x:=1)>, shape=box]
+n1 -> n2
+n2 [label=< <B>n2</B>: (skip, skip, skip, skip)>, shape=box]
+n2 -> n2_1a
+n2_10a [label=< <B>n2_10a</B>: (skip, b:=5, skip, b:=5)>, shape=box]
+n2_10a -> exit
+n2_1a [label=< <B>n2_1a</B>: (skip, skip, skip, skip)>, shape=box]
+n2_1a -> n2_2a
+n2_1a -> n2_9a
+n2_2a [label=< <B>n2_2a</B>: (skip, assume(y==2), skip, assume(y==2))>, shape=box]
+n2_2a -> n2_3a
+n2_3a [label=< <B>n2_3a</B>: (skip, skip, skip, skip)>, shape=box]
+n2_3a -> n2_4a
+n2_3a -> n2_7a
+n2_4a [label=< <B>n2_4a</B>: (skip, assume(z==3), skip, assume(z==3))>, shape=box]
+n2_4a -> n2_5a
+n2_5a [label=< <B>n2_5a</B>: (skip, a:=4, skip, a:=4)>, shape=box]
+n2_5a -> n2_6a
+n2_6a [label=< <B>n2_6a</B>: (skip, skip, skip, skip)>, shape=box]
+n2_6a -> exit
+n2_7a [label=< <B>n2_7a</B>: (skip, assume(z!=3), skip, assume(z!=3))>, shape=box]
+n2_7a -> n2_8a
+n2_8a [label=< <B>n2_8a</B>: (skip, skip, skip, skip)>, shape=box]
+n2_8a -> exit
+n2_9a [label=< <B>n2_9a</B>: (skip, assume(y!=2), skip, assume(y!=2))>, shape=box]
+n2_9a -> n2_10a
+}
