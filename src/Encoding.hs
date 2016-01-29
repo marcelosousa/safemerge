@@ -93,7 +93,8 @@ header (n_e,prodprogram,n_x) vars fns =
        encode_vars (svars, avars) =
          let svars_e = concatMap (\_ -> replicate 4 (SymSort "Int")) svars
              avars_e = concatMap (\_ -> replicate 4 (SymSort "(Array Int Int)")) avars
-         in svars_e ++ avars_e
+         in avars_e ++ svars_e
+        -- in svars_e ++ avars_e
 
 -- VC for the initial state.
 initial_state :: Label -> Variables -> SMod
