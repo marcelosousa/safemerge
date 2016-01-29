@@ -9,6 +9,7 @@
 {n1} |->
   {n1_1b}
   --
-  {n1_1b} skip {exit}
+  {n1_1b} skip {n1_2b}
+  {n1_2b} skip {exit}
   --
   {exit}
