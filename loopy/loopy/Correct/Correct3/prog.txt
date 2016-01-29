@@ -4,7 +4,8 @@
 {n0} i = 0 {n1}
 {n1} skip {n2, n5}
 {n2} assume (i < n) {n3}
-{n3} a[i] = 0 {n4}
+{n3} a[i] = 0 {n3_1}
+{n3_1} skip {n4}
 {n4} i = (i+1) {n1}
 {n5} skip {n6}
 --
