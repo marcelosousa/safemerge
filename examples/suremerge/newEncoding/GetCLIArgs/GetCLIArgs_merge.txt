@@ -7,20 +7,19 @@
   {n0}
 
 {n8} |->
-  {n8_1a}
+  {n8_1b}
   --
-  {n8_1a} skip {n8_2a, n8_6b}
-  {n8_2a} assume(arg == 1) {n8_3a}
-  {n8_3a} rvmFb = arg {n8_4b}
+  {n8_1b} skip {n8_2b, n8_6b}
+  {n8_2b} assume(arg == 1) {n8_3b}
+  {n8_3b} rvmFb = arg {n8_4b}
   {n8_4b} errorCodeFb = arg {n8_5b}
   {n8_5b} skip {n8_7b}
   {n8_6b} assume(arg != 1) {n8_7b}
-  {n8_7b} argi = (argi + 1) {n8_1b}
+  {n8_7b} argi = (argi + 1) {n8_1a}
 
-  {n8_1b} skip {n8_2b}
-  {n8_2b} skip {n8_3b}
-  {n8_3b} skip {n8_4a}
-
+  {n8_1a} skip {n8_2a}
+  {n8_2a} skip {n8_3a}
+  {n8_3a} skip {n8_4a}
   {n8_4a} skip {n8_5a}
   {n8_5a} skip {n8_6a}
   {n8_6a} skip {n0}
