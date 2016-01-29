@@ -31,11 +31,11 @@ import Util
 data EncodeOpt = Whole | Fine
  deriving Eq
 
-encode :: Program -> Edit -> Edit -> Edit -> SMod
-encode base a b m = main_encoding Whole $ generate_product base a b m
+encode :: Bool -> Program -> Edit -> Edit -> Edit -> SMod
+encode guard base a b m = main_encoding guard Whole $ generate_product base a b m
 
-fine_encode :: Program -> Edit -> Edit -> Edit -> SMod
-fine_encode base a b m = main_encoding Fine $ generate_product base a b m
+fine_encode :: Bool -> Program -> Edit -> Edit -> Edit -> SMod
+fine_encode guard base a b m = main_encoding guard Fine $ generate_product base a b m
 
 data VarType = SimpleVar | ArrayVar
   deriving Eq
@@ -55,14 +55,14 @@ variants_var v = [v++"o", v++"a", v++"b", v++"m"]
 -- Similar for exit node: postcondition implies merge criteria.
 --  For each edge e \in P', e = (base, a, b, m)
 --   Define an encoding for each type of statements
-main_encoding :: EncodeOpt -> (ProdProgram, [Label]) -> SMod
-main_encoding opt (prodprogram@(ne,prod,nx), checks) = -- trace ("CHECKS AT " ++ show checks) $
+main_encoding :: Bool -> EncodeOpt -> (ProdProgram, [Label]) -> SMod
+main_encoding guard opt (prodprogram@(ne,prod,nx), checks) = -- trace ("CHECKS AT " ++ show checks) $
   let vars = getVariable prodprogram
       fns = getFunctionSig prodprogram
       -- Relevant Encoding Functions
       h = header prodprogram vars fns
       i = initial_state ne vars
-      prog = M.foldWithKey (encode_stat vars) [] prod
+      prog = M.foldWithKey (encode_stat guard vars) [] prod
       f = if opt == Whole
           then final_state nx vars
           else final_state (nub $ nx ++ checks) vars
@@ -141,8 +141,8 @@ encode_guard [a,b,c,d] =
   in mk_or (mk_and ab cd) (mk_and  
 -}
 -- Encoding of a 4-way statement
-encode_stat :: Variables -> Label -> [(Stat, [Label])] -> SMod -> SMod
-encode_stat vars n_e [(s_o,n_o), (s_a,n_a), (s_b,n_b), (s_c,n_c)] rest =
+encode_stat :: Bool -> Variables -> Label -> [(Stat, [Label])] -> SMod -> SMod
+encode_stat guardOn vars n_e [(s_o,n_o), (s_a,n_a), (s_b,n_b), (s_c,n_c)] rest =
   let (g_es, a_nr) = partitionStat [(s_o,"o"),(s_a,"a"),(s_b,"b"),(s_c,"m")]
       guard_cond =
         if g_es == []
@@ -171,8 +171,9 @@ encode_stat vars n_e [(s_o,n_o), (s_a,n_a), (s_b,n_b), (s_c,n_c)] rest =
   in if succ_labels == [n_o]
      then let postQ' = map (encode_Q (snd $ unzip $ _vars')) n_o
               ass = map (\post -> SE $ Assert $ ForallExpr vars_for $ mk_e "=>" pre post) postQ'
-          in guard:ass ++ rest
-          -- in ass ++ rest
+          in if guardOn 
+             then guard:ass ++ rest
+             else ass ++ rest
      else error $ "encode_stat: label error " ++ show (n_e, succ_labels, n_o) 
  where s_subst :: Maybe (VarType, Var, Var, Var) -> VarMap -> VarMap
        s_subst Nothing varmap = varmap
