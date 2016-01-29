@@ -14,7 +14,7 @@ dot -Tpdf product.dot > graphs/product.pdf;
 rm *.dot;
 echo "generating the encodings";
 #wiz merge -p=prog.txt -a=a.txt -b=b.txt -m=merge.txt -o=vcs/merge_enc.smt2;
-wiz merge -p=prog.txt -a=a.txt -b=b.txt -m=m.txt -o=vcs/finermerge_enc.smt2;
+wiz finermerge -p=prog.txt -a=a.txt -b=b.txt -m=m.txt -o=vcs/finermerge_enc.smt2;
 echo "calling solver";
 #time /home/msousa/z3/build/z3 vcs/merge_enc.smt2 fixedpoint.engine=duality;
 time z3 vcs/finermerge_enc.smt2 fixedpoint.engine=duality;
