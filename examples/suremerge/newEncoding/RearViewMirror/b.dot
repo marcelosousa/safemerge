@@ -1,6 +1,0 @@
-digraph product {
-n5 [fontsize=20, shape=doublecircle]
-n5 -> n2_1b[style="dashed"];
-n2_1b [label=< <B>n2_1b</B>: (skip)>, shape=box]
-n2_1b -> n6
-}
