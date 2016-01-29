@@ -1,9 +1,6 @@
 {n0} |->
   {n0_0b}
   --
-  {n0_0b} skip {n0_1b, n0_3b} 
-  {n0_1b} assume (n < 0) {n0_2b}
-  {n0_2b} n = 1 {n1}
-  {n0_3b} assume (n >= 0) {n1}
+  {n0_0b} n = 1 {n1} 
   --
   {n1}

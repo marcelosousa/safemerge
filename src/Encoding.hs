@@ -152,7 +152,7 @@ encode_stat vars n_e [(s_o,n_o), (s_a,n_a), (s_b,n_b), (s_c,n_c)] rest =
      then let postQ' = map (encode_Q (snd $ unzip $ _vars')) n_o
               ass = map (\post -> SE $ Assert $ ForallExpr vars_for $ mk_e "=>" pre post) postQ'
           in guard:ass ++ rest
-          --in ass ++ rest
+          -- in ass ++ rest
      else error $ "encode_stat: label error " ++ show (n_e, succ_labels, n_o) 
  where s_subst :: Maybe (VarType, Var, Var, Var) -> VarMap -> VarMap
        s_subst Nothing varmap = varmap
