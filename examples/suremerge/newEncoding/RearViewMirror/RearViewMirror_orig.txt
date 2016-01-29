@@ -1,8 +1,8 @@
 {n0}
 --
-{n0} skip {n1, n4}
+{n0} skip {n1, n5}
 {n1} assume (x == 1) {n2}
-{n2} skip {exit}
+{n2} skip {n3}
 {n3} y=2 {n4}
 {n4} skip {exit}
 {n5} assume(x != 1) {n6}
