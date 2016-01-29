@@ -8,20 +8,15 @@
 {n2} |->
   {n2_1a}
   --
-  {n2_1a} skip {n2_2a, n2_9b}
+  {n2_1a} skip {n2_2a, n2_9a}
   {n2_2a} assume(y == 2) {n2_3a}
   {n2_3a} skip {n2_4a, n2_7a}
   {n2_4a} assume(z == 3) {n2_5a}
-  {n2_5a} a = 4 {n2_6a}
+  {n2_5a} a=4 {n2_6a}
   {n2_6a} skip {exit}
-  {n2_7a} assume(z != 3) {exit}
-  {n2_9b} assume(y != 2) {n10}
-  --
-  {n10}
-
-{n10} |->
-  {n2_10a}
-  --
+  {n2_7a} assume(z != 3) {n2_8a}
+  {n2_8a} skip {exit}
+  {n2_9a} assume(y != 2) {n2_10a}
   {n2_10a} b=5 {exit}
   --
   {exit}
