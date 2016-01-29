@@ -10,14 +10,14 @@
 {n1_1} |->
   {n1_a}
   --
-  {n1_a} res = 1 {exit}
+  {n1_a} res = 1 {n3}
   --
   {exit}
 
 {n2_1} |->
   {n2_a}
   --
-  {n2_a} res = 2 {exit}
+  {n2_a} res = 2 {n3}
   --
   {exit}
 
