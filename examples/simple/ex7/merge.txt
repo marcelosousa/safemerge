@@ -1,7 +1,7 @@
 {n1_1} |->
   {n1_1a}
   --
-  {n1_1a} res = 1 {exit}
+  {n1_1a} r = 1 {exit}
   --
   {exit}
 
