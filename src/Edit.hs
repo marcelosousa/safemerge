@@ -9,16 +9,30 @@ import Language.Java.Parser hiding (opt)
 import Language.Java.Pretty hiding (opt)
 import Language.Java.Syntax
 
+import Data.Map (Map)
+import qualified Data.Map as M
+
 import qualified Debug.Trace as T
 
-type Edit = [Stmt] 
+type Edit = [BlockStmt] 
 
-main_edit_gen :: FilePath -> FilePath -> IO (CompilationUnit, Edit, Edit)
+test_edit_gen :: FilePath -> IO CompilationUnit
+test_edit_gen orig = do
+  orig_ast <- parser compilationUnit `fmap` readFile orig
+  case orig_ast of
+    Right o_ast -> return o_ast 
+    Left err -> error $ "parse error..." ++ show err
+
+main_edit_gen :: FilePath -> FilePath -> IO () --CompilationUnit, Edit, Edit)
 main_edit_gen orig var = do
   orig_ast <- parser compilationUnit `fmap` readFile orig
   var_ast  <- parser compilationUnit `fmap` readFile var 
   case (orig_ast, var_ast) of
-    (Right o_ast, Right v_ast) -> return $ edit_gen o_ast v_ast 
+    (Right o_ast, Right v_ast) -> do
+      let (no_ast, o_edit, v_edit) = edit_gen o_ast v_ast
+      putStrLn $ prettyPrint no_ast
+      print o_edit
+      print v_edit  
     _ -> error "parse error..."
 
 edit_gen :: CompilationUnit -> CompilationUnit -> (CompilationUnit, Edit, Edit)
@@ -128,8 +142,8 @@ edit_method_body_gen o_mbody v_mbody =
   then (o_mbody, [], [])
   else -- the method bodies are for sure not the same
     case (o_mbody, v_mbody) of
-      (MethodBody Nothing, MethodBody (Just block)) -> (MethodBody $ Just $ Block [BlockStmt Hole], [Skip], [StmtBlock block])
-      (MethodBody (Just block), MethodBody Nothing) -> (MethodBody $ Just $ Block [BlockStmt Hole], [StmtBlock block], [Skip])
+      (MethodBody Nothing, MethodBody (Just block)) -> (MethodBody $ Just $ Block [hole], [skip], [BlockStmt $ StmtBlock block])
+      (MethodBody (Just block), MethodBody Nothing) -> (MethodBody $ Just $ Block [hole], [BlockStmt $ StmtBlock block], [skip])
       (MethodBody (Just o_block), MethodBody (Just v_block)) ->
         let (no_block,o_edit,v_edit) = edit_block_gen o_block v_block
         in (MethodBody $ Just no_block, o_edit, v_edit) 
@@ -142,4 +156,47 @@ edit_constructor_body_gen o_cbody v_cbody =
     (ConstructorBody o_e o_stmts, ConstructorBody v_e v_stmts) -> error "todo" 
 
 edit_block_gen :: Block -> Block -> (Block,Edit,Edit)
-edit_block_gen (Block o_block) (Block v_block) = undefined 
+edit_block_gen (Block o_block) (Block v_block) =
+  let c = lcs o_block v_block
+      (no_block,o_edit,v_edit) = diff2edit o_block v_block c (length o_block, length v_block) ([],[],[]) 
+  in (Block no_block,o_edit,v_edit)
+
+type M = Map (Int,Int) Int
+
+lk :: (Int,Int) -> M -> Int
+lk ij c =
+  case M.lookup ij c of
+    Nothing -> error "lk"
+    Just v  -> v
+
+iM :: Int -> Int -> M
+iM m n = 
+  let keys = [ (i,j) | i <- [0..m], j <- [0..n] ]
+  in M.fromList $ zip keys $ repeat 0   
+
+lcs :: (Show a, Eq a) => [a] -> [a] -> M 
+lcs xs ys =
+  let -- create the initial matrix
+      c = iM (length xs) (length ys) 
+      -- create (x_i, i) array
+      xs' = zip xs [1..]
+      -- create (y_j, j) array
+      ys' = zip ys [1..]
+      c' = foldl (\c_i (x,i) -> foldl (lcslen (x,i)) c_i ys') c xs' 
+  in c'
+ where 
+    lcslen :: (Show a, Eq a) => (a,Int) -> M -> (a,Int) -> M  
+    lcslen (x,i) c (y,j) = 
+       if x == y 
+       then let p = lk (i-1,j-1) c in M.insert (i,j) (p+1) c
+       else M.insert (i,j) (max (lk (i,j-1) c) (lk (i-1,j) c)) c
+
+hole = BlockStmt Hole
+skip = BlockStmt Skip
+
+-- printdiff :: (Eq a,Show a) -> [a] -> [a] -> M -> (Int,Int) -> IO ()
+diff2edit xs ys c (i,j) (o,a,b) 
+  | i > 0 && j > 0 && xs!!(i-1) == ys!!(j-1) = diff2edit xs ys c (i-1,j-1) (xs!!(i-1):o,a,b)
+  | j > 0 && (i == 0 || lk (i,j-1) c >= lk (i-1,j) c) = diff2edit xs ys c (i,j-1) (hole:o,skip:a, (ys!!(j-1)):b)
+  | i > 0 && (j == 0 || lk (i,j-1) c < lk (i-1,j) c) = diff2edit xs ys c (i-1,j) (hole:o,xs!!(i-1):a, skip:b)
+  | otherwise = (o,a,b) 
