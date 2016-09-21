@@ -35,6 +35,47 @@ main_edit_gen orig var = do
       print v_edit  
     _ -> error "parse error..."
 
+type Program = CompilationUnit
+gen_edit :: Program -> Program -> [Edit] -> (Program, [Edit])
+gen_edit p1 p2 eis =
+  let (p,e2,e1) = edit_gen p1 p2
+      -- (p',e2,e1') = edit_gen p2 p1
+      -- assertions: p == p', e1 == e1', e2 == e2', |e1| == |e2'|
+      e = zip e1 e2
+      (_,eis') = foldl (gen_edit_aux eis) (0,[]) e
+  in (p,eis' ++ [e1])
+ where
+  gen_edit_aux :: [Edit] -> (Int,[Edit]) -> (BlockStmt,BlockStmt) -> (Int,[Edit])
+  gen_edit_aux eis (i,eis') (e1,e2)
+   | e1 == skip || e2 == hole = (i+1,push (map (\e -> e!!i) eis) eis') 
+   | otherwise = (i, push (replicate (length eis) e2) eis')
+
+push :: [BlockStmt] -> [Edit] -> [Edit]
+push xs [] = map (:[]) xs
+push xs eis =
+  let a = zip xs eis
+  in map (\(x,ei) -> x:ei) a
+
+kast :: FilePath -> FilePath -> FilePath -> FilePath -> IO (Program,Program,Program,Program)
+kast ofl afl bfl mfl = do
+  _o <- parser compilationUnit `fmap` readFile ofl 
+  _a <- parser compilationUnit `fmap` readFile afl 
+  _b <- parser compilationUnit `fmap` readFile bfl 
+  _m <- parser compilationUnit `fmap` readFile mfl 
+  case (_o,_a,_b,_m) of
+    (Right o, Right a, Right b, Right m) -> return (o,a,b,m)
+
+kedits :: FilePath -> FilePath -> FilePath -> FilePath -> IO ()
+kedits ofl afl bfl mfl = do
+  (o,a,b,m) <- kast ofl afl bfl mfl
+  let (no,ea) = gen_edit o a []
+      (nno,eab) = gen_edit no b ea
+      (nnno,eabm) = gen_edit nno m eab
+ --     (fo,eabmo) = gen_edit nnno o eabm
+  putStrLn $ prettyPrint nnno 
+  mapM_ print eabm
+  
+
 edit_gen :: CompilationUnit -> CompilationUnit -> (CompilationUnit, Edit, Edit)
 edit_gen o_ast v_ast =
   case (o_ast, v_ast) of
@@ -199,4 +240,6 @@ diff2edit xs ys c (i,j) (o,a,b)
   | i > 0 && j > 0 && xs!!(i-1) == ys!!(j-1) = diff2edit xs ys c (i-1,j-1) (xs!!(i-1):o,a,b)
   | j > 0 && (i == 0 || lk (i,j-1) c >= lk (i-1,j) c) = diff2edit xs ys c (i,j-1) (hole:o,skip:a, (ys!!(j-1)):b)
   | i > 0 && (j == 0 || lk (i,j-1) c < lk (i-1,j) c) = diff2edit xs ys c (i-1,j) (hole:o,xs!!(i-1):a, skip:b)
-  | otherwise = (o,a,b) 
+  | otherwise = (o,a,b)
+
+
