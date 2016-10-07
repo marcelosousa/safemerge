@@ -1,0 +1,92 @@
+generating the graphs
+generating the encodings
+Entry label: start
+Label from Base: n0
+	Entry label: n0
+		n0: rad:=2: ["n1"]; rad:=2: ["n1"]; rad:=2: ["n1"]; rad:=2: ["n1"]
+	Exit label: ["n1"]
+
+Label from Base: n00
+	Entry label: n00_a
+		n00_a: p:=3: ["n0"]; pi:=3: ["n0"]; p:=3: ["n0"]; pi:=3: ["n0"]
+	Exit label: ["n0"]
+
+Label from Base: n1
+	Entry label: n1
+		n1: skip: ["n2","n3"]; skip: ["n2","n3"]; skip: ["n2","n3"]; skip: ["n2","n3"]
+	Exit label: ["n2","n3"]
+
+Label from Base: n2
+	Entry label: n2
+		n2: assume(debug==1): ["n21"]; assume(debug==1): ["n21"]; assume(debug==1): ["n21"]; assume(debug==1): ["n21"]
+	Exit label: ["n21"]
+
+Label from Base: n21
+	Entry label: n21
+		n21: rad:=4: ["n4"]; rad:=4: ["n4"]; rad:=4: ["n4"]; rad:=4: ["n4"]
+	Exit label: ["n4"]
+
+Label from Base: n3
+	Entry label: n3
+		n3: assume(debug!=1): ["n31"]; assume(debug!=1): ["n31"]; assume(debug!=1): ["n31"]; assume(debug!=1): ["n31"]
+	Exit label: ["n31"]
+
+Label from Base: n31
+	Entry label: n31_a
+		n31_a: skip: ["n4"]; rad:=2: ["n4"]; skip: ["n4"]; rad:=2: ["n4"]
+	Exit label: ["n4"]
+
+Label from Base: n4
+	Entry label: n4_a
+		n4_a: area:=p*mypow(rad,2): ["n5"]; area:=pi*mypow(rad,2): ["n5"]; area:=p*mypow(rad,2): ["n5"]; area:=pi*mypow(rad,2): ["n5"]
+	Exit label: ["n5"]
+
+Label from Base: n5
+	Entry label: n5_b
+		n5_1_b: skip: ["n51"]; skip: ["n51"]; vol:=height*area: ["n51"]; vol:=height*area: ["n51"]
+		n5_b: skip: ["n5_1_b"]; skip: ["n5_1_b"]; height:=10: ["n5_1_b"]; height:=10: ["n5_1_b"]
+	Exit label: ["n51"]
+
+Label from Base: n51
+	Entry label: n51
+		n51: prinvar1:=area: ["n6"]; prinvar1:=area: ["n6"]; prinvar1:=area: ["n6"]; prinvar1:=area: ["n6"]
+	Exit label: ["n6"]
+
+Label from Base: n6
+	Entry label: n6_b
+		n6_b: skip: ["n61"]; skip: ["n61"]; printvar2:=vol: ["n61"]; printvar2:=vol: ["n61"]
+	Exit label: ["n61"]
+
+Label from Base: n61
+	Entry label: n61
+		n61: skip: ["exit"]; skip: ["exit"]; skip: ["exit"]; skip: ["exit"]
+	Exit label: ["exit"]
+
+Label from Base: start
+	Entry label: start
+		start: skip: ["n00"]; skip: ["n00"]; skip: ["n00"]; skip: ["n00"]
+	Exit label: ["n00"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Exit label: ["exit"]
+
+CHECKS AT ["n0","n4","n5","n51","n61"]
+calling solver
+./run.sh: line 20: 14025 Segmentation fault      (core dumped) z3 vcs/finermerge_enc.smt2 fixedpoint.engine=duality
+
+real	0m5.621s
+user	0m5.419s
+sys	0m0.045s
