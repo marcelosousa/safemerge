@@ -1,0 +1,11 @@
+{n0}
+--
+{n0} skip {n1, n2}
+{n1} assume (grade == 1) {n1_1}
+{n1_1} r = 1 {n3}
+{n2} assume (grade != 1) {n2_1}
+{n2_1} skip {n3}
+{n3} res = r {exit}
+--
+{exit}
+

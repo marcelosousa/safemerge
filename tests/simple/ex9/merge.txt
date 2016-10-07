@@ -1,0 +1,20 @@
+{n1_1} |->
+  {n1_1a}
+  --
+  {n1_1a} res = 1 {exit}
+  --
+  {exit}
+
+{n2_1} |->
+  {n2_1b}
+  --
+  {n2_1b} res = 2 {exit}
+  --
+  {exit}
+
+{n3} |->
+  {n3x}
+  --
+  {n3x} skip {exit}
+  --
+  {exit}
