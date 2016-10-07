@@ -25,7 +25,7 @@ test_edit_gen orig = do
     Right o_ast -> return o_ast 
     Left err -> error $ "parse error..." ++ show err
 
-main_edit_gen :: FilePath -> FilePath -> IO () --CompilationUnit, Edit, Edit)
+main_edit_gen :: FilePath -> FilePath -> IO () --CompilationUnit, Edit, Edit
 main_edit_gen orig var = do
   orig_ast <- parser compilationUnit `fmap` readFile orig
   var_ast  <- parser compilationUnit `fmap` readFile var 
