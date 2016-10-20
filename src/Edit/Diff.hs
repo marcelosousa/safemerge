@@ -51,9 +51,9 @@ skip = BlockStmt Skip
 
 -- printdiff :: (Eq a,Show a) -> [a] -> [a] -> M -> (Int,Int) -> IO ()
 diff2edit xs ys c (i,j) (o,a,b) 
-  | i > 0 && j > 0 && xs!!(i-1) == ys!!(j-1) = diff2edit xs ys c (i-1,j-1) (xs!!(i-1):o,a,b)
-  | j > 0 && (i == 0 || lk (i,j-1) c >= lk (i-1,j) c) = diff2edit xs ys c (i,j-1) (hole:o,skip:a, (ys!!(j-1)):b)
-  | i > 0 && (j == 0 || lk (i,j-1) c < lk (i-1,j) c) = diff2edit xs ys c (i-1,j) (hole:o,xs!!(i-1):a, skip:b)
+  | i > 0 && j > 0 && xs!!(i-1) == ys!!(j-1)          = diff2edit xs ys c (i-1,j-1) (xs!!(i-1):o,a,b)
+  | j > 0 && (i == 0 || lk (i,j-1) c >= lk (i-1,j) c) = diff2edit xs ys c (i,j-1)   (hole:o,skip:a, (ys!!(j-1)):b)
+  | i > 0 && (j == 0 || lk (i,j-1) c < lk (i-1,j) c)  = diff2edit xs ys c (i-1,j)   (hole:o,xs!!(i-1):a, skip:b)
   | otherwise = (o,a,b)
 
 zip4 :: [a] -> [b] -> [c] -> [d] -> [(a,b,c,d)]

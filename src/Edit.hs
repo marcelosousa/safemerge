@@ -52,8 +52,8 @@ kast ofl afl bfl mfl = do
 kedits :: FilePath -> FilePath -> FilePath -> FilePath -> IO ()
 kedits ofl afl bfl mfl = do
   (o,a,b,m) <- kast ofl afl bfl mfl
-  let (no,ea) = gen_edit o a []
-      (nno,eab) = gen_edit no b ea
+  let (no, ea,eo) = edit_gen o a -- (no,ea) = gen_edit o a []
+      (nno,eab)   = gen_edit no b [eo,ea]
       (nnno,eabm) = gen_edit nno m eab
       (fo,es@[e_a,e_b,e_m,e_o]) = gen_edit nnno o eabm
       pairs = [(o,fo,e_o),(a,fo,e_a),(b,fo,e_b),(m,fo,e_m)]
@@ -63,10 +63,11 @@ kedits ofl afl bfl mfl = do
  
 gen_edit :: Program -> Program -> [Edit] -> (Program, [Edit])
 gen_edit p1 p2 eis =
-  let (p,e2,e1) = edit_gen p1 p2
+  let (p,e1,e2) = edit_gen p1 p2
       -- (p',e2,e1') = edit_gen p2 p1
       -- assertions: p == p', e1 == e1', e2 == e2', |e1| == |e2'|
       e = zip e1 e2
+      -- need to update the others
       (_,eis') = foldl (gen_edit_aux eis) (0,[]) e
   in (p,eis' ++ [e1])
  where
@@ -75,11 +76,12 @@ gen_edit p1 p2 eis =
    | e1 == skip || e2 == hole = (i+1,push (map (\e -> e!!i) eis) eis') 
    | otherwise = (i, push (replicate (length eis) e2) eis')
 
+-- add each x to the ei
 push :: [BlockStmt] -> [Edit] -> [Edit]
 push xs [] = map (:[]) xs
 push xs eis =
   let a = zip xs eis
-  in map (\(x,ei) -> x:ei) a
+  in map (\(x,ei) -> ei++[x]) a
 
 -- | Check the soundness of the edit script 
 check_edit_soundness :: (Program,Program,Edit) -> Bool

@@ -138,9 +138,43 @@ edit_constructor_body_gen o_cbody v_cbody =
   else case (o_cbody, v_cbody) of
     (ConstructorBody o_e o_stmts, ConstructorBody v_e v_stmts) -> error "todo" 
 
-edit_block_gen :: Block -> Block -> (Block,Edit,Edit)
+-- | Need to continue here with AST Diff
+edit_block_gen :: Block -> Block -> (Block, Edit, Edit)
 edit_block_gen (Block o_block) (Block v_block) =
   let c = lcs o_block v_block
-      (no_block,o_edit,v_edit) = diff2edit o_block v_block c (length o_block, length v_block) ([],[],[]) 
-  in (Block no_block,o_edit,v_edit)
+      (no_block, o_edit, v_edit) = diff2edit o_block v_block c (length o_block, length v_block) ([],[],[]) 
+      (f_no_block, f_o_edit, f_v_edit) = post_process no_block o_edit v_edit
+  in (Block f_no_block, f_o_edit, f_v_edit)
 
+post_process :: [BlockStmt] -> Edit -> Edit -> ([BlockStmt], Edit, Edit)
+post_process []  ea eb = ([],  ea, eb)
+post_process [x] ea eb = ([x], ea, eb)
+post_process sts ea eb = 
+  let (holes,rest) = span (== (BlockStmt Hole)) sts
+      len_holes = length holes
+      (a,a') = (take len_holes ea, drop len_holes ea)
+      (b,b') = (take len_holes eb, drop len_holes eb)
+      (nholes, na, nb) = collapse holes a b
+      (nrest, na', nb') = post_process rest a' b'
+  in if len_holes == 0
+     then let (nrest, na', nb') = post_process (tail sts) ea eb
+          in (head sts:nrest, na', nb')
+     else (nholes++nrest, na++na', nb++nb')
+
+collapse :: [BlockStmt] -> Edit -> Edit -> ([BlockStmt], Edit, Edit)
+collapse [] [] [] = ([], [], [])
+collapse [] _  _  = error "collapse: fatal:"
+collapse x  a  b  = 
+  let nx = [BlockStmt Hole]
+      na = filter (/= (BlockStmt Skip)) a
+      nb = filter (/= (BlockStmt Skip)) b
+  in if length na == length nb
+     then (nx, na, nb)
+     else error $ "collapse: fatal: final lengths do not match " ++ show (x,a,b,nx,na,nb)
+
+one = Lit (Int 1)
+two = Lit (Int 2)
+one_st = ExpStmt one
+a = [BlockStmt $ one_st, BlockStmt $ Throw one, BlockStmt $ Assume one]
+b = [BlockStmt $ one_st, BlockStmt Empty, BlockStmt $ Assume one]
+c = [BlockStmt $ one_st, BlockStmt Empty, BlockStmt $ Assume one, BlockStmt $ Assume two] 
