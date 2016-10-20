@@ -52,9 +52,9 @@ kast ofl afl bfl mfl = do
 kedits :: FilePath -> FilePath -> FilePath -> FilePath -> IO ()
 kedits ofl afl bfl mfl = do
   (o,a,b,m) <- kast ofl afl bfl mfl
-  let (no, ea,eo) = edit_gen o a -- (no,ea) = gen_edit o a []
-      (nno,eab)   = gen_edit no b [eo,ea]
-      (nnno,eabm) = gen_edit nno m eab
+  let (no, ea, eo) = edit_gen o a -- (no,ea) = gen_edit o a []
+      (nno,eab)    = gen_edit no b [eo,ea]
+      (nnno,eabm)  = gen_edit nno m eab
       (fo,es@[e_a,e_b,e_m,e_o]) = gen_edit nnno o eabm
       pairs = [(o,fo,e_o),(a,fo,e_a),(b,fo,e_b),(m,fo,e_m)]
   putStrLn $ prettyPrint fo 

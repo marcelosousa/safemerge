@@ -164,17 +164,75 @@ post_process sts ea eb =
 collapse :: [BlockStmt] -> Edit -> Edit -> ([BlockStmt], Edit, Edit)
 collapse [] [] [] = ([], [], [])
 collapse [] _  _  = error "collapse: fatal:"
-collapse x  a  b  = 
-  let nx = [BlockStmt Hole]
+collapse x  a  b  =  
+  let -- nx = [BlockStmt Hole]
       na = filter (/= (BlockStmt Skip)) a
       nb = filter (/= (BlockStmt Skip)) b
-  in if length na == length nb
-     then (nx, na, nb)
-     else error $ "collapse: fatal: final lengths do not match " ++ show (x,a,b,nx,na,nb)
+  in special_diff na nb
+ -- in if length na == length nb
+ --    then (nx, na, nb)
+ --    else error $ "collapse: fatal: final lengths do not match\ninput: " ++ show (x,a,b) ++ "\nafter filtering: " ++ show (na,nb)
+
+-- this will be the simplest diff possible
+-- it will pair up each edit and generate a hole per change
+-- in the future it could be interesting to generate the smallest number of holes
+special_diff :: Edit -> Edit -> ([BlockStmt], Edit, Edit)
+special_diff []      []      = ([], [], [])
+special_diff []      r       = (map (const hole) r, map (const skip) r, r)
+special_diff r       []      = (map (const hole) r, r, map (const skip) r)
+special_diff (e1:r1) (e2:r2) = 
+  let (h,a,b) = special_diff r1 r2
+      (_h,_a,_b) = special_diff_inner e1 e2
+  in  (_h:h, _a++a, _b++b) 
+
+special_diff_inner :: BlockStmt -> BlockStmt -> (BlockStmt, [BlockStmt], [BlockStmt])
+special_diff_inner b1 b2 =
+  if b1 == b2
+  then (hole, [b1], [b2])
+  else case (b1, b2) of
+         (BlockStmt s1, BlockStmt s2) ->
+           let (h1, f1, f2) = special_diff_stmt s1 s2
+           in (BlockStmt h1, map BlockStmt f1, map BlockStmt f2)
+         _ -> (hole, [b1], [b2]) 
+
+special_diff_stmt :: Stmt -> Stmt -> (Stmt, [Stmt], [Stmt])
+special_diff_stmt s1 s2 = 
+  if s1 == s2
+  then (s1, [], [])
+  else case (s1, s2) of 
+        (IfThen c1 t1, IfThen c2 t2) ->
+          if c1 == c2
+          then let (h1, t1a, t2b) = special_diff_stmt t1 t2
+               in (IfThen c1 h1, t1a, t2b) 
+          else (Hole, [s1], [s2]) 
+        (IfThenElse c1 t1 e1, IfThenElse c2 t2 e2) ->
+          if c1 == c2
+          then let (ht1, t1a, t2b) = special_diff_stmt t1 t2
+                   (he1, e1a, e2b) = special_diff_stmt e1 e2
+               in (IfThenElse c1 ht1 he1, t1a ++ e1a, t2b ++ e2b) 
+          else (Hole, [s1], [s2]) 
+        (While c1 bdy1, While c2 bdy2) ->
+          if c1 == c2
+          then let (h1, bdy1a, bdy2b) = special_diff_stmt bdy1 bdy2
+               in (While c1 h1, bdy1a, bdy2b) 
+          else (Hole, [s1], [s2]) 
+        (StmtBlock b1, StmtBlock b2) ->
+          let (res, ne1, ne2) = edit_block_gen b1 b2
+          in (StmtBlock res, [StmtBlock (Block ne1)], [StmtBlock (Block ne2)]) 
+        _ -> (Hole, [s1], [s2])  
 
 one = Lit (Int 1)
 two = Lit (Int 2)
 one_st = ExpStmt one
 a = [BlockStmt $ one_st, BlockStmt $ Throw one, BlockStmt $ Assume one]
 b = [BlockStmt $ one_st, BlockStmt Empty, BlockStmt $ Assume one]
-c = [BlockStmt $ one_st, BlockStmt Empty, BlockStmt $ Assume one, BlockStmt $ Assume two] 
+c = [BlockStmt $ one_st, BlockStmt Empty, BlockStmt $ Assume two, BlockStmt $ Assume two]
+
+gtx1 :: Exp
+gtx1 = BinOp two GThan one
+
+if_st1 = IfThenElse gtx1 (Throw one) (Throw two) 
+if_st2 = IfThenElse gtx1 (Throw one) (Throw one)
+
+na = [BlockStmt Empty, BlockStmt if_st1, BlockStmt Empty]
+nb = [BlockStmt if_st2, BlockStmt Empty]
