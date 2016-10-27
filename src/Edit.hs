@@ -52,15 +52,33 @@ kast ofl afl bfl mfl = do
 kedits :: FilePath -> FilePath -> FilePath -> FilePath -> IO ()
 kedits ofl afl bfl mfl = do
   (o,a,b,m) <- kast ofl afl bfl mfl
-  let (no, ea, eo) = edit_gen o a -- (no,ea) = gen_edit o a []
+  let (no, eo, ea) = edit_gen o a -- (no,ea) = gen_edit o a []
       (nno,eab)    = gen_edit no b [eo,ea]
-      (nnno,eabm)  = gen_edit nno m eab
-      (fo,es@[e_a,e_b,e_m,e_o]) = gen_edit nnno o eabm
+      (fo,es@[e_o,e_a,e_b,e_m])  = gen_edit nno m eab
       pairs = [(o,fo,e_o),(a,fo,e_a),(b,fo,e_b),(m,fo,e_m)]
+  putStrLn "Program with holes:"
   putStrLn $ prettyPrint fo 
-  mapM_ print es
-  mapM_ (print . check_edit_soundness) pairs
+  putStrLn ""
+  mapM_ print_edit $ zip es [0..]
+  let res = map check_edit_soundness pairs
+  if all id res 
+  then putStrLn "Edits are sound"
+  else do
+    putStrLn "Some edit when applied does not yield the original program"
+    putStrLn $ show res
+
+print_edit :: (Edit,Int) -> IO ()
+print_edit (e,n) = do
+  putStrLn $ to_s n
+  mapM_ (putStrLn . prettyPrint) e
+  putStrLn ""
  
+to_s :: Int -> String
+to_s 0 = "base edit:"
+to_s 1 = "variant a edit:"
+to_s 2 = "variant b edit:"
+to_s 3 = "merge edit:"
+  
 gen_edit :: Program -> Program -> [Edit] -> (Program, [Edit])
 gen_edit p1 p2 eis =
   let (p,e1,e2) = edit_gen p1 p2
@@ -69,12 +87,12 @@ gen_edit p1 p2 eis =
       e = zip e1 e2
       -- need to update the others
       (_,eis') = foldl (gen_edit_aux eis) (0,[]) e
-  in (p,eis' ++ [e1])
- where
-  gen_edit_aux :: [Edit] -> (Int,[Edit]) -> (BlockStmt,BlockStmt) -> (Int,[Edit])
-  gen_edit_aux eis (i,eis') (e1,e2)
-   | e1 == skip || e2 == hole = (i+1,push (map (\e -> e!!i) eis) eis') 
-   | otherwise = (i, push (replicate (length eis) e2) eis')
+  in (p,eis' ++ [e2])
+
+gen_edit_aux :: [Edit] -> (Int,[Edit]) -> (BlockStmt,BlockStmt) -> (Int,[Edit])
+gen_edit_aux eis (i,eis') (e1,e2)
+ | e2 == skip || e1 == hole = (i+1,push (map (\e -> e!!i) eis) eis') 
+ | otherwise = (i, push (replicate (length eis) e1) eis')
 
 -- add each x to the ei
 push :: [BlockStmt] -> [Edit] -> [Edit]
@@ -84,7 +102,7 @@ push xs eis =
   in map (\(x,ei) -> ei++[x]) a
 
 -- | Check the soundness of the edit script 
-check_edit_soundness :: (Program,Program,Edit) -> Bool
-check_edit_soundness (original,holes,edit) = 
+check_edit_soundness :: (Program, Program, Edit) -> Bool
+check_edit_soundness (original, holes, edit) = 
   original == (apply_edit holes edit)
 

@@ -185,17 +185,17 @@ special_diff (e1:r1) (e2:r2) =
       (_h,_a,_b) = special_diff_inner e1 e2
   in  (_h:h, _a++a, _b++b) 
 
-special_diff_inner :: BlockStmt -> BlockStmt -> (BlockStmt, [BlockStmt], [BlockStmt])
+special_diff_inner :: BlockStmt -> BlockStmt -> (BlockStmt, Edit, Edit)
 special_diff_inner b1 b2 =
   if b1 == b2
   then (hole, [b1], [b2])
   else case (b1, b2) of
          (BlockStmt s1, BlockStmt s2) ->
            let (h1, f1, f2) = special_diff_stmt s1 s2
-           in (BlockStmt h1, map BlockStmt f1, map BlockStmt f2)
+           in (BlockStmt h1, f1, f2)
          _ -> (hole, [b1], [b2]) 
 
-special_diff_stmt :: Stmt -> Stmt -> (Stmt, [Stmt], [Stmt])
+special_diff_stmt :: Stmt -> Stmt -> (Stmt, Edit, Edit)
 special_diff_stmt s1 s2 = 
   if s1 == s2
   then (s1, [], [])
@@ -204,22 +204,22 @@ special_diff_stmt s1 s2 =
           if c1 == c2
           then let (h1, t1a, t2b) = special_diff_stmt t1 t2
                in (IfThen c1 h1, t1a, t2b) 
-          else (Hole, [s1], [s2]) 
+          else (Hole, [BlockStmt s1], [BlockStmt s2]) 
         (IfThenElse c1 t1 e1, IfThenElse c2 t2 e2) ->
           if c1 == c2
           then let (ht1, t1a, t2b) = special_diff_stmt t1 t2
                    (he1, e1a, e2b) = special_diff_stmt e1 e2
                in (IfThenElse c1 ht1 he1, t1a ++ e1a, t2b ++ e2b) 
-          else (Hole, [s1], [s2]) 
+          else (Hole, [BlockStmt s1], [BlockStmt s2]) 
         (While c1 bdy1, While c2 bdy2) ->
           if c1 == c2
           then let (h1, bdy1a, bdy2b) = special_diff_stmt bdy1 bdy2
                in (While c1 h1, bdy1a, bdy2b) 
-          else (Hole, [s1], [s2]) 
+          else (Hole, [BlockStmt s1], [BlockStmt s2]) 
         (StmtBlock b1, StmtBlock b2) ->
           let (res, ne1, ne2) = edit_block_gen b1 b2
-          in (StmtBlock res, [StmtBlock (Block ne1)], [StmtBlock (Block ne2)]) 
-        _ -> (Hole, [s1], [s2])  
+          in (StmtBlock res, ne1, ne2) 
+        _ -> (Hole, [BlockStmt s1], [BlockStmt s2])  
 
 one = Lit (Int 1)
 two = Lit (Int 2)
