@@ -3,6 +3,9 @@ module Util where
 
 import Data.List
 import qualified Data.Map as M
+import Language.Java.Parser hiding (opt)
+import Language.Java.Pretty hiding (opt)
+import Language.Java.Syntax
 import Language.SMTLib2.Base
 import Language.SMTLib2.Builder
 import Language.SMTLib2.Printer

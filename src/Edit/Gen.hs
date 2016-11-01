@@ -221,18 +221,3 @@ special_diff_stmt s1 s2 =
           in (StmtBlock res, ne1, ne2) 
         _ -> (Hole, [BlockStmt s1], [BlockStmt s2])  
 
-one = Lit (Int 1)
-two = Lit (Int 2)
-one_st = ExpStmt one
-a = [BlockStmt $ one_st, BlockStmt $ Throw one, BlockStmt $ Assume one]
-b = [BlockStmt $ one_st, BlockStmt Empty, BlockStmt $ Assume one]
-c = [BlockStmt $ one_st, BlockStmt Empty, BlockStmt $ Assume two, BlockStmt $ Assume two]
-
-gtx1 :: Exp
-gtx1 = BinOp two GThan one
-
-if_st1 = IfThenElse gtx1 (Throw one) (Throw two) 
-if_st2 = IfThenElse gtx1 (Throw one) (Throw one)
-
-na = [BlockStmt Empty, BlockStmt if_st1, BlockStmt Empty]
-nb = [BlockStmt if_st2, BlockStmt Empty]

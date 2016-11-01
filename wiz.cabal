@@ -16,6 +16,7 @@ Executable wiz
                     , cmdargs
                     , smtlib 
                     , uu-parsinglib 
+                    , language-java 
     Hs-Source-Dirs:   src/
     ghc-options:      -O3 -rtsopts
     Extensions:       DoAndIfThenElse

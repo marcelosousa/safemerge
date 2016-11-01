@@ -2,8 +2,8 @@ progmerge
 =========
 
 TODO List:
-  - AST Diff implementation and testing
-  - Synchronisation of holes
+x  - AST Diff implementation and testing
+x  - Synchronisation of holes
   - Product program construction
   - Verification algorithm 
 
