@@ -106,32 +106,35 @@ apply_edit_bstmt (bs,e)  bstmt = case bstmt of
     let (s',e') = apply_edit_stmt e s
     in case s' of
       Nothing -> (bs, e') 
-      Just _s -> 
-        let bstmt' = BlockStmt _s
-        in  (bs++[bstmt'], e') 
+      Just st -> (bs++[st], e') 
   _ -> (bs++[bstmt],e)
 
-apply_edit_stmt :: Edit -> Stmt -> (Maybe Stmt, Edit)
+apply_edit_stmt :: Edit -> Stmt -> (Maybe BlockStmt, Edit)
 apply_edit_stmt e stmt = case stmt of
   StmtBlock b -> let (b', e') = apply_edit_block b e
-                 in (Just $ StmtBlock b', e')
+                 in (Just $ BlockStmt $ StmtBlock b', e')
   Hole -> case e of
     (BlockStmt Skip):e' -> (Nothing, e')
-    (BlockStmt st):e'   -> (Just st, e')
-    _ -> error "apply_edit_stmt"
+    (bs:e')   -> (Just bs, e')
+    _ -> error $ "apply_edit_stmt: " ++ show e
   Skip -> (Nothing, e)
   IfThen c1 t1 ->
     let (t1',e') = apply_edit_stmt e t1
     in case t1' of
-      Nothing  -> error "apply_edit_stmt: IfThen"
-      Just _t1 -> (Just $ IfThen c1 _t1, e') 
+      Just (BlockStmt _t1) -> (Just $ BlockStmt $ IfThen c1 _t1, e') 
+      _ -> error $ "apply_edit_stmt: IfThen" ++ show t1'
+  While c1 t1 ->
+    let (t1',e') = apply_edit_stmt e t1
+    in case t1' of
+      Just (BlockStmt _t1) -> (Just $ BlockStmt $ While c1 _t1, e') 
+      _ -> error $ "apply_edit_stmt: While" ++ show t1'
   IfThenElse c1 t1 t2 ->
     let (t1',e')  = apply_edit_stmt e t1
         (t2',e'') = apply_edit_stmt e' t2
     in case (t1',t2') of
       (Nothing,_)  -> error "apply_edit_stmt: IfThenElse"
       (_,Nothing)  -> error "apply_edit_stmt: IfThenElse"
-      (Just _t1, Just _t2) -> 
+      (Just (BlockStmt _t1), Just (BlockStmt _t2)) -> 
         let ns = IfThenElse c1 _t1 _t2
-        in (Just ns, e'') 
-  _ -> (Just stmt, e)
+        in (Just $ BlockStmt $ ns, e'') 
+  _ -> (Just $ BlockStmt stmt, e)
