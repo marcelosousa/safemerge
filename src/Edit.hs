@@ -24,6 +24,7 @@ diff4gen o a b m =
   let (no, eo, ea) = edit_gen o a 
       (nno, eab)   = gen_edit no b [eo,ea]
       (fo,es@[e_o,e_a,e_b,e_m]) = gen_edit nno m eab
+     --  (fo,es@[e_o,e_a,e_b,e_m]) = gen_edit nno m eab -- this can be empty
   in (fo, e_o, e_a, e_b, e_m)
 
 gen_edit :: Program -> Program -> [Edit] -> (Program, [Edit])
