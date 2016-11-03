@@ -1,4 +1,7 @@
 {-#LANGUAGE TypeSynonymInstances, FlexibleInstances #-}
+{-
+  First encoding based on Horn clauses 
+-}
 module Encoding where
 
 import Data.List hiding (product)

@@ -6,6 +6,7 @@
 
 module Main where
 
+import Analysis.Verifier
 import Edit
 import Edit.Types
 import Edit.Gen
@@ -31,6 +32,7 @@ _help    = "No input files provided."
 _helpParse   = "wiz parse -f=file"
 _helpProduct = "wiz product -p=prog.txt -a=variant-a.txt -b=variant-b.txt -m=merge.txt"
 _helpDiff    = "wiz diff -p=prog.txt -a=variant-a.txt -b=variant-b.txt -m=merge.txt"
+_helpVerify  = "wiz verify -p=prog.txt -a=variant-a.txt -b=variant-b.txt -m=merge.txt"
 _helpDiff2   = "wiz diff2 -p=prog.txt -a=variant-a.txt"
 _helpMerge   = "wiz merge -p=prog.txt -a=variant-a.txt -b=variant-b.txt -m=merge.txt -o=file.smt2"
 
@@ -43,6 +45,7 @@ instance Default InvGen where
 data Option = Parse   { file :: FilePath }
             | Diff2   { prog :: FilePath, a :: FilePath }
             | Diff4   { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath }
+            | Verify  { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath }
             | Product { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath }
             | Merge   { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath, output :: FilePath }
   deriving (Show, Data, Typeable, Eq)
@@ -53,12 +56,14 @@ productMode = Product { prog = def, a = def
                       , b = def, merge = def } &= help _helpProduct
 diffMode = Diff4 { prog = def, a = def, b = def
                 , merge = def } &= help _helpDiff
+verifyMode = Verify { prog = def, a = def, b = def
+                , merge = def } &= help _helpVerify 
 diff2Mode = Diff2 { prog = def, a = def } &= help _helpDiff2
 mergeMode = Merge { prog = def, a = def, b = def
                   , merge = def, output = def } &= help _helpMerge
 
 progModes :: Mode (CmdArgs Option)
-progModes = cmdArgsMode $ modes [parseMode, productMode, mergeMode, diffMode, diff2Mode]
+progModes = cmdArgsMode $ modes [parseMode, productMode, mergeMode, diffMode, diff2Mode, verifyMode]
          &= help _help
          &= program _program
          &= summary _summary
@@ -75,6 +80,7 @@ runOption opt = case opt of
     putStrLn $ prettyPrint prog
   Diff2 o a -> diff2 o a
   Diff4 o a b m -> diff4 o a b m
+  Verify o a b m -> verify o a b m
 --  Product p a b m -> do
 --    p_s <- readFile p >>= return . parseProg
 --    a_s <- readFile a >>= return . parseEdit
@@ -140,3 +146,17 @@ diff4 ofl afl bfl mfl = do
   else do
     putStrLn "Some edit when applied does not yield the original program"
     putStrLn $ show res
+
+-- Main function 
+verify :: FilePath -> FilePath -> FilePath -> FilePath -> IO ()
+verify ofl afl bfl mfl = do
+  (o,a,b,m) <- parse4 ofl afl bfl mfl
+  let (fo,e_o,e_a,e_b,e_m) = diff4gen o a b m 
+      pairs = [(o,fo,e_o),(a,fo,e_a),(b,fo,e_b),(m,fo,e_m)]
+      es = [e_o,e_a,e_b,e_m]
+  mapM_ print_edit $ zip es [0..]
+  let res = map check_edit_soundness pairs
+  if all id res 
+  then wiz fo e_o e_a e_b e_m 
+  else do
+    putStrLn "Some edit when applied does not yield the original program"
