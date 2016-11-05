@@ -23,9 +23,10 @@ diff4gen :: Program -> Program -> Program -> Program -> (Program, Edit, Edit, Ed
 diff4gen o a b m = 
   let (no, eo, ea) = edit_gen o a 
       (nno, eab)   = gen_edit no b [eo,ea]
-      (fo,es@[e_o,e_a,e_b,e_m]) = gen_edit nno m eab
-     --  (fo,es@[e_o,e_a,e_b,e_m]) = gen_edit nno m eab -- this can be empty
-  in (fo, e_o, e_a, e_b, e_m)
+  in case gen_edit nno m eab of
+      (fo,[[]]) -> (fo, [], [], [], [])
+      (fo, [e_o,e_a,e_b,e_m]) -> (fo, e_o, e_a, e_b, e_m)
+      (fo, es ) -> error $ show es
 
 gen_edit :: Program -> Program -> [Edit] -> (Program, [Edit])
 gen_edit p1 p2 eis =

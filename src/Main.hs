@@ -63,7 +63,8 @@ mergeMode = Merge { prog = def, a = def, b = def
                   , merge = def, output = def } &= help _helpMerge
 
 progModes :: Mode (CmdArgs Option)
-progModes = cmdArgsMode $ modes [parseMode, productMode, mergeMode, diffMode, diff2Mode, verifyMode]
+progModes = cmdArgsMode $ modes [parseMode, productMode, mergeMode
+                                ,diffMode, diff2Mode, verifyMode]
          &= help _help
          &= program _program
          &= summary _summary
@@ -81,24 +82,27 @@ runOption opt = case opt of
   Diff2 o a -> diff2 o a
   Diff4 o a b m -> diff4 o a b m
   Verify o a b m -> verify o a b m
---  Product p a b m -> do
---    p_s <- readFile p >>= return . parseProg
---    a_s <- readFile a >>= return . parseEdit
---    b_s <- readFile b >>= return . parseEdit
---    m_s <- readFile m >>= return . parseEdit
---    let pprod = generate_product p_s a_s b_s m_s
---    putStrLn $ pp_dot_prod_prog $ fst pprod  
---    --putStrLn $ pp_prod_prog pprod 
---  Merge p a b m o -> do
---    p_s <- readFile p >>= return . parseProg
---    a_s <- readFile a >>= return . parseEdit
---    b_s <- readFile b >>= return . parseEdit
---    m_s <- readFile m >>= return . parseEdit
---    let enc = encode False p_s a_s b_s m_s
---    -- let enc = fine_encode False p_s a_s b_s m_s
---    -- let enc = encode True p_s a_s b_s m_s
---    -- let enc = fine_encode True p_s a_s b_s m_s
---    writeFile o $ show $ prettyprint enc 
+  _ -> error $ "wiz: option currently not supported"
+{-
+  Product p a b m -> do
+    p_s <- readFile p >>= return . parseProg
+    a_s <- readFile a >>= return . parseEdit
+    b_s <- readFile b >>= return . parseEdit
+    m_s <- readFile m >>= return . parseEdit
+    let pprod = generate_product p_s a_s b_s m_s
+    putStrLn $ pp_dot_prod_prog $ fst pprod  
+    --putStrLn $ pp_prod_prog pprod 
+  Merge p a b m o -> do
+    p_s <- readFile p >>= return . parseProg
+    a_s <- readFile a >>= return . parseEdit
+    b_s <- readFile b >>= return . parseEdit
+    m_s <- readFile m >>= return . parseEdit
+    let enc = encode False p_s a_s b_s m_s
+    -- let enc = fine_encode False p_s a_s b_s m_s
+    -- let enc = encode True p_s a_s b_s m_s
+    -- let enc = fine_encode True p_s a_s b_s m_s
+    writeFile o $ show $ prettyprint enc 
+-}
 
 -- | Some utility functions
 parse :: FilePath -> IO Program

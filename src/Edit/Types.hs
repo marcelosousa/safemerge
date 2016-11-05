@@ -17,3 +17,4 @@ import qualified Debug.Trace as T
 type Edits = [(BlockStmt,BlockStmt,BlockStmt,BlockStmt)]
 type Edit = [BlockStmt] 
 type Program = CompilationUnit
+type Method = ([FormalParam], Block) 
