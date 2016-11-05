@@ -13,23 +13,26 @@ import Data.Map (Map)
 import qualified Data.Map as M
 
 import qualified Debug.Trace as T
-import Edit
+import Edit.Types
 
-miniproduct :: [Edit] -> Edit
-miniproduct es = undefined 
+type Pid = Int
+type ProdProgram = [(Pid, [BlockStmt])]
 
-reduce :: [Edit] -> Edit -> Edit 
-reduce pp p =
-  let p' = miniproduct pp
-  in miniproduct [p',p]
+miniproduct :: BlockStmt -> BlockStmt -> BlockStmt -> BlockStmt -> ProdProgram 
+miniproduct = undefined 
 
-seq :: Edit -> Edit -> Edit 
-seq p1 p2 = p1 ++ p2 
-
-loop :: Edit -> BlockStmt -> BlockStmt 
-loop w1 w2 = undefined 
-
-sequence :: [Edit] -> Edit
-sequence es =
-  let (hs,ts) = unzip $ map (\e -> ([head e],tail e)) es
-  in miniproduct hs ++ miniproduct ts           
+-- reduce :: [Edit] -> Edit -> Edit 
+-- reduce pp p =
+--   let p' = miniproduct pp
+--   in miniproduct [p',p]
+-- 
+-- seq :: Edit -> Edit -> Edit 
+-- seq p1 p2 = p1 ++ p2 
+-- 
+-- loop :: Edit -> BlockStmt -> BlockStmt 
+-- loop w1 w2 = undefined 
+-- 
+-- sequence :: [Edit] -> Edit
+-- sequence es =
+--   let (hs,ts) = unzip $ map (\e -> ([head e],tail e)) es
+--   in miniproduct hs ++ miniproduct ts           

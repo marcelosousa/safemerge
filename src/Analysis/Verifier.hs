@@ -10,6 +10,7 @@ import Edit.Types
 import Analysis.Util
 import Analysis.Types
 import Analysis.Engine
+import Calculus
 import Control.Monad.State.Strict
 import Control.Monad.ST
 import Data.Map (Map)
@@ -31,7 +32,6 @@ wiz prog e_o e_a e_b e_m = do
 
 verify :: Method -> Edit -> Edit -> Edit -> Edit -> Z3 (Result, Maybe String) 
 verify (pars, Block body) e_o e_a e_b e_m = do 
- -- (objSort, pars, res, fields) <- prelude classMap comps
  (params, res) <- prelude pars 
  -- compute the pre and the post condition
  -- for now, the pre-condition states that the parameters for each version are equal
@@ -105,6 +105,7 @@ analyser_stmt :: Stmt -> [BlockStmt] -> EnvOp (Result, Maybe Model)
 analyser_stmt stmt rest =
  case stmt of
   StmtBlock (Block block) -> analyser $ block ++ rest
+  -- Need to revert this change
   Return mexpr            -> ret mexpr
   IfThen cond s1          -> do
    let ifthenelse = IfThenElse cond s1 (StmtBlock (Block []))
@@ -115,11 +116,27 @@ analyser_stmt stmt rest =
   Hole                    -> analyse_hole rest 
   _                       -> error $ "analyser_stmt: not supported " ++ show stmt
 
+-- | The analysis of a hole
+--   Assume that there are no nested holes
+analyse_hole :: [BlockStmt] -> EnvOp (Result, Maybe Model)
+analyse_hole rest = do
+   -- Get the edit statements for this hole.
+  (s_o, s_a, s_b, s_m) <- popEdits
+  let prod_prog = miniproduct s_o s_a s_b s_m 
+  analyse_hole_aux prod_prog rest
+
+analyse_hole_aux :: ProdProgram -> [BlockStmt] -> EnvOp (Result, Maybe Model)
+analyse_hole_aux [] rest = do
+  updatePid 0
+  analyse rest
+analyse_hole_aux ((pid,stats):r) rest = do
+  updatePid pid
+  analyse stats
+
 ret = undefined
 analyse_conditional = undefined
 analyse_exp = undefined
 analyse_loop = undefined
-analyse_hole = undefined
 {-
 -- Analyse Expressions
 analyse_exp :: Int -> [(Int, Block)] -> Exp -> EnvOp (Result, Maybe Model)
