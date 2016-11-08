@@ -70,7 +70,16 @@ initial_precond params = do
 -- @TODO
 postcond :: [AST] -> Z3 AST
 postcond res = case res of
-  [r_o, r_a, r_b, r_m] -> undefined
+  [r_o, r_a, r_b, r_m] -> do 
+    oa <- mkEq r_o r_a
+    ob <- mkEq r_o r_b
+    om <- mkEq r_o r_m
+    ma <- mkEq r_m r_a
+    mb <- mkEq r_m r_b
+    c1 <- mkImplies ma ob
+    c2 <- mkImplies mb oa
+    c3 <- mkAnd [ma,mb,om]
+    mkOr [c1,c2,c3]    
   _ -> error "postcond: invalid input" 
 
 -- Encoding functions 

@@ -113,11 +113,11 @@ analyser_stmt (pid, stmt) rest =
  case stmt of
   StmtBlock (Block block) -> analyser ((pid,block):rest)
   -- Need to revert this change
-  Return mexpr            -> ret mexpr
+  Return mexpr            -> ret pid mexpr rest
   IfThen cond s1          -> do
    let ifthenelse = IfThenElse cond s1 (StmtBlock (Block []))
    analyser_stmt (pid,ifthenelse) rest
-  IfThenElse cond s1 s2   -> analyse_conditional cond s1 s2 rest
+  IfThenElse cond s1 s2   -> analyse_conditional pid cond s1 s2 rest
   ExpStmt expr            -> analyse_exp pid expr rest
   While _cond _body       -> analyse_loop _cond _body rest
   Hole                    -> analyse_hole rest 
@@ -125,25 +125,13 @@ analyser_stmt (pid, stmt) rest =
 
 -- | The analysis of a hole
 --   Assume that there are no nested holes
-analyse_hole = undefined
-{-
-analyse_hole :: [BlockStmt] -> EnvOp (Result, Maybe Model)
+analyse_hole :: ProdProgram -> EnvOp (Result, Maybe Model)
 analyse_hole rest = do
    -- Get the edit statements for this hole.
   (s_o, s_a, s_b, s_m) <- popEdits
   let prod_prog = miniproduct s_o s_a s_b s_m 
-  analyse_hole_aux prod_prog rest
+  analyser $ prod_prog ++ rest
 
-analyse_hole_aux :: ProdProgram -> [BlockStmt] -> EnvOp (Result, Maybe Model)
-analyse_hole_aux [] rest = do
-  updatePid 0
-  analyse rest
-analyse_hole_aux ((pid,stats):r) rest = do
-  updatePid pid
-  analyse stats
--}
-ret = undefined
-analyse_conditional = undefined
 analyse_loop = undefined
 
 -- Analyse Expressions
@@ -158,53 +146,49 @@ analyse_exp pid _exp rest =
    assign pid _exp lhs aOp rhs
    analyser rest 
   PostIncrement lhs -> do
-   postOp _exp lhs Add "PostIncrement"
+   post_op pid _exp lhs Add "PostIncrement"
    analyser rest
   PostDecrement lhs -> do
-   postOp _exp lhs Sub "PostDecrement"
+   post_op pid _exp lhs Sub "PostDecrement"
    analyser rest
 
-postOp = undefined
-{-
 -- Analyse If Then Else
-analyse_conditional :: Int -> [BlockStmt] -> [(Int,Block)] -> Exp -> Stmt -> Stmt -> EnvOp (Result,Maybe Model)
-analyse_conditional pid r1 rest cond s1 s2 =
+analyse_conditional :: Pid -> Exp -> Stmt -> Stmt -> ProdProgram -> EnvOp (Result,Maybe Model)
+analyse_conditional pid cond s1 s2 rest =
  if cond == Nondet
  then do
   env@Env{..} <- get
-  resThen <- analyser ((pid, Block (BlockStmt s1:r1)):rest)
+  resThen <- analyser ((pid, [BlockStmt s1]):rest)
   put env
-  resElse <- analyser ((pid, Block (BlockStmt s2:r1)):rest)
+  resElse <- analyser ((pid, [BlockStmt s2]):rest)
   combine resThen resElse                
  else do
   env@Env{..} <- get
-  condSmt <- lift $ processExp (_objSort,_params,_res,_fields,_ssamap) cond
+  condSmt <- lift $ enc_exp pid _ssamap cond
   -- then branch
-  preThen <- lift $ mkAnd [_pre, condSmt]
+  preThen <- lift $ mkAnd (_pre:condSmt)
   resThen <- analyse_branch preThen s1
   -- else branch
   put env
-  ncondSmt <- lift $ mkNot condSmt
-  preElse <- lift $ mkAnd [_pre, ncondSmt]
+  ncondSmt <- lift $ mapM mkNot condSmt
+  preElse <- lift $ mkAnd (_pre:ncondSmt)
   resElse <- analyse_branch preElse s2
   combine resThen resElse
  where
    analyse_branch phi branch = do
     env@Env{..} <- get
     updatePre phi
-    let r = ((pid, Block (BlockStmt branch:r1)):rest)
-    if _opt
-    then do
-      cPhi <- lift $ checkSAT phi
-      if cPhi == Unsat
-      then return _default
-      else analyser r
+    let r = ((pid, [BlockStmt branch]):rest)
+    cPhi <- lift $ checkSAT phi
+    if cPhi == Unsat
+    then return _default
     else analyser r
    combine :: (Result, Maybe Model) -> (Result, Maybe Model) -> EnvOp (Result, Maybe Model)
    combine (Unsat,_) (Unsat,_) = return _default
    combine (Unsat,_) res = return res
    combine res _ = return res
 
+{-
 -- Analyse Loops
 analyse_loop :: Int -> [BlockStmt] -> [(Int,Block)] -> Exp -> Stmt -> EnvOp (Result,Maybe Model)
 analyse_loop pid r1 rest _cond _body = do
@@ -322,23 +306,6 @@ applyFusion list = do
     return (iAST,iApp)
    -- End Fusion Utility Functions
 
--- Analyse Return
-ret :: Int -> Maybe Exp -> EnvOp ()
-ret pid mexpr = do
- env@Env{..} <- get
- exprPsi <- lift $ 
-   case mexpr of
-     Nothing -> error "analyser: return Nothing"
-     Just (Lit (Boolean True)) -> mkIntNum 1
-     Just (Lit (Boolean False)) -> mkIntNum 0
-     Just expr -> processExp (_objSort,_params,_res,_fields,_ssamap) expr
- let resPid = _res !! pid
- r <- lift $ mkEq resPid exprPsi
- pre <- lift $ mkAnd [_pre,r]
- updatePre pre
- env@Env{..} <- get
- lift $ local $ helper _pre _post
-
 -- Analyse Method Call
 method_call :: MethodInvocation -> EnvOp ()
 method_call minv =
@@ -350,6 +317,32 @@ method_call minv =
    updatePre pre
   _ -> error $ show minv ++ " not supported"
 -}
+
+-- Analyse Return
+ret :: Pid -> Maybe Exp -> ProdProgram -> EnvOp (Result, Maybe Model)
+ret pid _exp pro = do 
+  let l = if pid == 0 then [1..4] else [pid]
+  mapM_ (\p -> ret_inner p _exp) l
+  env@Env{..} <- get
+  if _numret == 4
+  then lift $ local $ helper _pre _post
+  else analyser pro 
+
+ret_inner :: Pid -> Maybe Exp -> EnvOp ()
+ret_inner pid mexpr = do
+ env@Env{..} <- get
+ exprPsi <- lift $ 
+   case mexpr of
+     Nothing -> error "ret: return Nothing"
+     Just (Lit (Boolean True)) -> mkIntNum 1
+     Just (Lit (Boolean False)) -> mkIntNum 0
+     Just expr -> enc_exp_inner (pid,_ssamap) expr
+ let res_str = Ident "_res_"
+     (res_ast,sort, i) = (safeLookup "ret_inner" res_str _ssamap) !! (pid-1)
+ r <- lift $ mkEq res_ast exprPsi
+ pre <- lift $ mkAnd [_pre,r]
+ updatePre pre
+ updateNumRet
 
 -- Analyse Assign
 assign :: Pid -> Exp -> Lhs -> AssignOp -> Exp -> EnvOp ()
@@ -363,44 +356,43 @@ assign_inner pid _exp lhs aOp rhs = do
  rhsAst <- lift $ enc_exp_inner (pid, _ssamap) rhs
  case lhs of
   NameLhs (Name [ident@(Ident str)]) -> do
-   let (plhsAST,sort, i) = (safeLookup "Assign" ident _ssamap) !! pid
-       cstr = str ++ show i
+   let (plhsAST,sort, i) = (safeLookup "Assign" ident _ssamap) !! (pid-1)
+       cstr = str ++ "_" ++ show pid ++ "_" ++ show i
        ni = i+1
-       nstr = str ++ show ni
+       nstr = str ++ "_" ++ show pid ++ "_" ++ show ni
    sym <- lift $ mkStringSymbol nstr
    var <- lift $ mkFreshFuncDecl nstr [] sort
    astVar <- lift $ mkApp var []
-   let ssamap = _ssamap -- M.insert ident (astVar, sort, ni) _ssamap
+   let ssamap = update_ssamap pid ident (astVar, sort, ni) _ssamap
    ass <- lift $ processAssign astVar aOp rhsAst plhsAST
    pre <- lift $ mkAnd [_pre, ass]
-   post <- lift $ replaceVariable cstr var _post
    updatePre pre
-   updatePost post
    updateSSAMap ssamap
    incrementAssignMap ident rhs
   _ -> error $ "Assign " ++ show _exp ++ " not supported"
 
-{-  
 -- Analyse Post De/Increment
-postOp :: Exp -> Exp -> Op -> String -> EnvOp ()
-postOp _exp lhs op str = do
+post_op :: Pid -> Exp -> Exp -> Op -> String -> EnvOp ()
+post_op pid _exp lhs op str = do
+  let l = if pid == 0 then [1..4] else [pid]
+  mapM_ (\p -> post_op_inner p _exp lhs op str) l
+
+post_op_inner :: Pid -> Exp -> Exp -> Op -> String -> EnvOp ()
+post_op_inner pid _exp lhs op str = do
  env@Env{..} <- get
- rhsAst <- lift $ processExp (_objSort,_params,_res,_fields,_ssamap) (BinOp lhs op (Lit $ Int 1))
+ rhsAst <- lift $ enc_exp_inner (pid,_ssamap) (BinOp lhs op (Lit $ Int 1))
  case lhs of
   ExpName (Name [ident@(Ident str)]) -> do
-   let (plhsAST,sort, i) = safeLookup "Assign" ident _ssamap
-       cstr = str ++ show i
+   let (plhsAST,sort, i) = (safeLookup "post_op_inner" ident _ssamap) !! (pid-1)
+       cstr = str ++ "_" ++ show pid ++ "_" ++ show i
        ni = i+1
-       nstr = str ++ show ni
+       nstr = str ++ "_" ++ show pid ++ "_" ++ show ni
    sym <- lift $ mkStringSymbol nstr
    var <- lift $ mkFreshFuncDecl nstr [] sort
    astVar <- lift $ mkApp var []
-   let ssamap = M.insert ident (astVar, sort, ni) _ssamap
+   let ssamap = update_ssamap pid ident (astVar, sort, ni) _ssamap
    ass <- lift $ processAssign astVar EqualA rhsAst plhsAST
    pre <- lift $ mkAnd [_pre, ass]
-   post <- lift $ replaceVariable cstr var _post
    updatePre pre
-   updatePost post
    updateSSAMap ssamap
   _ -> error $ str ++ show _exp ++ " not supported"
--}
