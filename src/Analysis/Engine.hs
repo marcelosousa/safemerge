@@ -115,44 +115,47 @@ enc_new_var (ssamap', _assmap, pre') sort (VarDecl varid mvarinit) i = do
   case mvarinit of
     Nothing -> return (nssamap, _assmap, pre')
     Just (InitExp expr) -> do
-      expAsts <- enc_exps nssamap expr
+      expAsts <- enc_exp 0 nssamap expr
       let id_exp = zip idAsts expAsts
       eqIdExps <- mapM (\(idAst,expAst) -> mkEq idAst expAst) id_exp
       pre <- mkAnd (pre':eqIdExps)
       let assmap = M.insert ident expr _assmap
       return (nssamap, assmap, pre)
     Just _ -> error "enc_new_var: not supported"
-  
-enc_exps :: SSAMap -> Exp -> Z3 [AST]
-enc_exps = undefined
-{-
-processExp env@(objSort, pars, res, fields, ssamap) expr =
-  case expr of
-    Lit lit -> processLit lit
-    ExpName name -> processName env name []
-    BinOp lhsE op rhsE -> do
-      lhs <- processExp env lhsE
-      rhs <- processExp env rhsE
-      processBinOp op lhs rhs
-    FieldAccess fldAccess -> error "processExp: FieldAccess not supported"
-    PreMinus nexpr -> do 
-      nexprEnc <- processExp env nexpr
-      mkUnaryMinus nexprEnc
-    MethodInv (MethodCall name args) -> do
-      argsAST <- mapM (processExp env) args
-      processName env name argsAST
-    Cond cond _then _else -> do
-      condEnc <- processExp env cond
-      _thenEnc <- processExp env _then
-      _elseEnc <- processExp env _else
-      mkIte condEnc _thenEnc _elseEnc        
-    PreNot nexpr -> do
-      nexprEnc <- processExp env nexpr
-      mkNot nexprEnc            
-    _ -> error $  "processExpr: " ++ show expr
+ 
+enc_exp :: Int -> SSAMap -> Exp -> Z3 [AST]
+enc_exp p env expr = do
+  let l = if p == 0 then [1..4] else [p]
+  mapM (\p -> enc_exp_inner (p,env) expr) [1..4]
 
-processLit :: Literal -> Z3 AST
-processLit lit =
+-- | Encode an expression for a version 
+--   (ast,sort,count)pre-condition: pid != 0 
+enc_exp_inner :: (Int, SSAMap) -> Exp -> Z3 AST
+enc_exp_inner env expr = case expr of
+  Lit lit -> enc_literal lit
+  ExpName name -> enc_name env name []
+  BinOp lhsE op rhsE -> do
+    lhs <- enc_exp_inner env lhsE
+    rhs <- enc_exp_inner env rhsE
+    enc_binop op lhs rhs
+  PreMinus nexpr -> do 
+    nexprEnc <- enc_exp_inner env nexpr
+    mkUnaryMinus nexprEnc
+  MethodInv (MethodCall name args) -> do
+    argsAST <- mapM (enc_exp_inner env) args
+    enc_name env name argsAST
+  Cond cond _then _else -> do
+    condEnc <- enc_exp_inner env cond
+    _thenEnc <- enc_exp_inner env _then
+    _elseEnc <- enc_exp_inner env _else
+    mkIte condEnc _thenEnc _elseEnc        
+  PreNot nexpr -> do
+    nexprEnc <- enc_exp_inner env nexpr
+    mkNot nexprEnc            
+  _ -> error $  "enc_exp_inner: " ++ show expr
+
+enc_literal :: Literal -> Z3 AST
+enc_literal lit =
   case lit of
     Boolean True -> mkTrue
     Boolean False -> mkFalse
@@ -162,30 +165,19 @@ processLit lit =
 --    Just (ast, _, _) -> return ast
     _ -> error "processLit: not supported"
 
-processName :: (Sort, Params, [AST], Fields, SSAMap) -> Name -> [AST] -> Z3 AST
-processName env@(objSort, pars, res, fields, ssamap) (Name [obj]) [] =
-  case M.lookup obj pars of
-    Nothing -> case M.lookup obj ssamap of
-      Nothing -> error $ "Can't find " ++ show obj
-      Just (ast,_,_) -> return ast
-    Just ast -> error "processName: TODO" -- return ast
+enc_name :: (Int, SSAMap) -> Name -> [AST] -> Z3 AST
+enc_name (pid, ssamap) (Name [obj]) [] =
+  case M.lookup obj ssamap of
+    Nothing -> error $ "enc_name: not in map " ++ show obj
+    Just l -> case l !! (pid-1) of
+      (ast,_,_) -> return ast
+enc_name (pid, ssamap) _ _ = error "enc_name: not supported yet"
+{-
 processName env@(objSort, pars, res, fields, ssamap) (Name [ident]) args = do
   let fn = safeLookup ("processName: declared func")  ident fields
   mkApp fn args
 processName env@(objSort, pars, res, fields, ssamap) (Name [Ident "Character",fnName]) args = do
   let fn = safeLookup ("processName: Field" ++ show fnName)  fnName fields
-  mkApp fn args
-processName env@(objSort, pars, res, fields, ssamap) (Name [Ident "Double",Ident "compare"]) args = do
-  let fnName = Ident "compareDouble"
-      fn = safeLookup ("processName: Field" ++ show fnName)  fnName fields
-  mkApp fn args
-processName env@(objSort, pars, res, fields, ssamap) (Name [Ident "Int",Ident "compare"]) args = do
-  let fnName = Ident "compareInt"
-      fn = safeLookup ("processName: Field" ++ show fnName)  fnName fields
-  mkApp fn args
-processName env@(objSort, pars, res, fields, ssamap) (Name [Ident "String",Ident "compareIgnoreCase"]) args = do
-  let fnName = Ident "compareIgnoreCaseString"
-      fn = safeLookup ("processName: Field" ++ show fnName)  fnName fields
   mkApp fn args
 processName env@(objSort, pars, res, fields, ssamap) (Name [obj,field]) args = do
   let par = safeLookup ("processName: Object" ++ show obj) obj pars
@@ -193,9 +185,10 @@ processName env@(objSort, pars, res, fields, ssamap) (Name [obj,field]) args = d
   error "processName: TODO"
   -- mkApp fn (par:args)
 processName env name args = error $  "processName: corner case" ++ show name
+-}
 
-processBinOp :: Op -> AST -> AST -> Z3 AST
-processBinOp op lhs rhs = do 
+enc_binop :: Op -> AST -> AST -> Z3 AST
+enc_binop op lhs rhs = do 
   case op of
     NotEq -> mkEq lhs rhs >>= \eq -> mkNot eq
     And -> mkAnd [lhs,rhs]
@@ -210,7 +203,6 @@ processBinOp op lhs rhs = do
     COr -> mkOr [lhs, rhs]
     CAnd -> mkAnd [lhs, rhs]
     _ -> error $ "processBinOp: not supported " ++ show op
--} 
 
 -- SMT Utility Functions
 mkAttribute :: Sort -> Fields -> MemberDecl -> Z3 Fields

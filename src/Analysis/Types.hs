@@ -26,6 +26,19 @@ type Prop = (Params, Res, Fields) -> Z3 (AST, AST)
 -- For each identifier, we need a copy per version
 type SSAMap = Map Ident [(AST, Sort, Int)]
 
+update_ssamap :: Int -> Ident -> (AST, Sort, Int) -> SSAMap -> SSAMap
+update_ssamap pid ident el ssamap =
+  case M.lookup ident ssamap of
+    Nothing -> error $ "update_ssamap: cant find key " ++ show ident
+    Just l  -> let l' = replace (pid-1) el l
+               in M.insert ident l' ssamap
+
+replace :: Int -> a -> [a] -> [a]
+replace 0 a [] = [a] 
+replace 0 a l  = a:(tail l)
+replace i a [] = error "replace ..."
+replace i a (h:hs) = h:(replace (i-1) a hs)
+
 -- We need the assign map to understand the value of the loop counter
 type AssignMap = Map Ident Exp
 

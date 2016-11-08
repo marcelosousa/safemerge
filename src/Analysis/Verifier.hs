@@ -41,7 +41,8 @@ verify (pars, Block body) e_o e_a e_b e_m = do
  post <- postcond res
  iSSAMap <- initial_SSAMap params res
  let iEnv = Env iSSAMap M.empty pre post post e_o e_a e_b e_m True 0 0 
- ((res, model),_) <- runStateT (analyser body) iEnv
+     p = [(0, body)]
+ ((res, model),_) <- runStateT (analyser p) iEnv
  case res of 
   Unsat -> return (Unsat, Nothing)
   Sat -> do
@@ -60,14 +61,14 @@ _triple pre stm post =
   ,"-----------------"]
 
 -- @ Analyser main function
-analyser :: [BlockStmt] -> EnvOp (Result, Maybe Model)
+analyser :: ProdProgram -> EnvOp (Result, Maybe Model)
 analyser stmts = do
  env@Env{..} <- get
  if _debug
  then analyser_debug stmts
  else analyse stmts
 
-analyser_debug :: [BlockStmt] -> EnvOp (Result, Maybe Model)
+analyser_debug :: ProdProgram -> EnvOp (Result, Maybe Model)
 analyser_debug stmts = do
  env@Env{..} <- get
  preStr  <- lift $ astToString _pre
@@ -76,48 +77,56 @@ analyser_debug stmts = do
   [] -> do 
    let k = T.trace (_triple preStr "end" postStr) $ unsafePerformIO $ getChar
    k `seq` analyse stmts
-  (bstmt:_) -> do
-   let k = T.trace (_triple preStr (prettyPrint bstmt) postStr) $ unsafePerformIO $ getChar
+  (bstmt:_) -> do 
+   let k = T.trace (_triple preStr (prettyPrint (head $ snd bstmt)) postStr) $ unsafePerformIO $ getChar
    k `seq` analyse stmts
 
-analyse :: [BlockStmt] -> EnvOp (Result,Maybe Model)   
+analyse :: ProdProgram -> EnvOp (Result,Maybe Model)   
 analyse stmts = do
  env@Env{..} <- get
  case stmts of
   [] -> lift $ local $ helper _pre _post
-  (bstmt:rest) -> case bstmt of
-   BlockStmt stmt -> analyser_stmt stmt rest 
-   LocalVars mods ty vars -> do
-    sort <- lift $ processType ty    
-    (nssamap, nassmap, npre) <- 
-      lift $ foldM (\(ssamap', assmap', pre') v ->
-        -- need to pass the pid here and this gets more complex
-        -- if two versions declare the same variable
-        -- we probably want to disallow that situation
-        enc_new_var (ssamap', assmap', pre') sort v 0) 
-        (_ssamap, _assmap, _pre) vars
-    updatePre npre
-    updateSSAMap nssamap
-    updateAssignMap nassmap
-    analyser rest
+  (bstmt:rest) -> analyser_pid bstmt rest 
 
-analyser_stmt :: Stmt -> [BlockStmt] -> EnvOp (Result, Maybe Model)
-analyser_stmt stmt rest =
+analyser_pid :: (Pid,[BlockStmt]) -> ProdProgram -> EnvOp (Result, Maybe Model)
+analyser_pid (pid,stmts) rest = case stmts of
+  [] -> analyser rest
+  (bstmt:stmts_pid) -> case bstmt of
+    BlockStmt stmt -> do 
+      updatePid pid
+      analyser_stmt (pid,stmt) ((pid,stmts_pid):rest)
+    LocalVars mods ty vars -> do
+      env@Env{..} <- get
+      sort <- lift $ processType ty    
+      (nssamap, nassmap, npre) <- 
+        lift $ foldM (\(ssamap', assmap', pre') v ->
+          -- we assume that different versions cannot define the same variable 
+          enc_new_var (ssamap', assmap', pre') sort v 0) 
+          (_ssamap, _assmap, _pre) vars
+      updatePre npre
+      updateSSAMap nssamap
+      updateAssignMap nassmap
+      analyser ((pid,stmts_pid):rest)
+
+analyser_stmt :: (Pid, Stmt) -> ProdProgram -> EnvOp (Result, Maybe Model)
+analyser_stmt (pid, stmt) rest =
  case stmt of
-  StmtBlock (Block block) -> analyser $ block ++ rest
+  StmtBlock (Block block) -> analyser ((pid,block):rest)
   -- Need to revert this change
   Return mexpr            -> ret mexpr
   IfThen cond s1          -> do
    let ifthenelse = IfThenElse cond s1 (StmtBlock (Block []))
-   analyser_stmt ifthenelse rest
+   analyser_stmt (pid,ifthenelse) rest
   IfThenElse cond s1 s2   -> analyse_conditional cond s1 s2 rest
-  ExpStmt expr            -> analyse_exp expr rest
+  ExpStmt expr            -> analyse_exp pid expr rest
   While _cond _body       -> analyse_loop _cond _body rest
   Hole                    -> analyse_hole rest 
   _                       -> error $ "analyser_stmt: not supported " ++ show stmt
 
 -- | The analysis of a hole
 --   Assume that there are no nested holes
+analyse_hole = undefined
+{-
 analyse_hole :: [BlockStmt] -> EnvOp (Result, Maybe Model)
 analyse_hole rest = do
    -- Get the edit statements for this hole.
@@ -132,21 +141,21 @@ analyse_hole_aux [] rest = do
 analyse_hole_aux ((pid,stats):r) rest = do
   updatePid pid
   analyse stats
-
+-}
 ret = undefined
 analyse_conditional = undefined
-analyse_exp = undefined
 analyse_loop = undefined
-{-
+
 -- Analyse Expressions
-analyse_exp :: Int -> [(Int, Block)] -> Exp -> EnvOp (Result, Maybe Model)
-analyse_exp pid rest _exp =
+analyse_exp :: Pid -> Exp -> ProdProgram -> EnvOp (Result, Maybe Model)
+analyse_exp pid _exp rest =
  case _exp of
-  MethodInv minv -> do 
-   method_call minv
-   analyser rest
+  MethodInv minv -> do
+    error "analyse_exp: currently not supported" 
+--   method_call minv
+--   analyser rest
   Assign lhs aOp rhs -> do
-   assign _exp lhs aOp rhs
+   assign pid _exp lhs aOp rhs
    analyser rest 
   PostIncrement lhs -> do
    postOp _exp lhs Add "PostIncrement"
@@ -155,6 +164,8 @@ analyse_exp pid rest _exp =
    postOp _exp lhs Sub "PostDecrement"
    analyser rest
 
+postOp = undefined
+{-
 -- Analyse If Then Else
 analyse_conditional :: Int -> [BlockStmt] -> [(Int,Block)] -> Exp -> Stmt -> Stmt -> EnvOp (Result,Maybe Model)
 analyse_conditional pid r1 rest cond s1 s2 =
@@ -338,22 +349,28 @@ method_call minv =
    pre <- lift $ mkAnd [_pre,expAST]
    updatePre pre
   _ -> error $ show minv ++ " not supported"
- 
+-}
+
 -- Analyse Assign
-assign :: Exp -> Lhs -> AssignOp -> Exp -> EnvOp ()
-assign _exp lhs aOp rhs = do
+assign :: Pid -> Exp -> Lhs -> AssignOp -> Exp -> EnvOp ()
+assign pid _exp lhs aOp rhs = do
+  let l = if pid == 0 then [1..4] else [pid]
+  mapM_ (\p -> assign_inner p _exp lhs aOp rhs) l
+ 
+assign_inner :: Pid -> Exp -> Lhs -> AssignOp -> Exp -> EnvOp ()
+assign_inner pid _exp lhs aOp rhs = do
  env@Env{..} <- get
- rhsAst <- lift $ processExp (_objSort,_params,_res,_fields,_ssamap) rhs
+ rhsAst <- lift $ enc_exp_inner (pid, _ssamap) rhs
  case lhs of
   NameLhs (Name [ident@(Ident str)]) -> do
-   let (plhsAST,sort, i) = safeLookup "Assign" ident _ssamap
+   let (plhsAST,sort, i) = (safeLookup "Assign" ident _ssamap) !! pid
        cstr = str ++ show i
        ni = i+1
        nstr = str ++ show ni
    sym <- lift $ mkStringSymbol nstr
    var <- lift $ mkFreshFuncDecl nstr [] sort
    astVar <- lift $ mkApp var []
-   let ssamap = M.insert ident (astVar, sort, ni) _ssamap
+   let ssamap = _ssamap -- M.insert ident (astVar, sort, ni) _ssamap
    ass <- lift $ processAssign astVar aOp rhsAst plhsAST
    pre <- lift $ mkAnd [_pre, ass]
    post <- lift $ replaceVariable cstr var _post
@@ -362,7 +379,8 @@ assign _exp lhs aOp rhs = do
    updateSSAMap ssamap
    incrementAssignMap ident rhs
   _ -> error $ "Assign " ++ show _exp ++ " not supported"
-  
+
+{-  
 -- Analyse Post De/Increment
 postOp :: Exp -> Exp -> Op -> String -> EnvOp ()
 postOp _exp lhs op str = do
@@ -385,6 +403,4 @@ postOp _exp lhs op str = do
    updatePost post
    updateSSAMap ssamap
   _ -> error $ str ++ show _exp ++ " not supported"
-
-
 -}
