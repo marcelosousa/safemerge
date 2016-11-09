@@ -17,6 +17,8 @@ Executable wiz
                     , smtlib 
                     , uu-parsinglib 
                     , language-java 
+                    , transformers 
+                    , z3 == 4.1.0
     Hs-Source-Dirs:   src/
     ghc-options:      -O3 -rtsopts
     Extensions:       DoAndIfThenElse

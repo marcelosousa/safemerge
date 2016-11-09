@@ -78,7 +78,9 @@ analyser_debug stmts = do
    let k = T.trace (_triple preStr "end" postStr) $ unsafePerformIO $ getChar
    k `seq` analyse stmts
   (bstmt:_) -> do 
-   let k = T.trace (_triple preStr (prettyPrint (head $ snd bstmt)) postStr) $ unsafePerformIO $ getChar
+   let k = case bstmt of 
+        (_,[]) -> '0'
+        _  -> T.trace (_triple preStr (prettyPrint (head $ snd bstmt)) postStr) $ unsafePerformIO $ getChar
    k `seq` analyse stmts
 
 analyse :: ProdProgram -> EnvOp (Result,Maybe Model)   
@@ -129,7 +131,7 @@ analyse_hole :: ProdProgram -> EnvOp (Result, Maybe Model)
 analyse_hole rest = do
    -- Get the edit statements for this hole.
   (s_o, s_a, s_b, s_m) <- popEdits
-  let prod_prog = miniproduct s_o s_a s_b s_m 
+  let prod_prog = miniproduct [(1,s_o),(2,s_a),(3,s_b),(4,s_m)] 
   analyser $ prod_prog ++ rest
 
 analyse_loop = undefined

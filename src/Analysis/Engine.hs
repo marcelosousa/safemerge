@@ -35,7 +35,8 @@ helper pre post = do
   formula <- mkImplies pre post >>= \phi -> mkNot phi 
   assert formula
   (r, m) <- getModel
-  trace ("helper: " ++ show r) $ return (r,m)
+  preStr  <- astToString pre
+  T.trace ("helper: " ++ preStr) $ return (r,m)
 
 prelude :: [FormalParam] -> Z3 (Params, [AST])
 prelude params = do
@@ -67,7 +68,6 @@ initial_precond params = do
   pre <- mkAnd $ concat eqs 
   return pre
 
--- @TODO
 postcond :: [AST] -> Z3 AST
 postcond res = case res of
   [r_o, r_a, r_b, r_m] -> do 
@@ -79,7 +79,8 @@ postcond res = case res of
     c1 <- mkImplies ma ob
     c2 <- mkImplies mb oa
     c3 <- mkAnd [ma,mb,om]
-    mkOr [c1,c2,c3]    
+    c4 <- mkAnd [c1,c2]
+    mkOr [c3,c4]    
   _ -> error "postcond: invalid input" 
 
 -- Encoding functions 

@@ -18,8 +18,22 @@ import Edit.Types
 type Pid = Int
 type ProdProgram = [(Pid, [BlockStmt])]
 
-miniproduct :: BlockStmt -> BlockStmt -> BlockStmt -> BlockStmt -> ProdProgram 
-miniproduct = undefined 
+-- | If any of them are ifs apply the if rule
+--   If all of them are whiles apply the while rule
+--   Otherwise, consume and move on
+miniproduct :: [(Pid, BlockStmt)] -> ProdProgram 
+miniproduct stmts = map (\(pid, s) -> (pid, [s])) stmts 
+  
+is_if :: BlockStmt -> Bool
+is_if b = case b of
+  BlockStmt s -> case s of
+    IfThen _ _ -> True 
+    IfThenElse _ _ _ -> True 
+    _ -> False 
+  _ -> False 
+
+has_loop :: BlockStmt -> Bool
+has_loop = undefined 
 
 -- reduce :: [Edit] -> Edit -> Edit 
 -- reduce pp p =

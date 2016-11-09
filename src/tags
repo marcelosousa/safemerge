@@ -114,12 +114,14 @@ iM	./Edit/Diff.hs	28;"	v
 incrementAssignMap	./Analysis/Types.hs	139;"	v
 initial_SSAMap	./Analysis/Engine.hs	52;"	v
 initial_precond	./Analysis/Engine.hs	63;"	v
+is_if	./Calculus.hs	28;"	v
+is_loop	./Calculus.hs	31;"	v
 lcs	./Edit/Diff.hs	33;"	v
 lk	./Edit/Diff.hs	22;"	v
 main	Main.hs	74;"	v
 merge	Main.hs	47;"	v
 mergeMode	Main.hs	62;"	v
-miniproduct	./Calculus.hs	22;"	v
+miniproduct	./Calculus.hs	25;"	v
 mkAttribute	./Analysis/Engine.hs	218;"	v
 mkField	./Analysis/Engine.hs	236;"	v
 mkObjectSort	./Analysis/Engine.hs	231;"	v
