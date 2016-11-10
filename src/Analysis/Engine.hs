@@ -72,12 +72,14 @@ postcond :: [AST] -> Z3 AST
 postcond res = case res of
   [r_o, r_a, r_b, r_m] -> do 
     oa <- mkEq r_o r_a
+    noa <- mkNot oa
     ob <- mkEq r_o r_b
+    nob <- mkNot ob
     om <- mkEq r_o r_m
     ma <- mkEq r_m r_a
     mb <- mkEq r_m r_b
-    c1 <- mkImplies ma ob
-    c2 <- mkImplies mb oa
+    c1 <- mkImplies noa ma
+    c2 <- mkImplies nob mb
     c3 <- mkAnd [ma,mb,om]
     c4 <- mkAnd [c1,c2]
     mkOr [c3,c4]    
@@ -136,7 +138,7 @@ enc_new_var (ssamap', _assmap, pre') sort (VarDecl varid mvarinit) i = do
 enc_exp :: Int -> SSAMap -> Exp -> Z3 [AST]
 enc_exp p env expr = do
   let l = if p == 0 then [1..4] else [p]
-  mapM (\p -> enc_exp_inner (p,env) expr) [1..4]
+  mapM (\p -> enc_exp_inner (p,env) expr) l
 
 -- | Encode an expression for a version 
 --   (ast,sort,count)pre-condition: pid != 0 
@@ -161,7 +163,7 @@ enc_exp_inner env expr = case expr of
     mkIte condEnc _thenEnc _elseEnc        
   PreNot nexpr -> do
     nexprEnc <- enc_exp_inner env nexpr
-    mkNot nexprEnc            
+    mkNot nexprEnc
   _ -> error $  "enc_exp_inner: " ++ show expr
 
 enc_literal :: Literal -> Z3 AST

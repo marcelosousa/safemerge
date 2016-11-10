@@ -48,15 +48,15 @@ _ssamap	./Analysis/Types.hs	47;"	v
 _summary	Main.hs	28;"	v
 _triple	./Analysis/Verifier.hs	54;"	v	file:
 a	Main.hs	46;"	v
-analyse	./Analysis/Verifier.hs	85;"	v	file:
-analyse_conditional	./Analysis/Verifier.hs	157;"	v	file:
-analyse_exp	./Analysis/Verifier.hs	139;"	v	file:
-analyse_hole	./Analysis/Verifier.hs	129;"	v	file:
-analyse_loop	./Analysis/Verifier.hs	135;"	v	file:
+analyse	./Analysis/Verifier.hs	87;"	v	file:
+analyse_conditional	./Analysis/Verifier.hs	160;"	v	file:
+analyse_exp	./Analysis/Verifier.hs	142;"	v	file:
+analyse_hole	./Analysis/Verifier.hs	132;"	v	file:
+analyse_loop	./Analysis/Verifier.hs	138;"	v	file:
 analyser	./Analysis/Verifier.hs	65;"	v	file:
 analyser_debug	./Analysis/Verifier.hs	72;"	v	file:
-analyser_pid	./Analysis/Verifier.hs	92;"	v	file:
-analyser_stmt	./Analysis/Verifier.hs	112;"	v	file:
+analyser_pid	./Analysis/Verifier.hs	94;"	v	file:
+analyser_stmt	./Analysis/Verifier.hs	114;"	v	file:
 apply_edit	./Edit/Apply.hs	20;"	v
 apply_edit_block	./Edit/Apply.hs	95;"	v
 apply_edit_blockstmt	./Edit/Apply.hs	100;"	v
@@ -71,8 +71,8 @@ apply_edit_method_body	./Edit/Apply.hs	85;"	v
 apply_edit_stmt	./Edit/Apply.hs	113;"	v
 apply_edit_ty	./Edit/Apply.hs	34;"	v
 apply_edit_tys	./Edit/Apply.hs	27;"	v
-assign	./Analysis/Verifier.hs	349;"	v	file:
-assign_inner	./Analysis/Verifier.hs	354;"	v	file:
+assign	./Analysis/Verifier.hs	352;"	v	file:
+assign_inner	./Analysis/Verifier.hs	357;"	v	file:
 b	Main.hs	47;"	v
 checkSAT	./Analysis/Engine.hs	27;"	v
 check_edit_soundness	./Edit.hs	55;"	v
@@ -95,36 +95,36 @@ edit_method_body_gen	./Edit/Gen.hs	123;"	v
 edit_ty_gen	./Edit/Gen.hs	42;"	v
 edit_tys_gen	./Edit/Gen.hs	30;"	v
 edit_tys_gen_aux	./Edit/Gen.hs	37;"	v
-enc_binop	./Analysis/Engine.hs	200;"	v
-enc_exp	./Analysis/Engine.hs	136;"	v
-enc_exp_inner	./Analysis/Engine.hs	143;"	v
-enc_ident	./Analysis/Engine.hs	110;"	v
-enc_literal	./Analysis/Engine.hs	167;"	v
-enc_name	./Analysis/Engine.hs	178;"	v
-enc_new_var	./Analysis/Engine.hs	116;"	v
+enc_binop	./Analysis/Engine.hs	201;"	v
+enc_exp	./Analysis/Engine.hs	137;"	v
+enc_exp_inner	./Analysis/Engine.hs	144;"	v
+enc_ident	./Analysis/Engine.hs	111;"	v
+enc_literal	./Analysis/Engine.hs	168;"	v
+enc_name	./Analysis/Engine.hs	179;"	v
+enc_new_var	./Analysis/Engine.hs	117;"	v
 file	Main.hs	45;"	v
 gen_edit	./Edit.hs	32;"	v
 gen_edit_aux	./Edit.hs	42;"	v
 getParIdent	./Analysis/Util.hs	28;"	v	file:
 getParIdents	./Analysis/Util.hs	25;"	v
 get_method	./Analysis/Util.hs	9;"	v
+has_loop	./Calculus.hs	36;"	v
 helper	./Analysis/Engine.hs	34;"	v
 hole	./Edit/Diff.hs	49;"	v
 iM	./Edit/Diff.hs	28;"	v
 incrementAssignMap	./Analysis/Types.hs	139;"	v
-initial_SSAMap	./Analysis/Engine.hs	52;"	v
-initial_precond	./Analysis/Engine.hs	63;"	v
+initial_SSAMap	./Analysis/Engine.hs	53;"	v
+initial_precond	./Analysis/Engine.hs	64;"	v
 is_if	./Calculus.hs	28;"	v
-is_loop	./Calculus.hs	31;"	v
 lcs	./Edit/Diff.hs	33;"	v
 lk	./Edit/Diff.hs	22;"	v
 main	Main.hs	74;"	v
 merge	Main.hs	47;"	v
 mergeMode	Main.hs	62;"	v
 miniproduct	./Calculus.hs	25;"	v
-mkAttribute	./Analysis/Engine.hs	218;"	v
-mkField	./Analysis/Engine.hs	236;"	v
-mkObjectSort	./Analysis/Engine.hs	231;"	v
+mkAttribute	./Analysis/Engine.hs	219;"	v
+mkField	./Analysis/Engine.hs	237;"	v
+mkObjectSort	./Analysis/Engine.hs	232;"	v
 normalize	./Edit/Normalize.hs	19;"	v
 normalize_block	./Edit/Normalize.hs	93;"	v
 normalize_blockstmt	./Edit/Normalize.hs	98;"	v
@@ -143,24 +143,24 @@ parse4	Main.hs	117;"	v
 parseMode	Main.hs	54;"	v
 popEdit	./Analysis/Types.hs	74;"	v
 popEdits	./Analysis/Types.hs	66;"	v
-post_op	./Analysis/Verifier.hs	376;"	v	file:
-post_op_inner	./Analysis/Verifier.hs	381;"	v	file:
+post_op	./Analysis/Verifier.hs	379;"	v	file:
+post_op_inner	./Analysis/Verifier.hs	384;"	v	file:
 post_process	./Edit/Gen.hs	150;"	v
 postcond	./Analysis/Engine.hs	72;"	v
-prelude	./Analysis/Engine.hs	41;"	v
+prelude	./Analysis/Engine.hs	42;"	v
 print_edit	./Edit/Print.hs	20;"	v
 print_edit_simple	./Edit/Print.hs	15;"	v
-processAssign	./Analysis/Engine.hs	101;"	v
-processParam	./Analysis/Engine.hs	87;"	v
-processType	./Analysis/Engine.hs	90;"	v
+processAssign	./Analysis/Engine.hs	102;"	v
+processParam	./Analysis/Engine.hs	88;"	v
+processType	./Analysis/Engine.hs	91;"	v
 productMode	Main.hs	55;"	v
 prog	Main.hs	46;"	v
 progModes	Main.hs	66;"	v
 push	./Edit.hs	48;"	v
 replace	./Analysis/Types.hs	37;"	v
-replaceVariable	./Analysis/Engine.hs	241;"	v
-ret	./Analysis/Verifier.hs	323;"	v	file:
-ret_inner	./Analysis/Verifier.hs	332;"	v	file:
+replaceVariable	./Analysis/Engine.hs	242;"	v
+ret	./Analysis/Verifier.hs	326;"	v	file:
+ret_inner	./Analysis/Verifier.hs	335;"	v	file:
 runOption	Main.hs	78;"	v
 safeLookup	./Analysis/Util.hs	35;"	v
 skip	./Edit/Diff.hs	50;"	v

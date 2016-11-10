@@ -122,7 +122,8 @@ analyser_stmt (pid, stmt) rest =
   IfThenElse cond s1 s2   -> analyse_conditional pid cond s1 s2 rest
   ExpStmt expr            -> analyse_exp pid expr rest
   While _cond _body       -> analyse_loop _cond _body rest
-  Hole                    -> analyse_hole rest 
+  Hole                    -> analyse_hole rest
+  Skip                    -> analyser rest 
   _                       -> error $ "analyser_stmt: not supported " ++ show stmt
 
 -- | The analysis of a hole
@@ -156,7 +157,7 @@ analyse_exp pid _exp rest =
 
 -- Analyse If Then Else
 analyse_conditional :: Pid -> Exp -> Stmt -> Stmt -> ProdProgram -> EnvOp (Result,Maybe Model)
-analyse_conditional pid cond s1 s2 rest =
+analyse_conditional pid cond s1 s2 rest = T.trace ("analyse conditional of pid " ++ show pid) $
  if cond == Nondet
  then do
   env@Env{..} <- get
