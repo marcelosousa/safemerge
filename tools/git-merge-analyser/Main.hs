@@ -175,8 +175,9 @@ get_merge as@[o,m,a,b] = do
 
 get_merge_diff :: [String] -> IO DiffMerge
 get_merge_diff as@[o,m,a,b] = do 
-  (a_ex_code, a_str, _) <- catch (readProcessWithExitCode "git" ["diff",a++"^!"] []) my_catch 
-  (b_ex_code, b_str, _) <- catch (readProcessWithExitCode "git" ["diff",b++"^!"] []) my_catch 
+  putStrLn $ "Doing the git diff between " ++ o ++ " " ++ a ++ " " ++ b
+  (a_ex_code, a_str, _) <- catch (readProcessWithExitCode "git" ["diff",o,a] []) my_catch 
+  (b_ex_code, b_str, _) <- catch (readProcessWithExitCode "git" ["diff",o,b] []) my_catch 
   if a_ex_code == ExitSuccess && b_ex_code == ExitSuccess
   then do
     -- process the diff a 
