@@ -9,6 +9,10 @@ import qualified Data.Map as M
 import qualified Data.List as L 
 
 {-
+ -- Identify the files that are modified by both variants.
+  - This can be done by the 
+
+ 
  changed in both
  merged
  @@ 
@@ -61,6 +65,7 @@ is_merged (Change ty file meth) = case ty of
 is_interesting :: Change -> Bool
 is_interesting c@(Change ty file meth) = 
   let c1 = not $ is_merged c
+      -- c2 = takeExtension file == ".c"
       c2 = takeExtension file == ".java"
      -- c3 = not $ null meth
   in c1 && c2
@@ -79,6 +84,7 @@ data DiffChange = DiffChange String [String]
 is_dinteresting :: String -> [String] -> Bool
 is_dinteresting file meth = 
   let c1 = takeExtension file == ".java"
+  --let c1 = takeExtension file == ".c"
       c2 = not $ null meth
   in c1 && c2
 
@@ -175,44 +181,45 @@ get_merge as@[o,m,a,b] = do
 
 get_merge_diff :: [String] -> IO DiffMerge
 get_merge_diff as@[o,m,a,b] = do 
-  putStrLn $ "Doing the git diff between " ++ o ++ " " ++ a ++ " " ++ b
-  (a_ex_code, a_str, _) <- catch (readProcessWithExitCode "git" ["diff",o,a] []) my_catch 
-  (b_ex_code, b_str, _) <- catch (readProcessWithExitCode "git" ["diff",o,b] []) my_catch 
-  if a_ex_code == ExitSuccess && b_ex_code == ExitSuccess
-  then do
-    -- process the diff a 
-    let a_str_lines = lines a_str
-        a_changes = M.filterWithKey is_dinteresting $ process_diffs a_str_lines
-        b_str_lines = lines b_str
-        b_changes = M.filterWithKey is_dinteresting $ process_diffs b_str_lines
-        ch = M.filter (not . null) $  M.intersectionWith (L.intersect) a_changes b_changes
-    return $ DiffMerge as ch True
+  msg <- readProcess "git" (git_msg_opts m) []
+  let pre = "Merge pull request"
+  if take (length pre) msg == pre
+  then return $ DiffMerge as M.empty False
   else do
-    return $ DiffMerge as M.empty False
+    putStrLn $ "Doing the git diff between " ++ o ++ " " ++ a ++ " " ++ b
+    --(a_ex_code, a_str, _) <- catch (readProcessWithExitCode "git" ["diff",o,a] []) my_catch 
+    --(b_ex_code, b_str, _) <- catch (readProcessWithExitCode "git" ["diff",o,b] []) my_catch 
+    (a_ex_code, a_str, _) <- catch (readProcessWithExitCode "git" ["diff",a++"^!"] []) my_catch 
+    (b_ex_code, b_str, _) <- catch (readProcessWithExitCode "git" ["diff",b++"^!"] []) my_catch 
+    if a_ex_code == ExitSuccess && b_ex_code == ExitSuccess
+    then do
+      -- process the diff a 
+      let a_str_lines = lines a_str
+          a_changes = M.filterWithKey is_dinteresting $ process_diffs a_str_lines
+          b_str_lines = lines b_str
+          b_changes = M.filterWithKey is_dinteresting $ process_diffs b_str_lines
+          ch = M.filter (not . null) $  M.intersectionWith (L.intersect) a_changes b_changes
+      return $ DiffMerge as ch True
+    else do
+      return $ DiffMerge as M.empty False
 
 git_opts :: [String]
-git_opts = ["log", "--merges", "--abbrev-commit", "--decorate", "--format=format:'%H %P'", "--all"]
+git_opts = ["log", "--merges", "--abbrev-commit", "--decorate", "--format=format:%H %P", "--all"]
 
-git_merge_tree :: IO ()
-git_merge_tree = do
-  merges <- readProcess "git" git_opts []
-  let merge_lines = lines merges
-      args = map words merge_lines
-      (m,mvars) = unzip $ map (\l -> (head l, tail l)) args 
-  bases <- mapM (\l -> readProcess "git" ("merge-base":l) []) mvars
-  let variants = map (\(o,l) -> lines o ++ l) $ zip bases args 
-  merges <- mapM get_merge variants
-  let merges' = filter is_of_interest merges 
-  putStrLn $ print_merges merges' 
+git_msg_opts :: String -> [String]
+git_msg_opts sha = ["log", "--format='%B'", "-n", "1", sha]
 
 main :: IO ()
 main = do
   merges <- readProcess "git" git_opts []
   let merge_lines = lines merges
-      args = map (\l -> words $ init $ tail l) merge_lines
-      (m,mvars) = unzip $ map (\l -> (head l, tail l)) args 
-  bases <- mapM (\l -> readProcess "git" ("merge-base":l) []) mvars
-  let variants = map (\(o,l) -> lines o ++ l) $ zip bases args 
-  merges <- mapM get_merge_diff variants
-  let merges' = filter is_dof_interest merges 
-  putStrLn $ print_merges merges' 
+      args = map words merge_lines
+      vars = map tail  args 
+  base <- mapM (\l -> readProcess "git" ("merge-base":l) []) vars
+  let versions = map (\(o,l) -> lines o ++ l) $ zip base args 
+  diffs <- mapM get_merge_diff versions 
+  let diffs' = filter is_dof_interest diffs
+  -- Different version 
+  -- merges <- mapM get_merge variants
+  -- let merges' = filter is_of_interest merges 
+  putStrLn $ print_merges diffs' 
