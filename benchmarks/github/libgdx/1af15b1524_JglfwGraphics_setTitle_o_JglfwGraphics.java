@@ -1,0 +1,3 @@
+{
+  glfwSetWindowTitle(window, title);
+}

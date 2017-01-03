@@ -1,0 +1,56 @@
+{
+  this.numThreads = benchmarkProps.getInt(THREADS, MAX_WORKERS);
+  this.numIterations = benchmarkProps.getInt(ITERATIONS, 1);
+  this.statusIntervalSec = benchmarkProps.getInt(INTERVAL, 0);
+  this.verbose = benchmarkProps.getBoolean(VERBOSE, false);
+  this.verifyRead = benchmarkProps.getBoolean(VERIFY, false);
+  this.ignoreNulls = benchmarkProps.getBoolean(IGNORE_NULLS, false);
+  boolean enablePipelineRouted = benchmarkProps.getBoolean(PIPELINE_ROUTED_STORE, false);
+  int clientZoneId = benchmarkProps.getInt(CLIENT_ZONE_ID, (-1));
+  if (benchmarkProps.containsKey(URL))
+  {
+    if (!benchmarkProps.containsKey(STORE_NAME))
+    {
+      throw new VoldemortException("Missing storename");
+    }
+    String socketUrl = benchmarkProps.getString(URL);
+    String storeName = benchmarkProps.getString(STORE_NAME);
+    ClientConfig clientConfig = new ClientConfig().setMaxThreads(numThreads).setMaxTotalConnections(numThreads).setMaxConnectionsPerNode(numThreads).setBootstrapUrls(socketUrl).setConnectionTimeout(60, TimeUnit.SECONDS).setSocketTimeout(60, TimeUnit.SECONDS).setFailureDetectorRequestLengthThreshold(TimeUnit.SECONDS.toMillis(60)).setSocketBufferSize((4 * 1024)).setEnablePipelineRoutedStore(enablePipelineRouted);
+    if (clientZoneId >= 0)
+    {
+      clientConfig.setClientZoneId(clientZoneId);
+    }
+    SocketStoreClientFactory socketFactory = new SocketStoreClientFactory(clientConfig);
+    this.storeClient = socketFactory.getStoreClient(storeName);
+    StoreDefinition storeDef = getStoreDefinition(socketFactory, storeName);
+    this.keyType = findKeyType(storeDef);
+    benchmarkProps.put(Benchmark.KEY_TYPE, this.keyType);
+    this.factory = socketFactory;
+    if (benchmarkProps.getBoolean(HANDSHAKE, false))
+    {
+      final Object key = getTempKey(this.keyType);
+      this.storeClient.delete(key);
+      this.storeClient.put(key, "123");
+      this.storeClient.delete(key);
+    }
+  }
+  else
+  {
+    String storageEngineClass = benchmarkProps.getString(STORAGE_CONFIGURATION_CLASS);
+    this.keyType = benchmarkProps.getString(KEY_TYPE, STRING_KEY_TYPE);
+    Serializer serializer = findKeyType(this.keyType);
+    Store<Object, Object, Object> store = null;
+    StorageConfiguration conf = (StorageConfiguration) ReflectUtils.callConstructor(ReflectUtils.loadClass(storageEngineClass), new Object[] {
+                                                                                                                                               ServerTestUtils.getVoldemortConfig(),
+                                                                                                                                             });
+    StorageEngine<ByteArray, byte[], byte[]> engine = conf.getStore(DUMMY_DB);
+    if (conf.getType().compareTo(ViewStorageConfiguration.TYPE_NAME) == 0)
+    {
+      engine = new ViewStorageEngine(STORE_NAME, engine, new StringSerializer(), new StringSerializer(), serializer, new StringSerializer(), null, BenchmarkViews.loadTransformation(benchmarkProps.getString(VIEW_CLASS).trim()));
+    }
+    store = SerializingStore.wrap(engine, serializer, new StringSerializer(), new IdentitySerializer());
+    this.factory = new StaticStoreClientFactory(store);
+    this.storeClient = factory.getStoreClient(store.getName());
+  }
+  this.storeInitialized = true;
+}

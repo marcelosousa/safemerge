@@ -1,0 +1,281 @@
+Changes found in versions of file:pmd/src/main/java/net/sourceforge/pmd/cli/PMDParameters.java
+Base: 7712690d5575c1335856f93382a65415ea56719d
+Variant A: 782135b18ac11c568f31de8f4601575647a9e361
+Variant B: 36c8a31cd2a04f337f55e750eba8200c3660f722
+Merge: cb5fea59ae74d6bebbf6aedb7fce8ce5955a96f3
+Changes: [(Ident "PMDParameters",Ident "transformParametersIntoConfiguration")]
+-----------------
+Changes found in versions of file:pmd/src/test/java/net/sourceforge/pmd/AbstractRuleTest.java
+Base: dea0fe616e1d818389980c2d06c9dabc51e56438
+Variant A: 4546adac8f8360cebb2c8c11ded48c1610ba0620
+Variant B: 079c72f7d6a0a09840985675dfaa80d2a8c2d574
+Merge: fa950a82960993c7a7d70e276553b85174eec8b2
+Changes: [(Ident "AbstractRuleTest",Ident "testRuleWithVariableInMessage")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/cpd/CPDCommandLineInterface.java
+Base: acb8b49aa815179dad2c2f68a70e6d643b68ba6d
+Variant A: f0dfca261d12daef57b29d4403e2d413a8016999
+Variant B: e2cc67c59133d1af866abfa4a4401739e13002e0
+Merge: 07e641f20a8d833208db803a1336c10a706dc59e
+Changes: [(Ident "CPDCommandLineInterface",Ident "main")]
+-----------------
+Changes found in versions of file:pmd-java/src/test/java/net/sourceforge/pmd/lang/java/rule/clone/CloneRulesTest.java
+Base: 62202a5293bdc131a903223a4b34391412b7b547
+Variant A: d117c9987b5c143346c28ac68b2fdf127b8780c6
+Variant B: 4a5a80197bd22ff62a3b9e19b8c663a0bc705c17
+Merge: cfe91ac72881b695c76893acd2d51ff2a7b4c179
+Changes: [(Ident "CloneRulesTest",Ident "setUp")]
+-----------------
+Changes found in versions of file:pmd-java/src/main/java/net/sourceforge/pmd/lang/java/rule/strings/ConsecutiveAppendsShouldReuseRule.java
+Base: 62202a5293bdc131a903223a4b34391412b7b547
+Variant A: 6e300f08549cf3ebd2042d62084fbbb451b06188
+Variant B: 87b3f7d4965d956d42f71e1e0dc519116d511949
+Merge: 7a82a527bbe33328a4d8769563b5ab757a544189
+Changes: [(Ident "ConsecutiveAppendsShouldReuseRule",Ident "getVariableAppended")]
+-----------------
+Changes found in versions of file:pmd-java/src/main/java/net/sourceforge/pmd/lang/java/symboltable/LocalScope.java
+Base: d788b6ce74aee262b4ef365acebcda6a03f8d8c0
+Variant A: ea074e2c5393161ef7d6a9a669d86d37b1f3b558
+Variant B: 808943e366e24a9c9145cbed5d330687c80f8111
+Merge: 9d350e6f780569ef660aca43e3935237abb81bd9
+Changes: [(Ident "LocalScope",Ident "findVariableHere")]
+-----------------
+Changes found in versions of file:pmd-java/src/main/java/net/sourceforge/pmd/lang/java/symboltable/LocalScope.java
+Base: d788b6ce74aee262b4ef365acebcda6a03f8d8c0
+Variant A: 262d154bdb53a482996a2aac85f6975997697d41
+Variant B: 808943e366e24a9c9145cbed5d330687c80f8111
+Merge: 4e8024e5b15e55f70b4a1b618ce489c17a92aa05
+Changes: [(Ident "LocalScope",Ident "findVariableHere")]
+-----------------
+Changes found in versions of file:pmd-java/src/main/java/net/sourceforge/pmd/lang/java/typeresolution/visitors/PMDASMVisitor.java
+Base: b4c2a517811f12528fb1cd81a45c465aef81fd27
+Variant A: 88477e3f54563a3e932a6aeb4c9f0b3d66daa34b
+Variant B: d563eb30fc454fb275863cc729b227607b5920de
+Merge: b78c7f2aa7bc5db3c28ff6d402cbc91359582584
+Changes: [(Ident "PMDASMVisitor",Ident "visitInnerClass")]
+-----------------
+Changes found in versions of file:pmd-java/src/main/java/net/sourceforge/pmd/lang/java/typeresolution/PMDASMClassLoader.java
+Base: b4c2a517811f12528fb1cd81a45c465aef81fd27
+Variant A: 88477e3f54563a3e932a6aeb4c9f0b3d66daa34b
+Variant B: d563eb30fc454fb275863cc729b227607b5920de
+Merge: b78c7f2aa7bc5db3c28ff6d402cbc91359582584
+Changes: [(Ident "PMDASMClassLoader",Ident "getImportedClasses")]
+-----------------
+Changes found in versions of file:pmd-java/src/test/java/net/sourceforge/pmd/cpd/CPDCommandLineInterfaceTest.java
+Base: 7bf00118a70f2c6499ba3786ee204e1fbd92b604
+Variant A: 0cdc14deedf704ddf3cd58c492e83d460b5561c7
+Variant B: 8c4d307ddd1f271d32572672fb22493da97e7e4f
+Merge: bd64e4fdc62c99033726587cef17132dcd851391
+Changes: [(Ident "CPDCommandLineInterfaceTest",Ident "testBrokenAndValidFile"),(Ident "CPDCommandLineInterfaceTest",Ident "testCSVFormat"),(Ident "CPDCommandLineInterfaceTest",Ident "testEncodingOption"),(Ident "CPDCommandLineInterfaceTest",Ident "testExcludes"),(Ident "CPDCommandLineInterfaceTest",Ident "testFormatXmlWithoutEncoding"),(Ident "CPDCommandLineInterfaceTest",Ident "testIgnoreIdentifiers")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/cpd/CPDCommandLineInterface.java
+Base: 7bf00118a70f2c6499ba3786ee204e1fbd92b604
+Variant A: 0cdc14deedf704ddf3cd58c492e83d460b5561c7
+Variant B: 8c4d307ddd1f271d32572672fb22493da97e7e4f
+Merge: bd64e4fdc62c99033726587cef17132dcd851391
+Changes: [(Ident "CPDCommandLineInterface",Ident "main")]
+-----------------
+Changes found in versions of file:pmd-java/src/test/java/net/sourceforge/pmd/cpd/CPDCommandLineInterfaceTest.java
+Base: 7bf00118a70f2c6499ba3786ee204e1fbd92b604
+Variant A: 531c88b1031b798fd3cf6458ca60324a70fec27f
+Variant B: 8c4d307ddd1f271d32572672fb22493da97e7e4f
+Merge: 3e791f5d22014a8103990b8e6c80261e564a7ba3
+Changes: [(Ident "CPDCommandLineInterfaceTest",Ident "testBrokenAndValidFile"),(Ident "CPDCommandLineInterfaceTest",Ident "testCSVFormat"),(Ident "CPDCommandLineInterfaceTest",Ident "testEncodingOption"),(Ident "CPDCommandLineInterfaceTest",Ident "testExcludes"),(Ident "CPDCommandLineInterfaceTest",Ident "testFormatXmlWithoutEncoding"),(Ident "CPDCommandLineInterfaceTest",Ident "testIgnoreIdentifiers")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/cpd/CPDCommandLineInterface.java
+Base: 7bf00118a70f2c6499ba3786ee204e1fbd92b604
+Variant A: 531c88b1031b798fd3cf6458ca60324a70fec27f
+Variant B: 8c4d307ddd1f271d32572672fb22493da97e7e4f
+Merge: 3e791f5d22014a8103990b8e6c80261e564a7ba3
+Changes: [(Ident "CPDCommandLineInterface",Ident "main")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/processor/MultiThreadProcessor.java
+Base: 573186be6900170948dba8fcbb0c520f5fd81aab
+Variant A: ee131a35531209e0bd0fbefc5efe444f956315c9
+Variant B: 5f9e90761d2c0ea5ecceac3da01213724c4f05c2
+Merge: baf4a9c7f5fc2240ef5cbb871cf7486861476efb
+Changes: [(Ident "MultiThreadProcessor",Ident "processFiles")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/ant/internal/PMDTaskImpl.java
+Base: 573186be6900170948dba8fcbb0c520f5fd81aab
+Variant A: ee131a35531209e0bd0fbefc5efe444f956315c9
+Variant B: 5f9e90761d2c0ea5ecceac3da01213724c4f05c2
+Merge: baf4a9c7f5fc2240ef5cbb871cf7486861476efb
+Changes: [(Ident "PMDTaskImpl",Ident "doTask")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/PMD.java
+Base: 573186be6900170948dba8fcbb0c520f5fd81aab
+Variant A: ee131a35531209e0bd0fbefc5efe444f956315c9
+Variant B: 5f9e90761d2c0ea5ecceac3da01213724c4f05c2
+Merge: baf4a9c7f5fc2240ef5cbb871cf7486861476efb
+Changes: [(Ident "PMD",Ident "doPMD")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/processor/MultiThreadProcessor.java
+Base: 573186be6900170948dba8fcbb0c520f5fd81aab
+Variant A: 3d58d913a70f68b33684557bdb644e6611dc1a12
+Variant B: 5f9e90761d2c0ea5ecceac3da01213724c4f05c2
+Merge: 3dd81560146cf485ca1f1632187d3c68a96cb0a5
+Changes: [(Ident "MultiThreadProcessor",Ident "processFiles")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/ant/internal/PMDTaskImpl.java
+Base: 573186be6900170948dba8fcbb0c520f5fd81aab
+Variant A: 3d58d913a70f68b33684557bdb644e6611dc1a12
+Variant B: 5f9e90761d2c0ea5ecceac3da01213724c4f05c2
+Merge: 3dd81560146cf485ca1f1632187d3c68a96cb0a5
+Changes: [(Ident "PMDTaskImpl",Ident "doTask")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/PMD.java
+Base: 573186be6900170948dba8fcbb0c520f5fd81aab
+Variant A: 3d58d913a70f68b33684557bdb644e6611dc1a12
+Variant B: 5f9e90761d2c0ea5ecceac3da01213724c4f05c2
+Merge: 3dd81560146cf485ca1f1632187d3c68a96cb0a5
+Changes: [(Ident "PMD",Ident "doPMD")]
+-----------------
+Changes found in versions of file:pmd-xml/src/main/java/net/sourceforge/pmd/lang/xml/ast/DOMLineNumbers.java
+Base: c3f98356f84a19618587c7faa450a57458a7a3a3
+Variant A: c5691ecf3524e69422f4e0b3dbcf31663fc4c8a9
+Variant B: 494719d8ea74102313cbbca6c69bdc6e714f43d4
+Merge: a2c344fb54f78c17d684a9b8b2158d23e326a874
+Changes: [(Ident "DOMLineNumbers",Ident "calculateLinesMap")]
+-----------------
+Changes found in versions of file:pmd-xml/src/main/java/net/sourceforge/pmd/lang/xml/ast/DOMLineNumbers.java
+Base: c3f98356f84a19618587c7faa450a57458a7a3a3
+Variant A: bc902cee19662b5597dc0e855cec79fd89604faa
+Variant B: 494719d8ea74102313cbbca6c69bdc6e714f43d4
+Merge: b71b95c3ba37e248f56aaa043a1c915c7bb6427c
+Changes: [(Ident "DOMLineNumbers",Ident "calculateLinesMap")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/renderers/CodeClimateRenderer.java
+Base: 3ed2b3bced166c44b6c74aa537303a8bfb6dc02d
+Variant A: 95798328566685138542b0a0f4d0c8fa4fd654b6
+Variant B: 130f05cffdb8f13a299cd2bbc46aa8e047e8a484
+Merge: e2cc7e3dd6cfaf2442e20f38e7d0d8e51546ca5a
+Changes: [(Ident "CodeClimateRenderer",Ident "asIssue")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/cli/PMDParameters.java
+Base: a8a18e6648157ad80bf0442d6871ec9b2d4d4bda
+Variant A: fadd6a9a1c7de9c0df0589a7a3098423270b57bc
+Variant B: f32beeb7265f0d053890444394d712034b02dc33
+Merge: 6cd0ca309f85f58f238200e7d9de764bfe098c2d
+Changes: [(Ident "PMDParameters",Ident "transformParametersIntoConfiguration")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/ant/internal/PMDTaskImpl.java
+Base: a8a18e6648157ad80bf0442d6871ec9b2d4d4bda
+Variant A: fadd6a9a1c7de9c0df0589a7a3098423270b57bc
+Variant B: f32beeb7265f0d053890444394d712034b02dc33
+Merge: 6cd0ca309f85f58f238200e7d9de764bfe098c2d
+Changes: [(Ident "PMDTaskImpl",Ident "doTask")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/cli/PMDParameters.java
+Base: a8a18e6648157ad80bf0442d6871ec9b2d4d4bda
+Variant A: ba18ee705e5da32fd379206b38e283aef2186304
+Variant B: f32beeb7265f0d053890444394d712034b02dc33
+Merge: 9451ad025c101921ac4ddafe1836f245450a8edb
+Changes: [(Ident "PMDParameters",Ident "transformParametersIntoConfiguration")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/ant/internal/PMDTaskImpl.java
+Base: a8a18e6648157ad80bf0442d6871ec9b2d4d4bda
+Variant A: ba18ee705e5da32fd379206b38e283aef2186304
+Variant B: f32beeb7265f0d053890444394d712034b02dc33
+Merge: 9451ad025c101921ac4ddafe1836f245450a8edb
+Changes: [(Ident "PMDTaskImpl",Ident "doTask")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/RuleSetFactory.java
+Base: 5e073d3bbfc858293a748de6753b729847cc872a
+Variant A: 97b3250f44161d716b33ff6baba0899049c3556e
+Variant B: ae078e7252674fecc39f1f6e4b5ccaa10f413d87
+Merge: b2db6432e0ff6151989e7fabb0ca1f72a20f49bc
+Changes: [(Ident "RuleSetFactory",Ident "parseRuleSetNode")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/cpd/CPDCommandLineInterface.java
+Base: 0d20fe7e1c66568b4aa1a5c40b48621ac5a911bd
+Variant A: a4baf5c2a8d7cc3bdac19afc3729684c2b2334d1
+Variant B: 379b0de1867599d79cc35a1c9d6f5dc0ab454a92
+Merge: dc1d94224101f6a7349564ffefd5594fa6700622
+Changes: [(Ident "CPDCommandLineInterface",Ident "main")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/cpd/CPDCommandLineInterface.java
+Base: 0d20fe7e1c66568b4aa1a5c40b48621ac5a911bd
+Variant A: c885ae90311712c614866b0491bfb74f5b34ad57
+Variant B: 379b0de1867599d79cc35a1c9d6f5dc0ab454a92
+Merge: e586a3ca6db105af34c2b71862d0a99f48007a57
+Changes: [(Ident "CPDCommandLineInterface",Ident "main")]
+-----------------
+Changes found in versions of file:pmd-java/src/main/java/net/sourceforge/pmd/lang/java/rule/design/CloseResourceRule.java
+Base: 6afe513225798b4c422815f4b900049b945f9eac
+Variant A: 8f4a262e8ec4a80ac76f25b2683af3cccb239fc0
+Variant B: 04f16d762722639fd2e28942ce7529bf1396057f
+Merge: be1a996ba55bed680793564b4330a265da861342
+Changes: [(Ident "CloseResourceRule",Ident "checkForResources")]
+-----------------
+Changes found in versions of file:pmd-java/src/main/java/net/sourceforge/pmd/lang/java/rule/design/CloseResourceRule.java
+Base: 6afe513225798b4c422815f4b900049b945f9eac
+Variant A: e834003e205128fe4576004d02b775508e29d1c7
+Variant B: 04f16d762722639fd2e28942ce7529bf1396057f
+Merge: 8b34b2ef23b1605333dccb34781395a562b8abc7
+Changes: [(Ident "CloseResourceRule",Ident "checkForResources")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/renderers/CodeClimateRenderer.java
+Base: d9e6bab6a92e48494ec12ed3020180bf93639df2
+Variant A: 7d04b3322c03b2386a8ad99942076a47af24ba54
+Variant B: efdcbfe10973bd859db1b53734a6996e6858ace7
+Merge: 77a24b2b22be8d44c3e93977f156227ce5f67862
+Changes: [(Ident "CodeClimateRenderer",Ident "getBody")]
+-----------------
+Changes found in versions of file:pmd-java/src/main/java/net/sourceforge/pmd/lang/java/typeresolution/PMDASMClassLoader.java
+Base: 648e697ab07ab18b5fdad40abdfe4ec68d27769e
+Variant A: 9240f98ccea1a5f29a2e728046009e4b1ceeecfb
+Variant B: 65708ef704c472afb526aa88b0db87be2e29685c
+Merge: 42a5c6a537980ce30c236623fe3f5ae8e7b9031c
+Changes: [(Ident "PMDASMClassLoader",Ident "getImportedClasses")]
+-----------------
+Changes found in versions of file:pmd-java/src/main/java/net/sourceforge/pmd/lang/java/typeresolution/PMDASMClassLoader.java
+Base: 648e697ab07ab18b5fdad40abdfe4ec68d27769e
+Variant A: 4e5e0187d7f7cfa83cf1cbe84167d4841f3adcd1
+Variant B: 65708ef704c472afb526aa88b0db87be2e29685c
+Merge: a491cef61c7aa24e320d3986b06f89ad3c9e4c2f
+Changes: [(Ident "PMDASMClassLoader",Ident "getImportedClasses")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/RuleSetFactory.java
+Base: 648e697ab07ab18b5fdad40abdfe4ec68d27769e
+Variant A: 4e5e0187d7f7cfa83cf1cbe84167d4841f3adcd1
+Variant B: 65708ef704c472afb526aa88b0db87be2e29685c
+Merge: a491cef61c7aa24e320d3986b06f89ad3c9e4c2f
+Changes: [(Ident "RuleSetFactory",Ident "containsRule"),(Ident "RuleSetFactory",Ident "parseRuleSetNode")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/ant/internal/PMDTaskImpl.java
+Base: 4e5e0187d7f7cfa83cf1cbe84167d4841f3adcd1
+Variant A: 39a9d9971074c2d219df364afb2638146804d5ac
+Variant B: 23bee1cad19c5182062a7eca48a3e3d37b7c4f7c
+Merge: 20c4f168c1228c136ea6e9642b08f30b6d91bcb5
+Changes: [(Ident "PMDTaskImpl",Ident "execute")]
+-----------------
+Changes found in versions of file:pmd-java/src/main/java/net/sourceforge/pmd/lang/java/symboltable/ClassScope.java
+Base: 0c75e5123cc1c3441c035ef45f62b220769fe9e7
+Variant A: ba50b3183ebb9151fbc477cf1ac970d93a255217
+Variant B: 15ff7ca9447619240ec96fdb32f7974e1ecf5730
+Merge: 6dcf301e4dfa94c91cc7828e6e8698fa7287f335
+Changes: [(Ident "ClassScope",Ident "createBuiltInMethodDeclaration")]
+-----------------
+Changes found in versions of file:pmd-java/src/main/java/net/sourceforge/pmd/lang/java/symboltable/Search.java
+Base: c88c1a02d41bc7f91500e10edfb776155ca1a317
+Variant A: 9348d86eeba1a2cd8cbcc2faed38f7678b476700
+Variant B: 716b628062006950b3305f2429fc323face7c17f
+Merge: 1f467a9165f73b38a6b6c24b55e942d5393cfed2
+Changes: [(Ident "Search",Ident "searchUpward")]
+-----------------
+Changes found in versions of file:pmd-java/src/main/java/net/sourceforge/pmd/lang/java/symboltable/Search.java
+Base: c88c1a02d41bc7f91500e10edfb776155ca1a317
+Variant A: 6db64064b7920a67a973afa84cd40033f4843b4b
+Variant B: 716b628062006950b3305f2429fc323face7c17f
+Merge: 8ff9773945a29821b1ec0fbfa108217e36fb8e87
+Changes: [(Ident "Search",Ident "searchUpward")]
+-----------------
+Changes found in versions of file:pmd-core/src/main/java/net/sourceforge/pmd/ant/internal/PMDTaskImpl.java
+Base: d731dd0b0a25e45634d3ac2681fce8f6a4d922da
+Variant A: 1602c1a0ba5e731f63462748c98e35d8c336f384
+Variant B: fe1cc1604c957e8f0af440ec41eb2f4bc53338b1
+Merge: 617c6c622c4f8dae78a1381bb75309ee98f3895b
+Changes: [(Ident "PMDTaskImpl",Ident "doTask")]
+-----------------
+Done

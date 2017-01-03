@@ -1,0 +1,15 @@
+Changes found in versions of file:drjava/src/edu/rice/cs/drjava/ui/ClipboardHistoryFrame.java
+Base: 99a07c499dfcf77fbc9069d86bebf8a63f635c95
+Variant A: 5a4dc27aa8a2ade8731c7c10a1a69cd95455bf6e
+Variant B: a37294e57e8fd91b157f1af7c6326586bca411d7
+Merge: 613501a5694e67ca2e2600b0a119892c48291991
+Changes: [(Ident "ClipboardHistoryFrame",Ident "init")]
+-----------------
+Changes found in versions of file:drjava/src/edu/rice/cs/drjava/model/junit/DefaultJUnitModel.java
+Base: 99a07c499dfcf77fbc9069d86bebf8a63f635c95
+Variant A: 5a4dc27aa8a2ade8731c7c10a1a69cd95455bf6e
+Variant B: a37294e57e8fd91b157f1af7c6326586bca411d7
+Merge: 613501a5694e67ca2e2600b0a119892c48291991
+Changes: [(Ident "DefaultJUnitModel",Ident "_rawJUnitOpenDefDocs")]
+-----------------
+Done

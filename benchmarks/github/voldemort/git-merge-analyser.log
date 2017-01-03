@@ -1,0 +1,631 @@
+Changes found in versions of file:src/java/voldemort/server/storage/StorageService.java
+Base: f8c5200860cea28ce78d6b2c86dc70ba5022d659
+Variant A: a920bda242db5e07e1fc7ac3a63bddf043c2a4c3
+Variant B: c181b27c95c242feb72c562933a50206b5a55754
+Merge: 75ed11eeff3ae8b30ab9433adbc592b4d3c678d1
+Changes: [(Ident "StorageService",Ident "startInner")]
+-----------------
+Changes found in versions of file:src/java/voldemort/VoldemortAdminTool.java
+Base: 06455280abd1f4edc6b2cd619a2a40a9b10aec99
+Variant A: d44ca52d90d3f9720e3dd191405b669a8985c3ff
+Variant B: e0f1885917fd469dc1052170e616951baac31f58
+Merge: 84d42054691db08e03045c5afeec9e31227c27cb
+Changes: [(Ident "VoldemortAdminTool",Ident "main")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/routed/PipelineRoutedStore.java
+Base: ea0c80bc8005d92bab5a72a794d99cff57d9d995
+Variant A: 78ae5d5c916f30724cf5262e7561e5de9079f9c2
+Variant B: c54100d5f18c28caf8e5e753a448bd31a128292b
+Merge: be12a285a740b92c9b1f0e60aafc225e2f4b7076
+Changes: [(Ident "PipelineRoutedStore",Ident "get"),(Ident "PipelineRoutedStore",Ident "put")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/StoreDefinition.java
+Base: ea0c80bc8005d92bab5a72a794d99cff57d9d995
+Variant A: 78ae5d5c916f30724cf5262e7561e5de9079f9c2
+Variant B: c54100d5f18c28caf8e5e753a448bd31a128292b
+Merge: be12a285a740b92c9b1f0e60aafc225e2f4b7076
+Changes: [(Ident "StoreDefinition",Ident "checkParameterLegality")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/storage/StorageService.java
+Base: ea0c80bc8005d92bab5a72a794d99cff57d9d995
+Variant A: 78ae5d5c916f30724cf5262e7561e5de9079f9c2
+Variant B: c54100d5f18c28caf8e5e753a448bd31a128292b
+Merge: be12a285a740b92c9b1f0e60aafc225e2f4b7076
+Changes: [(Ident "StorageService",Ident "startInner")]
+-----------------
+Changes found in versions of file:src/java/voldemort/client/SocketStoreClientFactory.java
+Base: ea0c80bc8005d92bab5a72a794d99cff57d9d995
+Variant A: 78ae5d5c916f30724cf5262e7561e5de9079f9c2
+Variant B: c54100d5f18c28caf8e5e753a448bd31a128292b
+Merge: be12a285a740b92c9b1f0e60aafc225e2f4b7076
+Changes: [(Ident "SocketStoreClientFactory",Ident "initFailureDetector")]
+-----------------
+Changes found in versions of file:src/java/voldemort/client/AbstractStoreClientFactory.java
+Base: ea0c80bc8005d92bab5a72a794d99cff57d9d995
+Variant A: 78ae5d5c916f30724cf5262e7561e5de9079f9c2
+Variant B: c54100d5f18c28caf8e5e753a448bd31a128292b
+Merge: be12a285a740b92c9b1f0e60aafc225e2f4b7076
+Changes: [(Ident "AbstractStoreClientFactory",Ident "close"),(Ident "AbstractStoreClientFactory",Ident "getFailureDetector")]
+-----------------
+Changes found in versions of file:src/java/voldemort/VoldemortAdminTool.java
+Base: ea0c80bc8005d92bab5a72a794d99cff57d9d995
+Variant A: 78ae5d5c916f30724cf5262e7561e5de9079f9c2
+Variant B: c54100d5f18c28caf8e5e753a448bd31a128292b
+Merge: be12a285a740b92c9b1f0e60aafc225e2f4b7076
+Changes: [(Ident "VoldemortAdminTool",Ident "executeFetchEntries"),(Ident "VoldemortAdminTool",Ident "executeFetchKeys"),(Ident "VoldemortAdminTool",Ident "main")]
+-----------------
+Changes found in versions of file:test/unit/voldemort/client/ClientRegistryTest.java
+Base: e90fa82d25decdbee1f102302e7746e06a2e4ba2
+Variant A: fcffeb5f06684dd65bc7612506ab589d422703fa
+Variant B: e77ee0f003449ad232e1a54dcf3fb30645bab0ad
+Merge: a86a9e5a05cb8afbe94bbd0eb23999e39508b8a8
+Changes: [(Ident "ClientRegistryTest",Ident "testHappyPath"),(Ident "ClientRegistryTest",Ident "testRepeatRegistrationDifferentFactories"),(Ident "ClientRegistryTest",Ident "testRepeatRegistrationSameFactory"),(Ident "ClientRegistryTest",Ident "testTwoClients"),(Ident "ClientRegistryTest",Ident "testTwoFactories"),(Ident "ClientRegistryTest",Ident "testTwoStores")]
+-----------------
+Changes found in versions of file:src/java/voldemort/client/scheduler/ClientRegistryRefresher.java
+Base: e90fa82d25decdbee1f102302e7746e06a2e4ba2
+Variant A: fcffeb5f06684dd65bc7612506ab589d422703fa
+Variant B: e77ee0f003449ad232e1a54dcf3fb30645bab0ad
+Merge: a86a9e5a05cb8afbe94bbd0eb23999e39508b8a8
+Changes: [(Ident "ClientRegistryRefresher",Ident "run")]
+-----------------
+Changes found in versions of file:src/java/voldemort/client/ClientConfig.java
+Base: e90fa82d25decdbee1f102302e7746e06a2e4ba2
+Variant A: fcffeb5f06684dd65bc7612506ab589d422703fa
+Variant B: e77ee0f003449ad232e1a54dcf3fb30645bab0ad
+Merge: a86a9e5a05cb8afbe94bbd0eb23999e39508b8a8
+Changes: [(Ident "ClientConfig",Ident "setProperties")]
+-----------------
+Changes found in versions of file:src/java/voldemort/VoldemortAdminTool.java
+Base: 4957e952aaf836b9eda3f178de348380c7d9be0c
+Variant A: c8ab434ef7376a7e502b1c7be877044dc8b58de8
+Variant B: 24dbf6165a7bf777edbfe76fe1a3ed51bac02ddc
+Merge: 056d93c1b5487020e0a467c3a02371b29f73c339
+Changes: [(Ident "VoldemortAdminTool",Ident "main")]
+-----------------
+Changes found in versions of file:src/java/voldemort/client/AbstractStoreClientFactory.java
+Base: 34c9c1d03ff0e1e0cf990b73534ce9f47af2f2b0
+Variant A: 9b93e92dcd3fdfc82dbad9d1e7ece128f93cb0f6
+Variant B: f269819c1f4b7054707c09286358c34b49b73516
+Merge: a1873ab624f024869b88b12c76321d97cf94d0c9
+Changes: [(Ident "AbstractStoreClientFactory",Ident "getRawStore")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/protocol/admin/AdminServiceRequestHandler.java
+Base: 74e0d94476799fc4b2f34317dfa4b00a051469e0
+Variant A: aee112d9ef0ed960c7bc9955d7e85e6ed6ac91a0
+Variant B: fd5dbeb5113ffed51cf1836ac78b129a4bea4cb6
+Merge: 491863359fac1b2c67fe6c1a719ef4c1f569c22d
+Changes: [(Ident "AdminServiceRequestHandler",Ident "handleRequest")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/jmx/JmxService.java
+Base: e491023028019ccf987c37592a44c8869a0db65c
+Variant A: e4f512155508c051b530102d44f8cae46048859b
+Variant B: 74e0d94476799fc4b2f34317dfa4b00a051469e0
+Merge: 0a04cf95879a2a357c9ba1795b327f7942b2ccc0
+Changes: [(Ident "JmxService",Ident "startInner")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/protocol/admin/AdminServiceRequestHandler.java
+Base: 57121fadb3ee0be0c874828327d716e60128af90
+Variant A: c94ab058fca9c7c8da53b048728296c23b930586
+Variant B: e491023028019ccf987c37592a44c8869a0db65c
+Merge: f3cd4f9fef530b4f10cbad1b4c884be2b551ee9b
+Changes: [(Ident "AdminServiceRequestHandler",Ident "handleRequest")]
+-----------------
+Changes found in versions of file:src/java/voldemort/client/rebalance/RebalanceCLI.java
+Base: de9ffd0eef44488673f732a9c69f7a45525fd434
+Variant A: 02420ab2e76d0d1aeda60a762ee3256ebf51bcfd
+Variant B: 2ac361e5caf6843fecd1fcc2aac42affb40f8886
+Merge: c3cda506b04af213b7b5e4066d006ae3df3ea207
+Changes: [(Ident "RebalanceCLI",Ident "main")]
+-----------------
+Changes found in versions of file:src/java/voldemort/client/rebalance/RebalanceCLI.java
+Base: de9ffd0eef44488673f732a9c69f7a45525fd434
+Variant A: 351e72963efb4f9ea03eb50e58ddb42fb6ce1373
+Variant B: 2ac361e5caf6843fecd1fcc2aac42affb40f8886
+Merge: a69271a3883991282937eaed70486986fc2ed5b8
+Changes: [(Ident "RebalanceCLI",Ident "main")]
+-----------------
+Changes found in versions of file:src/java/voldemort/client/rebalance/RebalanceCLI.java
+Base: 0893ed2fac79af7e984a11052def016c11724be2
+Variant A: 50c3abbc5b9b39c75bffce62dff30d45bd77f70e
+Variant B: de9ffd0eef44488673f732a9c69f7a45525fd434
+Merge: c3b8777e5efb1bd7c52964903d20fd8076fc0de7
+Changes: [(Ident "RebalanceCLI",Ident "main")]
+-----------------
+Changes found in versions of file:src/java/voldemort/client/rebalance/RebalanceCLI.java
+Base: 0893ed2fac79af7e984a11052def016c11724be2
+Variant A: 7376cc64c82b51e1a9dc2bc4556ddd595f5dbe6a
+Variant B: cca94e74806012b9c83ca600e9848972a8fe6c49
+Merge: 69ae69e896350d636770dedc404f76f9a433c238
+Changes: [(Ident "RebalanceCLI",Ident "main")]
+-----------------
+Changes found in versions of file:src/java/voldemort/client/rebalance/RebalanceCLI.java
+Base: 549ba97acd800ee6ab639b11a35c48aaee376ee3
+Variant A: b8d8a0d85fb1dfea96ada3c3f0fbdb85f201ba98
+Variant B: 0893ed2fac79af7e984a11052def016c11724be2
+Merge: 5f7757a13757f0f2e65479667d9e7d013f8d9990
+Changes: [(Ident "RebalanceCLI",Ident "main")]
+-----------------
+Changes found in versions of file:src/java/voldemort/VoldemortAdminTool.java
+Base: 549ba97acd800ee6ab639b11a35c48aaee376ee3
+Variant A: b8d8a0d85fb1dfea96ada3c3f0fbdb85f201ba98
+Variant B: 0893ed2fac79af7e984a11052def016c11724be2
+Merge: 5f7757a13757f0f2e65479667d9e7d013f8d9990
+Changes: [(Ident "VoldemortAdminTool",Ident "main")]
+-----------------
+Changes found in versions of file:src/java/voldemort/VoldemortAdminTool.java
+Base: 7cb86243b5e9f1705714ecf8a2206882966919f3
+Variant A: 6140f785a5bc39f9bd5f325a5924be7e223d0a7f
+Variant B: ea2f292134244ea1bed2b3b5775b3fb0d0a1f62b
+Merge: 5608a20056e5aa1ef050219d0372724e7c57f6f0
+Changes: [(Ident "VoldemortAdminTool",Ident "main")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/readonly/ReadOnlyStorageEngine.java
+Base: 8fea16871b3e2a8ac0342128dacc0c3a6b0aec36
+Variant A: ad0a6b220460ef3d2806d2e631588598a0b268a5
+Variant B: 475b823172ca907cced8e851a9bb50c4faf0c5a5
+Merge: 1860e5b1dcd4eac62de452f4cb484f1a1d231cbf
+Changes: [(Ident "ReadOnlyStorageEngine",Ident "open")]
+-----------------
+Changes found in versions of file:src/java/voldemort/client/rebalance/MigratePartitions.java
+Base: 97e03a769c35a102189b762b7d058d477a25387e
+Variant A: 23e600eea6c09ab73ffdc23b6be6068835f8524b
+Variant B: b01a8b2e5fa444da6733b3ac457e04908871ae3c
+Merge: 983dbd031b100b8a9bf5ccbff1901a666da34026
+Changes: [(Ident "MigratePartitions",Ident "migrate")]
+-----------------
+Changes found in versions of file:test/integration/voldemort/store/grandfather/GrandfatherTest.java
+Base: 70fd0af4ba7932690ad34240b92774024a97b1a4
+Variant A: 17d5b4222334155d967b8b37e4f1fcb5a3a30fe5
+Variant B: b01a8b2e5fa444da6733b3ac457e04908871ae3c
+Merge: 02513d5536743a46864de0d5b2c9e6a2469fd7cc
+Changes: [(Ident "GrandfatherTest",Ident "test")]
+-----------------
+Changes found in versions of file:test/integration/voldemort/store/grandfather/GrandfatherTest.java
+Base: 8bd8f043583ad2f09c1b12b9e7d119b7e19f6341
+Variant A: 979f52a51883fcb387c3c95498b560aaeda8ff38
+Variant B: cecc55e68e00b9e770a331c934167608c5eb86d2
+Merge: 97e03a769c35a102189b762b7d058d477a25387e
+Changes: [(Ident "GrandfatherTest",Ident "test")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/stats/RequestCounter.java
+Base: 36bd7f12e0fb0b875ee19fb57beb274052a3cdd2
+Variant A: 06bb3ef5f3ffdc319a8a81f3fd9033210eab3265
+Variant B: 83e2957a5d5ac9c924285819f5b099a86e0f1f4a
+Merge: 3a5713a56b3d5cfd333ff76bb6bc0d3ac8172e9d
+Changes: [(Ident "RequestCounter",Ident "getThroughput")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/storage/StorageService.java
+Base: 36bd7f12e0fb0b875ee19fb57beb274052a3cdd2
+Variant A: 06bb3ef5f3ffdc319a8a81f3fd9033210eab3265
+Variant B: 83e2957a5d5ac9c924285819f5b099a86e0f1f4a
+Merge: 3a5713a56b3d5cfd333ff76bb6bc0d3ac8172e9d
+Changes: [(Ident "StorageService",Ident "registerEngine")]
+-----------------
+Changes found in versions of file:test/unit/voldemort/store/routed/RoutedStoreTest.java
+Base: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+Variant A: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+Variant B: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merge: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+Changes: [(Ident "RoutedStoreTest",Ident "testPutTimeout")]
+-----------------
+Changes found in versions of file:test/unit/voldemort/scheduled/SlopPusherTest.java
+Base: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+Variant A: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+Variant B: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merge: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+Changes: [(Ident "SlopPusherTest",Ident "checkPush"),(Ident "SlopPusherTest",Ident "setUp")]
+-----------------
+Changes found in versions of file:test/integration/voldemort/performance/benchmark/Benchmark.java
+Base: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+Variant A: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+Variant B: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merge: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+Changes: [(Ident "Benchmark",Ident "initializeStore")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/socket/SocketStore.java
+Base: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+Variant A: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+Variant B: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merge: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+Changes: [(Ident "SocketStore",Ident "submitGetAllRequest"),(Ident "SocketStore",Ident "submitGetRequest"),(Ident "SocketStore",Ident "submitPutRequest")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/routed/action/PerformZoneSerialRequests.java
+Base: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+Variant A: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+Variant B: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merge: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+Changes: [(Ident "PerformZoneSerialRequests",Ident "execute")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/routed/action/PerformSerialRequests.java
+Base: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+Variant A: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+Variant B: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merge: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+Changes: [(Ident "PerformSerialRequests",Ident "execute")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/routed/action/PerformSerialPutRequests.java
+Base: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+Variant A: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+Variant B: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merge: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+Changes: [(Ident "PerformSerialPutRequests",Ident "execute")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/routed/action/PerformParallelPutRequests.java
+Base: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+Variant A: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+Variant B: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merge: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+Changes: [(Ident "PerformParallelPutRequests",Ident "execute")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/routed/action/PerformParallelGetAllRequests.java
+Base: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+Variant A: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+Variant B: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merge: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+Changes: [(Ident "PerformParallelGetAllRequests",Ident "execute")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/routed/action/AbstractReadRepair.java
+Base: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+Variant A: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+Variant B: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merge: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+Changes: [(Ident "AbstractReadRepair",Ident "execute")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/routed/PipelineRoutedStore.java
+Base: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+Variant A: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+Variant B: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merge: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+Changes: [(Ident "PipelineRoutedStore",Ident "delete"),(Ident "PipelineRoutedStore",Ident "get"),(Ident "PipelineRoutedStore",Ident "getAll"),(Ident "PipelineRoutedStore",Ident "put")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/nonblockingstore/ThreadPoolBasedNonblockingStoreImpl.java
+Base: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+Variant A: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+Variant B: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merge: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+Changes: [(Ident "ThreadPoolBasedNonblockingStoreImpl",Ident "submitDeleteRequest"),(Ident "ThreadPoolBasedNonblockingStoreImpl",Ident "submitGetAllRequest"),(Ident "ThreadPoolBasedNonblockingStoreImpl",Ident "submitGetRequest"),(Ident "ThreadPoolBasedNonblockingStoreImpl",Ident "submitGetVersionsRequest"),(Ident "ThreadPoolBasedNonblockingStoreImpl",Ident "submitPutRequest")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/StoreDefinitionBuilder.java
+Base: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+Variant A: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+Variant B: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merge: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+Changes: [(Ident "StoreDefinitionBuilder",Ident "build")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/StoreDefinition.java
+Base: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+Variant A: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+Variant B: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merge: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+Changes: [(Ident "StoreDefinition",Ident "equals"),(Ident "StoreDefinition",Ident "hashCode"),(Ident "StoreDefinition",Ident "toString")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/storage/StorageService.java
+Base: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+Variant A: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+Variant B: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merge: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+Changes: [(Ident "StorageService",Ident "registerEngine"),(Ident "StorageService",Ident "registerNodeStores"),(Ident "StorageService",Ident "startInner")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/scheduler/SlopPusherJob.java
+Base: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+Variant A: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+Variant B: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merge: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+Changes: [(Ident "SlopPusherJob",Ident "run")]
+-----------------
+Changes found in versions of file:src/java/voldemort/client/AbstractStoreClientFactory.java
+Base: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+Variant A: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+Variant B: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merge: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+Changes: [(Ident "AbstractStoreClientFactory",Ident "getRawStore")]
+-----------------
+Changes found in versions of file:test/unit/voldemort/store/rebalancing/RedirectingStoreTest.java
+Base: 042da34a6940d1a2fa20db59331a347da16d4a9e
+Variant A: 566b4bc712f6f3945a1a74bf1293f070c615868b
+Variant B: 01fad80c857610cedc5b146c6f6d3c405509ac79
+Merge: 9702607f6213cf072715080ff7e08eccb4fad3cc
+Changes: [(Ident "RedirectingStoreTest",Ident "testProxyGet"),(Ident "RedirectingStoreTest",Ident "testProxyGetAll"),(Ident "RedirectingStoreTest",Ident "testProxyPut")]
+-----------------
+Changes found in versions of file:test/unit/voldemort/store/readonly/ReadOnlyStorageEngineTestInstance.java
+Base: 042da34a6940d1a2fa20db59331a347da16d4a9e
+Variant A: 566b4bc712f6f3945a1a74bf1293f070c615868b
+Variant B: 01fad80c857610cedc5b146c6f6d3c405509ac79
+Merge: 9702607f6213cf072715080ff7e08eccb4fad3cc
+Changes: [(Ident "ReadOnlyStorageEngineTestInstance",Ident "create")]
+-----------------
+Changes found in versions of file:test/unit/voldemort/client/rebalance/AbstractRebalanceTest.java
+Base: 042da34a6940d1a2fa20db59331a347da16d4a9e
+Variant A: 566b4bc712f6f3945a1a74bf1293f070c615868b
+Variant B: 01fad80c857610cedc5b146c6f6d3c405509ac79
+Merge: 9702607f6213cf072715080ff7e08eccb4fad3cc
+Changes: [(Ident "AbstractRebalanceTest",Ident "checkGetEntries"),(Ident "AbstractRebalanceTest",Ident "populateData"),(Ident "AbstractRebalanceTest",Ident "testProxyGetDuringRebalancing"),(Ident "AbstractRebalanceTest",Ident "testProxyGetWithMultipleDonors"),(Ident "AbstractRebalanceTest",Ident "testServerSideRouting")]
+-----------------
+Changes found in versions of file:test/unit/voldemort/client/AdminServiceBasicTest.java
+Base: 042da34a6940d1a2fa20db59331a347da16d4a9e
+Variant A: 566b4bc712f6f3945a1a74bf1293f070c615868b
+Variant B: 01fad80c857610cedc5b146c6f6d3c405509ac79
+Merge: 9702607f6213cf072715080ff7e08eccb4fad3cc
+Changes: [(Ident "AdminServiceBasicTest",Ident "testRebalanceNode")]
+-----------------
+Changes found in versions of file:test/integration/voldemort/performance/benchmark/VoldemortWrapper.java
+Base: 042da34a6940d1a2fa20db59331a347da16d4a9e
+Variant A: 566b4bc712f6f3945a1a74bf1293f070c615868b
+Variant B: 01fad80c857610cedc5b146c6f6d3c405509ac79
+Merge: 9702607f6213cf072715080ff7e08eccb4fad3cc
+Changes: [(Ident "VoldemortWrapper",Ident "write")]
+-----------------
+Changes found in versions of file:test/integration/voldemort/performance/ReadOnlyStorePerformanceTest.java
+Base: 042da34a6940d1a2fa20db59331a347da16d4a9e
+Variant A: 566b4bc712f6f3945a1a74bf1293f070c615868b
+Variant B: 01fad80c857610cedc5b146c6f6d3c405509ac79
+Merge: 9702607f6213cf072715080ff7e08eccb4fad3cc
+Changes: [(Ident "ReadOnlyStorePerformanceTest",Ident "main")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/rebalancing/RedirectingStore.java
+Base: 042da34a6940d1a2fa20db59331a347da16d4a9e
+Variant A: 566b4bc712f6f3945a1a74bf1293f070c615868b
+Variant B: 01fad80c857610cedc5b146c6f6d3c405509ac79
+Merge: 9702607f6213cf072715080ff7e08eccb4fad3cc
+Changes: [(Ident "RedirectingStore",Ident "get"),(Ident "RedirectingStore",Ident "getAll"),(Ident "RedirectingStore",Ident "getVersions"),(Ident "RedirectingStore",Ident "proxyGetAllAndLocalPut"),(Ident "RedirectingStore",Ident "proxyGetAndLocalPut"),(Ident "RedirectingStore",Ident "put")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/storage/StorageService.java
+Base: 042da34a6940d1a2fa20db59331a347da16d4a9e
+Variant A: 566b4bc712f6f3945a1a74bf1293f070c615868b
+Variant B: 01fad80c857610cedc5b146c6f6d3c405509ac79
+Merge: 9702607f6213cf072715080ff7e08eccb4fad3cc
+Changes: [(Ident "StorageService",Ident "openStore"),(Ident "StorageService",Ident "startInner")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/protocol/admin/AdminServiceRequestHandler.java
+Base: 042da34a6940d1a2fa20db59331a347da16d4a9e
+Variant A: 566b4bc712f6f3945a1a74bf1293f070c615868b
+Variant B: 01fad80c857610cedc5b146c6f6d3c405509ac79
+Merge: 9702607f6213cf072715080ff7e08eccb4fad3cc
+Changes: [(Ident "AdminServiceRequestHandler",Ident "handleAddStore"),(Ident "AdminServiceRequestHandler",Ident "handleFetchAndUpdate")]
+-----------------
+Changes found in versions of file:contrib/hadoop-store-builder/test/voldemort/store/readonly/mr/HadoopStoreBuilderTest.java
+Base: 042da34a6940d1a2fa20db59331a347da16d4a9e
+Variant A: 566b4bc712f6f3945a1a74bf1293f070c615868b
+Variant B: 01fad80c857610cedc5b146c6f6d3c405509ac79
+Merge: 9702607f6213cf072715080ff7e08eccb4fad3cc
+Changes: [(Ident "HadoopStoreBuilderTest",Ident "testHadoopBuild")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/readonly/ReadOnlyStorageEngine.java
+Base: e12fd4986f233c04f70ea84d6cb5ae08e42600b4
+Variant A: 61f4d167b2675fbf5aad29d0e8d6f94871c2986b
+Variant B: 1f21e507ffd56dd419fd70e38c09fc23179131cb
+Merge: bcf4b413b41005416449852f5610f9185a260bfc
+Changes: [(Ident "ReadOnlyStorageEngine",Ident "get")]
+-----------------
+Changes found in versions of file:test/integration/voldemort/performance/benchmark/Measurement.java
+Base: f9687d62fe65eb5a97d8aba71597daa43c8962ce
+Variant A: e88d32d42b889a4f796e2bda924e103a3fb231ea
+Variant B: 9509899cf80e666b50b3398b61e167d56cc26ace
+Merge: 8d6f4fadcea8333c562445912426226587b3312b
+Changes: [(Ident "Measurement",Ident "printReport")]
+-----------------
+Changes found in versions of file:src/java/voldemort/client/AbstractStoreClientFactory.java
+Base: 8ada0e308aab572ed9976628628cfaa9dc12084b
+Variant A: 83bfb9ce140a66a6ff3543e28bdc7989ba8e291b
+Variant B: f9687d62fe65eb5a97d8aba71597daa43c8962ce
+Merge: 1065da5249c965ad7e523ebba8fce04900194b4e
+Changes: [(Ident "AbstractStoreClientFactory",Ident "getRawStore")]
+-----------------
+Changes found in versions of file:test/unit/voldemort/store/invalidmetadata/InvalidMetadataCheckingStoreTest.java
+Base: 06579fa08deea6c4d86a2b6337a9ec3c4d854ab4
+Variant A: 32c5055a7f0d83913c583a882427ecdc8cb16a1a
+Variant B: 99468d42788e9d3a02e8bfc281e7a466310d7f9e
+Merge: 1a4a1978541eb5f8d63922fc76c0dc091d449274
+Changes: [(Ident "InvalidMetadataCheckingStoreTest",Ident "doOperations")]
+-----------------
+Changes found in versions of file:test/unit/voldemort/store/rebalancing/RedirectingStoreTest.java
+Base: 92b1a1b6d840bbdc2653c38b094eda3007584fd3
+Variant A: d9d1165755e89e1fe1c2bb0f04febc3ef949f3e7
+Variant B: 8462031d2d8b676b27f533f8f7de5631c8eb70dd
+Merge: 04b8fb4ab87050093ea5b017010e736b028bd7c2
+Changes: [(Ident "RedirectingStoreTest",Ident "testProxyGet"),(Ident "RedirectingStoreTest",Ident "testProxyPut")]
+-----------------
+Changes found in versions of file:test/unit/voldemort/client/rebalance/AbstractRebalanceTest.java
+Base: 92b1a1b6d840bbdc2653c38b094eda3007584fd3
+Variant A: d9d1165755e89e1fe1c2bb0f04febc3ef949f3e7
+Variant B: 8462031d2d8b676b27f533f8f7de5631c8eb70dd
+Merge: 04b8fb4ab87050093ea5b017010e736b028bd7c2
+Changes: [(Ident "AbstractRebalanceTest",Ident "testProxyGetDuringRebalancing"),(Ident "AbstractRebalanceTest",Ident "testServerSideRouting")]
+-----------------
+Changes found in versions of file:test/integration/voldemort/performance/RemoteTest.java
+Base: 92b1a1b6d840bbdc2653c38b094eda3007584fd3
+Variant A: d9d1165755e89e1fe1c2bb0f04febc3ef949f3e7
+Variant B: 8462031d2d8b676b27f533f8f7de5631c8eb70dd
+Merge: 04b8fb4ab87050093ea5b017010e736b028bd7c2
+Changes: [(Ident "RemoteTest",Ident "main")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/metadata/MetadataStore.java
+Base: 92b1a1b6d840bbdc2653c38b094eda3007584fd3
+Variant A: d9d1165755e89e1fe1c2bb0f04febc3ef949f3e7
+Variant B: 8462031d2d8b676b27f533f8f7de5631c8eb70dd
+Merge: 04b8fb4ab87050093ea5b017010e736b028bd7c2
+Changes: [(Ident "MetadataStore",Ident "getInnerValue")]
+-----------------
+Changes found in versions of file:test/integration/voldemort/performance/RemoteTest.java
+Base: 955176ca72ac654c175bc68ef56fcb50156482a3
+Variant A: 6c05f107871509e93c09faa3479211da25d5fd66
+Variant B: 497c4cb8ffd6ef63a4f263ce62441b20a2279808
+Merge: 77da329aa67bdefa11a8b3f93e74267dd9e80917
+Changes: [(Ident "RemoteTest",Ident "main")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/storage/StorageService.java
+Base: 5bc56f724d2f899b0da38a5c1d97e0c784c153de
+Variant A: 7c0110599e3e66ee8b4d183657f0ddaa669451da
+Variant B: a1c9685e2a97a92b26c2926325e470bda89232dd
+Merge: 6b04e45910bb84b841575d77e416157d9e174976
+Changes: [(Ident "StorageService",Ident "registerNodeStores")]
+-----------------
+Changes found in versions of file:test/unit/voldemort/client/AdminServiceFailureTest.java
+Base: c9af7b2ae895f0aee34a6fc9d0e3ae110ba230b4
+Variant A: 54c90faffbc00bea025ff3edd8759e9a1f2ccce3
+Variant B: 1f1d05f4e817dcdbd110f56b028ea341f933512b
+Merge: daa286ed4cc6c1d78072592a5b46abb092a8d655
+Changes: [(Ident "AdminServiceFailureTest",Ident "getAdminServer")]
+-----------------
+Changes found in versions of file:test/integration/voldemort/socketpool/SimpleSocketPoolTest.java
+Base: c9af7b2ae895f0aee34a6fc9d0e3ae110ba230b4
+Variant A: 54c90faffbc00bea025ff3edd8759e9a1f2ccce3
+Variant B: 1f1d05f4e817dcdbd110f56b028ea341f933512b
+Merge: daa286ed4cc6c1d78072592a5b46abb092a8d655
+Changes: [(Ident "SimpleSocketPoolTest",Ident "testSocketPoolLimitSomeTimeout")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/protocol/admin/AdminServiceRequestHandler.java
+Base: c9af7b2ae895f0aee34a6fc9d0e3ae110ba230b4
+Variant A: 54c90faffbc00bea025ff3edd8759e9a1f2ccce3
+Variant B: 1f1d05f4e817dcdbd110f56b028ea341f933512b
+Merge: daa286ed4cc6c1d78072592a5b46abb092a8d655
+Changes: [(Ident "AdminServiceRequestHandler",Ident "handleRequest")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/VoldemortServer.java
+Base: c9af7b2ae895f0aee34a6fc9d0e3ae110ba230b4
+Variant A: 54c90faffbc00bea025ff3edd8759e9a1f2ccce3
+Variant B: 1f1d05f4e817dcdbd110f56b028ea341f933512b
+Merge: daa286ed4cc6c1d78072592a5b46abb092a8d655
+Changes: [(Ident "VoldemortServer",Ident "createServices")]
+-----------------
+Changes found in versions of file:test/unit/voldemort/client/rebalance/AbstractRebalanceTest.java
+Base: 4460aa6dfeec17a81178e19eae4135dbac446dc3
+Variant A: 54e5737b9711f15182ab9f7c3a96bdf35f5618b6
+Variant B: 454597def7d70a549db89e2bba9c4809582d75d0
+Merge: 2db079513b2849316d17ddf5f251abb45fe52390
+Changes: [(Ident "AbstractRebalanceTest",Ident "testProxyGetDuringRebalancing")]
+-----------------
+Changes found in versions of file:src/java/voldemort/client/protocol/admin/AdminClient.java
+Base: 8830901c94e0bad3b38a08e9f366c2185a0466e0
+Variant A: 33d85e25c3488bf3277bc5fb3f5ee0fa8216db71
+Variant B: c3e93f8e5052c35893ecd4d8290ec45e6edacb54
+Merge: 454597def7d70a549db89e2bba9c4809582d75d0
+Changes: [(Ident "AdminClient",Ident "getReplicationMapping"),(Ident "AdminClient",Ident "restoreDataFromReplications"),(Ident "AdminClient",Ident "restoreStoreFromReplication")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/routed/RoutedStore.java
+Base: 73f32a47e4e5460e57cb26f8cfa1d2d1d21c77a4
+Variant A: f77be6f063214d91daf3a4b465546068fd1420e9
+Variant B: 7763aabd2c880c29c8647efa72edfebd74f83a12
+Merge: 08b31c046b8be4c54d73bb109685d2dbba0f3a44
+Changes: [(Ident "RoutedStore",Ident "getAll")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/storage/StorageService.java
+Base: 73f32a47e4e5460e57cb26f8cfa1d2d1d21c77a4
+Variant A: f77be6f063214d91daf3a4b465546068fd1420e9
+Variant B: 7763aabd2c880c29c8647efa72edfebd74f83a12
+Merge: 08b31c046b8be4c54d73bb109685d2dbba0f3a44
+Changes: [(Ident "StorageService",Ident "registerNodeStores")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/routed/RoutedStore.java
+Base: 73f32a47e4e5460e57cb26f8cfa1d2d1d21c77a4
+Variant A: 954e0d4c52575ea72afe65e47cff8847d387af5a
+Variant B: 7de50700c84920e301972ef1e414fdf8538c21d8
+Merge: 4bff8027f67df7feb14edd48a82ffe980f6135aa
+Changes: [(Ident "RoutedStore",Ident "delete"),(Ident "RoutedStore",Ident "getAll"),(Ident "RoutedStore",Ident "put")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/rebalance/Rebalancer.java
+Base: a48ac00617188a5ca4fae91f04d722c05fad0131
+Variant A: 2c25d84381f661833d9bbbb476fe155f253f39cd
+Variant B: a0e207d40acd5e822f17ebf3a9908779be310beb
+Merge: 25ddea3ffc1f2931b5a3e11bc0f33144d6330cd6
+Changes: [(Ident "Rebalancer",Ident "rebalanceLocalNode")]
+-----------------
+Changes found in versions of file:contrib/ec2-testing/test/voldemort/utils/Ec2RebalancingTest.java
+Base: a48ac00617188a5ca4fae91f04d722c05fad0131
+Variant A: 2c25d84381f661833d9bbbb476fe155f253f39cd
+Variant B: a0e207d40acd5e822f17ebf3a9908779be310beb
+Merge: 25ddea3ffc1f2931b5a3e11bc0f33144d6330cd6
+Changes: [(Ident "Ec2RebalancingTest",Ident "testSingleRebalancing")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/rebalance/Rebalancer.java
+Base: a48ac00617188a5ca4fae91f04d722c05fad0131
+Variant A: 1b0196d21ca1177d741ebe447c93a72a76746dec
+Variant B: d9c194c0daf5f97316281c8bc60a46d89e9f35cd
+Merge: 2c25d84381f661833d9bbbb476fe155f253f39cd
+Changes: [(Ident "Rebalancer",Ident "rebalanceLocalNode")]
+-----------------
+Changes found in versions of file:src/java/voldemort/client/rebalance/RebalanceCommandShell.java
+Base: a48ac00617188a5ca4fae91f04d722c05fad0131
+Variant A: 1b0196d21ca1177d741ebe447c93a72a76746dec
+Variant B: d9c194c0daf5f97316281c8bc60a46d89e9f35cd
+Merge: 2c25d84381f661833d9bbbb476fe155f253f39cd
+Changes: [(Ident "RebalanceCommandShell",Ident "main")]
+-----------------
+Changes found in versions of file:test/integration/voldemort/performance/AdminTest.java
+Base: 56c56942f787c4e7509539ee9e0e009d82db7d44
+Variant A: 53a4c422cca2b50909dd95071fc36b0746c7f776
+Variant B: 73f32a47e4e5460e57cb26f8cfa1d2d1d21c77a4
+Merge: a7a33b41f1894614e79794dfc72edf8a3892550e
+Changes: [(Ident "AdminTest",Ident "main"),(Ident "AdminTest",Ident "testFetchAndUpdate")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/rebalance/Rebalancer.java
+Base: f085f188403b8083b0b05fbcf3d2b329bac2ace1
+Variant A: c909562a42ce5da2bc0ad95e222de156292c0680
+Variant B: 29a6e72b55c4498242deb84daf7a2b84b93086e5
+Merge: f3db691cf0c6cc347fcb1d6eb667d98ab308f29f
+Changes: [(Ident "Rebalancer",Ident "rebalanceLocalNode")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/protocol/admin/ProtoBuffAdminServiceRequestHandler.java
+Base: 2fd35f9889875dc1f8ebc6501ed7682dfee1c131
+Variant A: cffd8d763216d079250efc74b253074a5bea3dbc
+Variant B: 46ab6674a7f12a92cda027d8bb05c93404e6b404
+Merge: 3ae9933e7e71a58a602fd02c1cbfd21682808cb2
+Changes: [(Ident "ProtoBuffAdminServiceRequestHandler",Ident "handleFetchAndUpdate")]
+-----------------
+Changes found in versions of file:test/unit/voldemort/client/AdminServiceBasicTest.java
+Base: 3b0211929c0c8be13cbf325e7aed303aaf916e1a
+Variant A: 320c4118da731d4f1af1e2718edf0bb71006eb04
+Variant B: 1f412ce8897f2ba00d98b3f4524aaab5b92f29c3
+Merge: ab97723dc2045d3b4267838df239fae843770bd0
+Changes: [(Ident "AdminServiceBasicTest",Ident "testFetchAndUpdate")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/protocol/admin/ProtoBuffAdminServiceRequestHandler.java
+Base: 3b0211929c0c8be13cbf325e7aed303aaf916e1a
+Variant A: 320c4118da731d4f1af1e2718edf0bb71006eb04
+Variant B: 1f412ce8897f2ba00d98b3f4524aaab5b92f29c3
+Merge: ab97723dc2045d3b4267838df239fae843770bd0
+Changes: [(Ident "ProtoBuffAdminServiceRequestHandler",Ident "handleFetchAndUpdate")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/protocol/admin/ProtoBuffAdminServiceRequestHandler.java
+Base: 788a0b44cbf1b91f85b2bef3aa3c3b30cf329029
+Variant A: b46736178349cddaab6500400b7f204b8753f834
+Variant B: 935e7ac7409b5e1e6d55f72de0b6a1da1c420ff6
+Merge: afae7fb3f4cbbfedd3732786c75f4a52c7381df9
+Changes: [(Ident "ProtoBuffAdminServiceRequestHandler",Ident "handleFetchPartitionEntries")]
+-----------------
+Changes found in versions of file:src/java/voldemort/store/routed/RoutedStore.java
+Base: 864d6a518fd6b6cc3ac129d9abb5f34b7d37e827
+Variant A: 15b5cc1bd943af19201fea9625a642d18500ee99
+Variant B: d6a50171f5a8561e5fa47aa9034bf1293ec6f8c9
+Merge: 33d01196bced9bd1e01e4f9bdf70605c5eb08225
+Changes: [(Ident "RoutedStore",Ident "put")]
+-----------------
+Changes found in versions of file:src/java/voldemort/server/storage/StorageService.java
+Base: bfd86e8fe3cec85052568c95ffac77837abb2f56
+Variant A: 5b93843ff8461330d549c03c2a71be1a5be978b8
+Variant B: 9e0ba425e280f3e9cdc0e7850bd45f4047faf97c
+Merge: 1289cc1e29a4a78b3ba90b5ecd228eccb84380e6
+Changes: [(Ident "StorageService",Ident "scheduleCleanupJob")]
+-----------------
+Changes found in versions of file:test/unit/voldemort/store/readonly/ReadOnlyStorageEngineTestInstance.java
+Base: bb6064a6881c315befe238363e590e6d225ac07c
+Variant A: efcdd2626dd0c81cbd5d71e6ff5322b463b68fb3
+Variant B: f318a72df95c213357b966fccb09b9f4bd64fd6f
+Merge: c9bec07b51e928efac16d4f5db21875c07c51dba
+Changes: [(Ident "ReadOnlyStorageEngineTestInstance",Ident "create")]
+-----------------
+Changes found in versions of file:test/common/voldemort/TestUtils.java
+Base: bb6064a6881c315befe238363e590e6d225ac07c
+Variant A: efcdd2626dd0c81cbd5d71e6ff5322b463b68fb3
+Variant B: f318a72df95c213357b966fccb09b9f4bd64fd6f
+Merge: c9bec07b51e928efac16d4f5db21875c07c51dba
+Changes: [(Ident "TestUtils",Ident "createReadOnlyIndex")]
+-----------------
+Changes found in versions of file:test/integration/voldemort/performance/RemoteStoreComparisonTest.java
+Base: abe83aa8dc05113ac3fac79b52901cee174aba79
+Variant A: 927373bab872cba5fb6aad86fb13022412d48b06
+Variant B: 2c3c94421e83e7d60a872ed795603ef7d4c39683
+Merge: 3f9cb465ff523237fc805221272a03fad4c97d21
+Changes: [(Ident "RemoteStoreComparisonTest",Ident "main")]
+-----------------
+Done
