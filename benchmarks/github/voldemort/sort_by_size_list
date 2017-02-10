@@ -49,6 +49,8 @@
 1f0db5f73a_SlopPusherJob_run_o.java                                            [INTERESTING]
 1f0db5f73a_PerformSerialRequests_execute_o.java                                [SMALL CHANGES IN BIG CODE]
 1f0db5f73a_AbstractReadRepair_execute_o.java                                   [INTERESTING]
+1f0db5f73a_AbstractStoreClientFactory_getRawStore_o.java                       [INTERESTING]
+1f0db5f73a_PerformSerialPutRequests_execute_o.java                             [SMALL CHANGE IN BIG CODE]
 
 3a5713a56b_RequestCounter_getThroughput_o.java                                 [POTENTIAL CONFLICT]
 3a5713a56b_StorageService_registerEngine_o.java                                [INTERESTING - THREAD SPECIFIC]
@@ -108,10 +110,10 @@ afae7fb3f4_ProtoBuffAdminServiceRequestHandler_handleFetchPartitionEntries_o.jav
 f3db691cf0_Rebalancer_rebalanceLocalNode_o.java                 [THREAD SPECIFIC]
 
 
-1f0db5f73a_AbstractStoreClientFactory_getRawStore_o.java
-1f0db5f73a_PerformSerialPutRequests_execute_o.java
+
 1f0db5f73a_PipelineRoutedStore_delete_o.java
 1f0db5f73a_Benchmark_initializeStore_o.java
+
 9702607f62_AbstractRebalanceTest_checkGetEntries_o.java
 be12a285a7_StoreDefinition_checkParameterLegality_o.java
 9702607f62_HadoopStoreBuilderTest_testHadoopBuild_o.java
