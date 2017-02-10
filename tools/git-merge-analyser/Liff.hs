@@ -86,10 +86,10 @@ liff_result o a b m f ((Ident cl,Ident mth),[ob,ab,bb,mb]) = do
       strinfo = "\nClass " ++ show cl ++ ", method " ++ show mth
       resstr = stro ++ stra ++ strb ++ strm ++ strinfo ++ "\n" ++ prettyPrint ob ++ "\n" ++ prettyPrint ab ++ "\n" ++ prettyPrint bb ++ "\n" ++ prettyPrint mb 
       bench ast = "class " ++ cl ++ "{ \n " ++ "void " ++ mth ++ "() " ++ prettyPrint ast ++ "\n}"
-  writeFile (resfile++"_o_"++n) (bench ob) 
-  writeFile (resfile++"_a_"++n) (bench ab) 
-  writeFile (resfile++"_b_"++n) (bench bb) 
-  writeFile (resfile++"_m_"++n) (bench mb) 
+  writeFile (resfile++"_o.java") (bench ob) 
+  writeFile (resfile++"_a.java") (bench ab) 
+  writeFile (resfile++"_b.java") (bench bb) 
+  writeFile (resfile++"_m.java") (bench mb) 
 
 toClassInfo :: Maybe Program -> ClassInfo 
 toClassInfo Nothing = M.empty
