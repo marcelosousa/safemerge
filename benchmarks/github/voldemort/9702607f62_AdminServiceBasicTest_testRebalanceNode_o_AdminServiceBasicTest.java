@@ -1,4 +1,5 @@
-{
+class AdminServiceBasicTest{ 
+ void testRebalanceNode() {
   HashMap<ByteArray, byte[]> entrySet = ServerTestUtils.createRandomKeyValuePairs(TEST_STREAM_KEYS_SIZE);
   List<Integer> fetchAndUpdatePartitionsList = Arrays.asList(0, 2);
   int fetchPartitionKeyCount = 0;
@@ -23,4 +24,5 @@
                                                                  assertEquals("entry value should match", new String(entry.getValue()), new String(store.get(entry.getKey()).get(0).getValue()));
                                                                }
                                                              }
+}
 }

@@ -1,4 +1,5 @@
-{
+class ClientRegistryTest{ 
+ void testRepeatRegistrationDifferentFactories() {
   long client1LastBootstrapTime = 0;
   long client2LastBootstrapTime = 0;
   for (int i = 0 ; i < 3 ; i++)
@@ -58,4 +59,5 @@
     ((ZenStoreClient<String, String>) client1).close();
     ((ZenStoreClient<String, String>) client2).close();
   }
+}
 }

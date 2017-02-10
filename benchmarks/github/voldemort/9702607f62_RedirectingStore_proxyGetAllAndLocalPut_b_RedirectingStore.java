@@ -1,4 +1,5 @@
-{
+class RedirectingStore{ 
+ void proxyGetAllAndLocalPut() {
   Map<ByteArray, List<Versioned<byte[]>>> proxyKeyValues = proxyGetAll(keys, stealInfoList);
   if (!isReadOnly)
   {
@@ -15,4 +16,5 @@
                                                                                                  }
   }
   return proxyKeyValues;
+}
 }

@@ -1,4 +1,5 @@
-{
+class AbstractRebalanceTest{ 
+ void populateData() {
   Map<Integer, Store<ByteArray, byte[]>> storeMap = new HashMap<Integer, Store<ByteArray, byte[]>>();
   for (int nodeId : nodeList) {
                                 Node node = cluster.getNodeById(nodeId);
@@ -41,4 +42,5 @@
   storeBuilder.build();
   AdminStoreSwapper swapper = new AdminStoreSwapper(cluster, Executors.newFixedThreadPool(nodeList.size()), adminClient, 100000);
   swapper.swapStoreData(testStoreNameRO, outputDir.getAbsolutePath(), 1L);
+}
 }

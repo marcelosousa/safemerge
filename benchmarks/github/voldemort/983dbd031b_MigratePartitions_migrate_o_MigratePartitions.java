@@ -1,4 +1,5 @@
-{
+class MigratePartitions{ 
+ void migrate() {
   if (donorNodePlans.size() == 0)
   {
     logger.info("Nothing to move around");
@@ -119,4 +120,5 @@
                       }
             }
           }
+}
 }

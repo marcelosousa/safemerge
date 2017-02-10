@@ -1,4 +1,5 @@
-{
+class ClientRegistryRefresher{ 
+ void run() {
   if (hadConflict)
   {
     lastVersion = clientRegistry.getSysStore(clientId).getVersion();
@@ -22,4 +23,5 @@
   {
     logger.warn(("encountered the following error while trying to update client registry: " + e));
   }
+}
 }

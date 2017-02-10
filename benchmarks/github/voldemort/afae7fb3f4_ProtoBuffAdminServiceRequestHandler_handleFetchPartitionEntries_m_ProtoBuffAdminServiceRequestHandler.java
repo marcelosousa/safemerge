@@ -1,4 +1,5 @@
-{
+class ProtoBuffAdminServiceRequestHandler{ 
+ void handleFetchPartitionEntries() {
   try
   {
     String storeName = request.getStore();
@@ -52,4 +53,5 @@
     VAdminProto.FetchPartitionEntriesResponse response = VAdminProto.FetchPartitionEntriesResponse.newBuilder().setError(ProtoUtils.encodeError(errorCodeMapper, e)).build();
     ProtoUtils.writeMessage(outputStream, response);
   }
+}
 }

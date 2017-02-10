@@ -1,4 +1,5 @@
-{
+class PerformParallelPutRequests{ 
+ void execute() {
   Node master = pipelineData.getMaster();
   Versioned<byte[]> versionedCopy = pipelineData.getVersionedCopy();
   if (logger.isDebugEnabled())
@@ -153,4 +154,5 @@
       pipeline.addEvent(completeEvent);
     }
   }
+}
 }

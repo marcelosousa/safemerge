@@ -1,4 +1,5 @@
-{
+class ReadOnlyStorageEngine{ 
+ void open() {
   fileModificationLock.writeLock().lock();
   try
   {
@@ -26,4 +27,5 @@
   finally {
             fileModificationLock.writeLock().unlock();
           }
+}
 }

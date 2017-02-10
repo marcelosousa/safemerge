@@ -1,4 +1,5 @@
-{
+class GrandfatherTest{ 
+ void test() {
   int numStores = currentStoreDefs.size();
   RoutingStrategy beforeStrategy = new RoutingStrategy[numStores];
   RoutingStrategy afterStrategy = new RoutingStrategy[numStores];
@@ -113,4 +114,5 @@
               factory.close();
             stopServer(Lists.newArrayList(targetCluster.getNodes()));
           }
+}
 }

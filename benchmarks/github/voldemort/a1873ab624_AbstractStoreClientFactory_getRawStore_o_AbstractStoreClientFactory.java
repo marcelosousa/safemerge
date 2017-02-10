@@ -1,4 +1,5 @@
-{
+class AbstractStoreClientFactory{ 
+ void getRawStore() {
   logger.info(("Client zone-id [" + clientZoneId + "] Attempting to obtain metadata for store [" + storeName + "] "));
   if (logger.isDebugEnabled())
   {
@@ -66,4 +67,5 @@
   InconsistencyResolver<Versioned<V>> secondaryResolver = resolver == null ? new TimeBasedInconsistencyResolver() : resolver;
   serializedStore = new InconsistencyResolvingStore<K, V, T>(serializedStore, new ChainedResolver<Versioned<V>>(new VectorClockInconsistencyResolver(), secondaryResolver));
   return serializedStore;
+}
 }

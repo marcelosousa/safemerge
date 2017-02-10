@@ -1,4 +1,5 @@
-{
+class PipelineRoutedStore{ 
+ void getAll() {
   StoreUtils.assertValidKeys(keys);
   boolean allowReadRepair = repairReads && (transforms == null || transforms.size()) == 0;
   GetAllPipelineData pipelineData = new GetAllPipelineData();
@@ -17,4 +18,5 @@
   if (pipelineData.getFatalError() != null)
     throw pipelineData.getFatalError();
   return pipelineData.getResult();
+}
 }

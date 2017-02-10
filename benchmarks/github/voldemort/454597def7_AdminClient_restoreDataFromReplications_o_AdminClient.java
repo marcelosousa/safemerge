@@ -1,4 +1,5 @@
-{
+class AdminClient{ 
+ void restoreDataFromReplications() {
   ExecutorService executors = Executors.newFixedThreadPool(parallelTransfers, new ThreadFactory()
                                                                               {
                                                                                 public Thread newThread (Runnable r)
@@ -31,4 +32,5 @@
               logger.error("Interrupted while waiting restoreDataFromReplications to finish ..");
             }
           }
+}
 }

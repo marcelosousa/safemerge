@@ -1,4 +1,5 @@
-{
+class RedirectingStore{ 
+ void getVersions() {
   RebalancePartitionsInfo stealInfo = redirectingKey(key);
   if (stealInfo != null)
   {
@@ -7,4 +8,5 @@
       return StoreUtils.getVersions(proxyValues);
   }
   return getInnerStore().getVersions(key);
+}
 }

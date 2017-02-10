@@ -1,4 +1,5 @@
-{
+class AdminClient{ 
+ void getReplicationMapping() {
   Node node = cluster.getNodeById(nodeId);
   Map<Integer, Integer> partitionsToNodeMapping = RebalanceUtils.getCurrentPartitionMapping(cluster);
   HashMap<Integer, List<Integer>> restoreMapping = new HashMap<Integer, List<Integer>>();
@@ -21,4 +22,5 @@
                                                  }
                                                }
   return restoreMapping;
+}
 }

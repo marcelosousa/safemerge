@@ -1,4 +1,5 @@
-{
+class PerformSerialRequests{ 
+ void execute() {
   List<Node> nodes = pipelineData.getNodes();
   while ((pipelineData.getSuccesses() < preferred && pipelineData.getNodeIndex()) < nodes.size())
   {
@@ -54,4 +55,5 @@
       pipeline.addEvent(completeEvent);
     }
   }
+}
 }

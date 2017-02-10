@@ -1,4 +1,5 @@
-{
+class Rebalancer{ 
+ void rebalanceLocalNode() {
   if (!acquireRebalancingPermit())
   {
     RebalancePartitionsInfo info = metadataStore.getRebalancingStealInfo();
@@ -85,4 +86,5 @@
                                            }
                                          });
   return requestId;
+}
 }

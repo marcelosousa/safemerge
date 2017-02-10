@@ -1,4 +1,5 @@
-{
+class RebalanceCLI{ 
+ void main() {
   int exitCode = ERROR_EXIT_CODE;
   RebalanceController rebalanceController = null;
   try
@@ -129,4 +130,5 @@
             }
           }
   System.exit(exitCode);
+}
 }

@@ -1,4 +1,5 @@
-{
+class RemoteStoreComparisonTest{ 
+ void main() {
   if (args.length != 2)
     Utils.croak(("USAGE: java " + RemoteStoreComparisonTest.class.getName() + " numRequests numThreads"));
   int numRequests = Integer.parseInt(args[0]);
@@ -130,4 +131,5 @@
   httpReadTest.run(numRequests, numThreads);
   httpReadTest.printStats();
   httpService.stop();
+}
 }

@@ -1,4 +1,5 @@
-{
+class RequestCounter{ 
+ void getThroughput() {
   Accumulator oldv = getValidAccumulator();
   double elapsed = (time.getMilliseconds() - oldv.startTimeMS) / (double) Time.MS_PER_SECOND;
   if (elapsed > 0.0F)
@@ -9,4 +10,5 @@
   {
     return -1.0F;
   }
+}
 }

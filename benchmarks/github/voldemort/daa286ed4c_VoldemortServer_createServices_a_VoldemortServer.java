@@ -1,4 +1,5 @@
-{
+class VoldemortServer{ 
+ void createServices() {
   List<VoldemortService> services = new ArrayList<VoldemortService>();
   SchedulerService scheduler = new SchedulerService(voldemortConfig.getSchedulerThreads(), SystemTime.INSTANCE);
   StorageService storageService = new StorageService(storeRepository, metadata, scheduler, voldemortConfig);
@@ -50,4 +51,5 @@
   if (voldemortConfig.isJmxEnabled())
     services.add(new JmxService(this, this.metadata.getCluster(), storeRepository, services));
   return ImmutableList.copyOf(services);
+}
 }

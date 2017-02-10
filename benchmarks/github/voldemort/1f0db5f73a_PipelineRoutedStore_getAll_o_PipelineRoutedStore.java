@@ -1,4 +1,5 @@
-{
+class PipelineRoutedStore{ 
+ void getAll() {
   StoreUtils.assertValidKeys(keys);
   GetAllPipelineData pipelineData = new GetAllPipelineData();
   if (zoneRoutingEnabled)
@@ -16,4 +17,5 @@
   if (pipelineData.getFatalError() != null)
     throw pipelineData.getFatalError();
   return pipelineData.getResult();
+}
 }

@@ -1,4 +1,5 @@
-{
+class AdminServiceRequestHandler{ 
+ void handleFetchAndUpdate() {
   final int nodeId = request.getNodeId();
   final List<Integer> partitions = request.getPartitionsList();
   final VoldemortFilter filter = request.hasFilter() ? getFilterFromRequest(request.getFilter(), voldemortConfig, networkClassLoader) : new DefaultVoldemortFilter();
@@ -66,4 +67,5 @@
     logger.error(("handleFetchAndUpdate failed for request(" + request.toString() + ")"), e);
   }
   return response.build();
+}
 }

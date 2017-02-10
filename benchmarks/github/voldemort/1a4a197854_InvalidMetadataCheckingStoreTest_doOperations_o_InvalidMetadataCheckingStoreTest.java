@@ -1,4 +1,5 @@
-{
+class InvalidMetadataCheckingStoreTest{ 
+ void doOperations() {
   for (int i = 0 ; i < LOOP_COUNT ;)
   {
     ByteArray key = new ByteArray(ByteUtils.md5(Integer.toString(((int) (Math.random() * Integer.MAX_VALUE))).getBytes()));
@@ -21,4 +22,5 @@
       }
     }
   }
+}
 }

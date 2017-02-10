@@ -1,4 +1,5 @@
-{
+class AbstractRebalanceTest{ 
+ void checkGetEntries() {
   int matchedEntries = 0;
   RoutingStrategy routing = new ConsistentRoutingStrategy(cluster.getNodes(), 1);
   Store<ByteArray, byte[], byte[]> store = getSocketStore(testStoreName, node.getHost(), node.getSocketPort());
@@ -32,4 +33,5 @@
                                                              }
   if ((null != availablePartitions && availablePartitions.size()) > 0)
     assertNotSame("CheckGetEntries should match some entries.", 0, matchedEntries);
+}
 }

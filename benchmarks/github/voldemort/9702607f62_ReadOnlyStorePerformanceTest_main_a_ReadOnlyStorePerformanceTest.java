@@ -1,4 +1,5 @@
-{
+class ReadOnlyStorePerformanceTest{ 
+ void main() {
   OptionParser parser = new OptionParser();
   parser.accepts("help", "print usage information");
   parser.accepts("threads", "number of threads").withRequiredArg().ofType(Integer.class);
@@ -157,4 +158,5 @@
   System.out.println((("Null reads ratio:" + nullResults.doubleValue()) / totalResults.doubleValue()));
   readWriteTest.printStats();
   System.exit(0);
+}
 }

@@ -1,4 +1,5 @@
-{
+class AbstractStoreClientFactory{ 
+ void close() {
   this.threadPool.shutdown();
   try
   {
@@ -19,4 +20,5 @@
       JmxUtils.unregisterMbean(JmxUtils.createObjectName("voldemort.store.stats.aggregate", ("aggregate-perf" + JmxUtils.getJmxId(jmxId))));
     }
   }
+}
 }

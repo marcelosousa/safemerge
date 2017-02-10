@@ -1,4 +1,5 @@
-{
+class HadoopStoreBuilderTest{ 
+ void testHadoopBuild() {
   Map<String, String> values = new HashMap<String, String>();
   File testDir = TestUtils.createTempDir();
   File tempDir = new File(testDir, "temp"), tempDir2 = new File(testDir, "temp2");
@@ -40,4 +41,5 @@
                                                               assertEquals("Incorrect number of results", 1, found.size());
                                                               assertEquals(entry.getValue(), found.get(0).getValue());
                                                             }
+}
 }

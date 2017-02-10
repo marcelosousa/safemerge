@@ -1,4 +1,5 @@
-{
+class StorageService{ 
+ void registerNodeStores() {
   Map<Integer, Store<ByteArray, byte[]>> nodeStores = new HashMap<Integer, Store<ByteArray, byte[]>>(cluster.getNumberOfNodes());
   for (Node node : cluster.getNodes()) {
                                          Store<ByteArray, byte[]> store = getNodeStore(def.getName(), node, localNode);
@@ -9,4 +10,5 @@
   routedStore = new RebootstrappingStore(metadata, storeRepository, voldemortConfig, storeFactory, (RoutedStore) routedStore);
   routedStore = new InconsistencyResolvingStore<ByteArray, byte[]>(routedStore, new VectorClockInconsistencyResolver<byte[]>());
   this.storeRepository.addRoutedStore(routedStore);
+}
 }

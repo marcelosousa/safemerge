@@ -1,4 +1,5 @@
-{
+class AbstractStoreClientFactory{ 
+ void close() {
   this.threadPool.shutdown();
   try
   {
@@ -20,4 +21,5 @@
     }
   }
   stopClientAsyncSchedulers();
+}
 }

@@ -1,4 +1,5 @@
-{
+class AdminTest{ 
+ void main() {
   OptionParser parser = new OptionParser();
   parser.accepts("native", "use native admin client");
   parser.accepts("f", "execute fetch operation");
@@ -22,4 +23,5 @@
   adminTest = new AdminTest(bootstrapUrl, storeName);
   SetMultimap<Integer, Integer> nodePartitions = adminTest.getNodePartitions((options.has("n") ? options.valuesOf("n") : null), (options.has("p") ? options.valuesOf("p") : null));
   adminTest.testFetch(nodePartitions);
+}
 }

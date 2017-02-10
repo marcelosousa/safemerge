@@ -1,4 +1,5 @@
-{
+class StoreDefinition{ 
+ void checkParameterLegality() {
   Utils.notNull(this.type);
   Utils.notNull(routingPolicy);
   Utils.notNull(keySerializer);
@@ -60,4 +61,5 @@
       throw new IllegalArgumentException("Number of zones to block for while writing (" + zoneCountWrites + ") should be less then replicating zones (" + replicatingZones + ")");
     }
   }
+}
 }

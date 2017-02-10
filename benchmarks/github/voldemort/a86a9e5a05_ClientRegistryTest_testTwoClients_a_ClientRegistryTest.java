@@ -1,4 +1,5 @@
-{
+class ClientRegistryTest{ 
+ void testTwoClients() {
   List<Integer> emptyPartitionList = Lists.newArrayList();
   ClientConfig clientConfig = new ClientConfig().setMaxThreads(4).setMaxTotalConnections(4).setMaxConnectionsPerNode(4).setBootstrapUrls((SERVER_LOCAL_URL + serverPorts[0])).setClientContextName(CLIENT_CONTEXT_NAME).setClientRegistryUpdateInSecs(CLIENT_REGISTRY_REFRSH_INTERVAL).setEnableLazy(false);
   SocketStoreClientFactory socketFactory = new SocketStoreClientFactory(clientConfig);
@@ -45,4 +46,5 @@
   assertTrue("Client registry not updated.", (infoList.get(1).getBootstrapTime() < infoList.get(1).getUpdateTime()));
   ((ZenStoreClient<String, String>) client1).close();
   ((ZenStoreClient<String, String>) client2).close();
+}
 }

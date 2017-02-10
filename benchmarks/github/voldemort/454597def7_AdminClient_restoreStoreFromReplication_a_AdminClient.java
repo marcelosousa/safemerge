@@ -1,4 +1,5 @@
-{
+class AdminClient{ 
+ void restoreStoreFromReplication() {
   logger.info(("Restoring data for store:" + storeDef.getName()));
   RoutingStrategyFactory factory = new RoutingStrategyFactory();
   RoutingStrategy strategy = factory.updateRoutingStrategy(storeDef, cluster);
@@ -23,4 +24,5 @@
                                                                                                                     }
                                                                                                                   });
                                                                                          }
+}
 }

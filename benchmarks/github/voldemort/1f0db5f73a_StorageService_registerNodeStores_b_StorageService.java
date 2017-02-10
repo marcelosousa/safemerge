@@ -1,4 +1,5 @@
-{
+class StorageService{ 
+ void registerNodeStores() {
   Map<Integer, Store<ByteArray, byte[]>> nodeStores = new HashMap<Integer, Store<ByteArray, byte[]>>(cluster.getNumberOfNodes());
   Map<Integer, NonblockingStore> nonblockingStores = new HashMap<Integer, NonblockingStore>(cluster.getNumberOfNodes());
   try
@@ -20,4 +21,5 @@
     for (Node node : cluster.getNodes()) this.storeRepository.removeNodeStore(def.getName(), node.getId());
     throw new VoldemortException(e);
   }
+}
 }

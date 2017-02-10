@@ -1,4 +1,5 @@
-{
+class AbstractStoreClientFactory{ 
+ void getFailureDetector() {
   FailureDetector result = failureDetector;
   if (result == null)
   {
@@ -15,4 +16,5 @@
     }
   }
   return result;
+}
 }

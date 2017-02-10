@@ -1,4 +1,5 @@
-{
+class AdminServiceBasicTest{ 
+ void testFetchAndUpdate() {
   Store<ByteArray, byte[]> store = server.getStoreRepository().getStorageEngine(storeName);
   assertNotSame(("Store '" + storeName + "' should not be null"), null, store);
   Set<Pair<ByteArray, Versioned<byte[]>>> entrySet = createEntries();
@@ -35,4 +36,5 @@
   }
   server2.stop();
   assertEquals("All Values should have matched", checked, matched);
+}
 }

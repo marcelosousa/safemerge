@@ -1,4 +1,5 @@
-{
+class RedirectingStore{ 
+ void getAll() {
   int maxLength = Iterables.size(keys);
   List<ByteArray> redirectingKeys = Lists.newArrayListWithExpectedSize(maxLength);
   List<RebalancePartitionsInfo> rebalancePartitionsInfos = Lists.newArrayListWithExpectedSize(maxLength);
@@ -20,4 +21,5 @@
     }
   }
   return getInnerStore().getAll(keys, transforms);
+}
 }

@@ -1,4 +1,5 @@
-{
+class ClientRegistryTest{ 
+ void testHappyPath() {
   List<Integer> emptyPartitionList = Lists.newArrayList();
   ClientConfig clientConfig = new ClientConfig().setMaxThreads(4).setMaxTotalConnections(4).setMaxConnectionsPerNode(4).setBootstrapUrls((SERVER_LOCAL_URL + serverPorts[0])).setClientContextName(CLIENT_CONTEXT_NAME).setClientRegistryUpdateInSecs(CLIENT_REGISTRY_REFRSH_INTERVAL).setEnableLazy(false);
   SocketStoreClientFactory socketFactory = new SocketStoreClientFactory(clientConfig);
@@ -32,4 +33,5 @@
   assertTrue("Client registry not updated.", (infoList.get(0).getBootstrapTime() < infoList.get(0).getUpdateTime()));
   assertTrue("Client Config received from the Client registry system store is incorrect.", isConfigEqual(infoList.get(0).getClientConfig(), clientConfig));
   socketFactory.close();
+}
 }

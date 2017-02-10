@@ -1,4 +1,5 @@
-{
+class AbstractStoreClientFactory{ 
+ void getRawStore() {
   String clusterXml = bootstrapMetadataWithRetries(MetadataStore.CLUSTER_KEY, bootstrapUrls);
   Cluster cluster = clusterMapper.readCluster(new StringReader(clusterXml), false);
   String storesXml = bootstrapMetadataWithRetries(MetadataStore.STORES_KEY, bootstrapUrls);
@@ -46,4 +47,5 @@
   InconsistencyResolver<Versioned<V>> secondaryResolver = resolver == null ? new TimeBasedInconsistencyResolver() : resolver;
   serializedStore = new InconsistencyResolvingStore<K, V, T>(serializedStore, new ChainedResolver<Versioned<V>>(new VectorClockInconsistencyResolver(), secondaryResolver));
   return serializedStore;
+}
 }

@@ -1,4 +1,5 @@
-{
+class ClientConfig{ 
+ void setProperties() {
   Props props = new Props(properties);
   if (props.containsKey(MAX_CONNECTIONS_PER_NODE_PROPERTY))
     this.setMaxConnectionsPerNode(props.getInt(MAX_CONNECTIONS_PER_NODE_PROPERTY));
@@ -92,4 +93,5 @@
   {
     this.setAsyncMetadataRefreshInMs(props.getLong(ASYNC_CHECK_METADATA_INTERVAL, 5000));
   }
+}
 }

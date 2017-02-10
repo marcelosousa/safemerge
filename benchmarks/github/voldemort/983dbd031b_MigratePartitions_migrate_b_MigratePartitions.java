@@ -1,4 +1,5 @@
-{
+class MigratePartitions{ 
+ void migrate() {
   final HashMultimap<String, RebalancePartitionsInfo> completedTasks = HashMultimap.create();
   final AtomicInteger completed = new AtomicInteger(0);
   if (new File(checkpointFolder).exists())
@@ -169,4 +170,5 @@
             }
             executor.shutdown();
           }
+}
 }

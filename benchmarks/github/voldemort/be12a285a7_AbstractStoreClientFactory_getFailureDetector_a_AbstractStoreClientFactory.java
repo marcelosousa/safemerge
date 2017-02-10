@@ -1,4 +1,5 @@
-{
+class AbstractStoreClientFactory{ 
+ void getFailureDetector() {
   if (this.cluster == null)
   {
     String clusterXml = bootstrapMetadataWithRetries(MetadataStore.CLUSTER_KEY, bootstrapUrls);
@@ -28,4 +29,5 @@
     }
   }
   return result;
+}
 }

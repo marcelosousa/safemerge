@@ -1,4 +1,5 @@
-{
+class AdminServiceRequestHandler{ 
+ void handleRequest() {
   VoldemortAdminRequest.Builder request = VoldemortAdminRequest.newBuilder();
   int size = inputStream.readInt();
   if (logger.isTraceEnabled())
@@ -45,4 +46,5 @@
       throw new VoldemortException("Unkown operation " + request.getType());
   }
   return null;
+}
 }

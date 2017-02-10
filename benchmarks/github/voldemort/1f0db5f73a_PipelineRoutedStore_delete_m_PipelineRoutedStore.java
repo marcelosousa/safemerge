@@ -1,4 +1,5 @@
-{
+class PipelineRoutedStore{ 
+ void delete() {
   StoreUtils.assertValidKey(key);
   BasicPipelineData<Boolean> pipelineData = new BasicPipelineData<Boolean>();
   if (zoneRoutingEnabled)
@@ -37,4 +38,5 @@
                                                                                 return true;
                                                                             }
   return false;
+}
 }

@@ -1,4 +1,5 @@
-{
+class Rebalancer{ 
+ void rebalanceLocalNode() {
   int requestId = asyncRunner.getUniqueRequestId();
   asyncRunner.submitOperation(requestId, new AsyncOperation(requestId, stealInfo.toString())
                                          {
@@ -34,4 +35,5 @@
                                          });
   logger.info(("rebalance node request_id:" + requestId));
   return requestId;
+}
 }

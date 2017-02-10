@@ -1,4 +1,5 @@
-{
+class RoutedStoreTest{ 
+ void testPutTimeout() {
   int timeout = 50;
   StoreDefinition definition = new StoreDefinitionBuilder().setName("test").setType("foo").setKeySerializer(new SerializerDefinition("test")).setValueSerializer(new SerializerDefinition("test")).setRoutingPolicy(RoutingTier.CLIENT).setRoutingStrategyType(RoutingStrategyType.CONSISTENT_STRATEGY).setReplicationFactor(3).setPreferredReads(3).setRequiredReads(3).setPreferredWrites(3).setRequiredWrites(3).build();
   Map<Integer, Store<ByteArray, byte[], byte[]>> stores = new HashMap<Integer, Store<ByteArray, byte[], byte[]>>();
@@ -30,4 +31,5 @@
     long elapsed = (System.nanoTime() - start) / Time.NS_PER_MS;
     assertTrue((elapsed + " < " + totalDelay), (elapsed < totalDelay));
   }
+}
 }

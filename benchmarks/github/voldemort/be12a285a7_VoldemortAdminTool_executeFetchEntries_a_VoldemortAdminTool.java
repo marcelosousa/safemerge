@@ -1,4 +1,5 @@
-{
+class VoldemortAdminTool{ 
+ void executeFetchEntries() {
   List<StoreDefinition> storeDefinitionList = adminClient.getRemoteStoreDefList(nodeId).getValue();
   HashMap<String, StoreDefinition> storeDefinitionMap = Maps.newHashMap();
   for (StoreDefinition storeDefinition : storeDefinitionList) {
@@ -59,4 +60,5 @@
                                 if (outputFile != null)
                                   System.out.println(("Fetched keys from " + store + " to " + outputFile));
                               }
+}
 }

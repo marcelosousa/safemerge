@@ -1,4 +1,5 @@
-{
+class AdminTest{ 
+ void testFetchAndUpdate() {
   for (final Integer node : from.keySet()) {
                                              timeFunction(new Timed()
                                                           {
@@ -8,4 +9,5 @@
                                                             }
                                                           }, 1);
                                            }
+}
 }

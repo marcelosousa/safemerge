@@ -1,4 +1,5 @@
-{
+class ClientConfig{ 
+ void setProperties() {
   Props props = new Props(properties);
   if (props.containsKey(MAX_CONNECTIONS_PER_NODE_PROPERTY))
     this.setMaxConnectionsPerNode(props.getInt(MAX_CONNECTIONS_PER_NODE_PROPERTY));
@@ -100,4 +101,5 @@
   {
     this.setAsyncJobThreadPoolSize(props.getInt(ASYNC_JOB_THREAD_POOL_SIZE));
   }
+}
 }

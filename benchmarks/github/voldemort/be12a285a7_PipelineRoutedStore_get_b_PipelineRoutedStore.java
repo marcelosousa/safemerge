@@ -1,4 +1,5 @@
-{
+class PipelineRoutedStore{ 
+ void get() {
   StoreUtils.assertValidKey(key);
   long startTimeMs = -1;
   long startTimeNs = -1;
@@ -56,4 +57,5 @@
     logger.debug(("Finished " + pipeline.getOperation().getSimpleName() + " for key " + ByteUtils.toHexString(key.get()) + " keyRef: " + System.identityHashCode(key) + "; started at " + startTimeMs + " took " + System.nanoTime() - startTimeNs + " values: " + formatNodeValuesFromGet(pipelineData.getResponses())));
   }
   return results;
+}
 }

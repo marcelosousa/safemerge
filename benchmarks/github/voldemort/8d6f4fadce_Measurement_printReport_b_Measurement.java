@@ -1,4 +1,5 @@
-{
+class Measurement{ 
+ void printReport() {
   Results result = generateResults();
   NumberFormat nf = NumberFormat.getInstance();
   nf.setMaximumFractionDigits(4);
@@ -22,4 +23,5 @@
     }
     out.println(("[" + getName() + "]: >" + _buckets + "\t" + histogramOverflow));
   }
+}
 }

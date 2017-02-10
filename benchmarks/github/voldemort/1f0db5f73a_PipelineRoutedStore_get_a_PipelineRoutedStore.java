@@ -1,4 +1,5 @@
-{
+class PipelineRoutedStore{ 
+ void get() {
   StoreUtils.assertValidKey(key);
   BasicPipelineData<List<Versioned<byte[]>>> pipelineData = new BasicPipelineData<List<Versioned<byte[]>>>();
   if (zoneRoutingEnabled)
@@ -39,4 +40,5 @@
                                                                                                 results.addAll(value);
                                                                                             }
   return results;
+}
 }

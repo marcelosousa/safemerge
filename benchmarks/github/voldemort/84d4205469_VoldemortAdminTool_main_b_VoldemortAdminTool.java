@@ -1,4 +1,5 @@
-{
+class VoldemortAdminTool{ 
+ void main() {
   OptionParser parser = new OptionParser();
   parser.accepts("help", "print help information");
   parser.accepts("url", "[REQUIRED] bootstrap URL").withRequiredArg().describedAs("bootstrap-url").ofType(String.class);
@@ -504,4 +505,5 @@
     e.printStackTrace();
     Utils.croak(e.getMessage());
   }
+}
 }

@@ -1,4 +1,5 @@
-{
+class StorageService{ 
+ void registerEngine() {
   Cluster cluster = this.metadata.getCluster();
   storeRepository.addStorageEngine(engine);
   Store<ByteArray, byte[]> store = engine;
@@ -28,4 +29,5 @@
     }
   }
   storeRepository.addLocalStore(store);
+}
 }

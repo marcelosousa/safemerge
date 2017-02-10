@@ -1,4 +1,5 @@
-{
+class SimpleSocketPoolTest{ 
+ void testSocketPoolLimitSomeTimeout() {
   AbstractSocketService server = ServerTestUtils.getSocketService(useNio, new SocketRequestHandlerFactory(null, null, null, null, null, null), 7666, 50, 50, 1000);
   server.start();
   final ResourcePoolConfig config = new ResourcePoolConfig().setTimeout(50, TimeUnit.MILLISECONDS).setMaxPoolSize(20);
@@ -22,4 +23,5 @@
   TestStats testStats = test.startTest(factory, config, 50, 200);
   assertEquals("We should see some timeoutRequests", true, (testStats.timeoutRequests > 0));
   server.stop();
+}
 }

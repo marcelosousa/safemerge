@@ -1,4 +1,5 @@
-{
+class RoutedStore{ 
+ void getAll() {
   StoreUtils.assertValidKeys(keys);
   Map<ByteArray, List<Versioned<byte[]>>> result = StoreUtils.newEmptyHashMap(keys);
   Map<Node, List<ByteArray>> nodeToKeysMap = Maps.newHashMap();
@@ -146,4 +147,5 @@
                                                                                      throw new InsufficientOperationalNodesException(this.storeDef.getRequiredReads() + " reads required, but " + successCount + " succeeded.", failures);
                                                                                  }
   return result;
+}
 }

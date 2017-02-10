@@ -1,4 +1,5 @@
-{
+class ProtoBuffAdminServiceRequestHandler{ 
+ void handleFetchAndUpdate() {
   final int nodeId = request.getNodeId();
   Cluster cluster = metadataStore.getCluster();
   final List<Integer> partitions = request.getPartitionsList();
@@ -52,4 +53,5 @@
     response.setError(ProtoUtils.encodeError(errorCodeMapper, e));
   }
   return response.build();
+}
 }

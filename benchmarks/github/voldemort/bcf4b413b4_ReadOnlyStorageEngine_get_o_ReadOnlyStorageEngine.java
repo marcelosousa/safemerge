@@ -1,4 +1,5 @@
-{
+class ReadOnlyStorageEngine{ 
+ void get() {
   StoreUtils.assertValidKey(key);
   byte[] keyMd5 = ByteUtils.md5(key.get());
   int chunk = fileSet.getChunkForKey(keyMd5);
@@ -12,4 +13,5 @@
   {
     return Collections.emptyList();
   }
+}
 }

@@ -1,4 +1,5 @@
-{
+class VoldemortWrapper{ 
+ void write() {
   boolean written = voldemortStore.applyUpdate(new UpdateAction<Object, Object>()
                                                {
                                                  @Override
@@ -16,4 +17,5 @@
     res = ReturnCode.Ok;
   }
   measurement.recordReturnCode(Operations.Write.getOpString(), res.ordinal());
+}
 }

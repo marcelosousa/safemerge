@@ -1,4 +1,5 @@
-{
+class RoutedStore{ 
+ void delete() {
   StoreUtils.assertValidKey(key);
   final List<Node> nodes = availableNodes(routingStrategy.routeRequest(key.get()));
   final int numNodes = nodes.size();
@@ -67,4 +68,5 @@
     throw new InsufficientOperationalNodesException(this.storeDef.getRequiredWrites() + " deletes required, but " + successes.get() + " succeeded.", failures);
   else
     return deletedSomething.get();
+}
 }

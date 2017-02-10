@@ -1,4 +1,5 @@
-{
+class StoreDefinition{ 
+ void checkParameterLegality() {
   if (requiredReads < 1)
     throw new IllegalArgumentException("Cannot have a requiredReads number less than 1.");
   else
@@ -56,4 +57,5 @@
       throw new IllegalArgumentException("Number of zones to block for while writing (" + zoneCountWrites + ") should be less then replicating zones (" + replicatingZones + ")");
     }
   }
+}
 }

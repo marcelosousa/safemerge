@@ -1,4 +1,5 @@
-{
+class VoldemortAdminTool{ 
+ void main() {
   OptionParser parser = new OptionParser();
   parser.accepts("auto", "[OPTIONAL] enable auto/batch mode");
   parser.accepts("help", "print help information");
@@ -517,4 +518,5 @@
     e.printStackTrace();
     Utils.croak(e.getMessage());
   }
+}
 }

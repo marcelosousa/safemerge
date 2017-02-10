@@ -1,4 +1,5 @@
-{
+class AdminServiceRequestHandler{ 
+ void handleRequest() {
   VoldemortAdminRequest.Builder request = VoldemortAdminRequest.newBuilder();
   int size = inputStream.readInt();
   byte[] input = new byte[size];
@@ -45,4 +46,5 @@
     default:
       throw new VoldemortException("Unkown operation " + request.getType());
   }
+}
 }

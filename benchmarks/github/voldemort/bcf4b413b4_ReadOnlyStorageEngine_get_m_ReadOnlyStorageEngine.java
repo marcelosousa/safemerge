@@ -1,4 +1,5 @@
-{
+class ReadOnlyStorageEngine{ 
+ void get() {
   StoreUtils.assertValidKey(key);
   try
   {
@@ -18,4 +19,5 @@
   finally {
             fileModificationLock.readLock().unlock();
           }
+}
 }

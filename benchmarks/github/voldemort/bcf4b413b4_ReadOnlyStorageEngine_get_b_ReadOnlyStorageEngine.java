@@ -1,4 +1,5 @@
-{
+class ReadOnlyStorageEngine{ 
+ void get() {
   StoreUtils.assertValidKey(key);
   byte[] keyMd5 = ByteUtils.md5(key.get());
   try
@@ -19,4 +20,5 @@
   finally {
             fileModificationLock.readLock().unlock();
           }
+}
 }

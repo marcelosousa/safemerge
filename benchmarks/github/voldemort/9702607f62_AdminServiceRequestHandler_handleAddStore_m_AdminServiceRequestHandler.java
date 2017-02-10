@@ -1,4 +1,5 @@
-{
+class AdminServiceRequestHandler{ 
+ void handleAddStore() {
   VAdminProto.AddStoreResponse.Builder response = VAdminProto.AddStoreResponse.newBuilder();
   if (!metadataStore.getServerState().equals(MetadataStore.VoldemortState.NORMAL_SERVER))
   {
@@ -47,4 +48,5 @@
     logger.error(("handleAddStore failed for request(" + request.toString() + ")"), e);
   }
   return response.build();
+}
 }

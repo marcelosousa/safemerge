@@ -1,4 +1,5 @@
-{
+class SocketStoreClientFactory{ 
+ void initFailureDetector() {
   failureDetectorListener = new FailureDetectorListener()
                             {
                               public void nodeAvailable (Node node)
@@ -23,4 +24,5 @@
                                       };
   FailureDetectorConfig failureDetectorConfig = new FailureDetectorConfig(config).setCluster(cluster).setStoreVerifier(storeVerifier);
   return create(failureDetectorConfig, true, failureDetectorListener);
+}
 }

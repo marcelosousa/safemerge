@@ -1,4 +1,5 @@
-{
+class SlopPusherJob{ 
+ void run() {
   logger.debug("Pushing slop...");
   int slopsPushed = 0;
   int attemptedPushes = 0;
@@ -57,4 +58,5 @@
             }
           }
   logger.log((attemptedPushes > 0 ? Level.INFO : Level.DEBUG), ("Attempted " + attemptedPushes + " hinted handoff pushes of which " + slopsPushed + " succeeded."));
+}
 }

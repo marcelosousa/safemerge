@@ -1,4 +1,5 @@
-{
+class StorageService{ 
+ void openStore() {
   logger.info(("Opening store '" + storeDef.getName() + "' (" + storeDef.getType() + ")."));
   StorageEngine<ByteArray, byte[]> engine = getStorageEngine(storeDef.getName(), storeDef.getType());
   try
@@ -14,4 +15,5 @@
     unregisterEngine(storeDef, engine);
     throw new VoldemortException(e);
   }
+}
 }

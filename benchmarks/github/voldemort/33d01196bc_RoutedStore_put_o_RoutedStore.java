@@ -1,4 +1,5 @@
-{
+class RoutedStore{ 
+ void put() {
   long startNs = System.nanoTime();
   StoreUtils.assertValidKey(key);
   final List<Node> nodes = availableNodes(routingStrategy.routeRequest(key.get()));
@@ -88,4 +89,5 @@
   }
   VectorClock versionedClock = (VectorClock) versioned.getVersion();
   versionedClock.incrementVersion(master.getId(), time.getMilliseconds());
+}
 }

@@ -1,4 +1,5 @@
-{
+class RebalanceCommandShell{ 
+ void main() {
   if (args.length != 4)
     Utils.croak("USAGE: java RebalanceCommandShell bootstrapURL currentCluster.xml targetCluster.xml maxParallelRebalancing");
   String bootstrapURL = args[0];
@@ -9,4 +10,5 @@
   config.setMaxParallelRebalancing(maxParallelRebalancing);
   rebalanceClient = new RebalanceController(bootstrapURL, config);
   rebalanceClient.rebalance(currentCluster, targetCluster);
+}
 }

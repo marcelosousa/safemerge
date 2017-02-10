@@ -1,4 +1,5 @@
-{
+class PerformParallelGetAllRequests{ 
+ void execute() {
   int attempts = pipelineData.getNodeToKeysMap().size();
   final Map<Integer, Response<Iterable<ByteArray>, Object>> responses = new ConcurrentHashMap<Integer, Response<Iterable<ByteArray>, Object>>();
   final CountDownLatch latch = new CountDownLatch(attempts);
@@ -69,4 +70,5 @@
                                                                               }
                                                                             }
   pipeline.addEvent(completeEvent);
+}
 }

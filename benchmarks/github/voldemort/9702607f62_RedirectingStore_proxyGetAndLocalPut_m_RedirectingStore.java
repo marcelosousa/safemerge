@@ -1,4 +1,5 @@
-{
+class RedirectingStore{ 
+ void proxyGetAndLocalPut() {
   List<Versioned<byte[]>> proxyValues = proxyGet(key, donorId, transforms);
   if (!isReadOnly)
   {
@@ -13,4 +14,5 @@
                                                      }
   }
   return proxyValues;
+}
 }

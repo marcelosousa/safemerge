@@ -1,4 +1,5 @@
-{
+class PerformZoneSerialRequests{ 
+ void execute() {
   List<Node> nodes = pipelineData.getNodes();
   while ((pipelineData.getNodeIndex() < nodes.size() && pipelineData.getZoneResponses().size() + 1) < pipelineData.getZonesRequired())
   {
@@ -32,4 +33,5 @@
     pipelineData.setFatalError(new InsufficientZoneResponsesException((pipelineData.getZonesRequired() + 1 + " " + pipeline.getOperation().getSimpleName() + "s required zone, but only " + zonesSatisfied + " succeeded")));
     pipeline.addEvent(Event.ERROR);
   }
+}
 }

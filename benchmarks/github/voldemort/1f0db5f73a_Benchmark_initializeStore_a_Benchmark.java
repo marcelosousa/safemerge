@@ -1,4 +1,5 @@
-{
+class Benchmark{ 
+ void initializeStore() {
   this.numThreads = benchmarkProps.getInt(THREADS, MAX_WORKERS);
   this.numIterations = benchmarkProps.getInt(ITERATIONS, 1);
   this.statusIntervalSec = benchmarkProps.getInt(INTERVAL, 0);
@@ -53,4 +54,5 @@
     this.storeClient = factory.getStoreClient(store.getName());
   }
   this.storeInitialized = true;
+}
 }

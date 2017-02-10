@@ -1,4 +1,5 @@
-{
+class RedirectingStore{ 
+ void get() {
   RebalancePartitionsInfo stealInfo = redirectingKey(key);
   if (stealInfo != null)
   {
@@ -7,4 +8,5 @@
       return proxyValues;
   }
   return getInnerStore().get(key);
+}
 }

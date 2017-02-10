@@ -1,4 +1,5 @@
-{
+class PerformSerialPutRequests{ 
+ void execute() {
   int currentNode = 0;
   List<Node> nodes = pipelineData.getNodes();
   if (logger.isDebugEnabled())
@@ -72,4 +73,5 @@
   {
     pipeline.addEvent(masterDeterminedEvent);
   }
+}
 }

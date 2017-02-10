@@ -1,4 +1,5 @@
-{
+class AbstractRebalanceTest{ 
+ void testProxyGetWithMultipleDonors() {
   Cluster currentCluster = ServerTestUtils.getLocalCluster(4, new int[][] {
                                                                             { 0, 2, 4, 6 },
                                                                             { 1, 3, 5 },
@@ -98,4 +99,5 @@
                                    }
     fail("Should not see any exceptions.");
   }
+}
 }

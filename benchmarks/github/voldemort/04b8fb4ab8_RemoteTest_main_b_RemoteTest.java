@@ -1,4 +1,5 @@
-{
+class RemoteTest{ 
+ void main() {
   OptionParser parser = new OptionParser();
   parser.accepts("r", "execute read operations");
   parser.accepts("w", "execute write operations");
@@ -339,4 +340,5 @@
     nullWriter.close();
   }
   System.exit(0);
+}
 }

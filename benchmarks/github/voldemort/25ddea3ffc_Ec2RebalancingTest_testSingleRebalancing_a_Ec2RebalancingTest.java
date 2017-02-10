@@ -1,4 +1,5 @@
-{
+class Ec2RebalancingTest{ 
+ void testSingleRebalancing() {
   int clusterSize = ec2RebalancingTestConfig.getInstanceCount();
   int[][] targetLayout;
   if (spareNode)
@@ -22,4 +23,5 @@
   finally {
             stopCluster(hostNames, ec2RebalancingTestConfig);
           }
+}
 }

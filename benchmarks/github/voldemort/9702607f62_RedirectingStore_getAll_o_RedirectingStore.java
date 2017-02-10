@@ -1,4 +1,5 @@
-{
+class RedirectingStore{ 
+ void getAll() {
   int maxLength = Iterables.size(keys);
   List<ByteArray> redirectingKeys = Lists.newArrayListWithExpectedSize(maxLength);
   List<RebalancePartitionsInfo> rebalancePartitionsInfos = Lists.newArrayListWithExpectedSize(maxLength);
@@ -14,4 +15,5 @@
   if (!redirectingKeys.isEmpty())
     proxyGetAllAndLocalPut(redirectingKeys, rebalancePartitionsInfos);
   return getInnerStore().getAll(keys);
+}
 }

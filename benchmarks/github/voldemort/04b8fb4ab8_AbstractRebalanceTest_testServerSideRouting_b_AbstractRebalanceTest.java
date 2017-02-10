@@ -1,4 +1,5 @@
-{
+class AbstractRebalanceTest{ 
+ void testServerSideRouting() {
   Cluster localCluster = ServerTestUtils.getLocalCluster(2, new int[][] {
                                                                           { 0, 1, 2, 3 },
                                                                           { },
@@ -89,4 +90,5 @@
                                    }
     fail("Should not see any exceptions !!");
   }
+}
 }

@@ -1,4 +1,5 @@
-{
+class ReadOnlyStorageEngine{ 
+ void get() {
   StoreUtils.assertValidKey(key);
   int chunk = fileSet.getChunkForKey(key.get());
   int location = searchStrategy.indexOf(fileSet.indexFileFor(chunk), ByteUtils.md5(key.get()), fileSet.getIndexFileSize(chunk));
@@ -11,4 +12,5 @@
   {
     return Collections.emptyList();
   }
+}
 }

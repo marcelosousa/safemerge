@@ -1,4 +1,5 @@
-{
+class ReadOnlyStorageEngineTestInstance{ 
+ void create() {
   Map<String, String> data = createTestData(testSize);
   JsonReader reader = makeTestDataReader(data, baseDir);
   List<Node> nodes = new ArrayList<Node>();
@@ -32,4 +33,5 @@
     nodeStores.put(i, SerializingStore.wrap(innerStore, keySerializer, valueSerializer, transSerializer));
   }
   return new ReadOnlyStorageEngineTestInstance(data, baseDir, nodeStores, router, keySerializer);
+}
 }

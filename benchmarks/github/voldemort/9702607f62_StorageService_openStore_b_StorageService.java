@@ -1,4 +1,5 @@
-{
+class StorageService{ 
+ void openStore() {
   logger.info(("Opening store '" + storeDef.getName() + "' (" + storeDef.getType() + ")."));
   StorageConfiguration config = storageConfigs.get(storeDef.getType());
   if (config == null)
@@ -32,4 +33,5 @@
     unregisterEngine(storeDef, engine);
     throw new VoldemortException(e);
   }
+}
 }

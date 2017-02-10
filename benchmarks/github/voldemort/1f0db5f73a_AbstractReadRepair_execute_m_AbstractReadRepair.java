@@ -1,4 +1,5 @@
-{
+class AbstractReadRepair{ 
+ void execute() {
   insertNodeValues();
   if ((nodeValues.size() > 1 && preferred) > 1)
   {
@@ -27,4 +28,5 @@
                                                         }
   }
   pipeline.addEvent(completeEvent);
+}
 }

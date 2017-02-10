@@ -1,4 +1,5 @@
-{
+class AdminTest{ 
+ void main() {
   OptionParser parser = new OptionParser();
   parser.accepts("native", "use native admin client");
   parser.accepts("f", "execute fetch operation");
@@ -23,4 +24,5 @@
     adminTest.testFetch(nodePartitions);
   if (options.has("fu"))
     adminTest.testFetchAndUpdate(nodePartitions, ((Integer) options.valueOf("fu")));
+}
 }

@@ -1,4 +1,5 @@
-{
+class TestUtils{ 
+ void createReadOnlyIndex() {
   File dataFile = File.createTempFile("test", ".txt");
   dataFile.deleteOnExit();
   BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile));
@@ -13,4 +14,5 @@
   JsonStoreBuilder storeBuilder = new JsonStoreBuilder(jsonReader, cluster, storeDef, router, dataDir, null, 100, 1, 2, 10000);
   storeBuilder.build();
   return dataDir.getAbsolutePath();
+}
 }

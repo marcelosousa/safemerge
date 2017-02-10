@@ -1,4 +1,5 @@
-{
+class StorageService{ 
+ void startInner() {
   registerEngine(metadata);
   for (String configClassName : voldemortConfig.getStorageConfigurations()) initStorageConfig(configClassName);
   storageConfigs.put(ViewStorageConfiguration.TYPE_NAME, new ViewStorageConfiguration(voldemortConfig, metadata.getStoreDefList(), storeRepository));
@@ -21,4 +22,5 @@
   if (voldemortConfig.isStatTrackingEnabled())
     JmxUtils.registerMbean(new StoreStatsJmx(this.storeStats), JmxUtils.createObjectName("voldemort.store.stats.aggregate", "aggregate-perf"));
   logger.info("All stores initialized.");
+}
 }

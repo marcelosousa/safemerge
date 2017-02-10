@@ -1,4 +1,5 @@
-{
+class ThreadPoolBasedNonblockingStoreImpl{ 
+ void submitPutRequest() {
   submit(new StoreRequest<Void>()
          {
            public Void request (Store<ByteArray, byte[], byte[]> store)
@@ -7,4 +8,5 @@
              return null;
            }
          }, callback);
+}
 }

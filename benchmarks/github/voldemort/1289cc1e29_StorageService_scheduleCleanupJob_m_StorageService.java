@@ -1,4 +1,5 @@
-{
+class StorageService{ 
+ void scheduleCleanupJob() {
   GregorianCalendar cal = new GregorianCalendar();
   cal.add(Calendar.DAY_OF_YEAR, 1);
   cal.set(Calendar.HOUR, voldemortConfig.getRetentionCleanupFirstStartTimeInHour());
@@ -11,4 +12,5 @@
   EventThrottler throttler = new EventThrottler(maxReadRate);
   Runnable cleanupJob = new DataCleanupJob<ByteArray, byte[]>(engine, cleanupPermits, storeDef.getRetentionDays() * Time.MS_PER_DAY, SystemTime.INSTANCE, throttler);
   this.scheduler.schedule(cleanupJob, startTime, (voldemortConfig.getRetentionCleanupScheduledPeriodInHour() * Time.MS_PER_HOUR));
+}
 }

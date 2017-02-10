@@ -1,4 +1,5 @@
-{
+class PipelineRoutedStore{ 
+ void put() {
   long startTimeMs = -1;
   long startTimeNs = -1;
   if (logger.isDebugEnabled())
@@ -51,4 +52,5 @@
   }
   if (pipelineData.getFatalError() != null)
     throw pipelineData.getFatalError();
+}
 }

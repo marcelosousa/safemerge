@@ -1,4 +1,5 @@
-{
+class AbstractRebalanceTest{ 
+ void populateData() {
   Map<Integer, Store<ByteArray, byte[]>> storeMap = new HashMap<Integer, Store<ByteArray, byte[]>>();
   for (int nodeId : nodeList) {
                                 Node node = cluster.getNodeById(nodeId);
@@ -24,4 +25,5 @@
   for (Store<ByteArray, byte[]> store : storeMap.values()) {
                                                              store.close();
                                                            }
+}
 }
