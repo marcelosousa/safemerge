@@ -139,11 +139,16 @@ check_diff_meth cls m_a m_b m_m mth bdy_o r =
               c2 = bdy_o /= bdy_b
               c3 = bdy_a /= bdy_b
               c4 = bdy_m /= bdy_a
-              c5 = bdy_m /= bdy_b
-              c6 = bdy_m /= bdy_o
-          in if and [c1,c2,c3,c4,c5,c6]
+              c5 = isInfixOf "Return" $ show bdy_o
+              c6 = not $ isInfixOf "Synchronized" $ show bdy_o
+              c7 = not $ isInfixOf "Synchronised" $ show bdy_o
+              c8 = not $ isInfixOf "Exception" $ show bdy_o
+              c9 = not $ isInfixOf "Public" $ show bdy_o
+              c10 = True -- and $ map (\c -> not $ isInfixOf "lock" $ show c) [bdy_o,bdy_a,bdy_b,bdy_m]
+          in if and [c1,c2,c3,c4,c5,c6,c7,c8,c9,c10] 
              then trace ("changes found") $ ((cls,mth),[bdy_o,bdy_a,bdy_b,bdy_m]):r
              else r
+
 
 --- OBSOLETE
 
