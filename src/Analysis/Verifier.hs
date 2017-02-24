@@ -42,7 +42,7 @@ verify (pars, Block body) e_o e_a e_b e_m = do
  iSSAMap <- initial_SSAMap params res
  let iEnv = Env iSSAMap M.empty pre post post e_o e_a e_b e_m True 0 0 
      p = [(0, body)]
- ((res, model),_) <- runStateT (analyser p) iEnv
+ ((res, model), _) <- runStateT (analyser p) iEnv
  case res of 
   Unsat -> return (Unsat, Nothing)
   Sat -> do
@@ -100,14 +100,7 @@ analyser_pid (pid,stmts) rest = case stmts of
     LocalVars mods ty vars -> do
       env@Env{..} <- get
       sort <- lift $ processType ty    
-      (nssamap, nassmap, npre) <- 
-        lift $ foldM (\(ssamap', assmap', pre') v ->
-          -- we assume that different versions cannot define the same variable 
-          enc_new_var (ssamap', assmap', pre') sort v 0) 
-          (_ssamap, _assmap, _pre) vars
-      updatePre npre
-      updateSSAMap nssamap
-      updateAssignMap nassmap
+      mapM_ (enc_new_var sort 0) vars 
       analyser ((pid,stmts_pid):rest)
 
 analyser_stmt :: (Pid, Stmt) -> ProdProgram -> EnvOp (Result, Maybe Model)
@@ -166,8 +159,8 @@ analyse_conditional pid cond s1 s2 rest = T.trace ("analyse conditional of pid "
   resElse <- analyser ((pid, [BlockStmt s2]):rest)
   combine resThen resElse                
  else do
+  condSmt <- enc_exp pid cond
   env@Env{..} <- get
-  condSmt <- lift $ enc_exp pid _ssamap cond
   -- then branch
   preThen <- lift $ mkAnd (_pre:condSmt)
   resThen <- analyse_branch preThen s1
@@ -333,13 +326,13 @@ ret pid _exp pro = do
 
 ret_inner :: Pid -> Maybe Exp -> EnvOp ()
 ret_inner pid mexpr = do
- env@Env{..} <- get
- exprPsi <- lift $ 
+ exprPsi <- 
    case mexpr of
      Nothing -> error "ret: return Nothing"
-     Just (Lit (Boolean True)) -> mkIntNum 1
-     Just (Lit (Boolean False)) -> mkIntNum 0
-     Just expr -> enc_exp_inner (pid,_ssamap) expr
+     Just (Lit (Boolean True)) -> lift $ mkIntNum 1
+     Just (Lit (Boolean False)) -> lift $ mkIntNum 0
+     Just expr -> enc_exp_inner pid expr
+ env@Env{..} <- get
  let res_str = Ident "_res_"
      (res_ast,sort, i) = (safeLookup "ret_inner" res_str _ssamap) !! (pid-1)
  r <- lift $ mkEq res_ast exprPsi
@@ -355,8 +348,8 @@ assign pid _exp lhs aOp rhs = do
  
 assign_inner :: Pid -> Exp -> Lhs -> AssignOp -> Exp -> EnvOp ()
 assign_inner pid _exp lhs aOp rhs = do
+ rhsAst <- enc_exp_inner pid rhs
  env@Env{..} <- get
- rhsAst <- lift $ enc_exp_inner (pid, _ssamap) rhs
  case lhs of
   NameLhs (Name [ident@(Ident str)]) -> do
    let (plhsAST,sort, i) = (safeLookup "Assign" ident _ssamap) !! (pid-1)
@@ -382,8 +375,8 @@ post_op pid _exp lhs op str = do
 
 post_op_inner :: Pid -> Exp -> Exp -> Op -> String -> EnvOp ()
 post_op_inner pid _exp lhs op str = do
+ rhsAst <- enc_exp_inner pid (BinOp lhs op (Lit $ Int 1))
  env@Env{..} <- get
- rhsAst <- lift $ enc_exp_inner (pid,_ssamap) (BinOp lhs op (Lit $ Int 1))
  case lhs of
   ExpName (Name [ident@(Ident str)]) -> do
    let (plhsAST,sort, i) = (safeLookup "post_op_inner" ident _ssamap) !! (pid-1)

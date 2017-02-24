@@ -1,3 +1,4 @@
+{-# LANGUAGE RecordWildCards #-}
 -------------------------------------------------------------------------------
 -- Module    :  Analysis.Engine
 -- Copyright :  (c) 2016 Marcelo Sousa
@@ -41,7 +42,7 @@ helper pre post = do
 prelude :: [FormalParam] -> Z3 (Params, [AST])
 prelude params = do
   let arity = 4
-      ps = getParIdents params 
+      ps = ["o"] -- getParIdents params 
       parsId = map (\s -> map (\ar -> s ++ show ar) [1..arity]) ps 
   intSort <- mkIntSort
   pars <- mapM (mapM (\par -> mkFreshConst par intSort)) parsId
@@ -114,56 +115,62 @@ enc_ident str i sort = mapM (\j -> do
   let nstr = str ++ "_" ++ show j ++ "_" ++ show i
   sym <- mkStringSymbol nstr
   mkVar sym sort) [1..4]
- 
-enc_new_var :: (SSAMap, AssignMap, AST) -> Sort -> VarDecl -> Int -> Z3 (SSAMap, AssignMap, AST)
-enc_new_var (ssamap', _assmap, pre') sort (VarDecl varid mvarinit) i = do
-  (ident, idAsts) <-
+
+-- encode the first variable definition 
+enc_new_var :: Sort -> Int -> VarDecl -> EnvOp ()
+enc_new_var sort i (VarDecl varid mvarinit) = do
+  env@Env{..} <- get
+  (ident, idAsts) <- lift $ 
     case varid of
       VarId ident@(Ident str) -> do
         vars <- enc_ident str i sort
         return (ident, vars)
       _ -> error $ "enc_new_var: not supported " ++ show varid
-  let nssamap = M.insert ident [(idAst, sort, i) | idAst <- idAsts] ssamap'
+  let nssamap = M.insert ident [(idAst, sort, i) | idAst <- idAsts] _ssamap
+  updateSSAMap nssamap
   case mvarinit of
-    Nothing -> return (nssamap, _assmap, pre')
+    Nothing -> return ()
     Just (InitExp expr) -> do
-      expAsts <- enc_exp 0 nssamap expr
+      expAsts <- enc_exp 0 expr
       let id_exp = zip idAsts expAsts
-      eqIdExps <- mapM (\(idAst,expAst) -> mkEq idAst expAst) id_exp
-      pre <- mkAnd (pre':eqIdExps)
-      let assmap = M.insert ident expr _assmap
-      return (nssamap, assmap, pre)
+      eqIdExps <- lift $ mapM (\(idAst,expAst) -> mkEq idAst expAst) id_exp
+      let nassmap = M.insert ident expr _assmap
+      updateAssignMap nassmap
+      npre <- lift $ mkAnd (_pre:eqIdExps)
+      updatePre npre 
     Just _ -> error "enc_new_var: not supported"
- 
-enc_exp :: Int -> SSAMap -> Exp -> Z3 [AST]
-enc_exp p env expr = do
+
+-- enc_exp: encodes an expression for a version 
+enc_exp :: Int -> Exp -> EnvOp [AST]
+enc_exp p expr = do
   let l = if p == 0 then [1..4] else [p]
-  mapM (\p -> enc_exp_inner (p,env) expr) l
+  mapM (\p -> enc_exp_inner p expr) l
 
 -- | Encode an expression for a version 
 --   (ast,sort,count)pre-condition: pid != 0 
-enc_exp_inner :: (Int, SSAMap) -> Exp -> Z3 AST
-enc_exp_inner env expr = case expr of
-  Lit lit -> enc_literal lit
-  ExpName name -> enc_name env name []
+enc_exp_inner :: Int -> Exp -> EnvOp AST
+enc_exp_inner p expr = do
+ case expr of
+  Lit lit -> lift $ enc_literal lit 
+  ExpName name -> enc_name p (toIdent name) []
   BinOp lhsE op rhsE -> do
-    lhs <- enc_exp_inner env lhsE
-    rhs <- enc_exp_inner env rhsE
-    enc_binop op lhs rhs
+    lhs <- enc_exp_inner p lhsE
+    rhs <- enc_exp_inner p rhsE
+    lift $ enc_binop op lhs rhs
   PreMinus nexpr -> do 
-    nexprEnc <- enc_exp_inner env nexpr
-    mkUnaryMinus nexprEnc
+    nexprEnc <- enc_exp_inner p nexpr
+    lift $ mkUnaryMinus nexprEnc
   MethodInv (MethodCall name args) -> do
-    argsAST <- mapM (enc_exp_inner env) args
-    enc_name env name argsAST
+    argsAST <- mapM (enc_exp_inner p) args
+    enc_name p (toIdent name) argsAST
   Cond cond _then _else -> do
-    condEnc <- enc_exp_inner env cond
-    _thenEnc <- enc_exp_inner env _then
-    _elseEnc <- enc_exp_inner env _else
-    mkIte condEnc _thenEnc _elseEnc        
+    condEnc <- enc_exp_inner p cond
+    _thenEnc <- enc_exp_inner p _then
+    _elseEnc <- enc_exp_inner p _else
+    lift $ mkIte condEnc _thenEnc _elseEnc        
   PreNot nexpr -> do
-    nexprEnc <- enc_exp_inner env nexpr
-    mkNot nexprEnc
+    nexprEnc <- enc_exp_inner p nexpr
+    lift $ mkNot nexprEnc
   _ -> error $  "enc_exp_inner: " ++ show expr
 
 enc_literal :: Literal -> Z3 AST
@@ -177,13 +184,18 @@ enc_literal lit =
 --    Just (ast, _, _) -> return ast
     _ -> error "processLit: not supported"
 
-enc_name :: (Int, SSAMap) -> Name -> [AST] -> Z3 AST
-enc_name (pid, ssamap) (Name [obj]) [] =
-  case M.lookup obj ssamap of
-    Nothing -> error $ "enc_name: not in map " ++ show obj
+toIdent :: Name -> Ident
+toIdent (Name []) = error $ "nameToIdent: Name []"
+toIdent (Name l) = foldr (\(Ident a) (Ident b) -> Ident (a ++ "." ++ b)) (Ident "") l 
+
+enc_name :: Int -> Ident -> [AST] -> EnvOp AST
+enc_name pid ident [] = do
+  env@Env{..} <- get
+  case M.lookup ident _ssamap of
+    Nothing -> error $ "enc_name: not in map " ++ show ident 
     Just l -> case l !! (pid-1) of
       (ast,_,_) -> return ast
-enc_name (pid, ssamap) _ _ = error "enc_name: not supported yet"
+enc_name pid ident args = error "enc_name: not supported yet"
 {-
 processName env@(objSort, pars, res, fields, ssamap) (Name [ident]) args = do
   let fn = safeLookup ("processName: declared func")  ident fields

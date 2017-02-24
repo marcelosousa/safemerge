@@ -45,7 +45,7 @@ instance Default InvGen where
 data Option = Parse   { file :: FilePath }
             | Diff2   { prog :: FilePath, a :: FilePath }
             | Diff4   { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath }
-            | Verify  { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath }
+            | Verify  { base :: FilePath } 
             | Product { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath }
             | Merge   { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath, output :: FilePath }
   deriving (Show, Data, Typeable, Eq)
@@ -56,8 +56,7 @@ productMode = Product { prog = def, a = def
                       , b = def, merge = def } &= help _helpProduct
 diffMode = Diff4 { prog = def, a = def, b = def
                 , merge = def } &= help _helpDiff
-verifyMode = Verify { prog = def, a = def, b = def
-                , merge = def } &= help _helpVerify 
+verifyMode = Verify { base = def } &= help _helpVerify 
 diff2Mode = Diff2 { prog = def, a = def } &= help _helpDiff2
 mergeMode = Merge { prog = def, a = def, b = def
                   , merge = def, output = def } &= help _helpMerge
@@ -81,7 +80,12 @@ runOption opt = case opt of
     putStrLn $ prettyPrint prog
   Diff2 o a -> diff2 o a
   Diff4 o a b m -> diff4 o a b m
-  Verify o a b m -> verify o a b m
+  Verify f -> do
+    let o = f ++ "_o.java"
+        a = f ++ "_a.java"
+        b = f ++ "_b.java"
+        m = f ++ "_m.java"
+    verify o a b m
   _ -> error $ "wiz: option currently not supported"
 {-
   Product p a b m -> do
@@ -158,6 +162,9 @@ verify ofl afl bfl mfl = do
   let (fo,e_o,e_a,e_b,e_m) = diff4gen o a b m 
       pairs = [(o,fo,e_o),(a,fo,e_a),(b,fo,e_b),(m,fo,e_m)]
       es = [e_o,e_a,e_b,e_m]
+  putStrLn "Program with holes:"
+  putStrLn $ prettyPrint fo 
+  putStrLn ""
   mapM_ print_edit $ zip es [0..]
   let res = map check_edit_soundness pairs
   if all id res 
