@@ -1,3 +1,4 @@
+{-# LANGUAGE RecordWildCards #-}
 module Types where
 
 import System.FilePath.Posix
@@ -44,12 +45,40 @@ type Program = CompilationUnit
 type QName = (Ident, Ident, MethodBody)
 type SQName = (Ident, Ident)
 
--- Information regarding the methods of a compilation unit
--- Map (ClassName, MethodName) [MethodBody]
---  ClassName has to be a list of Class Identifiers to take care of 
---  inner classes
---  MethodName is just the identifier and because of that we need to record multiple methods
--- Going to simplify in a first stage
-type MethInfo = Map Ident MethodBody
-type ClassInfo = Map Ident MethInfo
+type MemberInfo = Map Ident MemberDecl 
+type ClassInfo = Map Ident ClassSum 
 
+-- Information regarding the methods of a compilation unit
+data ClassSum = 
+  ClassSum {
+    _cl_name   :: [Ident]    -- List of class names from the current to Object
+  , _cl_fields :: MemberInfo -- List of fields
+  , _cl_meths  :: MemberInfo -- List of methods
+  , _cl_cons   :: MemberInfo -- List of constructors
+  -- Missing information such as inner classes and interfaces
+  }
+
+i_clsum :: [Ident] -> ClassSum
+i_clsum name = ClassSum name M.empty M.empty M.empty 
+
+is_null :: ClassSum -> Bool
+is_null (ClassSum _ a b c) = all M.null [a,b,c] 
+
+add_clfield :: Ident -> MemberDecl -> ClassSum -> ClassSum
+add_clfield _id _field s@ClassSum{..} = 
+  let cl_fields = M.insert _id _field _cl_fields 
+  in s { _cl_fields = cl_fields }
+
+add_clmeth :: Ident -> MemberDecl -> ClassSum -> ClassSum
+add_clmeth _id _meth s@ClassSum{..} = 
+  let cl_meths = M.insert _id _meth _cl_meths 
+  in s { _cl_meths = cl_meths }
+
+add_clcons :: Ident -> MemberDecl -> ClassSum -> ClassSum
+add_clcons _id _cons s@ClassSum{..} = 
+  let cl_cons = M.insert _id _cons _cl_cons 
+  in s { _cl_cons = cl_cons }
+
+mth_body :: MemberDecl -> MethodBody
+mth_body (MethodDecl _ _ _ _ _ _ b) = b
+mth_body m = error $ "mth_body: fatal " ++ show m 

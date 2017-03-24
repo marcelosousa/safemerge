@@ -66,12 +66,10 @@ get_merge as@[o,m,a,b] = do
   else do
     return $ Merge as [] False
 
-git_opts :: [String]
-git_opts = ["log", "--merges", "--abbrev-commit", "--decorate", "--format=format:%H %P", "--all"]
-
 is_of_interest :: Merge -> Bool
 is_of_interest (Merge _ ch va) = va && (not $ null ch)
 
+-- ^ process_merge: retrieves the hash of the base based on the variants
 process_merge :: [[String]] -> [String] -> IO [[String]]
 process_merge res args = do
   let vars = tail args
@@ -81,6 +79,9 @@ process_merge res args = do
     let o = lines str
     return ((o++args):res)
   else return res  
+
+git_opts :: [String]
+git_opts = ["log", "--merges", "--abbrev-commit", "--decorate", "--format=format:%H %P", "--all"]
 
 main :: IO ()
 main = do

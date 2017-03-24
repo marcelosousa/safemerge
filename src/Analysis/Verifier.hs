@@ -80,7 +80,7 @@ analyser_debug stmts = do
   (bstmt:_) -> do 
    let k = case bstmt of 
         (_,[]) -> '0'
-        _  -> T.trace (_triple preStr (prettyPrint (head $ snd bstmt)) postStr) $ unsafePerformIO $ getChar
+        _  -> T.trace (_triple preStr (prettyPrint (head $ snd bstmt) ++ "\n" ++ show (fst bstmt)) postStr) $ unsafePerformIO $ getChar
    k `seq` analyse stmts
 
 analyse :: ProdProgram -> EnvOp (Result,Maybe Model)   

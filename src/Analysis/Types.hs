@@ -105,7 +105,7 @@ updatePid pid = do
 updatePre :: AST -> EnvOp ()
 updatePre pre = do
   s@Env{..} <- get
-  put s{ _pre = pre}
+  put s{ _pre = pre }
 
 -- @ update the pre-condition
 updatePost :: AST -> EnvOp ()
@@ -116,13 +116,13 @@ updatePost post = do
 updateInvPost :: AST -> EnvOp ()
 updateInvPost invpost = do
   s@Env{..} <- get
-  put s{ _invpost = invpost}
+  put s{ _invpost = invpost }
 
 updateNumRet :: EnvOp ()
 updateNumRet = do
   s@Env{..} <- get
   let numret = _numret + 1
-  put s{ _numret = numret}
+  put s{ _numret = numret }
   
 -- @ update the ssa map
 updateSSAMap :: SSAMap -> EnvOp ()
@@ -133,11 +133,11 @@ updateSSAMap ssamap = do
 updateAssignMap :: AssignMap -> EnvOp ()
 updateAssignMap assmap = do
   s@Env{..} <- get
-  put s{ _assmap = assmap}
+  put s{ _assmap = assmap }
 
 incrementAssignMap :: Ident -> Exp -> EnvOp ()
 incrementAssignMap i e = do
   s@Env{..} <- get
   let assignMap = M.insert i e _assmap
-  put s{ _assmap = assignMap}
+  put s{ _assmap = assignMap }
   

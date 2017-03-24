@@ -15,6 +15,7 @@ import Edit.Print
 -- import Language.SMTLib2.Base
 -- import Language.SMTLib2.Printer
 -- import Parser
+import Flow
 import Language.Java.Parser hiding (opt)
 import Language.Java.Pretty hiding (opt)
 import Language.Java.Syntax
@@ -78,6 +79,8 @@ runOption opt = case opt of
   Parse f -> do
     prog <- parse f
     putStrLn $ prettyPrint prog
+    let graphs = computeGraphs prog
+    putStrLn $ pp_dot_graphs graphs
   Diff2 o a -> diff2 o a
   Diff4 o a b m -> diff4 o a b m
   Verify f -> do

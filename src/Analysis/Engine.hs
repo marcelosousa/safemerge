@@ -189,10 +189,17 @@ toIdent (Name []) = error $ "nameToIdent: Name []"
 toIdent (Name l) = foldr (\(Ident a) (Ident b) -> Ident (a ++ "." ++ b)) (Ident "") l 
 
 enc_name :: Int -> Ident -> [AST] -> EnvOp AST
-enc_name pid ident [] = do
+enc_name pid id@(Ident ident) [] = do
   env@Env{..} <- get
-  case M.lookup ident _ssamap of
-    Nothing -> error $ "enc_name: not in map " ++ show ident 
+  case M.lookup id _ssamap of
+    Nothing -> do
+     iSort <- lift $ mkIntSort
+     fn <- lift $ mkFreshFuncDecl ident [] iSort
+     ast <- lift $ mkApp fn []
+     let ssamap = M.insert id [(ast, iSort, n) | n <- [1..4]] _ssamap
+     updateSSAMap ssamap
+     return ast 
+    --  error $ "enc_name: not in map " ++ show ident 
     Just l -> case l !! (pid-1) of
       (ast,_,_) -> return ast
 enc_name pid ident args = error "enc_name: not supported yet"
