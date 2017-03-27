@@ -19,6 +19,7 @@ import Data.Map (Map)
 import Edit.Types
 import Graph
 import Language.Java.Syntax
+import Language.Java.Pretty
 import qualified Data.Map as M
 import qualified Debug.Trace as T
 
@@ -540,7 +541,7 @@ pp_dot_edges table pre succs rest =
 pp_dot_edge table pre (eId,succ) rest =
   let e_label = case M.lookup eId table of
         Nothing -> ""
-        Just info -> show info
+        Just info -> show (edge_tags info) ++ " " ++ prettyPrint (edge_code info)
       e = show pre ++ " -> " ++ show succ ++ " [label=< " ++ e_label ++ " >]"
   in e ++ "\n" ++ rest
 
