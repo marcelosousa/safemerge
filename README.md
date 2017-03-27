@@ -3,8 +3,8 @@ progmerge
 
 High-level procedure
 --------------------
-  (x) For each merge in the git log whose changeset specifies concurrent modifications to the same method
-      (x) Done with a lightweight ast difference tool
+  (x) For each merge in the git log whose changeset specifies concurrent modifications to the same method  
+      (x) Done with a lightweight ast difference tool  
   (x) Obtain the tuple (FileName, ClassName, MethodName, (Hash-Base, Hash-A, Hash-B, Hash-M)
   (x) Load in memory the 4 versions of ClassName
   (x) Compute the 4-way diff between the versions of MethodName. The output is (ProgramWithHoles, Edit-Base, Edit-A, Edit-B, Edit-M):
