@@ -6,6 +6,7 @@
 
 module Main where
 
+import Analysis.Dependence
 import Analysis.Verifier
 import Edit
 import Edit.Types
