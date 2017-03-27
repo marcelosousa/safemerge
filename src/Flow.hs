@@ -22,6 +22,8 @@ import Language.Java.Syntax
 import qualified Data.Map as M
 import qualified Debug.Trace as T
 
+type FlowInfo st = Map MIdent (MemberDecl,Graph st)
+
 data FlowState st
   = FlowState {
     graphs  :: Graphs st
@@ -189,10 +191,10 @@ getEntryId sym = do
     Just n  -> return n
 
 -- | Main Functions
-computeGraphs :: Program -> Graphs st
+computeGraphs :: Program -> FlowInfo st
 computeGraphs prog = 
   let ((),st) = runState (toFlow prog) init_st
-  in graphs st
+  in M.intersectionWith (,) (defs st) (graphs st) 
 
 -- | Main ToFlow class 
 class Flow a v  where

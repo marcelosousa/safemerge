@@ -17,6 +17,7 @@ import Data.Map (Map)
 import Data.Set (Set)
 import Edit.Types
 import Graph
+import Flow 
 import Language.Java.Syntax
 import qualified Data.Map as M
 import qualified Data.Set as S
@@ -60,6 +61,14 @@ type Worklist = [WItem]
 type NodeTable = Map NodeId [DepMap]
 type ResultList = NodeTable -- Map NodeId DepMap
 
+printResultList :: ResultList -> String
+printResultList m = 
+  "ResultList\n" ++ M.foldWithKey (\nId d r -> "Node " ++ show nId ++ "\n" ++ concatMap printDepMap d ++ "\n" ++ r) "" m
+
+printDepMap :: DepMap -> String
+printDepMap = 
+  M.foldWithKey (\k (t,d) r -> show (t,k) ++ " -> " ++ show d ++ "\n" ++ r) "" 
+
 -- State of the fixpoint
 data FixState =
   FixState
@@ -76,6 +85,33 @@ update_node_table node_table' = do
   let cfg = fs_cfg { node_table = node_table' }
   put fs { fs_cfg = cfg }
   return cfg
+
+type DepInfo = Map MIdent ResultList
+
+-- compute dependencies for a module
+depAnalysis :: FlowInfo DepMap -> DepInfo
+depAnalysis = M.map dependencies 
+
+dependencies :: (MemberDecl,DepGraph) -> ResultList
+dependencies (mDecl,cfg) = 
+  let initMap = initDepMap mDecl
+  in fixpt cfg initMap
+
+initDepMap :: MemberDecl -> DepMap
+initDepMap mDecl = case mDecl of
+  MethodDecl    _ _ _ _ params _ _ -> paramsToDep params 
+  ConstructorDecl _ _ _ params _ _ -> paramsToDep params
+  _ -> M.empty 
+
+paramsToDep :: [FormalParam] -> DepMap
+paramsToDep params = 
+  M.fromList $ map paramToDep params 
+
+paramToDep :: FormalParam -> (AbsVar,(Tag,[AbsVar]))
+paramToDep (FormalParam a b c varId) = 
+  case varId of
+    VarId i -> (SName (Name [i]),(Input,[]))
+    VarDeclArray vId -> paramToDep $ FormalParam a b c vId
 
 -- The main fixpoint for the dependence analysis
 -- It requires the initial DepMap that specifies the inputs

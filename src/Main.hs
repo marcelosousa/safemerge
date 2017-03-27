@@ -25,6 +25,7 @@ import Prelude hiding (product)
 -- import Product
 import System.Console.CmdArgs
 import System.FilePath.Posix
+import qualified Data.Map as M
 
 _program, _summary :: String
 _summary = unlines ["wiz - v0.1","Semantic program merging."
@@ -80,7 +81,7 @@ runOption opt = case opt of
   Parse f -> do
     prog <- parse f
     putStrLn $ prettyPrint prog
-    let graphs = computeGraphs prog
+    let graphs = M.map snd $ computeGraphs prog
     putStrLn $ pp_dot_graphs graphs
   Diff2 o a -> diff2 o a
   Diff4 o a b m -> diff4 o a b m
