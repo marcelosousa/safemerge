@@ -21,6 +21,7 @@ import Flow
 import Language.Java.Syntax
 import qualified Data.Map as M
 import qualified Data.Set as S
+import Debug.Trace as T
 
 -- Domain of analysis
 -- Symbolic Locations
@@ -88,6 +89,10 @@ update_node_table node_table' = do
 
 type DepInfo = Map MIdent ResultList
 
+printDepInfo :: DepInfo -> String
+printDepInfo = 
+  M.foldWithKey (\k l r -> "Function " ++ show k ++ "\n" ++ printResultList l ++ "\n\n" ++ r ) ""
+ 
 -- compute dependencies for a module
 depAnalysis :: FlowInfo DepMap -> DepInfo
 depAnalysis = M.map dependencies 
@@ -194,10 +199,13 @@ transformer stmt map = case stmt of
   ExpStmt e -> 
     let (r,w) = transformer_expr e
     in foldr (set_dep r) map w 
+  Assume e -> 
+    let (r,w) = transformer_expr e
+    in foldr (set_dep r) map w 
   _ -> error $ "transformer: " ++ show stmt
 
 set_output :: AbsVar -> DepMap -> DepMap 
-set_output v m = 
+set_output v m = T.trace ("set_output: " ++ show v) $  
   case M.lookup v m of
     Nothing -> M.insert v (Output,[]) m
     Just (t,l) -> M.insert v (t `join_tag` Output,l) m  

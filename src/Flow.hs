@@ -310,9 +310,7 @@ computeGraphStmt stmt = do
       eId <- incEdCounter
       curr <- getCurrent
       let next = (-1) 
-          eInfo = case mExpr of
-            Nothing -> EdgeInfo [Exit] Skip
-            Just e  -> EdgeInfo [Exit] (ExpStmt e)
+          eInfo = EdgeInfo [Exit] stmt
       addEdgeInfo eId eInfo
       addEdge curr eId next
       popNext
