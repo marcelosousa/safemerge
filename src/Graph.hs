@@ -8,8 +8,8 @@ module Graph where
 import Control.Monad.State.Lazy
 import Data.List 
 import Data.Map (Map)
-import Edit.Types
 import Language.Java.Syntax
+import Types
 import qualified Data.Map as M
 import qualified Debug.Trace as T
 

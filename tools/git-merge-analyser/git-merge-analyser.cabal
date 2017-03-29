@@ -1,0 +1,21 @@
+Name:		git-merge-analyser	
+Version:	0.1
+Cabal-Version:  >= 1.2
+Author:		Marcelo Sousa
+Category: Analysis	
+Synopsis: Lightweight AST Difference Analysis for Java
+Build-Type: Simple
+
+Executable git-merge-analyser
+    Main-Is:          Main.hs
+    Build-Depends:    base          
+                    , containers    
+                    , filepath   
+                    , directory
+                    , mtl           
+                    , wiz 
+                    , process 
+                    , language-java 
+    Hs-Source-Dirs:   src/
+    ghc-options:      -O3 -rtsopts
+    Extensions:       DoAndIfThenElse

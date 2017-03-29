@@ -22,3 +22,11 @@ Executable wiz
     Hs-Source-Dirs:   src/
     ghc-options:      -O3 -rtsopts
     Extensions:       DoAndIfThenElse
+
+Library
+  Build-Depends: base, language-java, containers, mtl, array, filepath 
+  Extensions:	GeneralizedNewtypeDeriving, MultiParamTypeClasses, FunctionalDependencies, TypeSynonymInstances, FlexibleInstances
+  Hs-Source-Dirs: src/
+  Exposed-modules:
+      Analysis.Java.Liff
+      Analysis.Java.ClassInfo

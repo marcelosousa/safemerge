@@ -7,6 +7,8 @@
 module Main where
 
 import Analysis.Dependence
+import Analysis.Java.ClassInfo
+import Analysis.Java.Liff
 import Analysis.Verifier
 import Edit
 import Edit.Types
@@ -17,6 +19,7 @@ import Edit.Print
 -- import Language.SMTLib2.Printer
 -- import Parser
 import Flow
+import Types
 import Language.Java.Parser hiding (opt)
 import Language.Java.Pretty hiding (opt)
 import Language.Java.Syntax
@@ -45,16 +48,17 @@ data InvGen = Houdini | Horn
 instance Default InvGen where
   def = Houdini 
  
-data Option = Parse   { file :: FilePath }
+data Option = Parse   { prog :: FilePath }
             | Diff2   { prog :: FilePath, a :: FilePath }
             | Diff4   { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath }
             | Verify  { base :: FilePath } 
             | Product { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath }
+            | Class   { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath }
             | Merge   { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath, output :: FilePath }
   deriving (Show, Data, Typeable, Eq)
 
-parseMode, productMode, mergeMode :: Option
-parseMode = Parse { file = def } &= help _helpParse
+parseMode, productMode, mergeMode, classMode :: Option
+parseMode = Parse { prog = def } &= help _helpParse
 productMode = Product { prog = def, a = def
                       , b = def, merge = def } &= help _helpProduct
 diffMode = Diff4 { prog = def, a = def, b = def
@@ -63,10 +67,12 @@ verifyMode = Verify { base = def } &= help _helpVerify
 diff2Mode = Diff2 { prog = def, a = def } &= help _helpDiff2
 mergeMode = Merge { prog = def, a = def, b = def
                   , merge = def, output = def } &= help _helpMerge
+classMode = Class{ prog = def, a = def, b = def
+                , merge = def } &= help _helpDiff
 
 progModes :: Mode (CmdArgs Option)
 progModes = cmdArgsMode $ modes [parseMode, productMode, mergeMode
-                                ,diffMode, diff2Mode, verifyMode]
+                                ,diffMode, diff2Mode, verifyMode, classMode]
          &= help _help
          &= program _program
          &= summary _summary
@@ -88,6 +94,7 @@ runOption opt = case opt of
     -- putStrLn $ printDepInfo depInfo
   Diff2 o a -> diff2 o a
   Diff4 o a b m -> diff4 o a b m
+  Class o a b m -> mergeClass o a b m
   Verify f -> do
     let o = f ++ "_o.java"
         a = f ++ "_a.java"
@@ -115,6 +122,11 @@ runOption opt = case opt of
     -- let enc = fine_encode True p_s a_s b_s m_s
     writeFile o $ show $ prettyprint enc 
 -}
+
+-- | Given 4 Java files generate a merge instance
+--   with edit scripts and a program with holes.
+mergeClass :: FilePath -> FilePath -> FilePath -> FilePath -> IO () -- MergeInst 
+mergeClass = undefined
 
 -- | Some utility functions
 parse :: FilePath -> IO Program

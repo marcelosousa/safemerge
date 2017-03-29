@@ -5,7 +5,6 @@
 -------------------------------------------------------------------------------
 module Analysis.Verifier (wiz) where
 
-import Edit.Types
 -- import Analysis.Invariant
 import Analysis.Util
 import Analysis.Types
@@ -15,6 +14,7 @@ import Control.Monad.State.Strict
 import Control.Monad.ST
 import Data.Map (Map)
 import Data.Maybe
+import Edit.Types
 import Language.Java.Pretty
 import Language.Java.Syntax
 import System.IO.Unsafe

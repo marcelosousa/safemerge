@@ -5,17 +5,14 @@
 -------------------------------------------------------------------------------
 module Edit.Gen where
 
+import Data.Map (Map)
+import Edit.Diff
+import Edit.Types
 import Language.Java.Parser hiding (opt)
 import Language.Java.Pretty hiding (opt)
 import Language.Java.Syntax
-
-import Data.Map (Map)
 import qualified Data.Map as M
-
 import qualified Debug.Trace as T
-
-import Edit.Types
-import Edit.Diff
 
 -- | Edit generation
 edit_gen :: Program -> Program -> (Program, Edit, Edit)

@@ -13,18 +13,16 @@
 -}
 module Flow where
 
+import Analysis.Java.ClassInfo
 import Control.Monad.State.Lazy
 import Data.List 
 import Data.Map (Map)
-import Edit.Types
+import Types
 import Graph
 import Language.Java.Syntax
 import Language.Java.Pretty
 import qualified Data.Map as M
 import qualified Debug.Trace as T
-
-getParamType :: FormalParam -> Type
-getParamType (FormalParam _ ty _ _) = ty
 
 type FlowInfo st = Map MIdent (MemberDecl,Graph st)
 

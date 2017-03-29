@@ -5,15 +5,13 @@
 -------------------------------------------------------------------------------
 module Edit.Normalize where
 
+import Data.Map (Map)
+import Edit.Types
 import Language.Java.Parser hiding (opt)
 import Language.Java.Pretty hiding (opt)
 import Language.Java.Syntax
-
-import Data.Map (Map)
 import qualified Data.Map as M
-
 import qualified Debug.Trace as T
-import Edit.Types
 
 normalize :: (Program,Edits) -> (Program,Edits)
 normalize (p@(CompilationUnit pkg imp ty),es) =

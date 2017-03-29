@@ -15,13 +15,14 @@ import Control.Monad.State.Lazy
 import Data.List
 import Data.Map (Map)
 import Data.Set (Set)
+import Debug.Trace as T
 import Edit.Types
-import Graph
 import Flow 
+import Graph
 import Language.Java.Syntax
+import Types
 import qualified Data.Map as M
 import qualified Data.Set as S
-import Debug.Trace as T
 
 -- Domain of analysis
 -- Symbolic Locations

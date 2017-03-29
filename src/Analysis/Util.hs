@@ -1,8 +1,8 @@
 module Analysis.Util (get_method, getParIdents, safeLookup) where
 
+import Data.Map (Map)
 import Edit.Types
 import Language.Java.Syntax
-import Data.Map (Map)
 import qualified Data.Map as M
 
 get_method :: Program -> Method

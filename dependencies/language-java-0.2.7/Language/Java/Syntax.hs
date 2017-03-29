@@ -8,6 +8,7 @@ import Data.Data
 -----------------------------------------------------------------------
 -- Packages
 
+type Program = CompilationUnit
 
 -- | A compilation unit is the top level syntactic goal symbol of a Java program.
 data CompilationUnit = CompilationUnit (Maybe PackageDecl) [ImportDecl] [TypeDecl]

@@ -9,7 +9,7 @@ High-level procedure
   (x) Load in memory the 4 versions of ClassName  
   (x) Compute the 4-way diff between the versions of MethodName. The output is (ProgramWithHoles, Edit-Base, Edit-A, Edit-B, Edit-M):  
       (-) Scope of the holes is at the statement level. (If we have a hole inside a loop body, consider the entire loop a hole? The answer should be no.) 
-  (-) Generate a ClassInfo object composed of the field and method information (the exact information is to be seen)  
+  (x) Generate a ClassInfo object composed of the field and method information (the exact information is to be seen)  
   (-) Generate the initial objects of the 4 versions and constraints that specify that they are in the same state:  
       (-) Requires pairing of fields and is sensitive to refactoring/renaming of fields  
   (-) Partition the program with holes in segments of blocks of statements (which do not contain any hole) by statements
