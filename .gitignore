@@ -4,9 +4,14 @@ cabal-dev
 *.hi
 *.chi
 *.chs.h
+*.swp
+*.class
 .virtualenv
 .hsenv
 .cabal-sandbox/
 encodings
 cabal.sandbox.config
 cabal.config
+benchmarks/industrial
+tools/git-merge-analyser/git-merge-analyzer
+tools/git-merge-analyser/tags

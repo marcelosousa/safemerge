@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Foo 
 {
@@ -62,6 +63,28 @@ public class Foo
   {
     return "Foo object\n" + "x = " + this.x + "\n" + "name = " + this.name + "\nintArray = " + this.intArray.toString();
   }
+
+  public int test(int x)
+  {
+    this.x = x;
+    int y = this.field;
+    int z = 0;
+
+    if (x > 0)
+    {
+      x = 1;
+    } else {
+      x = 0;
+    }
+
+    while (x > 0)
+    {
+      z++;
+      x--;
+    }
+    
+    return y;
+  }
   
   public static void main(String args[]) 
   {
@@ -72,3 +95,4 @@ public class Foo
     System.out.println(f.toString());
   }
 }
+
