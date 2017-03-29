@@ -1,5 +1,5 @@
 {-# LANGUAGE RecordWildCards #-}
-module Types where
+module Analysis.Liff.Types where
 
 import System.FilePath.Posix
 import Data.Map (Map)

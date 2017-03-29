@@ -1,6 +1,6 @@
 all : haskell 
 
 haskell :
-	ghc Main.hs -o git-merge-analyzer	
+	ghc src/Analysis/Liff.hs -o git-merge-analyzer	
 
 .PHONY : haskell 

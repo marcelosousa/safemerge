@@ -1,11 +1,11 @@
-module Util where
+module Analysis.Liff.Util where
 
 -- | Retrieves info from a CompilationUnit
 
 import Language.Java.Syntax
 import qualified Data.Map as M
 import Data.Map (Map) 
-import Types
+import Analysis.Liff.Types
 
 toClassInfo :: Maybe Program -> ClassInfo 
 toClassInfo Nothing = M.empty
