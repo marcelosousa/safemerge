@@ -19,6 +19,6 @@ type Edit = [BlockStmt]
 type Program = CompilationUnit
 type Method = ([FormalParam],Block) 
 
--- Method Identifier: (Class Name, Method Name)
+-- Method Identifier: (Class Name, Method Name, Parameter Types)
 -- No proper support for anonymous classes
-type MIdent = (Ident,Ident) 
+type MIdent = (Ident,Ident,[Type]) 

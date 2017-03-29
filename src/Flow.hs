@@ -23,6 +23,9 @@ import Language.Java.Pretty
 import qualified Data.Map as M
 import qualified Debug.Trace as T
 
+getParamType :: FormalParam -> Type
+getParamType (FormalParam _ ty _ _) = ty
+
 type FlowInfo st = Map MIdent (MemberDecl,Graph st)
 
 data FlowState st
@@ -230,8 +233,8 @@ computeItDefs (InterfaceDecl _ iId _ _ (InterfaceBody bdy)) =
 computeMDeclDefs :: Ident -> MemberDecl -> FlowOp () st 
 computeMDeclDefs uId mDecl = case mDecl of
   FieldDecl _ _ _ -> return () 
-  MethodDecl _ _ _ mId _ _ _ -> newEntry (uId,mId) mDecl 
-  ConstructorDecl _ _ cId _ _ _ -> newEntry (uId,cId) mDecl
+  MethodDecl _ _ _ mId ps _ _ -> newEntry (uId,mId,map getParamType ps) mDecl 
+  ConstructorDecl _ _ cId ps _ _ -> newEntry (uId,cId,map getParamType ps) mDecl
   MemberClassDecl c -> computeClDefs c
   MemberInterfaceDecl i -> computeItDefs i 
 

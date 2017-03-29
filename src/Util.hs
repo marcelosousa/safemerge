@@ -12,6 +12,7 @@ import Language.SMTLib2.Printer
 import Printer
 import Types
 
+
 -- Class to retrieve all the function signatures from a.
 -- A Function Signature is a pair (Function Name, Arity)
 type FunctionSig = (Var, Int)

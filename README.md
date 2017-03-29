@@ -8,7 +8,7 @@ High-level procedure
   (x) Obtain the tuple (FileName, ClassName, MethodName, (Hash-Base, Hash-A, Hash-B, Hash-M)  
   (x) Load in memory the 4 versions of ClassName  
   (x) Compute the 4-way diff between the versions of MethodName. The output is (ProgramWithHoles, Edit-Base, Edit-A, Edit-B, Edit-M):  
-      (-) Scope of the holes is at the statement level. If we have a hole inside a loop body, consider the entire loop a hole? The answer should be no.  
+      (-) Scope of the holes is at the statement level. (If we have a hole inside a loop body, consider the entire loop a hole? The answer should be no.) 
   (-) Generate a ClassInfo object composed of the field and method information (the exact information is to be seen)  
   (-) Generate the initial objects of the 4 versions and constraints that specify that they are in the same state:  
       (-) Requires pairing of fields and is sensitive to refactoring/renaming of fields  
@@ -32,3 +32,7 @@ Dependence analysis
   (-) Flow-sensitivity for the dependence analysis  
   (-) Fixpoint computation for (mutually) recursive calls 
   (-) Test for correctness and proper support of fields and containers  
+  (-) Support for print.out (consider those as outputs)
+
+
+(-) Make a library out of Liff so that it can be used from the main verification tool

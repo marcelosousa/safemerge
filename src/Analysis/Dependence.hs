@@ -241,7 +241,7 @@ getReadSet e = case e of
   This           -> error $ "getReadSet: " ++ show e 
   ThisClass name -> error $ "getReadSet: " ++ show e  
   -- [TypeArgument] ClassType [Argument] (Maybe ClassBody)
-  InstanceCreation tyargs classty args mclass -> error $ "getReadSet: " ++ show e 
+  InstanceCreation tyargs classty args mclass -> concatMap getReadSet args 
   -- Exp [TypeArgument] Ident [Argument] (Maybe ClassBody)
   QualInstanceCreation e tyargs classty args mclass -> error $ "getReadSet: " ++ show e
   -- Type [Exp] Int
@@ -252,7 +252,7 @@ getReadSet e = case e of
     PrimaryFieldAccess e i -> [SField i]
     SuperFieldAccess i     -> [SField i]
     ClassFieldAccess n i   -> [SField i]
-  MethodInv mi -> error $ "getReadSet: " ++ show e 
+  MethodInv mi -> getReadSetInv mi 
   ArrayAccess ai -> [SArray ai]
   ExpName n -> [SName n]
   PostIncrement exp -> getReadSet exp
@@ -268,3 +268,10 @@ getReadSet e = case e of
   InstanceOf    exp refType -> getReadSet exp
   Cond c t e -> getReadSet c ++ getReadSet t ++ getReadSet e
   Assign lhs assignOp rhs -> error $ "getReadSet of " ++ show e 
+
+-- @TODO: Method invocation can affect the write set
+getReadSetInv :: MethodInvocation -> [AbsVar]
+getReadSetInv mi = case mi of
+  MethodCall n args -> concatMap getReadSet args
+  PrimaryMethodCall e _ _ args -> getReadSet e ++ concatMap getReadSet args
+  _ -> error $ "getReadSetInv: " ++ show mi 
