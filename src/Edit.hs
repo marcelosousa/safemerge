@@ -18,7 +18,6 @@ import Language.Java.Syntax
 import qualified Data.Map as M
 import qualified Debug.Trace as T
 
-
 diff4gen :: Program -> Program -> Program -> Program -> (Program, Edit, Edit, Edit, Edit)
 diff4gen o a b m = 
   let (no, eo, ea) = edit_gen o a 

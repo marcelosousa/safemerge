@@ -126,7 +126,10 @@ runOption opt = case opt of
 -- | Given 4 Java files generate a merge instance
 --   with edit scripts and a program with holes.
 mergeClass :: FilePath -> FilePath -> FilePath -> FilePath -> IO () -- MergeInst 
-mergeClass = undefined
+mergeClass ofl afl bfl mfl = do
+  (oast,aast,bast,mast) <- parse4 ofl afl bfl mfl
+  let mergeInst = liff oast aast bast mast
+  return () 
 
 -- | Some utility functions
 parse :: FilePath -> IO Program
