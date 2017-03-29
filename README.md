@@ -35,4 +35,4 @@ Dependence analysis
   (-) Support for print.out (consider those as outputs)
 
 
-(-) Make a library out of Liff so that it can be used from the main verification tool
+(x) Make a library out of Liff so that it can be used from the main verification tool
