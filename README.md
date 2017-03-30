@@ -11,7 +11,7 @@ High-level procedure
       (-) Scope of the holes is at the statement level. (If we have a hole inside a loop body, consider the entire loop a hole? The answer should be no.) 
   (x) Generate a ClassInfo object composed of the field and method information (the exact information is to be seen)  
   (-) Generate the initial objects of the 4 versions and constraints that specify that they are in the same state:  
-      (-) Requires pairing of fields and is sensitive to refactoring/renaming of fields  
+      (x) Requires pairing of fields and is sensitive to refactoring/renaming of fields  
   (x) Partition the program with holes in segments of blocks of statements (which do not contain any hole) by statements
       that contain a hole (conditionals or loops or straight line modifications):  
       (-) Perform a dependence analysis in each complete segment and replace the segment with calls to uninterpreted functions 

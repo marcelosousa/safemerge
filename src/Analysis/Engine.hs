@@ -5,19 +5,16 @@
 -------------------------------------------------------------------------------
 module Analysis.Engine where
 
+import Analysis.Java.ClassInfo
 import Analysis.Types
 import Analysis.Util
-
 import Control.Monad.State.Strict
 import Data.Map (Map)
 import Data.Maybe
-
-import Language.Java.Syntax
 import Language.Java.Pretty
-
+import Language.Java.Syntax
 import System.IO.Unsafe
 import Z3.Monad hiding (Params)
-
 import qualified Data.Map as M
 import qualified Debug.Trace as T
 
@@ -39,8 +36,8 @@ helper pre post = do
   preStr  <- astToString pre
   T.trace ("helper: " ++ preStr) $ return (r,m)
 
-prelude :: [FormalParam] -> Z3 (Params, [AST])
-prelude params = do
+z3_gen_inout :: ([MemberSig], [MemberSig]) -> Z3 (Params, [AST], [AST])
+z3_gen_inout (params, fields) = do
   let arity = 4
       ps = ["o"] -- getParIdents params 
       parsId = map (\s -> map (\ar -> s ++ show ar) [1..arity]) ps 
@@ -48,7 +45,7 @@ prelude params = do
   pars <- mapM (mapM (\par -> mkFreshConst par intSort)) parsId
   let pars' = foldl (\r (k,v) -> M.insert (Ident k) v r) M.empty $ zip ps pars
   res <- mapM (\idx -> mkFreshConst ("res"++show idx) intSort) [1..arity]
-  return (pars', res)
+  return (pars', res, res)
 
 initial_SSAMap :: Params -> Res -> Z3 SSAMap
 initial_SSAMap params res = do

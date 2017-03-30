@@ -5,13 +5,13 @@
 -------------------------------------------------------------------------------
 module Analysis.Types where
 
-import Edit.Types
-import Control.Monad.State.Strict
+import Analysis.Java.ClassInfo
 import Control.Monad.ST
+import Control.Monad.State.Strict
 import Data.Map (Map)
+import Edit.Types
 import Language.Java.Syntax
 import Z3.Monad hiding (Params)
-
 import qualified Data.Map as M
 import qualified Debug.Trace as T
 
@@ -49,6 +49,7 @@ data Env = Env
   , _pre     :: AST
   , _post    :: AST
   , _invpost :: AST
+  , _classes :: [ClassInfo]
   , _e_o     :: Edit
   , _e_a     :: Edit
   , _e_b     :: Edit

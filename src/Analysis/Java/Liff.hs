@@ -57,6 +57,7 @@ class_diff cls cl_o cl_a cl_b cl_m r =
    class_diff' cls mi_a mi_b mi_m mth_sig m_o r = 
      case (M.lookup mth_sig mi_a, M.lookup mth_sig mi_b, M.lookup mth_sig mi_m) of
        (Just m_a, Just m_b, Just m_m) -> 
+         -- @TODO: make sure the parameters (names) are the same
          if mbody_diff (mth_body m_o) (mth_body m_a) (mth_body m_b) (mth_body m_m)
          then trace ("changes found") $ (cls,fst mth_sig, snd mth_sig):r
          else r

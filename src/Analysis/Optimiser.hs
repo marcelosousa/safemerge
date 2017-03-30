@@ -27,7 +27,6 @@ import Language.Java.Syntax
 import qualified Data.Map as M
 import qualified Data.Set as S
 
-
 -- 1. Discover the largest non-hole sequence of blockstmts  
 next_block :: [BlockStmt] -> (Either [BlockStmt] BlockStmt, [BlockStmt])
 next_block [] = (Left [], [])

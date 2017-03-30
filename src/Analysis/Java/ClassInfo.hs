@@ -33,6 +33,38 @@ data ClassSum =
   }
   deriving (Show,Ord,Eq)
 
+findClass :: MIdent -> ClassInfo -> ClassSum
+findClass (cls,_,_) class_info = 
+  case M.lookup cls class_info of
+    Nothing -> error $ "findClass: cant find " ++ show cls
+    Just class_sum -> class_sum 
+
+findMethod :: MIdent -> ClassInfo -> MemberDecl
+findMethod (cls,name,tys) class_info =
+  case M.lookup cls class_info of
+    Nothing -> error $ "findMethod: cant find " ++ show cls
+    Just class_sum@ClassSum{..} -> 
+      case M.lookup (name,tys) _cl_meths of
+        Nothing -> case M.lookup (name,tys) _cl_cons of
+          Nothing -> error $ "findMethod in class: cant find " ++ show (name,tys)
+          Just m -> m
+        Just m -> m
+
+varDeclIdToIdent :: VarDeclId -> Ident 
+varDeclIdToIdent v = case v of
+  VarId i -> i
+  VarDeclArray v' -> varDeclIdToIdent v'
+
+toMemberSig :: MemberDecl -> [MemberSig]
+toMemberSig mDecl = case mDecl of
+  MethodDecl _ _ _ _ params _ _ -> 
+    map (\(FormalParam _ ty _ v) -> (varDeclIdToIdent v,[ty])) params
+  ConstructorDecl _ _ _ params _ _ -> 
+    map (\(FormalParam _ ty _ v) -> (varDeclIdToIdent v,[ty])) params
+  FieldDecl _ ty varDecls ->
+    map (\(VarDecl v _) -> (varDeclIdToIdent v,[ty])) varDecls
+  _ -> []
+
 i_clsum :: [Ident] -> ClassSum
 i_clsum name = ClassSum name M.empty M.empty M.empty 
 

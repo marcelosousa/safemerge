@@ -7,6 +7,7 @@ module Analysis.Verifier (wiz) where
 
 -- import Analysis.Invariant
 import Analysis.Engine
+import Analysis.Java.ClassInfo
 import Analysis.Java.Liff
 import Analysis.Optimiser
 import Analysis.Types
@@ -27,18 +28,31 @@ import qualified Data.Map as M
 import qualified Debug.Trace as T
 
 wiz :: DiffInst -> IO () 
-wiz diff@MInst{..} = 
-  mapM_ (wiz_meth diff) _merges 
+wiz diff@MInst{..} = mapM_ (wiz_meth diff) _merges 
 
+-- Assume the parameters names are the same in all 4 versions of the method 
 wiz_meth :: DiffInst -> MethInst -> IO ()
-wiz_meth = undefined
+wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = do 
+  let o_class = findClass mth_id _o_info 
+      a_class = findClass mth_id _a_info 
+      b_class = findClass mth_id _b_info 
+      m_class = findClass mth_id _m_info 
+      classes = [o_class, a_class, b_class, m_class]
+  res <- evalZ3 $ verify (mth_id, mth) classes [e_o,e_a,e_b,e_m] 
+  print $ prettyPrint mth
+  print res
+
+-- The main verification function
+verify :: (MIdent, MemberDecl) -> [ClassSum]-> [Edit] -> Z3 (Result, Maybe String) 
+verify (mid, mth) classes edits = do 
+  -- compute the set of inputs 
+  -- i. union the fields of all classes
+  let fields = M.elems $ M.unions $ map _cl_fields classes 
+  -- ii. get the member signatures for the method (parameters) and the fields
+      inputs = (toMemberSig mth, concatMap toMemberSig fields) 
+  (params, res, _) <- z3_gen_inout inputs 
+  undefined
 {-
-res <- evalZ3 $ verify m e_o e_a e_b e_m
-print m
-print res
-verify :: Method -> Edit -> Edit -> Edit -> Edit -> Z3 (Result, Maybe String) 
-verify (pars, Block body) e_o e_a e_b e_m = do 
- (params, res) <- prelude pars 
  -- compute the pre and the post condition
  -- for now, the pre-condition states that the parameters for each version are equal
  --  and the post-condition states the soundness condition for the return variable
