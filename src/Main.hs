@@ -3,13 +3,13 @@
 -- Module    :  Main
 -- Copyright :  (c) 2016 Marcelo Sousa
 -------------------------------------------------------------------------------
-
 module Main where
 
 import Analysis.Dependence
 import Analysis.Java.ClassInfo
 import Analysis.Java.Flow
 import Analysis.Java.Liff
+import Analysis.Optimiser
 import Analysis.Verifier
 import Edit
 import Edit.Types
@@ -97,26 +97,6 @@ runOption opt = case opt of
         m = f ++ "_m.java"
     verify o a b m
   _ -> error $ "wiz: option currently not supported"
-{-
-  Product p a b m -> do
-    p_s <- readFile p >>= return . parseProg
-    a_s <- readFile a >>= return . parseEdit
-    b_s <- readFile b >>= return . parseEdit
-    m_s <- readFile m >>= return . parseEdit
-    let pprod = generate_product p_s a_s b_s m_s
-    putStrLn $ pp_dot_prod_prog $ fst pprod  
-    --putStrLn $ pp_prod_prog pprod 
-  Merge p a b m o -> do
-    p_s <- readFile p >>= return . parseProg
-    a_s <- readFile a >>= return . parseEdit
-    b_s <- readFile b >>= return . parseEdit
-    m_s <- readFile m >>= return . parseEdit
-    let enc = encode False p_s a_s b_s m_s
-    -- let enc = fine_encode False p_s a_s b_s m_s
-    -- let enc = encode True p_s a_s b_s m_s
-    -- let enc = fine_encode True p_s a_s b_s m_s
-    writeFile o $ show $ prettyprint enc 
--}
 
 -- | Given 4 Java files generate a merge instance
 --   with edit scripts and a program with holes.
@@ -127,7 +107,9 @@ mergeClass ofl afl bfl mfl = do
   -- converts to class info and finds which methods contain changes
   let mergeInst = liff oast aast bast mast
   -- computes per method, the edit scripts and the method with holes
-  let diffInst = diffMethods mergeInst
+      diffInst = diffMethods mergeInst
+  -- computes per method to be verified, the dependence analysis 
+      verInst = optMethods OptBlock diffInst
   return () 
 
 -- | Some utility functions
