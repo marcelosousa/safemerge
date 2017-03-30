@@ -17,8 +17,10 @@ type MemberSig = (Ident,[Type])
 type MemberInfo = Map MemberSig MemberDecl 
 type FieldInfo = Map Ident MemberDecl
 type ClassInfo = Map Ident ClassSum 
-type QName = (Ident, Ident, MethodBody)
-type SQName = (Ident, MemberSig)
+-- Method Identifier: (Class Name, Method Name, Parameter Types)
+-- No proper support for anonymous classes
+type MIdent = (Ident,Ident,[Type]) 
+type MethodSig = (Ident,[Type])
 
 -- Information regarding the methods of a compilation unit
 data ClassSum = 

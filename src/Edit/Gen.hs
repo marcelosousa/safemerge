@@ -42,8 +42,9 @@ edit_ty_gen ty_o ty_v =
       ClassTypeDecl v_class ->
         let (no_class,o_edit,v_edit) = edit_class_gen o_class v_class
         in (ClassTypeDecl no_class,o_edit,v_edit)
-      InterfaceTypeDecl v_inter -> error "edit_ty_gen: unsupported differences: interface type decl" 
-    InterfaceTypeDecl o_inter -> if ty_o == ty_v then (ty_o,[],[]) else error "edit_ty_gen: unsupported differences" 
+      InterfaceTypeDecl v_inter -> error "edit_ty_gen: unsupported differences: interface decl" 
+    InterfaceTypeDecl o_inter -> 
+      if ty_o == ty_v then (ty_o,[],[]) else error "edit_ty_gen: unsupported differences" 
 
 edit_class_gen :: ClassDecl -> ClassDecl -> (ClassDecl,Edit,Edit)
 edit_class_gen o_class v_class =

@@ -16,14 +16,15 @@ import qualified Data.Map as M
 
 trace a b = b
 
-type MethodSig = (Ident,[Type])
-data MergeInst = MInst
+type MergeInst = PMergeInst MIdent
+
+data PMergeInst a = MInst
  {
    _o_info :: ClassInfo
  , _a_info :: ClassInfo
  , _b_info :: ClassInfo
  , _m_info :: ClassInfo
- , _merges :: [MethodSig]
+ , _merges :: [a]
  }
  deriving (Show,Ord,Eq)
 
@@ -38,7 +39,7 @@ liff o_ast a_ast b_ast m_ast =
       merges = M.foldWithKey (liff' a_class b_class m_class) [] o_class 
   in MInst o_class a_class b_class m_class merges 
  where
-  liff'  :: ClassInfo -> ClassInfo -> ClassInfo -> Ident -> ClassSum -> [MethodSig] -> [MethodSig] 
+  liff'  :: ClassInfo -> ClassInfo -> ClassInfo -> Ident -> ClassSum -> [MIdent] -> [MIdent] 
   liff' c_a c_b c_m cls info_o r =
     case (M.lookup cls c_a, M.lookup cls c_b, M.lookup cls c_m) of
       (Just info_a, Just info_b, Just info_m) -> 
@@ -48,16 +49,16 @@ liff o_ast a_ast b_ast m_ast =
 -- | class_diff : Checks the differences in the AST of two classes based on the
 --   information collected in the datatype ClassSum (Class Summary)
 --   For now, just checks and returns the set of methods that were modified
-class_diff :: Ident -> ClassSum -> ClassSum -> ClassSum -> ClassSum -> [MethodSig] -> [MethodSig] 
+class_diff :: Ident -> ClassSum -> ClassSum -> ClassSum -> ClassSum -> [MIdent] -> [MIdent] 
 class_diff cls cl_o cl_a cl_b cl_m r =
   M.foldWithKey (class_diff' cls (_cl_meths cl_a) (_cl_meths cl_b) (_cl_meths cl_m)) r (_cl_meths cl_o)
  where
-   class_diff' :: Ident -> MemberInfo -> MemberInfo -> MemberInfo -> MemberSig -> MemberDecl -> [MethodSig] -> [MethodSig]
+   class_diff' :: Ident -> MemberInfo -> MemberInfo -> MemberInfo -> MemberSig -> MemberDecl -> [MIdent] -> [MIdent]
    class_diff' cls mi_a mi_b mi_m mth_sig m_o r = 
      case (M.lookup mth_sig mi_a, M.lookup mth_sig mi_b, M.lookup mth_sig mi_m) of
        (Just m_a, Just m_b, Just m_m) -> 
          if mbody_diff (mth_body m_o) (mth_body m_a) (mth_body m_b) (mth_body m_m)
-         then trace ("changes found") $ mth_sig:r
+         then trace ("changes found") $ (cls,fst mth_sig, snd mth_sig):r
          else r
        _ -> r
 

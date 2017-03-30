@@ -8,24 +8,19 @@ module Main where
 
 import Analysis.Dependence
 import Analysis.Java.ClassInfo
+import Analysis.Java.Flow
 import Analysis.Java.Liff
 import Analysis.Verifier
 import Edit
 import Edit.Types
 import Edit.Gen
 import Edit.Print
--- import Encoding
 -- import Language.SMTLib2.Base
 -- import Language.SMTLib2.Printer
--- import Parser
-import Flow
-import Types
 import Language.Java.Parser hiding (opt)
 import Language.Java.Pretty hiding (opt)
 import Language.Java.Syntax
 import Prelude hiding (product)
--- import Printer
--- import Product
 import System.Console.CmdArgs
 import System.FilePath.Posix
 import qualified Data.Map as M
@@ -127,8 +122,12 @@ runOption opt = case opt of
 --   with edit scripts and a program with holes.
 mergeClass :: FilePath -> FilePath -> FilePath -> FilePath -> IO () -- MergeInst 
 mergeClass ofl afl bfl mfl = do
+  -- parses the files
   (oast,aast,bast,mast) <- parse4 ofl afl bfl mfl
+  -- converts to class info and finds which methods contain changes
   let mergeInst = liff oast aast bast mast
+  -- computes per method, the edit scripts and the method with holes
+  let diffInst = diffMethods mergeInst
   return () 
 
 -- | Some utility functions

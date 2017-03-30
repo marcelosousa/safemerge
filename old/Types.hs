@@ -3,12 +3,7 @@ module Types where
 import Language.Java.Syntax
 import Data.Map
 
--- Method Identifier: (Class Name, Method Name, Parameter Types)
--- No proper support for anonymous classes
-type MIdent = (Ident,Ident,[Type]) 
 
-
-{-
 type Var = String
 type Value = Int
 type Valuation = Map Var Value
@@ -45,4 +40,3 @@ type Vars = [Var]
 type ProdProg = Map Label [(Stat, [Label])]
 type ProdProgram = (Label, ProdProg, [Label])
 type EditMap = Map Label (ProdProgram, Bool)
--}

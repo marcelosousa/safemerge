@@ -3,13 +3,13 @@
 {-
  Control Flow Graph Representation 
 -}
-module Graph where
+module Analysis.Java.Graph where
 
+import Analysis.Java.ClassInfo
 import Control.Monad.State.Lazy
 import Data.List 
 import Data.Map (Map)
 import Language.Java.Syntax
-import Types
 import qualified Data.Map as M
 import qualified Debug.Trace as T
 

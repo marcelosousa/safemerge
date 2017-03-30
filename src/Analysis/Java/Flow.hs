@@ -11,16 +11,15 @@
 {-
  Converts a Java CompilationUnit into a set of CFGs of methods 
 -}
-module Flow where
+module Analysis.Java.Flow where
 
 import Analysis.Java.ClassInfo
+import Analysis.Java.Graph
 import Control.Monad.State.Lazy
 import Data.List 
 import Data.Map (Map)
-import Types
-import Graph
-import Language.Java.Syntax
 import Language.Java.Pretty
+import Language.Java.Syntax
 import qualified Data.Map as M
 import qualified Debug.Trace as T
 

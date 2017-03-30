@@ -11,16 +11,15 @@
 -------------------------------------------------------------------------------
 module Analysis.Dependence where
 
+import Analysis.Java.ClassInfo
+import Analysis.Java.Flow 
+import Analysis.Java.Graph
 import Control.Monad.State.Lazy
 import Data.List
 import Data.Map (Map)
 import Data.Set (Set)
 import Debug.Trace as T
-import Edit.Types
-import Flow 
-import Graph
 import Language.Java.Syntax
-import Types
 import qualified Data.Map as M
 import qualified Data.Set as S
 
