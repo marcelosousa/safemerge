@@ -27,55 +27,6 @@ import Language.Java.Syntax
 import qualified Data.Map as M
 import qualified Data.Set as S
 
--- OptLevel: turns the block level optimisation on
-data OptLevel = OptBlock | OptSimple
-
-type OptMethInst = (MIdent, MemberDecl, AnnMemberDecl, OptLevel, Edit, Edit, Edit, Edit) 
-type VerInst = PMergeInst OptMethInst
-
-data AnnMemberDecl =
-    AnnOther
-  | AnnMethodDecl [Modifier]
-                  [TypeParam]
-                  (Maybe Type)
-                  Ident
-                  [FormalParam]
-                  [ExceptionType]
-                  AnnBody
-  | AnnConstructorDecl [Modifier]
-                       [TypeParam]
-                       Ident
-                       [FormalParam]
-                       [ExceptionType]
-                       (Maybe ExplConstrInv)
-                       AnnBody 
-
--- Sequential composition
-type AnnBody = [AnnBlock]
- 
--- Annotated Block
-data AnnBlock = ABlock 
- {
-   _ab_code :: Block
- , _ab_tag  :: Bool  -- True if it has a hole, False otherwise
- , _ab_ann  :: DepMap
- }
-
-
--- removes redudant instances of StmtBlock
-flatten_block :: [BlockStmt] -> [BlockStmt]
-flatten_block [] = []
-flatten_block (b:bs) = case b of
-  BlockStmt s -> case s of
-    StmtBlock (Block bbs) -> flatten_block $ bbs ++ bs
-    _ -> let s' = BlockStmt $ flatten_stmt s
-         in s':(flatten_block bs)
-  _ -> b:(flatten_block bs)
-
-flatten_stmt :: Stmt -> Stmt
-flatten_stmt s = case s of
-  StmtBlock (Block bbs) -> StmtBlock $ Block $ flatten_block bbs 
-  _ -> s
 
 -- 1. Discover the largest non-hole sequence of blockstmts  
 next_block :: [BlockStmt] -> (Either [BlockStmt] BlockStmt, [BlockStmt])
@@ -139,43 +90,17 @@ hasHole s = case s of
   Hole                    -> True
   _                       -> False
 
--- main optimisation function: converts the top level
--- block into the annotated body
-toAnnBody :: [BlockStmt] -> AnnBody
-toAnnBody stmts =
-  let blocks = partitionBody stmts 
-  in map toAnnBlock blocks
+-- removes redudant instances of StmtBlock
+flatten_block :: [BlockStmt] -> [BlockStmt]
+flatten_block [] = []
+flatten_block (b:bs) = case b of
+  BlockStmt s -> case s of
+    StmtBlock (Block bbs) -> flatten_block $ bbs ++ bs
+    _ -> let s' = BlockStmt $ flatten_stmt s
+         in s':(flatten_block bs)
+  _ -> b:(flatten_block bs)
 
--- partitions a block into a set of alternating  
-partitionBody :: [BlockStmt] -> [([BlockStmt],Bool)]
-partitionBody = undefined
-
--- Here I need more information since I might have to call
--- the interprocedural analysis
-toAnnBlock :: ([BlockStmt],Bool) -> AnnBlock
-toAnnBlock = undefined
-
--- converts a MemberDecl with holes into an annotated MemberDecl
--- ready to be passed to the verifier
-toAnnMemberDecl :: OptLevel -> MemberDecl -> AnnMemberDecl
-toAnnMemberDecl opt_level mDecl = case mDecl of
-  MethodDecl mod tys rty id parms exTy (MethodBody mBody) ->
-    let annBlock = case mBody of 
-                     Nothing -> []
-                     Just (Block b)  -> toAnnBody b
-    in AnnMethodDecl mod tys rty id parms exTy annBlock 
-  ConstructorDecl mod tys id parms exTy (ConstructorBody mInv cBody) ->
-    AnnConstructorDecl mod tys id parms exTy mInv $ toAnnBody cBody 
-
--- Receives a program with holes 
--- and partition its in a list 
--- of statements that are annotated
-optMethods :: OptLevel -> DiffInst -> VerInst
-optMethods opt_level d = 
-  let merges = map (optMethod opt_level) $ _merges d 
-  in d { _merges = merges }
-
-optMethod :: OptLevel -> MethInst -> OptMethInst
-optMethod opt_level (id,meth,o,a,b,m) =
-  let ann_meth = toAnnMemberDecl opt_level meth
-  in (id,meth,ann_meth,opt_level,o,a,b,m) 
+flatten_stmt :: Stmt -> Stmt
+flatten_stmt s = case s of
+  StmtBlock (Block bbs) -> StmtBlock $ Block $ flatten_block bbs 
+  _ -> s
