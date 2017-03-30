@@ -48,11 +48,10 @@ data Option = Parse   { prog :: FilePath }
             | Diff4   { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath }
             | Verify  { base :: FilePath } 
             | Product { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath }
-            | Class   { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath }
             | Merge   { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath, output :: FilePath }
   deriving (Show, Data, Typeable, Eq)
 
-parseMode, productMode, mergeMode, classMode :: Option
+parseMode, productMode, mergeMode :: Option
 parseMode = Parse { prog = def } &= help _helpParse
 productMode = Product { prog = def, a = def
                       , b = def, merge = def } &= help _helpProduct
@@ -62,12 +61,10 @@ verifyMode = Verify { base = def } &= help _helpVerify
 diff2Mode = Diff2 { prog = def, a = def } &= help _helpDiff2
 mergeMode = Merge { prog = def, a = def, b = def
                   , merge = def, output = def } &= help _helpMerge
-classMode = Class{ prog = def, a = def, b = def
-                , merge = def } &= help _helpDiff
 
 progModes :: Mode (CmdArgs Option)
 progModes = cmdArgsMode $ modes [parseMode, productMode, mergeMode
-                                ,diffMode, diff2Mode, verifyMode, classMode]
+                                ,diffMode, diff2Mode, verifyMode]
          &= help _help
          &= program _program
          &= summary _summary
@@ -89,7 +86,6 @@ runOption opt = case opt of
     -- putStrLn $ printDepInfo depInfo
   Diff2 o a -> diff2 o a
   Diff4 o a b m -> diff4 o a b m
-  Class o a b m -> mergeClass o a b m
   Verify f -> do
     let o = f ++ "_o.java"
         a = f ++ "_a.java"
@@ -97,20 +93,6 @@ runOption opt = case opt of
         m = f ++ "_m.java"
     verify o a b m
   _ -> error $ "wiz: option currently not supported"
-
--- | Given 4 Java files generate a merge instance
---   with edit scripts and a program with holes.
-mergeClass :: FilePath -> FilePath -> FilePath -> FilePath -> IO () -- MergeInst 
-mergeClass ofl afl bfl mfl = do
-  -- parses the files
-  (oast,aast,bast,mast) <- parse4 ofl afl bfl mfl
-  -- converts to class info and finds which methods contain changes
-  let mergeInst = liff oast aast bast mast
-  -- computes per method, the edit scripts and the method with holes
-      diffInst = diffMethods mergeInst
-  -- computes per method to be verified, the dependence analysis 
-      verInst = optMethods OptBlock diffInst
-  return () 
 
 -- | Some utility functions
 parse :: FilePath -> IO Program
@@ -160,6 +142,19 @@ diff4 ofl afl bfl mfl = do
     putStrLn $ show res
 
 -- Main function 
+-- | Given 4 Java files generate a merge instance
+--   with edit scripts and a program with holes.
+verify :: FilePath -> FilePath -> FilePath -> FilePath -> IO () 
+verify ofl afl bfl mfl = do
+  -- parses the files
+  (oast,aast,bast,mast) <- parse4 ofl afl bfl mfl
+  -- converts to class info and finds which methods contain changes
+  let mergeInst = liff oast aast bast mast
+  -- computes per method, the edit scripts and the method with holes
+      diffInst = diffMethods mergeInst
+  wiz diffInst 
+
+{-
 verify :: FilePath -> FilePath -> FilePath -> FilePath -> IO ()
 verify ofl afl bfl mfl = do
   (o,a,b,m) <- parse4 ofl afl bfl mfl
@@ -175,3 +170,4 @@ verify ofl afl bfl mfl = do
   then wiz fo e_o e_a e_b e_m 
   else do
     putStrLn "Some edit when applied does not yield the original program"
+-}

@@ -1,35 +1,41 @@
 {-# LANGUAGE RecordWildCards #-}
 -------------------------------------------------------------------------------
 -- Module    :  Analysis.Verifier
--- Copyright :  (c) 2016 Marcelo Sousa
+-- Copyright :  (c) 2016/17 Marcelo Sousa
 -------------------------------------------------------------------------------
 module Analysis.Verifier (wiz) where
 
 -- import Analysis.Invariant
-import Analysis.Util
-import Analysis.Types
 import Analysis.Engine
+import Analysis.Java.Liff
+import Analysis.Optimiser
+import Analysis.Types
+import Analysis.Util
 import Calculus
-import Control.Monad.State.Strict
+import Control.Monad.IO.Class
 import Control.Monad.ST
+import Control.Monad.State.Strict
 import Data.Map (Map)
 import Data.Maybe
+import Edit
 import Edit.Types
 import Language.Java.Pretty
 import Language.Java.Syntax
 import System.IO.Unsafe
-import Control.Monad.IO.Class
 import Z3.Monad
 import qualified Data.Map as M
 import qualified Debug.Trace as T
 
-wiz :: Program -> Edit -> Edit -> Edit -> Edit -> IO () 
-wiz prog e_o e_a e_b e_m = do
-  let m = get_method prog
-  res <- evalZ3 $ verify m e_o e_a e_b e_m
-  print m
-  print res
+wiz :: DiffInst -> IO () 
+wiz diff@MInst{..} = 
+  mapM_ (wiz_meth diff) _merges 
 
+wiz_meth :: DiffInst -> MethInst -> IO ()
+wiz_meth = undefined
+{-
+res <- evalZ3 $ verify m e_o e_a e_b e_m
+print m
+print res
 verify :: Method -> Edit -> Edit -> Edit -> Edit -> Z3 (Result, Maybe String) 
 verify (pars, Block body) e_o e_a e_b e_m = do 
  (params, res) <- prelude pars 
@@ -392,3 +398,4 @@ post_op_inner pid _exp lhs op str = do
    updatePre pre
    updateSSAMap ssamap
   _ -> error $ str ++ show _exp ++ " not supported"
+-}
