@@ -36,38 +36,52 @@ helper pre post = do
   preStr  <- astToString pre
   T.trace ("helper: " ++ preStr) $ return (r,m)
 
-z3_gen_inout :: ([MemberSig], [MemberSig]) -> Z3 (Params, [AST], [AST])
+-- z3_gen_inout :: generates the input and output vars
+z3_gen_inout :: ([MemberSig], [MemberSig]) -> Z3 (Params, [[AST]], [[AST]])
 z3_gen_inout (params, fields) = do
   let arity = 4
-      ps = ["o"] -- getParIdents params 
-      parsId = map (\s -> map (\ar -> s ++ show ar) [1..arity]) ps 
+      fieldsId = map (toString .fst) fields
+      inFields = map (\s -> map (\ar -> s ++ show ar) [1..arity]) fieldsId
+      outFields = map (\s -> map (\ar -> "ret_"++s++show ar) [1..arity]) fieldsId
   intSort <- mkIntSort
-  pars <- mapM (mapM (\par -> mkFreshConst par intSort)) parsId
-  let pars' = foldl (\r (k,v) -> M.insert (Ident k) v r) M.empty $ zip ps pars
-  res <- mapM (\idx -> mkFreshConst ("res"++show idx) intSort) [1..arity]
-  return (pars', res, res)
+  inFieldsZ3  <- mapM (mapM (\inp -> mkFreshConst inp intSort)) inFields 
+  outFieldsZ3 <- mapM (mapM (\inp -> mkFreshConst inp intSort)) outFields 
+  let inoutFields = zip inFieldsZ3 outFieldsZ3 
+      pFields = foldl (\r (k,v) -> M.insert (Ident k) v r) M.empty $ zip fieldsId inoutFields
+  -- taking care of input and return
+      inputSig = map (toString . fst) params 
+      inputs = map (\s -> map (\ar -> s ++ show ar) [1..arity]) inputSig 
+      returns = map (\ar -> "ret" ++ show ar) [1..arity] 
+  inZ3  <- mapM (mapM (\inp -> mkFreshConst inp intSort)) inputs 
+  outZ3 <- mapM (\out -> mkFreshConst out intSort) returns 
+  let pInput = foldl (\r (k,v) -> M.insert (Ident k) (v,[]) r) pFields $ zip inputSig inZ3
+      pInOut = M.insert (Ident "ret") ([],outZ3) pInput
+  return (pInOut, inFieldsZ3 ++ inZ3, outZ3:outFieldsZ3)
 
-initial_SSAMap :: Params -> Res -> Z3 SSAMap
-initial_SSAMap params res = do
+-- Generates the initial SSA Map for the fields and the parameters
+initial_SSAMap :: Params -> Z3 SSAMap
+initial_SSAMap params = do
   iSort <- mkIntSort
   fn <- mkFreshFuncDecl "null" [] iSort
   ast <- mkApp fn []
   let i = M.singleton (Ident "null") (replicate 4 (ast, iSort, 0))
-      ps = M.map (\a -> [(e, iSort, 0) | e <- a]) params
-      rs = M.fromList [(Ident "_res_", [(r, iSort, 0) | r <- res])] 
-      i_ssa = M.union i (M.union rs ps)
-  return i_ssa
+      ps = M.map (\(a,_) -> [(e, iSort, 0) | e <- a]) params
+  return $ M.union i ps
 
-initial_precond :: Params -> Z3 AST 
-initial_precond params = do 
-  let ps = snd $ unzip $ M.toList params
-      ps' = map (\x -> [(e,e') | e <- x, e' <- x]) ps
-  eqs <- mapM (\p -> mapM (\(e,e') -> mkEq e e') p) ps'
-  pre <- mkAnd $ concat eqs 
-  return pre
+-- Verification pre-condition
+initial_precond :: [[AST]] -> Z3 AST 
+initial_precond inputs = do 
+  let inputs' = map (\x -> [(e,e') | e <- x, e' <- x]) inputs
+  eqs <- mapM (\p -> mapM (\(e,e') -> mkEq e e') p) inputs'
+  mkAnd $ concat eqs 
 
-postcond :: [AST] -> Z3 AST
-postcond res = case res of
+postcond :: [[AST]] -> Z3 AST
+postcond outs = do
+  cond <- mapM postcond' outs 
+  mkAnd cond 
+
+postcond' :: [AST] -> Z3 AST
+postcond' res = case res of
   [r_o, r_a, r_b, r_m] -> do 
     oa <- mkEq r_o r_a
     noa <- mkNot oa

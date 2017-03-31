@@ -17,7 +17,7 @@ import qualified Debug.Trace as T
 
 -- receives the parameters and returns to specify the pre and post-condition
 -- need to use maps for the parameters, returns, fields
-type Params = Map Ident [AST]
+type Params = Map Ident ([AST],[AST])
 type Res  = [AST]
 type Fields = Map Ident FuncDecl
 type Prop = (Params, Res, Fields) -> Z3 (AST, AST)
@@ -49,11 +49,8 @@ data Env = Env
   , _pre     :: AST
   , _post    :: AST
   , _invpost :: AST
-  , _classes :: [ClassInfo]
-  , _e_o     :: Edit
-  , _e_a     :: Edit
-  , _e_b     :: Edit
-  , _e_m     :: Edit
+  , _classes :: [ClassSum]
+  , _edits   :: [Edit]
   , _debug   :: Bool
   , _numret  :: Int
   , _pid     :: Int -- If the pid is 0, we are executing all versions 
@@ -63,38 +60,12 @@ type EnvOp a = StateT Env Z3 a
 
 _default = (Unsat, Nothing)
 
-popEdits :: EnvOp (BlockStmt, BlockStmt, BlockStmt, BlockStmt)
+popEdits :: EnvOp [BlockStmt]
 popEdits = do
-  s_o <- popEdit 1
-  s_a <- popEdit 2
-  s_b <- popEdit 3
-  s_m <- popEdit 4
-  return (s_o, s_a, s_b, s_m)
-
-popEdit :: Int -> EnvOp BlockStmt
-popEdit i = do
   s@Env{..} <- get
-  case i of 
-    1 -> case _e_o of
-      [] -> error "popEdit: empty edit"
-      (h:t) -> do
-        put s{ _e_o = t}
-        return h 
-    2 -> case _e_a of
-      [] -> error "popEdit: empty edit"
-      (h:t) -> do
-        put s{ _e_a = t}
-        return h 
-    3 -> case _e_b of
-      [] -> error "popEdit: empty edit"
-      (h:t) -> do
-        put s{ _e_b = t}
-        return h 
-    4 -> case _e_m of
-      [] -> error "popEdit: empty edit"
-      (h:t) -> do
-        put s{ _e_m = t}
-        return h 
+  let (res,edits) = unzip $ map (\e -> (head e, tail e)) _edits 
+  put s { _edits = edits }
+  return res 
 
 -- @ update the pid
 updatePid :: Int -> EnvOp ()

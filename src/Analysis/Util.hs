@@ -1,4 +1,4 @@
-module Analysis.Util (get_method, getParIdents, safeLookup) where
+module Analysis.Util (get_method, getParIdents, safeLookup, toString) where
 
 import Data.Map (Map)
 import Edit.Types

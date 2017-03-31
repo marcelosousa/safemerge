@@ -50,24 +50,25 @@ verify (mid, mth) classes edits = do
   let fields = M.elems $ M.unions $ map _cl_fields classes 
   -- ii. get the member signatures for the method (parameters) and the fields
       inputs = (toMemberSig mth, concatMap toMemberSig fields) 
-  (params, res, _) <- z3_gen_inout inputs 
-  undefined
-{-
- -- compute the pre and the post condition
- -- for now, the pre-condition states that the parameters for each version are equal
- --  and the post-condition states the soundness condition for the return variable
- --  which is a special dummy variable res_version
- pre <- initial_precond params
- post <- postcond res
- iSSAMap <- initial_SSAMap params res
- let iEnv = Env iSSAMap M.empty pre post post e_o e_a e_b e_m True 0 0 
-     p = [(0, body)]
- ((res, model), _) <- runStateT (analyser p) iEnv
- case res of 
-  Unsat -> return (Unsat, Nothing)
-  Sat -> do
-   str <- showModel $ fromJust model
-   return (Sat, Just str)
+  (params, inp, out) <- z3_gen_inout inputs 
+  -- compute the pre and the post condition
+  -- for now, the pre-condition states that the parameters for each version are equal
+  --  and the post-condition states the soundness condition for the return variable
+  --  which is a special dummy variable res_version
+  pre  <- initial_precond inp 
+  post <- postcond out
+  iSSAMap <- initial_SSAMap params 
+  let iEnv = Env iSSAMap M.empty pre post post classes edits True 0 0 
+      body = case mth_body mth of
+               MethodBody Nothing -> []
+               MethodBody (Just (Block b)) -> b 
+      p = [(0, body)]
+  ((res, model), _) <- runStateT (analyser p) iEnv
+  case res of 
+   Unsat -> return (Unsat, Nothing)
+   Sat -> do
+    str <- showModel $ fromJust model
+    return (Sat, Just str)
 
 -- strongest post condition
 _triple :: String -> String -> String -> String
@@ -105,6 +106,8 @@ analyser_debug stmts = do
 
 analyse :: ProdProgram -> EnvOp (Result,Maybe Model)   
 analyse stmts = do
+ undefined
+{-
  env@Env{..} <- get
  case stmts of
   [] -> lift $ local $ helper _pre _post
