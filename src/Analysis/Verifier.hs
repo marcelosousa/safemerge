@@ -6,8 +6,10 @@
 module Analysis.Verifier (wiz) where
 
 -- import Analysis.Invariant
+import Analysis.Dependence
 import Analysis.Engine
 import Analysis.Java.ClassInfo
+import Analysis.Java.Flow
 import Analysis.Java.Liff
 import Analysis.Optimiser
 import Analysis.Types
@@ -58,7 +60,7 @@ verify (mid, mth) classes edits = do
   pre  <- initial_precond inp 
   post <- postcond out
   iSSAMap <- initial_SSAMap params 
-  let iEnv = Env iSSAMap M.empty pre post post classes edits True 0 0 
+  let iEnv = Env iSSAMap M.empty pre post post classes edits True 0 0 0
       body = case mth_body mth of
                MethodBody Nothing -> []
                MethodBody (Just (Block b)) -> b 
@@ -106,25 +108,83 @@ analyser_debug stmts = do
 
 analyse :: ProdProgram -> EnvOp (Result,Maybe Model)   
 analyse stmts = do
- undefined
-{-
  env@Env{..} <- get
  case stmts of
   [] -> lift $ local $ helper _pre _post
   (bstmt:rest) -> analyser_pid bstmt rest 
 
-analyser_pid :: (Pid,[BlockStmt]) -> ProdProgram -> EnvOp (Result, Maybe Model)
-analyser_pid (pid,stmts) rest = case stmts of
-  [] -> analyser rest
-  (bstmt:stmts_pid) -> case bstmt of
-    BlockStmt stmt -> do 
-      updatePid pid
-      analyser_stmt (pid,stmt) ((pid,stmts_pid):rest)
-    LocalVars mods ty vars -> do
-      env@Env{..} <- get
-      sort <- lift $ processType ty    
-      mapM_ (enc_new_var sort 0) vars 
-      analyser ((pid,stmts_pid):rest)
+-- main verification heavyweight function 
+-- checks if the PID = 0 (ALL) and calls 
+--  the optimiser to obtain the block and 
+--  call the dependence analysis to deal 
+--  with it.
+-- otherwise, calls the usual analysis 
+-- to deal with a PID /= 0
+analyser_pid :: (Pid, [BlockStmt]) -> ProdProgram -> EnvOp (Result, Maybe Model)
+analyser_pid (pid,stmts) rest = case pid of 
+  0 -> case next_block stmts of
+    (Left b, r) -> do
+      analyser_block b
+      if null r
+      then analyser rest 
+      else analyser_pid (0,r) rest 
+    (Right bstmt, r) ->
+      -- we know that bstmt is a high level hole
+      analyser_bstmt (pid,bstmt) ((pid,r):rest) 
+  _ -> case stmts of
+   [] -> analyser rest
+   (bstmt:stmts_pid) ->
+      analyser_bstmt (pid,bstmt) ((pid,stmts_pid):rest)
+
+-- optimised a block that is shared by all variants
+--  i. generate the CFG for the block b
+--  ii. call the dependence analysis that will return
+--      for each variable in the WriteSet the list 
+--      of dependences (ReadSet)
+--  iii. with the result, update the SSAMap and 
+--       use uninterpreted functions to model 
+--       the changes using assignments 
+--       
+analyser_block :: [BlockStmt] -> EnvOp ()
+analyser_block b = do
+  env@Env{..} <- get
+  let mid = (Ident "", Ident "", [])
+      mth_bdy = MethodBody $ Just $ Block (b ++ [BlockStmt $ Return Nothing])
+      mth = MethodDecl [] [] Nothing (Ident "") [] [] mth_bdy 
+      cfg = computeGraphMember mth
+      -- blockDep returns a list of DepMap [O,A,B,M]
+      -- assume for now that they are all the same
+      deps = M.toList $ head $ blockDep cfg 
+  mapM_ analyser_block_dep deps 
+
+-- | analyser_block_dep: analyses for each dependence graph
+--   the assignments:
+--    output = _anonymous (dep1, ..., depn)
+analyser_block_dep :: (AbsVar, (Tag, [AbsVar])) -> EnvOp ()
+analyser_block_dep (out, (_,inp)) = do
+  num <- incAnonym 
+  let lhs = symLocToLhs out 
+      rhs = toMethodInv num inp
+      _exp = Assign lhs EqualA rhs
+  assign 0 _exp lhs EqualA rhs
+
+toMethodInv :: Int -> [AbsVar] -> Exp
+toMethodInv n inp =
+  let args = map symLocToExp inp
+  in MethodInv $ MethodCall (Name [Ident $ "Anonymous"++ show n]) args 
+
+-- pre-condition: pid == 0 && bstmt has a hole 
+--             or pid != 0 
+analyser_bstmt :: (Pid, BlockStmt) -> ProdProgram -> EnvOp (Result, Maybe Model)
+analyser_bstmt (pid,bstmt) rest = case bstmt of
+  BlockStmt stmt -> do 
+    updatePid pid
+    analyser_stmt (pid,stmt) rest
+  LocalVars mods ty vars -> do
+    env@Env{..} <- get
+    sort <- lift $ processType ty    
+    mapM_ (enc_new_var sort 0) vars 
+    analyser rest
 
 analyser_stmt :: (Pid, Stmt) -> ProdProgram -> EnvOp (Result, Maybe Model)
 analyser_stmt (pid, stmt) rest =
@@ -147,8 +207,8 @@ analyser_stmt (pid, stmt) rest =
 analyse_hole :: ProdProgram -> EnvOp (Result, Maybe Model)
 analyse_hole rest = do
    -- Get the edit statements for this hole.
-  (s_o, s_a, s_b, s_m) <- popEdits
-  let prod_prog = miniproduct [(1,s_o),(2,s_a),(3,s_b),(4,s_m)] 
+  edits <- popEdits
+  let prod_prog = miniproduct $ zip [1..4] edits
   analyser $ prod_prog ++ rest
 
 analyse_loop = undefined
@@ -415,4 +475,3 @@ post_op_inner pid _exp lhs op str = do
    updatePre pre
    updateSSAMap ssamap
   _ -> error $ str ++ show _exp ++ " not supported"
--}

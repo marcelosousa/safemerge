@@ -9,12 +9,12 @@ High-level procedure
   (x) Load in memory the 4 versions of ClassName  
   (x) Compute the 4-way diff between the versions of MethodName. The output is (ProgramWithHoles, Edit-Base, Edit-A, Edit-B, Edit-M):  
       (-) Scope of the holes is at the statement level. (If we have a hole inside a loop body, consider the entire loop a hole? The answer should be no.) 
-  (x) Generate a ClassInfo object composed of the field and method information (the exact information is to be seen)  
+  (x) Generate a ClassInfo object composed of the field and method information  
   (x) Generate the initial objects of the 4 versions and constraints that specify that they are in the same state:  
       (x) Requires pairing of fields and is sensitive to refactoring/renaming of fields  
   (x) Partition the program with holes in segments of blocks of statements (which do not contain any hole) by statements
       that contain a hole (conditionals or loops or straight line modifications):  
-      (-) Perform a dependence analysis in each complete segment and replace the segment with calls to uninterpreted functions 
+      (x) Perform a dependence analysis in each complete segment and replace the segment with calls to uninterpreted functions 
           that capture the changes  
           (-) If these blocks make method calls, it is possible that we need to call uninterpreted functions specific to versions if the methods have been modified   
   (-) Revisit the product construction for the edit scripts  

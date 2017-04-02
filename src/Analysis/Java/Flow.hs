@@ -197,6 +197,11 @@ computeGraphs prog =
   let ((),st) = runState (toFlow prog) init_st
   in M.intersectionWith (,) (defs st) (graphs st) 
 
+computeGraphMember :: MemberDecl -> Graph st
+computeGraphMember mem = 
+  let ((),st) = runState (toFlow mem) init_st
+  in this st 
+
 -- | Main ToFlow class 
 class Flow a v  where
   toFlow :: a -> FlowOp v st
@@ -208,6 +213,12 @@ instance Flow Program () where
     p@FlowState{..} <- get
     --T.trace ("toFlow: defs = " ++ show defs) $     
     mapM_ computeGraph $ M.toList defs 
+
+instance Flow MemberDecl () where
+  toFlow mem = do
+    let mid = (Ident "", Ident "", [])
+    newEntry mid mem 
+    computeGraph (mid,mem)
 
 computeEntry :: TypeDecl -> FlowOp () st 
 computeEntry decl = case decl of

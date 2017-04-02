@@ -27,7 +27,7 @@ import Language.Java.Syntax
 import qualified Data.Map as M
 import qualified Data.Set as S
 
--- 1. Discover the largest non-hole sequence of blockstmts  
+-- 1. Discover the largest non-hole & non-return sequence of blockstmts  
 next_block :: [BlockStmt] -> (Either [BlockStmt] BlockStmt, [BlockStmt])
 next_block [] = (Left [], [])
 next_block (b:bs) =
@@ -87,6 +87,7 @@ hasHole s = case s of
                              maybe True hasHoleBlock mB2 
   Labeled _ stmt          -> hasHole stmt
   Hole                    -> True
+  Return _                -> True
   _                       -> False
 
 -- removes redudant instances of StmtBlock

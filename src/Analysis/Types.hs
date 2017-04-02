@@ -54,6 +54,7 @@ data Env = Env
   , _debug   :: Bool
   , _numret  :: Int
   , _pid     :: Int -- If the pid is 0, we are executing all versions 
+  , _anonym  :: Int -- The number of anonymous functions
   }
 
 type EnvOp a = StateT Env Z3 a
@@ -113,3 +114,9 @@ incrementAssignMap i e = do
   let assignMap = M.insert i e _assmap
   put s{ _assmap = assignMap }
   
+incAnonym :: EnvOp Int
+incAnonym = do
+  s@Env{..} <- get
+  let anonym = _anonym 
+  put s{ _anonym =  anonym + 1}
+  return anonym

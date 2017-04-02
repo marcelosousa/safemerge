@@ -28,6 +28,18 @@ import qualified Data.Set as S
 data SymLoc = SField Ident | SName Name | SArray ArrayIndex
   deriving (Show,Ord,Eq)
 
+symLocToLhs :: SymLoc -> Lhs
+symLocToLhs sym = case sym of
+  SField i -> FieldLhs $ PrimaryFieldAccess This i
+  SName  n -> NameLhs n
+  SArray a -> ArrayLhs a 
+
+symLocToExp :: SymLoc -> Exp
+symLocToExp sym = case sym of
+  SField i -> FieldAccess $ PrimaryFieldAccess This i
+  SName  n -> ExpName  n
+  SArray a -> ArrayAccess  a 
+
 data Tag = Input | Output | Both | None
   deriving (Show,Ord,Eq)
 
@@ -101,6 +113,15 @@ dependencies :: (MemberDecl,DepGraph) -> ResultList
 dependencies (mDecl,cfg) = 
   let initMap = initDepMap mDecl
   in fixpt cfg initMap
+
+-- @ TODO
+blockDep :: DepGraph -> [DepMap] 
+blockDep cfg = 
+  let res = fixpt cfg M.empty 
+  -- 
+  in case M.lookup (-1) res of
+       Nothing -> error $ "blockDep: TODO convert the ResultList into a DepMap"
+       Just r  -> r
 
 initDepMap :: MemberDecl -> DepMap
 initDepMap mDecl = case mDecl of
@@ -275,3 +296,4 @@ getReadSetInv mi = case mi of
   MethodCall n args -> concatMap getReadSet args
   PrimaryMethodCall e _ _ args -> getReadSet e ++ concatMap getReadSet args
   _ -> error $ "getReadSetInv: " ++ show mi 
+

@@ -39,6 +39,7 @@ data Graph st
    , graph      :: Map NodeId [(EdgeId,NodeId)] -- successors
    , edge_table :: Map EdgeId EdgeInfo          -- information
    , node_table :: Map NodeId [st]              -- ^ states per thread 
+--   , exit_nodes :: [NodeId] -- By default it is (-1)
    }
   deriving Show
 
@@ -67,4 +68,4 @@ is_join :: [EdgeTag] -> Bool
 is_join = any (== IfJoin)  
 
 init_graph :: NodeId -> Graph st
-init_graph e = Graph e M.empty M.empty M.empty
+init_graph e = Graph e M.empty M.empty M.empty 
