@@ -53,6 +53,20 @@ join_tag a b =
   then a
   else Both
 
+is_output :: Tag -> Bool
+is_output tg = 
+  case tg of 
+    Output -> True
+    Both -> True
+    _ -> False
+
+is_input :: Tag -> Bool
+is_input tg = 
+  case tg of 
+    Input -> True
+    Both -> True
+    _ -> False
+
 type AbsVar = SymLoc
 type AbsVarAnn = (SymLoc,Tag)
 
@@ -67,6 +81,12 @@ type DepMap = Map AbsVar (Tag,[AbsVar])
 join_depmap :: DepMap -> DepMap -> DepMap
 join_depmap = M.unionWith (\(ta,a) (tb,b) -> 
   (ta `join_tag` tb, nub $ a ++ b)) 
+
+-- | Given a dependence map, returns the set of
+--   read global and write globals.
+readWriteSet :: DepMap -> ([AbsVar], [AbsVarAnn])
+readWriteSet dep =
+  M.foldWithKey (\w (t,rs) (a,b) -> (a ++ rs, (w,t):b)) ([],[]) dep 
 
 type DepGraph = Graph DepMap 
 type WItem = (NodeId,EdgeId,NodeId)
@@ -86,7 +106,8 @@ printDepMap =
 data FixState =
   FixState
   {
-    fs_cfg  :: DepGraph 
+    fs_cfg     :: DepGraph 
+  , fs_cl_sum  :: ClassSum
   }
 
 type FixOp val = State FixState val
@@ -106,18 +127,19 @@ printDepInfo =
   M.foldWithKey (\k l r -> "Function " ++ show k ++ "\n" ++ printResultList l ++ "\n\n" ++ r ) ""
  
 -- compute dependencies for a module
-depAnalysis :: FlowInfo DepMap -> DepInfo
-depAnalysis = M.map dependencies 
+depAnalysis :: ClassInfo -> FlowInfo DepMap -> DepInfo
+depAnalysis class_info = M.mapWithKey (dependencies class_info)
 
-dependencies :: (MemberDecl,DepGraph) -> ResultList
-dependencies (mDecl,cfg) = 
-  let initMap = initDepMap mDecl
-  in fixpt cfg initMap
+dependencies :: ClassInfo -> MIdent -> (MemberDecl,DepGraph) -> ResultList
+dependencies class_info mIdent (mDecl,cfg) = 
+  let class_sum = findClass mIdent class_info 
+      initMap = initDepMap mDecl
+  in fixpt class_sum cfg initMap
 
--- @ TODO
-blockDep :: DepGraph -> [DepMap] 
-blockDep cfg = 
-  let res = fixpt cfg M.empty 
+-- need to pass more information here
+blockDep :: ClassSum -> DepGraph -> [DepMap] 
+blockDep class_sum cfg = 
+  let res = fixpt class_sum cfg M.empty 
   -- 
   in case M.lookup (-1) res of
        Nothing -> error $ "blockDep: TODO convert the ResultList into a DepMap"
@@ -141,13 +163,13 @@ paramToDep (FormalParam a b c varId) =
 
 -- The main fixpoint for the dependence analysis
 -- It requires the initial DepMap that specifies the inputs
-fixpt :: DepGraph -> DepMap -> ResultList 
-fixpt cfg@Graph{..} initMap =
+fixpt :: ClassSum -> DepGraph -> DepMap -> ResultList 
+fixpt class_sum cfg@Graph{..} initMap =
   -- reset the node table information with the information passed
   let node_table' = M.insert entry_node [initMap] $ M.map (const []) node_table
       cfg' = cfg { node_table = node_table' }
       wlist = map (\(a,b) -> (entry_node,a,b)) $ succs cfg' entry_node
-      i_fix_st = FixState cfg' 
+      i_fix_st = FixState cfg' class_sum 
   in evalState (worklist wlist) i_fix_st
 
 -- standard worklist algorithm
@@ -164,8 +186,8 @@ worklist _wlist = do
             l   -> error $ "worklist invalid pre states: " ++ show l
           -- get the edge info
           e@EdgeInfo{..} = get_edge_info fs_cfg eId
-          _depMap = transformer edge_code depMap
           rwlst = map (\(a,b) -> (post,a,b)) $ succs fs_cfg post
+          _depMap = transformer edge_code fs_cl_sum depMap
       (is_fix,node_table') <-
            case edge_tags of
              -- loop head point 
@@ -207,21 +229,21 @@ strong_update node_table node depMap =
         else (False, M.insert node [depMap] node_table)
       _ -> error "strong_update: more than one state in the list" 
 
-transformer :: Stmt -> DepMap -> DepMap
-transformer stmt map = case stmt of
+transformer :: Stmt -> ClassSum -> DepMap -> DepMap
+transformer stmt class_sum map = case stmt of
   Skip -> map
   Return _e -> case _e of 
     Nothing -> map
     Just e -> 
-      let (r,w) = transformer_expr e
+      let (r,w) = transformer_expr class_sum e
       in if null w
          then foldr set_output map r 
          else error $ "transformer: Write set of return should be empty, " ++ show w 
   ExpStmt e -> 
-    let (r,w) = transformer_expr e
+    let (r,w) = transformer_expr class_sum e
     in foldr (set_dep r) map w 
   Assume e -> 
-    let (r,w) = transformer_expr e
+    let (r,w) = transformer_expr class_sum e
     in foldr (set_dep r) map w 
   _ -> error $ "transformer: " ++ show stmt
 
@@ -235,15 +257,28 @@ set_dep :: [AbsVar] -> AbsVarAnn -> DepMap -> DepMap
 set_dep r (w,t) m = M.insert w (t,r) m
  
 -- transformer_expr: generates the read and write set of an expression
-transformer_expr :: Exp -> ([AbsVar], [AbsVarAnn])
-transformer_expr e = case e of
+transformer_expr :: ClassSum -> Exp -> ([AbsVar], [AbsVarAnn])
+transformer_expr class_sum e = case e of
   Assign lhs op rhs -> 
     let writeSet = getWrite lhs
-        readSet = getReadSet rhs
+        (readSet,wSet) = transformer_expr class_sum rhs
     in case op of
-      EqualA -> (readSet, [writeSet])
+      EqualA -> (readSet, writeSet:wSet)
       _ -> (fst writeSet:readSet, [writeSet])
+  MethodInv m -> transformer_methInv class_sum m
   _ -> (getReadSet e,[]) 
+
+transformer_methInv :: ClassSum -> MethodInvocation -> ([AbsVar], [AbsVarAnn])
+transformer_methInv class_sum m =
+  let rSet = getReadSetInv m 
+      (mths,args) = case m of
+        MethodCall (Name [i])       args -> (findMethodGen i class_sum, args) 
+        PrimaryMethodCall This [] i args -> (findMethodGen i class_sum, args) 
+        _ -> error $ "transformer_methInv : " ++ show m
+      cfgs = map computeGraphMember mths
+      deps = map (readWriteSet . head . blockDep class_sum) cfgs
+      (r,w) = foldr (\(a,b) (c,d) -> (a++c, b++d)) ([],[]) deps
+  in (rSet++r, w)
 
 getWrite :: Lhs -> AbsVarAnn
 getWrite lhs = case lhs of
@@ -290,7 +325,6 @@ getReadSet e = case e of
   Cond c t e -> getReadSet c ++ getReadSet t ++ getReadSet e
   Assign lhs assignOp rhs -> error $ "getReadSet of " ++ show e 
 
--- @TODO: Method invocation can affect the write set
 getReadSetInv :: MethodInvocation -> [AbsVar]
 getReadSetInv mi = case mi of
   MethodCall n args -> concatMap getReadSet args

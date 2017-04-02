@@ -16,7 +16,7 @@ High-level procedure
       that contain a hole (conditionals or loops or straight line modifications):  
       (x) Perform a dependence analysis in each complete segment and replace the segment with calls to uninterpreted functions 
           that capture the changes  
-          (-) If these blocks make method calls, it is possible that we need to call uninterpreted functions specific to versions if the methods have been modified   
+          (x) If these blocks make method calls, it is possible that we need to call uninterpreted functions specific to versions if the methods have been modified   
   (-) Revisit the product construction for the edit scripts  
   (-) Verification algorithm:  
       (-) Support for containers (modelling)  

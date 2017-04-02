@@ -80,8 +80,9 @@ runOption opt = case opt of
     prog <- parse f
     putStrLn $ prettyPrint prog
     let flowInfo = computeGraphs prog
+        classInfo = toClassInfo prog
         graphs = M.map snd flowInfo
-        depInfo = depAnalysis flowInfo 
+        depInfo = depAnalysis classInfo flowInfo 
     putStrLn $ pp_dot_graphs graphs
     -- putStrLn $ printDepInfo depInfo
   Diff2 o a -> diff2 o a

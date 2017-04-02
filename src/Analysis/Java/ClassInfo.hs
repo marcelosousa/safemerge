@@ -50,6 +50,17 @@ findMethod (cls,name,tys) class_info =
           Just m -> m
         Just m -> m
 
+findMethodGen :: Ident -> ClassSum -> [MemberDecl]
+findMethodGen i cl@ClassSum{..} = 
+  findMethodGen' i $ M.toList _cl_meths 
+  where 
+   findMethodGen' :: Ident -> [(MethodSig,MemberDecl)] -> [MemberDecl]
+   findMethodGen' i [] = []
+   findMethodGen' i (((i',_),m):rest) = 
+     if i == i'
+     then m:(findMethodGen' i rest)
+     else findMethodGen' i rest 
+
 varDeclIdToIdent :: VarDeclId -> Ident 
 varDeclIdToIdent v = case v of
   VarId i -> i
