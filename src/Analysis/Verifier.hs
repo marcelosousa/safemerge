@@ -34,7 +34,8 @@ wiz diff@MInst{..} = mapM_ (wiz_meth diff) _merges
 
 -- Assume the parameters names are the same in all 4 versions of the method 
 wiz_meth :: DiffInst -> MethInst -> IO ()
-wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = do 
+wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = 
+  T.trace ("wiz_meth: " ++ show mth_id) $ do 
   let o_class = findClass mth_id _o_info 
       a_class = findClass mth_id _a_info 
       b_class = findClass mth_id _b_info 
@@ -183,7 +184,7 @@ analyser_bstmt (pid,bstmt) rest = case bstmt of
   LocalVars mods ty vars -> do
     env@Env{..} <- get
     sort <- lift $ processType ty    
-    mapM_ (enc_new_var sort 0) vars 
+    mapM_ (enc_new_var pid sort 0) vars 
     analyser rest
 
 analyser_stmt :: (Pid, Stmt) -> ProdProgram -> EnvOp (Result, Maybe Model)
@@ -425,12 +426,12 @@ ret_inner pid mexpr = do
 
 -- Analyse Assign
 assign :: Pid -> Exp -> Lhs -> AssignOp -> Exp -> EnvOp ()
-assign pid _exp lhs aOp rhs = do
+assign pid _exp lhs aOp rhs = T.trace ("assign: " ++ show pid) $ do
   let l = if pid == 0 then [1..4] else [pid]
   mapM_ (\p -> assign_inner p _exp lhs aOp rhs) l
  
 assign_inner :: Pid -> Exp -> Lhs -> AssignOp -> Exp -> EnvOp ()
-assign_inner pid _exp lhs aOp rhs = do
+assign_inner pid _exp lhs aOp rhs = T.trace ("assign_inner: " ++ show pid ++ " " ++ show _exp) $ do
  rhsAst <- enc_exp_inner pid rhs
  env@Env{..} <- get
  case lhs of

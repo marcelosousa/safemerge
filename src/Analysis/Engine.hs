@@ -73,7 +73,10 @@ initial_precond :: [[AST]] -> Z3 AST
 initial_precond inputs = do 
   let inputs' = map (\x -> [(e,e') | e <- x, e' <- x]) inputs
   eqs <- mapM (\p -> mapM (\(e,e') -> mkEq e e') p) inputs'
-  mkAnd $ concat eqs 
+  let _eqs = concat eqs
+  if null _eqs
+  then mkTrue
+  else mkAnd _eqs
 
 postcond :: [[AST]] -> Z3 AST
 postcond outs = do
@@ -128,8 +131,8 @@ enc_ident str i sort = mapM (\j -> do
   mkVar sym sort) [1..4]
 
 -- encode the first variable definition 
-enc_new_var :: Sort -> Int -> VarDecl -> EnvOp ()
-enc_new_var sort i (VarDecl varid mvarinit) = do
+enc_new_var :: Int -> Sort -> Int -> VarDecl -> EnvOp ()
+enc_new_var pid sort i (VarDecl varid mvarinit) = do
   env@Env{..} <- get
   (ident, idAsts) <- lift $ 
     case varid of
@@ -142,7 +145,7 @@ enc_new_var sort i (VarDecl varid mvarinit) = do
   case mvarinit of
     Nothing -> return ()
     Just (InitExp expr) -> do
-      expAsts <- enc_exp 0 expr
+      expAsts <- enc_exp pid expr
       let id_exp = zip idAsts expAsts
       eqIdExps <- lift $ mapM (\(idAst,expAst) -> mkEq idAst expAst) id_exp
       let nassmap = M.insert ident expr _assmap
