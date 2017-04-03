@@ -21,6 +21,8 @@ type ClassInfo = Map Ident ClassSum
 -- No proper support for anonymous classes
 type MIdent = (Ident,Ident,[Type]) 
 type MethodSig = (Ident,[Type])
+-- AbsMethodSig - Abstract Method Signature: only keeps the arity
+type AbsMethodSig = (Ident,Int)
 
 -- Information regarding the methods of a compilation unit
 data ClassSum = 

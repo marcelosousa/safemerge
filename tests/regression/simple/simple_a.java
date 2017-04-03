@@ -1,7 +1,7 @@
 class RequestCounter{ 
  void getThroughput() {
   int oldv = 1;
-  // int oldv = getValidAccumulatorx();
+  oldv = getValidAccumulator();
   return oldv;
 }
 }

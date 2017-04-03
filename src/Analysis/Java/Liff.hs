@@ -65,10 +65,10 @@ class_diff cls cl_o cl_a cl_b cl_m r =
 
 mbody_diff :: MethodBody -> MethodBody -> MethodBody -> MethodBody -> Bool 
 mbody_diff bdy_o bdy_a bdy_b bdy_m =
- let c1 = bdy_o /= bdy_a
-     c2 = bdy_o /= bdy_b
+ let c1 = bdy_o /= bdy_a || bdy_o /= bdy_b
+     c2 = True -- bdy_o /= bdy_b
      c3 = bdy_a /= bdy_b
-     c4 = bdy_m /= bdy_a
+     c4 = bdy_m /= bdy_a || bdy_m /= bdy_b
      c5 = isInfixOf "Return" $ show bdy_o
      c6 = not $ isInfixOf "Synchronized" $ show bdy_o
      c7 = not $ isInfixOf "Synchronised" $ show bdy_o

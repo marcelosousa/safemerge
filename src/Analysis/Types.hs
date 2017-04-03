@@ -6,6 +6,7 @@
 module Analysis.Types where
 
 import Analysis.Java.ClassInfo
+import Analysis.Dependence
 import Control.Monad.ST
 import Control.Monad.State.Strict
 import Data.Map (Map)
@@ -45,10 +46,16 @@ replace i a (h:hs) = h:(replace (i-1) a hs)
 -- We need the assign map to understand the value of the loop counter
 type AssignMap = Map Ident Exp
 
+-- Function Map: Maps an abstract method signature (ident, arity) 
+-- to the AST representation (shared by all versions) and the 
+-- dependence graph of each version (currently abstracted to the join)
+type FunctMap = Map AbsMethodSig (FuncDecl, DepMap) 
+
 data Env = Env
   { 
     _ssamap  :: SSAMap
   , _assmap  :: AssignMap
+  , _fnmap   :: FunctMap  -- function map
   , _pre     :: AST
   , _post    :: AST
   , _invpost :: AST
@@ -117,6 +124,11 @@ incrementAssignMap i e = do
   let assignMap = M.insert i e _assmap
   put s{ _assmap = assignMap }
   
+updateFunctMap :: FunctMap -> EnvOp ()
+updateFunctMap fnmap = do
+  s@Env{..} <- get
+  put s{ _fnmap = fnmap }
+
 incAnonym :: EnvOp Int
 incAnonym = do
   s@Env{..} <- get

@@ -106,6 +106,7 @@ parse f = do
 -- | Parses the 4 files
 parse4 :: FilePath -> FilePath -> FilePath -> FilePath -> IO (Program, Program, Program, Program)
 parse4 ofl afl bfl mfl = do
+  putStrLn "Parsing files..."
   o <- parse ofl 
   a <- parse afl 
   b <- parse bfl 

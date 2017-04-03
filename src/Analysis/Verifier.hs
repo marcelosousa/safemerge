@@ -34,16 +34,22 @@ wiz diff@MInst{..} = mapM_ (wiz_meth diff) _merges
 
 -- Assume the parameters names are the same in all 4 versions of the method 
 wiz_meth :: DiffInst -> MethInst -> IO ()
-wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = 
-  T.trace ("wiz_meth: " ++ show mth_id) $ do 
+wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = do 
+  putStrLn $ "wiz_meth: " ++ show mth_id
   let o_class = findClass mth_id _o_info 
       a_class = findClass mth_id _a_info 
       b_class = findClass mth_id _b_info 
       m_class = findClass mth_id _m_info 
       classes = [o_class, a_class, b_class, m_class]
-  res <- evalZ3 $ verify (mth_id, mth) classes [e_o,e_a,e_b,e_m] 
-  print $ prettyPrint mth
-  print res
+  (res,mstr) <- evalZ3 $ verify (mth_id, mth) classes [e_o,e_a,e_b,e_m] 
+  putStrLn $ prettyPrint mth
+  if res == Unsat
+  then putStrLn "No semantic conflict found"
+  else do
+    putStrLn "Semantic conflict found:"
+    case mstr of
+      Nothing -> error "wiz_meth: counterexample missing"
+      Just str -> putStrLn str    
 
 -- The main verification function
 verify :: (MIdent, MemberDecl) -> [ClassSum]-> [Edit] -> Z3 (Result, Maybe String) 
@@ -61,7 +67,7 @@ verify (mid, mth) classes edits = do
   pre  <- initial_precond inp 
   post <- postcond out
   iSSAMap <- initial_SSAMap params 
-  let iEnv = Env iSSAMap M.empty pre post post classes edits True 0 0 0
+  let iEnv = Env iSSAMap M.empty M.empty pre post post classes edits True 0 0 0
       body = case mth_body mth of
                MethodBody Nothing -> []
                MethodBody (Just (Block b)) -> b 
@@ -104,7 +110,7 @@ analyser_debug stmts = do
   (bstmt:_) -> do 
    let k = case bstmt of 
         (_,[]) -> '0'
-        _  -> T.trace (_triple preStr (prettyPrint (head $ snd bstmt) ++ "\n PID = " ++ show (fst bstmt)) postStr ++ "\n" ++ printSSAMap _ssamap) $ unsafePerformIO $ getChar
+        _  -> T.trace (_triple preStr (prettyPrint (head $ snd bstmt) ++ "\n PID = " ++ show (fst bstmt)) postStr ++ "\n" ++ printSSAMap _ssamap ++ "\nKeys in Function Map: " ++ show (M.keys _fnmap)) $ unsafePerformIO $ getChar
    k `seq` analyse stmts
 
 analyse :: ProdProgram -> EnvOp (Result,Maybe Model)   

@@ -6,6 +6,8 @@
 module Analysis.Engine where
 
 import Analysis.Java.ClassInfo
+import Analysis.Java.Flow
+import Analysis.Dependence
 import Analysis.Types
 import Analysis.Util
 import Control.Monad.State.Strict
@@ -179,9 +181,9 @@ enc_exp_inner p expr = do
   PreMinus nexpr -> do 
     nexprEnc <- enc_exp_inner p nexpr
     lift $ mkUnaryMinus nexprEnc
-  MethodInv (MethodCall name args) -> do
+  MethodInv (MethodCall name args) -> T.trace ("enc_exp_inner: " ++ show expr) $ do
     argsAST <- mapM (enc_exp_inner p) args
-    enc_name p (toIdent name) argsAST
+    enc_meth p (toIdent name) argsAST
   Cond cond _then _else -> do
     condEnc <- enc_exp_inner p cond
     _thenEnc <- enc_exp_inner p _then
@@ -215,18 +217,30 @@ enc_name pid id@(Ident ident) [] = do
   env@Env{..} <- get
   case M.lookup id _ssamap of
     Nothing -> error $ "enc_name: id not in scope " ++ ident ++ " " ++ show (M.keys _ssamap) 
-   -- do
-   --  iSort <- lift $ mkIntSort
-   --  fn <- lift $ mkFreshFuncDecl ident [] iSort
-   --  ast <- lift $ mkApp fn []
-   --  let ssamap = M.insert id (M.fromList [(n,(ast, iSort, 0)) | n <- [1..4]]) _ssamap
-   --  updateSSAMap ssamap
-   --  return ast 
-    --  error $ "enc_name: not in map " ++ show ident 
     Just l -> case M.lookup pid l of
         Nothing -> error "enc_name: can this happen?" 
         Just (ast,_,_) -> return ast
 enc_name pid ident args = error "enc_name: not supported yet"
+
+-- | Hooks the dependence analysis 
+enc_meth :: Int -> Ident -> [AST] -> EnvOp AST
+enc_meth pid id@(Ident ident) args = do
+  env@Env{..} <- get
+  let arity = length args
+      class_sum = _classes !! (pid - 1) 
+      meths = findMethodGen id class_sum
+      cfgs = map computeGraphMember meths
+      deps = foldr (\cfg res -> M.union res $ head $ blockDep class_sum cfg) M.empty cfgs
+  case M.lookup (id,arity) _fnmap of
+    Nothing -> do
+      iSort <- lift $ mkIntSort
+      fn <- lift $ mkFreshFuncDecl ident (replicate arity iSort) iSort
+      ast <- lift $ mkApp fn args
+      let fnmap = M.insert (id,arity) (fn,deps) _fnmap 
+      updateFunctMap fnmap 
+      return ast 
+    Just (ast,dep) -> lift $ mkApp ast args 
+
 {-
 processName env@(objSort, pars, res, fields, ssamap) (Name [ident]) args = do
   let fn = safeLookup ("processName: declared func")  ident fields
