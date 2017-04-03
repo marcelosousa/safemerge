@@ -252,6 +252,7 @@ newEntry sym mDecl = do
   addEntry sym n
   addDef sym mDecl  
 
+-- This is the main function that computes the CFG of a MemberDecl (Method or Constructor) 
 computeGraph :: (MIdent,MemberDecl) -> FlowOp () st
 computeGraph (sym,mdecl) = do 
   entry <- getEntryId sym
@@ -268,7 +269,9 @@ computeGraphBody mDecl = case mDecl of
   MethodDecl _ _ _ _ _ _ (MethodBody mBlock) -> case mBlock of
     Nothing -> return () 
     Just (Block block) -> do
-      mapM_ computeGraphBStmt block
+      if isInfixOf "Return" $ show block
+      then mapM_ computeGraphBStmt block
+      else mapM_ computeGraphBStmt (block ++ [BlockStmt $ Return Nothing])
   ConstructorDecl _ _ sym _ _ (ConstructorBody mInv block) -> do
     let inv = invToStmt sym mInv
     mapM_ computeGraphStmt inv

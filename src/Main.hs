@@ -84,7 +84,7 @@ runOption opt = case opt of
         graphs = M.map snd flowInfo
         depInfo = depAnalysis classInfo flowInfo 
     putStrLn $ pp_dot_graphs graphs
-    -- putStrLn $ printDepInfo depInfo
+    putStrLn $ printDepInfo depInfo
   Diff2 o a -> diff2 o a
   Diff4 o a b m -> diff4 o a b m
   Verify f -> do

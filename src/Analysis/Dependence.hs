@@ -120,21 +120,30 @@ update_node_table node_table' = do
   put fs { fs_cfg = cfg }
   return cfg
 
-type DepInfo = Map MIdent ResultList
+type DepInfo = Map MIdent [DepMap] -- ResultList
 
 printDepInfo :: DepInfo -> String
 printDepInfo = 
-  M.foldWithKey (\k l r -> "Function " ++ show k ++ "\n" ++ printResultList l ++ "\n\n" ++ r ) ""
+  M.foldWithKey (\k l r -> "Function " ++ show k ++ "\n" ++ concatMap printDepMap l ++ "\n\n" ++ r ) ""
  
 -- compute dependencies for a module
 depAnalysis :: ClassInfo -> FlowInfo DepMap -> DepInfo
-depAnalysis class_info = M.mapWithKey (dependencies class_info)
+depAnalysis class_info = M.mapWithKey (retDep class_info)
 
 dependencies :: ClassInfo -> MIdent -> (MemberDecl,DepGraph) -> ResultList
 dependencies class_info mIdent (mDecl,cfg) = 
   let class_sum = findClass mIdent class_info 
       initMap = initDepMap mDecl
   in fixpt class_sum cfg initMap
+
+retDep :: ClassInfo -> MIdent ->  (MemberDecl,DepGraph) -> [DepMap] 
+retDep class_info mIdent (mDecl,cfg) = 
+  let class_sum = findClass mIdent class_info 
+      initMap = initDepMap mDecl
+      res = fixpt class_sum cfg initMap
+  in case M.lookup (-1) res of
+       Nothing -> error $ "retDep: TODO convert the ResultList into a DepMap"
+       Just r  -> r
 
 -- need to pass more information here
 blockDep :: ClassSum -> DepGraph -> [DepMap] 
@@ -248,7 +257,7 @@ transformer stmt class_sum map = case stmt of
   _ -> error $ "transformer: " ++ show stmt
 
 set_output :: AbsVar -> DepMap -> DepMap 
-set_output v m = T.trace ("set_output: " ++ show v) $  
+set_output v m = -- trace ("set_output: " ++ show v) $  
   case M.lookup v m of
     Nothing -> M.insert v (Output,[]) m
     Just (t,l) -> M.insert v (t `join_tag` Output,l) m  
@@ -294,7 +303,7 @@ getReadSet e = case e of
   Lit l  -> [] 
   Nondet -> []
   ClassLit m     -> error $ "getReadSet: " ++ show e 
-  This           -> error $ "getReadSet: " ++ show e 
+  This           -> [] -- error $ "getReadSet: " ++ show e 
   ThisClass name -> error $ "getReadSet: " ++ show e  
   -- [TypeArgument] ClassType [Argument] (Maybe ClassBody)
   InstanceCreation tyargs classty args mclass -> concatMap getReadSet args 
