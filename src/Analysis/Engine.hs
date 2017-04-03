@@ -64,8 +64,9 @@ initial_SSAMap params = do
   iSort <- mkIntSort
   fn <- mkFreshFuncDecl "null" [] iSort
   ast <- mkApp fn []
-  let i = M.singleton (Ident "null") (replicate 4 (ast, iSort, 0))
-      ps = M.map (\(a,_) -> [(e, iSort, 0) | e <- a]) params
+  let i = M.singleton (Ident "null") (M.fromList $ zip [1..4] (replicate 4 (ast, iSort, 0)))
+      fn l = zip [1..4] [(e, iSort, 0) | e <- l]
+      ps = M.map (\(a,b) -> M.fromList $ fn a ++ fn b) params
   return $ M.union i ps
 
 -- Verification pre-condition
@@ -124,11 +125,14 @@ processAssign lhs op rhs plhs =
       mkEq lhs rhs'
     _ -> error $ "processAssign: " ++ show op ++ " not supported"
 
-enc_ident :: String -> Int -> Sort -> Z3 [AST]
-enc_ident str i sort = mapM (\j -> do
-  let nstr = str ++ "_" ++ show j ++ "_" ++ show i
-  sym <- mkStringSymbol nstr
-  mkVar sym sort) [1..4]
+enc_ident :: Int -> String -> Int -> Sort -> Z3 [(Int, AST)]
+enc_ident pid str i sort = 
+  let l = if pid == 0 then [1..4] else [pid]
+  in mapM (\j -> do
+    let nstr = str ++ "_" ++ show j ++ "_" ++ show i
+    sym <- mkStringSymbol nstr
+    ast <- mkVar sym sort
+    return (j,ast)) l
 
 -- encode the first variable definition 
 enc_new_var :: Int -> Sort -> Int -> VarDecl -> EnvOp ()
@@ -137,17 +141,18 @@ enc_new_var pid sort i (VarDecl varid mvarinit) = do
   (ident, idAsts) <- lift $ 
     case varid of
       VarId ident@(Ident str) -> do
-        vars <- enc_ident str i sort
+        vars <- enc_ident pid str i sort
         return (ident, vars)
       _ -> error $ "enc_new_var: not supported " ++ show varid
-  let nssamap = M.insert ident [(idAst, sort, i) | idAst <- idAsts] _ssamap
+  let nssamap = 
+       foldr (\(_pid,idAst) r -> update_ssamap pid ident (idAst, sort, i) r) _ssamap idAsts
   updateSSAMap nssamap
   case mvarinit of
     Nothing -> return ()
     Just (InitExp expr) -> do
       expAsts <- enc_exp pid expr
       let id_exp = zip idAsts expAsts
-      eqIdExps <- lift $ mapM (\(idAst,expAst) -> mkEq idAst expAst) id_exp
+      eqIdExps <- lift $ mapM (\((_,idAst),expAst) -> mkEq idAst expAst) id_exp
       let nassmap = M.insert ident expr _assmap
       updateAssignMap nassmap
       npre <- lift $ mkAnd (_pre:eqIdExps)
@@ -166,7 +171,7 @@ enc_exp_inner :: Int -> Exp -> EnvOp AST
 enc_exp_inner p expr = do
  case expr of
   Lit lit -> lift $ enc_literal lit 
-  ExpName name -> enc_name p (toIdent name) []
+  ExpName name -> T.trace ("enc_exp_inner: " ++ show expr) $ enc_name p (toIdent name) []
   BinOp lhsE op rhsE -> do
     lhs <- enc_exp_inner p lhsE
     rhs <- enc_exp_inner p rhsE
@@ -200,22 +205,27 @@ enc_literal lit =
 
 toIdent :: Name -> Ident
 toIdent (Name []) = error $ "nameToIdent: Name []"
+toIdent (Name [x]) = x
 toIdent (Name l) = foldr (\(Ident a) (Ident b) -> Ident (a ++ "." ++ b)) (Ident "") l 
 
+-- can the pid be 0?
 enc_name :: Int -> Ident -> [AST] -> EnvOp AST
+enc_name 0 _ _ = error $ "enc_name: pid = 0? debug"
 enc_name pid id@(Ident ident) [] = do
   env@Env{..} <- get
   case M.lookup id _ssamap of
-    Nothing -> do
-     iSort <- lift $ mkIntSort
-     fn <- lift $ mkFreshFuncDecl ident [] iSort
-     ast <- lift $ mkApp fn []
-     let ssamap = M.insert id [(ast, iSort, n) | n <- [1..4]] _ssamap
-     updateSSAMap ssamap
-     return ast 
+    Nothing -> error $ "enc_name: id not in scope " ++ ident ++ " " ++ show (M.keys _ssamap) 
+   -- do
+   --  iSort <- lift $ mkIntSort
+   --  fn <- lift $ mkFreshFuncDecl ident [] iSort
+   --  ast <- lift $ mkApp fn []
+   --  let ssamap = M.insert id (M.fromList [(n,(ast, iSort, 0)) | n <- [1..4]]) _ssamap
+   --  updateSSAMap ssamap
+   --  return ast 
     --  error $ "enc_name: not in map " ++ show ident 
-    Just l -> case l !! (pid-1) of
-      (ast,_,_) -> return ast
+    Just l -> case M.lookup pid l of
+        Nothing -> error "enc_name: can this happen?" 
+        Just (ast,_,_) -> return ast
 enc_name pid ident args = error "enc_name: not supported yet"
 {-
 processName env@(objSort, pars, res, fields, ssamap) (Name [ident]) args = do

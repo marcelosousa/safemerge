@@ -99,12 +99,12 @@ analyser_debug stmts = do
  postStr <- lift $ astToString _post
  case stmts of
   [] -> do 
-   let k = T.trace (_triple preStr "end" postStr) $ unsafePerformIO $ getChar
+   let k = T.trace (_triple preStr "end" postStr ++ "\n" ++ printSSAMap _ssamap) $ unsafePerformIO $ getChar
    k `seq` analyse stmts
   (bstmt:_) -> do 
    let k = case bstmt of 
         (_,[]) -> '0'
-        _  -> T.trace (_triple preStr (prettyPrint (head $ snd bstmt) ++ "\n" ++ show (fst bstmt)) postStr) $ unsafePerformIO $ getChar
+        _  -> T.trace (_triple preStr (prettyPrint (head $ snd bstmt) ++ "\n PID = " ++ show (fst bstmt)) postStr ++ "\n" ++ printSSAMap _ssamap) $ unsafePerformIO $ getChar
    k `seq` analyse stmts
 
 analyse :: ProdProgram -> EnvOp (Result,Maybe Model)   
@@ -417,8 +417,8 @@ ret_inner pid mexpr = do
      Just (Lit (Boolean False)) -> lift $ mkIntNum 0
      Just expr -> enc_exp_inner pid expr
  env@Env{..} <- get
- let res_str = Ident "_res_"
-     (res_ast,sort, i) = (safeLookup "ret_inner" res_str _ssamap) !! (pid-1)
+ let res_str = Ident "ret"
+     (res_ast,sort, i) = safeLookup "ret_inner" pid $ safeLookup "ret_inner 1" res_str _ssamap
  r <- lift $ mkEq res_ast exprPsi
  pre <- lift $ mkAnd [_pre,r]
  updatePre pre
@@ -436,7 +436,7 @@ assign_inner pid _exp lhs aOp rhs = T.trace ("assign_inner: " ++ show pid ++ " "
  env@Env{..} <- get
  case lhs of
   NameLhs (Name [ident@(Ident str)]) -> do
-   let (plhsAST,sort, i) = (safeLookup "Assign" ident _ssamap) !! (pid-1)
+   let (plhsAST,sort, i) = safeLookup "Assign" pid $ safeLookup "Assign" ident _ssamap 
        cstr = str ++ "_" ++ show pid ++ "_" ++ show i
        ni = i+1
        nstr = str ++ "_" ++ show pid ++ "_" ++ show ni
@@ -463,7 +463,7 @@ post_op_inner pid _exp lhs op str = do
  env@Env{..} <- get
  case lhs of
   ExpName (Name [ident@(Ident str)]) -> do
-   let (plhsAST,sort, i) = (safeLookup "post_op_inner" ident _ssamap) !! (pid-1)
+   let (plhsAST,sort, i) = safeLookup "p_inner" pid $ safeLookup "post_op_inner" ident _ssamap
        cstr = str ++ "_" ++ show pid ++ "_" ++ show i
        ni = i+1
        nstr = str ++ "_" ++ show pid ++ "_" ++ show ni

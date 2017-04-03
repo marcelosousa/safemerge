@@ -24,13 +24,16 @@ type Prop = (Params, Res, Fields) -> Z3 (AST, AST)
 
 -- SSA map to build a simple SSA representation on the fly
 -- For each identifier, we need a copy per version
-type SSAMap = Map Ident [(AST, Sort, Int)]
+type SSAMap = Map Ident (Map Int (AST, Sort, Int))
+
+printSSAMap ::SSAMap -> String
+printSSAMap = M.foldWithKey (\i m r -> show i ++ " -> " ++ show m ++ "\n" ++ r) "" 
 
 update_ssamap :: Int -> Ident -> (AST, Sort, Int) -> SSAMap -> SSAMap
 update_ssamap pid ident el ssamap =
   case M.lookup ident ssamap of
-    Nothing -> error $ "update_ssamap: cant find key " ++ show ident
-    Just l  -> let l' = replace (pid-1) el l
+    Nothing -> M.insert ident (M.singleton pid el) ssamap
+    Just l  -> let l' = M.insert pid el l
                in M.insert ident l' ssamap
 
 replace :: Int -> a -> [a] -> [a]
