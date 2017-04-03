@@ -63,7 +63,7 @@ public class Foo
   {
     return "Foo object\n" + "x = " + this.x + "\n" + "name = " + this.name + "\nintArray = " + this.intArray.toString();
   }
-
+/*
   public int test(int x)
   {
     this.x = x;
@@ -84,6 +84,10 @@ public class Foo
     }
     
     return y;
+  }
+*/  
+  public int foo(int x)
+  { 
   }
   
   public static void main(String args[]) 

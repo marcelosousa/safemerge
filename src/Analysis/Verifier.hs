@@ -20,6 +20,7 @@ import Control.Monad.ST
 import Control.Monad.State.Strict
 import Data.Map (Map)
 import Data.Maybe
+import Data.List
 import Edit
 import Edit.Types
 import Language.Java.Pretty
@@ -43,6 +44,8 @@ wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = do
       b_class = findClass mth_id _b_info 
       m_class = findClass mth_id _m_info 
       classes = [o_class, a_class, b_class, m_class]
+  putStrLn $ "wiz_meth: Fields" 
+  putStrLn $ show $ concatMap toMemberSig $ M.elems $ M.unions $ map _cl_fields classes 
   (res,mstr) <- evalZ3 $ verify (mth_id, mth) classes [e_o,e_a,e_b,e_m] 
   putStrLn $ prettyPrint mth
   if res == Unsat
@@ -66,8 +69,9 @@ verify (mid, mth) classes edits = do
   -- for now, the pre-condition states that the parameters for each version are equal
   --  and the post-condition states the soundness condition for the return variable
   --  which is a special dummy variable res_version
-  pre  <- initial_precond inp 
-  post <- postcond out
+  pre  <- initial_precond inp  
+  preStr <- astToString pre
+  post <- T.trace ("verify: " ++ preStr) $ postcond out
   iSSAMap <- initial_SSAMap params 
   let iEnv = Env iSSAMap M.empty M.empty pre post post classes edits True 0 0 0
       body = case mth_body mth of
@@ -429,10 +433,16 @@ ret_inner pid mexpr = do
      Just (Lit (Boolean False)) -> lift $ mkIntNum 0
      Just expr -> enc_exp_inner pid expr
  env@Env{..} <- get
- let res_str = Ident "ret"
+ let class_pid@ClassSum{..} = _classes !! (pid-1)
+     res_str = Ident "ret"
      (res_ast,sort, i) = safeLookup "ret_inner" pid $ safeLookup "ret_inner 1" res_str _ssamap
+     fls = M.keys _cl_fields
+     fls_last = map (\i -> get_ast "ret_inner field" pid i _ssamap) fls
+     ret_fls = map (\(Ident str) -> Ident $ "ret_"++str) fls 
+     ret_fls_last = map (\i -> get_ast "ret_inner last field" pid i _ssamap) ret_fls
+ r' <- lift $ mapM (\(a,b) -> mkEq a b) $ zip ret_fls_last fls_last
  r <- lift $ mkEq res_ast exprPsi
- pre <- lift $ mkAnd [_pre,r]
+ pre <- lift $ mkAnd $ [_pre,r] ++ r'
  updatePre pre
  updateNumRet
 
@@ -467,7 +477,27 @@ assign_inner pid _exp lhs aOp rhs = T.trace ("assign_inner: " ++ show pid ++ " "
    updatePre pre
    updateSSAMap ssamap
    incrementAssignMap ident rhs
-  _ -> error $ "Assign " ++ show _exp ++ " not supported"
+  FieldLhs (PrimaryFieldAccess This (ident@(Ident str))) -> do
+   (plhsAST,sort, i) <- 
+     case M.lookup ident _ssamap of
+       -- new variable
+       Nothing -> assign_inner' pid ident
+       Just l -> case M.lookup pid l of
+         Nothing -> assign_inner' pid ident
+         Just r  -> return r 
+   let cstr = str ++ "_" ++ show pid ++ "_" ++ show i
+       ni = i+1
+       nstr = str ++ "_" ++ show pid ++ "_" ++ show ni
+   sym <- lift $ mkStringSymbol nstr
+   var <- lift $ mkFreshFuncDecl nstr [] sort
+   astVar <- lift $ mkApp var []
+   let ssamap = update_ssamap pid ident (astVar, sort, ni) _ssamap
+   ass <- lift $ processAssign astVar aOp rhsAst plhsAST
+   pre <- lift $ mkAnd [_pre, ass]
+   updatePre pre
+   updateSSAMap ssamap
+   incrementAssignMap ident rhs
+  _ -> error $ show _exp ++ " not supported"
  where
   assign_inner' pid ident@(Ident str) = do
     env@Env{..} <- get

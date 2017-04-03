@@ -18,7 +18,7 @@ import qualified Debug.Trace as T
 
 -- receives the parameters and returns to specify the pre and post-condition
 -- need to use maps for the parameters, returns, fields
-type Params = Map Ident ([AST],[AST])
+type Params = Map Ident [AST]
 type Res  = [AST]
 type Fields = Map Ident FuncDecl
 type Prop = (Params, Res, Fields) -> Z3 (AST, AST)
@@ -36,6 +36,14 @@ update_ssamap pid ident el ssamap =
     Nothing -> M.insert ident (M.singleton pid el) ssamap
     Just l  -> let l' = M.insert pid el l
                in M.insert ident l' ssamap
+
+get_ast :: String -> Int -> Ident -> SSAMap -> AST
+get_ast err pid ident ssamap = 
+  case M.lookup ident ssamap of
+    Nothing -> error $ "get_ast: " ++ err
+    Just l  -> case M.lookup pid l of
+      Nothing -> error $ "get_ast pid: " ++ err
+      Just (a,b,c) -> a
 
 replace :: Int -> a -> [a] -> [a]
 replace 0 a [] = [a] 
