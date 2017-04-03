@@ -36,6 +36,8 @@ wiz diff@MInst{..} = mapM_ (wiz_meth diff) _merges
 wiz_meth :: DiffInst -> MethInst -> IO ()
 wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = do 
   putStrLn $ "wiz_meth: " ++ show mth_id
+  putStrLn $ "wiz_meth: " ++ prettyPrint mth 
+  putStrLn $ "wiz_meth: " ++ show mth 
   let o_class = findClass mth_id _o_info 
       a_class = findClass mth_id _a_info 
       b_class = findClass mth_id _b_info 
@@ -105,13 +107,16 @@ analyser_debug stmts = do
  postStr <- lift $ astToString _post
  case stmts of
   [] -> do 
-   let k = T.trace (_triple preStr "end" postStr ++ "\n" ++ printSSAMap _ssamap) $ unsafePerformIO $ getChar
-   k `seq` analyse stmts
+    let k = T.trace (_triple preStr "end" postStr ++ "\n" ++ printSSAMap _ssamap) $ 
+             unsafePerformIO $ getChar
+    k `seq` analyse stmts
   (bstmt:_) -> do 
-   let k = case bstmt of 
-        (_,[]) -> '0'
-        _  -> T.trace (_triple preStr (prettyPrint (head $ snd bstmt) ++ "\n PID = " ++ show (fst bstmt)) postStr ++ "\n" ++ printSSAMap _ssamap ++ "\nKeys in Function Map: " ++ show (M.keys _fnmap)) $ unsafePerformIO $ getChar
-   k `seq` analyse stmts
+    let k = case bstmt of 
+          (_,[]) -> '0'
+          _  -> T.trace (_triple preStr (prettyPrint (head $ snd bstmt) ++ "\n PID = " ++ 
+                show (fst bstmt)) postStr ++ "\n" ++ printSSAMap _ssamap ++ 
+                "\nKeys in Function Map: " ++ show (M.keys _fnmap)) $ unsafePerformIO $ getChar
+    k `seq` analyse stmts
 
 analyse :: ProdProgram -> EnvOp (Result,Maybe Model)   
 analyse stmts = do
@@ -128,20 +133,21 @@ analyse stmts = do
 -- otherwise, calls the usual analysis 
 -- to deal with a PID /= 0
 analyser_pid :: (Pid, [BlockStmt]) -> ProdProgram -> EnvOp (Result, Maybe Model)
-analyser_pid (pid,stmts) rest = case pid of 
-  0 -> case next_block stmts of
-    (Left b, r) -> do
-      analyser_block b
-      if null r
-      then analyser rest 
-      else analyser_pid (0,r) rest 
-    (Right bstmt, r) ->
-      -- we know that bstmt is a high level hole
-      analyser_bstmt (pid,bstmt) ((pid,r):rest) 
-  _ -> case stmts of
-   [] -> analyser rest
-   (bstmt:stmts_pid) ->
-      analyser_bstmt (pid,bstmt) ((pid,stmts_pid):rest)
+analyser_pid (pid,stmts) rest = 
+  case pid of 
+    0 -> case next_block stmts of
+      (Left b, r) -> T.trace ("analyser_pid: block encoding " ++ show b)$  do
+        analyser_block b
+        if null r
+        then analyser rest 
+        else analyser_pid (0,r) rest 
+      (Right bstmt, r) ->
+        -- we know that bstmt is a high level hole
+        analyser_bstmt (pid,bstmt) ((pid,r):rest) 
+    _ -> case stmts of
+     [] -> analyser rest
+     (bstmt:stmts_pid) ->
+        analyser_bstmt (pid,bstmt) ((pid,stmts_pid):rest)
 
 -- optimised a block that is shared by all variants
 --  i. generate the CFG for the block b
@@ -442,8 +448,14 @@ assign_inner pid _exp lhs aOp rhs = T.trace ("assign_inner: " ++ show pid ++ " "
  env@Env{..} <- get
  case lhs of
   NameLhs (Name [ident@(Ident str)]) -> do
-   let (plhsAST,sort, i) = safeLookup "Assign" pid $ safeLookup "Assign" ident _ssamap 
-       cstr = str ++ "_" ++ show pid ++ "_" ++ show i
+   (plhsAST,sort, i) <- 
+     case M.lookup ident _ssamap of
+       -- new variable
+       Nothing -> assign_inner' pid ident
+       Just l -> case M.lookup pid l of
+         Nothing -> assign_inner' pid ident
+         Just r  -> return r 
+   let cstr = str ++ "_" ++ show pid ++ "_" ++ show i
        ni = i+1
        nstr = str ++ "_" ++ show pid ++ "_" ++ show ni
    sym <- lift $ mkStringSymbol nstr
@@ -456,7 +468,18 @@ assign_inner pid _exp lhs aOp rhs = T.trace ("assign_inner: " ++ show pid ++ " "
    updateSSAMap ssamap
    incrementAssignMap ident rhs
   _ -> error $ "Assign " ++ show _exp ++ " not supported"
-
+ where
+  assign_inner' pid ident@(Ident str) = do
+    env@Env{..} <- get
+    iSort <- lift $ mkIntSort
+    let i = 0
+    idAsts <- lift $ enc_ident pid str i iSort
+    let idAst = snd $ head idAsts
+        res = (idAst,iSort,i)
+        nssamap = update_ssamap pid ident res _ssamap
+    updateSSAMap nssamap
+    return res 
+    
 -- Analyse Post De/Increment
 post_op :: Pid -> Exp -> Exp -> Op -> String -> EnvOp ()
 post_op pid _exp lhs op str = do

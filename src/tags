@@ -109,7 +109,7 @@ _pre	./Analysis/Types.hs	59;"	v
 _program	Main.hs	31;"	v
 _ssamap	./Analysis/Types.hs	56;"	v
 _summary	Main.hs	29;"	v
-_triple	./Analysis/Verifier.hs	84;"	v	file:
+_triple	./Analysis/Verifier.hs	86;"	v	file:
 a	Main.hs	47;"	v
 addDef	./Analysis/Java/Flow.hs	109;"	v
 addEdge	./Analysis/Java/Flow.hs	63;"	v
@@ -119,18 +119,18 @@ addThis	./Analysis/Java/Flow.hs	78;"	v
 add_clcons	./Analysis/Java/ClassInfo.hs	98;"	v
 add_clfield	./Analysis/Java/ClassInfo.hs	88;"	v
 add_clmeth	./Analysis/Java/ClassInfo.hs	93;"	v
-analyse	./Analysis/Verifier.hs	117;"	v	file:
-analyse_conditional	./Analysis/Verifier.hs	243;"	v	file:
-analyse_exp	./Analysis/Verifier.hs	225;"	v	file:
-analyse_hole	./Analysis/Verifier.hs	215;"	v	file:
-analyse_loop	./Analysis/Verifier.hs	221;"	v	file:
-analyser	./Analysis/Verifier.hs	95;"	v	file:
-analyser_block	./Analysis/Verifier.hs	156;"	v	file:
-analyser_block_dep	./Analysis/Verifier.hs	171;"	v	file:
-analyser_bstmt	./Analysis/Verifier.hs	186;"	v	file:
-analyser_debug	./Analysis/Verifier.hs	102;"	v	file:
-analyser_pid	./Analysis/Verifier.hs	131;"	v	file:
-analyser_stmt	./Analysis/Verifier.hs	197;"	v	file:
+analyse	./Analysis/Verifier.hs	122;"	v	file:
+analyse_conditional	./Analysis/Verifier.hs	249;"	v	file:
+analyse_exp	./Analysis/Verifier.hs	231;"	v	file:
+analyse_hole	./Analysis/Verifier.hs	221;"	v	file:
+analyse_loop	./Analysis/Verifier.hs	227;"	v	file:
+analyser	./Analysis/Verifier.hs	97;"	v	file:
+analyser_block	./Analysis/Verifier.hs	162;"	v	file:
+analyser_block_dep	./Analysis/Verifier.hs	177;"	v	file:
+analyser_bstmt	./Analysis/Verifier.hs	192;"	v	file:
+analyser_debug	./Analysis/Verifier.hs	104;"	v	file:
+analyser_pid	./Analysis/Verifier.hs	136;"	v	file:
+analyser_stmt	./Analysis/Verifier.hs	203;"	v	file:
 apply_edit	./Edit/Apply.hs	20;"	v
 apply_edit_block	./Edit/Apply.hs	95;"	v
 apply_edit_blockstmt	./Edit/Apply.hs	100;"	v
@@ -145,8 +145,8 @@ apply_edit_method_body	./Edit/Apply.hs	85;"	v
 apply_edit_stmt	./Edit/Apply.hs	113;"	v
 apply_edit_ty	./Edit/Apply.hs	34;"	v
 apply_edit_tys	./Edit/Apply.hs	27;"	v
-assign	./Analysis/Verifier.hs	435;"	v	file:
-assign_inner	./Analysis/Verifier.hs	440;"	v	file:
+assign	./Analysis/Verifier.hs	441;"	v	file:
+assign_inner	./Analysis/Verifier.hs	446;"	v	file:
 b	Main.hs	48;"	v
 base	Main.hs	49;"	v
 blockDep	./Analysis/Dependence.hs	141;"	v
@@ -304,8 +304,8 @@ pc_counter	./Analysis/Java/Flow.hs	38;"	v
 popEdits	./Analysis/Types.hs	75;"	v
 popNext	./Analysis/Java/Flow.hs	163;"	v
 popPrev	./Analysis/Java/Flow.hs	141;"	v
-post_op	./Analysis/Verifier.hs	462;"	v	file:
-post_op_inner	./Analysis/Verifier.hs	467;"	v	file:
+post_op	./Analysis/Verifier.hs	480;"	v	file:
+post_op_inner	./Analysis/Verifier.hs	485;"	v	file:
 post_process	./Edit/Gen.hs	148;"	v
 postcond	./Analysis/Engine.hs	85;"	v
 postcond'	./Analysis/Engine.hs	90;"	v
@@ -335,8 +335,8 @@ replaceCurrent	./Analysis/Java/Flow.hs	130;"	v
 replaceExit	./Analysis/Java/Flow.hs	125;"	v
 replaceGraph	./Analysis/Java/Flow.hs	84;"	v
 replaceVariable	./Analysis/Engine.hs	301;"	v
-ret	./Analysis/Verifier.hs	409;"	v	file:
-ret_inner	./Analysis/Verifier.hs	418;"	v	file:
+ret	./Analysis/Verifier.hs	415;"	v	file:
+ret_inner	./Analysis/Verifier.hs	424;"	v	file:
 runOption	Main.hs	78;"	v
 safeLookup	./Analysis/Util.hs	35;"	v
 set_dep	./Analysis/Dependence.hs	257;"	v
@@ -357,7 +357,7 @@ toClassInfo_ty	./Analysis/Java/ClassInfo.hs	114;"	v
 toFlow	./Analysis/Java/Flow.hs	207;"	v
 toIdent	./Analysis/Engine.hs	209;"	v
 toMemberSig	./Analysis/Java/ClassInfo.hs	72;"	v
-toMethodInv	./Analysis/Verifier.hs	179;"	v	file:
+toMethodInv	./Analysis/Verifier.hs	185;"	v	file:
 toString	./Analysis/Util.hs	32;"	v
 to_info	./Analysis/Java/ClassInfo.hs	132;"	v
 to_s	./Edit/Print.hs	26;"	v
@@ -378,7 +378,7 @@ update_node_table	./Analysis/Dependence.hs	117;"	v
 update_ssamap	./Analysis/Types.hs	34;"	v
 varDeclIdToIdent	./Analysis/Java/ClassInfo.hs	67;"	v
 varDeclIdToName	./Analysis/Java/Flow.hs	308;"	v
-verify	./Analysis/Verifier.hs	56;"	v	file:
+verify	./Analysis/Verifier.hs	58;"	v	file:
 verify	Main.hs	150;"	v
 verifyMode	Main.hs	60;"	v
 weak_update	./Analysis/Dependence.hs	208;"	v
