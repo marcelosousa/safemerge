@@ -146,3 +146,8 @@ field_info mod ty d@(VarDecl (VarId id) _) _clsum =
 mth_body :: MemberDecl -> MethodBody
 mth_body (MethodDecl _ _ _ _ _ _ b) = b
 mth_body m = error $ "mth_body: fatal " ++ show m 
+
+toIdent :: Name -> Ident
+toIdent (Name []) = error $ "nameToIdent: Name []"
+toIdent (Name [x]) = x
+toIdent (Name l) = foldr (\(Ident a) (Ident b) -> Ident (a ++ "." ++ b)) (Ident "") l 

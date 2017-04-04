@@ -213,11 +213,6 @@ enc_literal lit =
 --    Just (ast, _, _) -> return ast
     _ -> error "processLit: not supported"
 
-toIdent :: Name -> Ident
-toIdent (Name []) = error $ "nameToIdent: Name []"
-toIdent (Name [x]) = x
-toIdent (Name l) = foldr (\(Ident a) (Ident b) -> Ident (a ++ "." ++ b)) (Ident "") l 
-
 -- can the pid be 0?
 enc_name :: Int -> Ident -> [AST] -> EnvOp AST
 enc_name 0 _ _ = error $ "enc_name: pid = 0? debug"

@@ -27,15 +27,18 @@ type FlowInfo st = Map MIdent (MemberDecl,Graph st)
 
 data FlowState st
   = FlowState {
-    graphs  :: Graphs st
-  , this    :: Graph  st
-  , defs    :: Map MIdent MemberDecl 
-  , entries :: Map MIdent NodeId
-  , prev :: [NodeId] 
-  , current :: NodeId 
-  , next  :: [NodeId] 
-  , exit :: Maybe NodeId 
-  , pc_counter :: NodeId
+    graphs       :: Graphs st
+  , this         :: Graph  st
+  , defs         :: Map MIdent MemberDecl 
+  , entries      :: Map MIdent NodeId
+  -- previous nodes? are these just for loop heads?
+  , prev         :: [NodeId] 
+  -- current node
+  , current      :: NodeId 
+  -- next nodes?
+  , next         :: [NodeId] 
+  , exit         :: Maybe NodeId 
+  , pc_counter   :: NodeId
   , edge_counter :: EdgeId 
   } deriving Show
 
@@ -314,6 +317,7 @@ varDeclIdToName v = case v of
 
 computeGraphStmt :: Stmt -> FlowOp Bool st
 computeGraphStmt stmt = do
+  -- the next is the node id of the successor
   next <- incCounter
   pushNext next
   case stmt of 
@@ -407,21 +411,49 @@ computeGraphStmt stmt = do
       Just x  -> error $ "computeGraphStmt: Not supported " ++ show stmt
     Do    stmt cond -> computeWhile cond stmt True 
     While cond stmt -> computeWhile cond stmt False 
-    BasicFor init exp exps stmt -> computeFor init exp exps stmt
-    -- Be careful with the case statements
+    -- Convert a BasicFor into a While statement (disregarding scoping)
+    BasicFor init exp exps stmt -> do 
+      _ <- case init of
+        Nothing -> return ()
+        Just fi -> case fi of
+          ForLocalVars _ _ vars -> mapM_ (computeGraphStmt . localToStmt) vars
+          ForInitExps es  -> mapM_ (computeGraphStmt . ExpStmt) es 
+      let cond = case exp of 
+            Nothing -> Lit $ Boolean True 
+            Just c  -> c 
+          body = case exps of
+            Nothing -> stmt
+            Just [] -> stmt
+            Just st -> StmtBlock $ Block $ (BlockStmt stmt):map (BlockStmt . ExpStmt) st
+      computeWhile cond body False 
+    -- Switch statement
+    --  i.   generate all the condition expressions 
+    --  ii.  generate for each switch block the condi
+    --  iii. generate the exit point 
     Switch cond body -> do
-      eId <- incEdCounter
+      -- current point in the CFG
       curr <- getCurrent
-      next <- incCounter
+      -- save exit point 
       prev_exit <- getExit
-      prev_next <- getNext
-      replaceExit (Just prev_next)
-      let eInfo = EdgeInfo [] (Assume cond)
-      addEdgeInfo eId eInfo
-      addEdge curr eId next
-      replaceCurrent next
-      mapM_ computeSwitchBody body
+      -- the next point (exit of the switch)
+      next <- getNext
+      -- replace the current exit with the next
+      replaceExit (Just next)
+      -- get all the conditions for the default case
+      let conds = foldr (\(SwitchBlock l _) r -> 
+           case l of
+             SwitchCase e -> e:r
+             Default -> r) [] body  
+      foldM_ (computeSwitchBody curr cond conds) True body
+      -- revert back the original exit
       replaceExit prev_exit
+      -- standard
+      new <- getCurrent
+      eId <- incEdCounter
+      let eInfo = EdgeInfo [] Skip 
+      addEdgeInfo eId eInfo
+      addEdge new eId next
+      replaceCurrent next
       popNext
       return False
     _ -> error $ "computeGraphStmt: Not supported " ++ show stmt
@@ -431,80 +463,87 @@ computeGraphSimpleStmt stmt = do
   edgeId <- incEdCounter
   curr <- getCurrent
   next <- getNext
-  let eInfo = EdgeInfo [] stmt 
+  let eInfo = EdgeInfo [] $ normalizeStmt stmt 
   addEdgeInfo edgeId eInfo
   addEdge curr edgeId next 
   replaceCurrent next
   popNext
   return False 
 
-computeSwitchBody :: SwitchBlock -> FlowOp Bool st
-computeSwitchBody (SwitchBlock lab bstmt) = 
-  case lab of 
-    Default -> do
-      mapM_ computeGraphBStmt bstmt
-      return False
-    SwitchCase expr -> do
-      eId <- incEdCounter
-      curr <- getCurrent
-      new <- incCounter
-      replaceCurrent new
-      let eInfo = EdgeInfo [] (ExpStmt expr)
-      addEdgeInfo eId eInfo
-      addEdge curr eId new
-      mapM_ computeGraphBStmt bstmt 
-      return False
-    
-computeFor :: Maybe ForInit -> Maybe Exp -> Maybe [Exp] -> Stmt -> FlowOp Bool st 
-computeFor begin cond end body = do
-  -- Take care of the initialization part
-  _ <- case begin of
-    Nothing -> return ()
-    Just i  -> case i of
-      ForLocalVars _ _ vars ->
-        mapM_ (computeGraphStmt . localToStmt) vars
-      ForInitExps exps ->
-        mapM_ (computeGraphStmt . ExpStmt) exps
-  -- After initialization we have an usual while loop
-  -- The current should be the condition and the scope
-  condPc <- getCurrent
-  condEId <- incEdCounter
-  trueEId <- incEdCounter
-  falseEId <- incEdCounter
-  let eInfo = EdgeInfo [LoopHead] Skip
-      _cond = case cond of
-         Nothing -> Lit $ Boolean True 
-         Just e  -> e
-      eTrue = EdgeInfo [CondTag] (ExpStmt _cond)
-      eFalse = EdgeInfo [CondTag] (ExpStmt (PreNot _cond))
-  addEdgeInfo condEId eInfo
-  addEdgeInfo trueEId eTrue
-  addEdgeInfo falseEId eFalse
-  truePc <- incCounter
-  falsePc <- getNext
-  -- Add the edges from the loop head
-  addEdge condPc falseEId falsePc
-  -- Going to do the loop body now
-  replaceCurrent truePc
-  endPc <- incCounter
-  pushPrev endPc
-  computeGraphStmt body
-  _ <- case end of
-     Nothing -> return ()
-     Just e -> mapM_ (computeGraphStmt . ExpStmt) e
-  -- New current should be at the end
-  curr <- getCurrent
-  tranE <- incEdCounter
-  endE  <- incEdCounter
-  let eTran = EdgeInfo [] Skip
-      eEnd = EdgeInfo [LoopHead] Skip 
-  addEdgeInfo endE eEnd
-  addEdgeInfo tranE eTran
-  addEdge curr tranE endPc
-  addEdge endPc endE condPc 
-  popPrev
-  replaceCurrent falsePc 
-  return False
+normalizeStmt :: Stmt -> Stmt 
+normalizeStmt stmt = case stmt of
+  ExpStmt exp -> ExpStmt $ normalizeExp exp
+  _ -> stmt
+
+normalizeExp :: Exp -> Exp
+normalizeExp exp = 
+  let one = Lit $ Int 1
+  in case exp of
+    PostIncrement e ->
+      let lhs = expToLhs e
+      in  Assign lhs EqualA $ BinOp e Add one
+    PreIncrement  e -> 
+      let lhs = expToLhs e
+      in  Assign lhs EqualA $ BinOp e Add one
+    PostDecrement e ->
+      let lhs = expToLhs e
+      in  Assign lhs EqualA $ BinOp e Sub one
+    PreDecrement  e -> 
+      let lhs = expToLhs e
+      in  Assign lhs EqualA $ BinOp e Sub one
+    Assign lhs op rhs -> 
+      case op of
+        EqualA -> exp
+        _ ->
+          let e = lhsToExp lhs 
+              op' = toOp op
+          in Assign lhs EqualA $ BinOp e op' rhs
+    _ -> exp
+
+toOp :: AssignOp -> Op
+toOp op = case op of
+  MultA -> Mult
+  DivA  -> Div
+  RemA  -> Rem
+  AddA  -> Add
+  SubA  -> Sub
+  LShiftA -> LShift
+  RShiftA -> RShift
+  AndA -> And
+  XorA -> Xor
+  OrA  -> Or
+
+lhsToExp :: Lhs -> Exp
+lhsToExp lhs = case lhs of
+  NameLhs n -> ExpName n
+  FieldLhs f -> FieldAccess f
+  ArrayLhs ai -> ArrayAccess ai
+
+expToLhs :: Exp -> Lhs
+expToLhs e = case e of
+  ExpName n -> NameLhs n
+  _ -> error $ "expToLhs: Unsupported " ++ show e
+
+-- computeSwitchBody: 
+--  Receives the initial node id and the expression to generate the condition
+computeSwitchBody :: NodeId -> Exp -> [Exp] -> Bool -> SwitchBlock -> FlowOp Bool st
+computeSwitchBody orig cond conds hasBreak (SwitchBlock lab bstmt) = do
+  -- there is already an edge from the last node in the previous block to id_bstmt 
+  id_bstmt <- getCurrent
+  let fcond = case lab of 
+        Default -> foldr (\c r -> BinOp (BinOp cond NotEq c) And r) (Lit $ Boolean True) conds 
+        SwitchCase expr -> BinOp cond Equal expr 
+  new <- if orig == id_bstmt || hasBreak
+         then incCounter
+         else return id_bstmt
+  -- build the condition edge
+  eId <- incEdCounter
+  let eInfo = EdgeInfo [] (Assume fcond)
+  addEdgeInfo eId eInfo
+  addEdge orig eId new
+  replaceCurrent new
+  res <- mapM computeGraphBStmt bstmt
+  return $ last res
 
 computeWhile :: Exp -> Stmt -> Bool -> FlowOp Bool st
 computeWhile cond body doWhile = 

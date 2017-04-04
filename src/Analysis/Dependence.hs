@@ -252,7 +252,7 @@ weak_update node_table node el@(cont,depMap) =
       [] -> (False, M.insert node [el] node_table)
       [(cont',depMap')] ->
         let _depMap = depMap `join_depmap` depMap'
-        in if _depMap == depMap' && cont == cont'
+        in if _depMap == depMap' 
            then (True, node_table)
            else (False, M.insert node [(cont,_depMap)] node_table)
       _ -> error "join_update: more than one state in the list"
@@ -302,17 +302,17 @@ set_dep r (w,t) m = M.insert w (t,r) m
 transformer_expr :: ClassSum -> Exp -> ([AbsVar], [AbsVarAnn])
 transformer_expr class_sum e = case e of
   Assign lhs op rhs -> 
-    let writeSet = getWrite lhs
+    let writeSet = getWrite class_sum lhs
         (readSet,wSet) = transformer_expr class_sum rhs
     in case op of
-      EqualA -> (readSet, writeSet:wSet)
-      _ -> (fst writeSet:readSet, [writeSet])
+      EqualA -> (readSet, writeSet++wSet)
+      _ -> (map fst writeSet++readSet, writeSet)
   MethodInv m -> transformer_methInv class_sum m
-  _ -> (getReadSet e,[]) 
+  _ -> (getReadSet class_sum e,[]) 
 
 transformer_methInv :: ClassSum -> MethodInvocation -> ([AbsVar], [AbsVarAnn])
 transformer_methInv class_sum m =
-  let rSet = getReadSetInv m 
+  let rSet = getReadSetInv class_sum m 
       (mths,args) = case m of
         MethodCall (Name [i])       args -> (findMethodGen i class_sum, args) 
         PrimaryMethodCall This [] i args -> (findMethodGen i class_sum, args) 
@@ -322,24 +322,28 @@ transformer_methInv class_sum m =
       (r,w) = foldr (\(a,b) (c,d) -> (a++c, b++d)) ([],[]) deps
   in (rSet++r, w)
 
-getWrite :: Lhs -> AbsVarAnn
-getWrite lhs = case lhs of
-  NameLhs  n  -> (SName n,None) 
+getWrite :: ClassSum -> Lhs -> [AbsVarAnn]
+getWrite class_sum lhs = case lhs of
+  NameLhs  n  -> 
+    let i = toIdent n
+    in case M.lookup i (_cl_fields class_sum) of
+         Nothing -> [(SName n,None)] 
+         Just m  -> (SName n,None):(map (\(i,_) -> (SField i,Both)) $ toMemberSig m) 
   FieldLhs fa -> case fa of
-    PrimaryFieldAccess e i -> (SField i,Both)
-    SuperFieldAccess i     -> (SField i,Both)
-    ClassFieldAccess n i   -> (SField i,Both) 
-  ArrayLhs ai -> (SArray ai,None) 
+    PrimaryFieldAccess e i -> [(SField i,Both)]
+    SuperFieldAccess i     -> [(SField i,Both)]
+    ClassFieldAccess n i   -> [(SField i,Both)] 
+  ArrayLhs ai -> [(SArray ai,None)] 
 
-getReadSet :: Exp -> [AbsVar]
-getReadSet e = case e of
+getReadSet :: ClassSum -> Exp -> [AbsVar]
+getReadSet class_sum e = case e of
   Lit l  -> [] 
   Nondet -> []
   ClassLit m     -> error $ "getReadSet: " ++ show e 
   This           -> [] -- error $ "getReadSet: " ++ show e 
   ThisClass name -> error $ "getReadSet: " ++ show e  
   -- [TypeArgument] ClassType [Argument] (Maybe ClassBody)
-  InstanceCreation tyargs classty args mclass -> concatMap getReadSet args 
+  InstanceCreation tyargs classty args mclass -> concatMap (getReadSet class_sum) args 
   -- Exp [TypeArgument] Ident [Argument] (Maybe ClassBody)
   QualInstanceCreation e tyargs classty args mclass -> error $ "getReadSet: " ++ show e
   -- Type [Exp] Int
@@ -350,25 +354,29 @@ getReadSet e = case e of
     PrimaryFieldAccess e i -> [SField i]
     SuperFieldAccess i     -> [SField i]
     ClassFieldAccess n i   -> [SField i]
-  MethodInv mi -> getReadSetInv mi 
+  MethodInv mi -> getReadSetInv class_sum mi 
   ArrayAccess ai -> [SArray ai]
-  ExpName n -> [SName n]
-  PostIncrement exp -> getReadSet exp
-  PostDecrement exp -> getReadSet exp
-  PreIncrement  exp -> getReadSet exp
-  PreDecrement  exp -> getReadSet exp
-  PrePlus       exp -> getReadSet exp
-  PreMinus      exp -> getReadSet exp
-  PreBitCompl   exp -> getReadSet exp
-  PreNot        exp -> getReadSet exp
-  Cast     ty   exp -> getReadSet exp
-  BinOp  lhs op rhs -> getReadSet lhs ++ getReadSet rhs
-  InstanceOf    exp refType -> getReadSet exp
-  Cond c t e -> getReadSet c ++ getReadSet t ++ getReadSet e
+  ExpName n -> 
+    let i = toIdent n
+    in case M.lookup i (_cl_fields class_sum) of
+        Nothing -> [SName n] 
+        Just m  -> (SName n):(map (\(i,_) -> SField i) $ toMemberSig m) 
+  PostIncrement exp -> getReadSet class_sum exp
+  PostDecrement exp -> getReadSet class_sum exp
+  PreIncrement  exp -> getReadSet class_sum exp
+  PreDecrement  exp -> getReadSet class_sum exp
+  PrePlus       exp -> getReadSet class_sum exp
+  PreMinus      exp -> getReadSet class_sum exp
+  PreBitCompl   exp -> getReadSet class_sum exp
+  PreNot        exp -> getReadSet class_sum exp
+  Cast     ty   exp -> getReadSet class_sum exp
+  BinOp  lhs op rhs -> getReadSet class_sum lhs ++ getReadSet class_sum rhs
+  InstanceOf    exp refType -> getReadSet class_sum exp
+  Cond c t e -> getReadSet class_sum c ++ getReadSet class_sum t ++ getReadSet class_sum e
   Assign lhs assignOp rhs -> error $ "getReadSet of " ++ show e 
 
-getReadSetInv :: MethodInvocation -> [AbsVar]
-getReadSetInv mi = case mi of
-  MethodCall n args -> concatMap getReadSet args
-  PrimaryMethodCall e _ _ args -> getReadSet e ++ concatMap getReadSet args
+getReadSetInv :: ClassSum -> MethodInvocation -> [AbsVar]
+getReadSetInv class_sum mi = case mi of
+  MethodCall n args -> concatMap (getReadSet class_sum) args
+  PrimaryMethodCall e _ _ args -> (getReadSet class_sum) e ++ concatMap (getReadSet class_sum) args
   _ -> error $ "getReadSetInv: " ++ show mi 
