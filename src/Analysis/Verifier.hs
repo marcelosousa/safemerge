@@ -171,7 +171,7 @@ analyser_block b = do
       cfg = computeGraphMember mth
       -- blockDep returns a list of DepMap [O,A,B,M]
       -- assume for now that they are all the same
-      deps = M.toList $ head $ blockDep (head _classes) cfg 
+      deps = M.toList $ blockDep (head _classes) cfg 
   mapM_ analyser_block_dep deps 
 
 -- | analyser_block_dep: analyses for each dependence graph

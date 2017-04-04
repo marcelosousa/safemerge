@@ -238,7 +238,7 @@ enc_meth pid id@(Ident ident) args = do
       class_sum = _classes !! (pid - 1) 
       meths = findMethodGen id class_sum
       cfgs = map computeGraphMember meths
-      deps = foldr (\cfg res -> M.union res $ head $ blockDep class_sum cfg) M.empty cfgs
+      deps = foldr (\cfg res -> M.union res $ blockDep class_sum cfg) M.empty cfgs
   case M.lookup (id,arity) _fnmap of
     Nothing -> do
       iSort <- lift $ mkIntSort

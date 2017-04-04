@@ -88,20 +88,50 @@ readWriteSet :: DepMap -> ([AbsVar], [AbsVarAnn])
 readWriteSet dep =
   M.foldWithKey (\w (t,rs) (a,b) -> (a ++ rs, (w,t):b)) ([],[]) dep 
 
-type DepGraph = Graph DepMap 
+-- The context represents a stack of the variables involved in
+-- the path condition
+type Context = [[AbsVar]]
+-- An abstract element is a pair of the context that represents
+-- the path condition and the dependence map of the assignments
+type AbsElem = (Context,DepMap)
+-- The node table is an element of the DepGraph
+type NodeTable = Map NodeId [AbsElem]
+-- A dependence graph is a CFG annotated with the dependence info
+type DepGraph = Graph AbsElem 
+
+-- The result list is simply a NodeTable
+type ResultList = NodeTable 
+-- The FullDepInfo represents the full information 
+--  of the dependence analysis of a set of methods
+type FullDepInfo = Map MIdent ResultList 
+-- The DepInfo represents the important information
+--  of the dependence analysis of a set of methods
+--  that is for each method, the dependence map
+--  at the return node labelled with the (-1) identifier
+type DepInfo = Map MIdent DepMap 
+
+-- These are types related to the fixpoint computation
 type WItem = (NodeId,EdgeId,NodeId)
 type Worklist = [WItem]
-type NodeTable = Map NodeId [DepMap]
-type ResultList = NodeTable -- Map NodeId DepMap
 
+-- pretty printing
 printResultList :: ResultList -> String
 printResultList m = 
-  "ResultList\n" ++ M.foldWithKey (\nId d r -> "Node " ++ show nId ++ "\n" ++ concatMap printDepMap d ++ "\n" ++ r) "" m
+  "ResultList\n" ++ M.foldWithKey (\nId d r -> "Node " ++ show nId ++ "\n" ++ concatMap printAbsElem d ++ "\n" ++ r) "" m
+
+printAbsElem :: AbsElem -> String
+printAbsElem (c, dep) = 
+  let cString = "Context: " ++ show c ++ "\n"
+  in cString ++ printDepMap dep
 
 printDepMap :: DepMap -> String
 printDepMap = 
   M.foldWithKey (\k (t,d) r -> show (t,k) ++ " -> " ++ show d ++ "\n" ++ r) "" 
 
+printDepInfo :: DepInfo -> String
+printDepInfo = 
+  M.foldWithKey (\k l r -> "Function " ++ show k ++ "\n" ++ printDepMap l ++ "\n\n" ++ r ) ""
+ 
 -- State of the fixpoint
 data FixState =
   FixState
@@ -120,62 +150,63 @@ update_node_table node_table' = do
   put fs { fs_cfg = cfg }
   return cfg
 
-type DepInfo = Map MIdent [DepMap] -- ResultList
-
-printDepInfo :: DepInfo -> String
-printDepInfo = 
-  M.foldWithKey (\k l r -> "Function " ++ show k ++ "\n" ++ concatMap printDepMap l ++ "\n\n" ++ r ) ""
- 
 -- compute dependencies for a module
-depAnalysis :: ClassInfo -> FlowInfo DepMap -> DepInfo
-depAnalysis class_info = M.mapWithKey (retDep class_info)
+depAnalysis :: ClassInfo -> FlowInfo AbsElem -> DepInfo
+depAnalysis class_info = M.mapWithKey (memberDep class_info)
 
+-- compute dependences for a member declaration (method or constructor)
+--  returns the annotated CFG with the dependence map
 dependencies :: ClassInfo -> MIdent -> (MemberDecl,DepGraph) -> ResultList
 dependencies class_info mIdent (mDecl,cfg) = 
   let class_sum = findClass mIdent class_info 
       initMap = initDepMap mDecl
-  in fixpt class_sum cfg initMap
+      initVal = ([],initMap)
+  in fixpt class_sum cfg initVal 
+ where
+  initDepMap :: MemberDecl -> DepMap
+  initDepMap mDecl = case mDecl of
+    MethodDecl    _ _ _ _ params _ _ -> paramsToDep params 
+    ConstructorDecl _ _ _ params _ _ -> paramsToDep params
+    _ -> M.empty 
+  
+  paramsToDep :: [FormalParam] -> DepMap
+  paramsToDep params = 
+    M.fromList $ map paramToDep params 
+  
+  paramToDep :: FormalParam -> (AbsVar,(Tag,[AbsVar]))
+  paramToDep (FormalParam a b c varId) = 
+    case varId of
+      VarId i -> (SName (Name [i]),(Input,[]))
+      VarDeclArray vId -> paramToDep $ FormalParam a b c vId
 
-retDep :: ClassInfo -> MIdent ->  (MemberDecl,DepGraph) -> [DepMap] 
-retDep class_info mIdent (mDecl,cfg) = 
-  let class_sum = findClass mIdent class_info 
-      initMap = initDepMap mDecl
-      res = fixpt class_sum cfg initMap
+-- compute dependences for a member declaration (method or constructor)
+--  returns only the dependence map associated with the exit node
+memberDep :: ClassInfo -> MIdent ->  (MemberDecl,DepGraph) -> DepMap 
+memberDep class_info mIdent (mDecl,cfg) = 
+  let res = dependencies class_info mIdent (mDecl,cfg) 
   in case M.lookup (-1) res of
-       Nothing -> error $ "retDep: TODO convert the ResultList into a DepMap"
-       Just r  -> r
+       Nothing -> error $ "memberDep: no result"
+       Just r  -> case r of
+         [(_,x)] -> x
+         _ -> error $ "memberDep: invalid result " ++ show r
 
--- need to pass more information here
-blockDep :: ClassSum -> DepGraph -> [DepMap] 
+-- computes dependences for a part of the CFG 
+blockDep :: ClassSum -> DepGraph -> DepMap 
 blockDep class_sum cfg = 
-  let res = fixpt class_sum cfg M.empty 
-  -- 
+  let initVal = ([], M.empty)
+      res = fixpt class_sum cfg initVal 
   in case M.lookup (-1) res of
        Nothing -> error $ "blockDep: TODO convert the ResultList into a DepMap"
-       Just r  -> r
-
-initDepMap :: MemberDecl -> DepMap
-initDepMap mDecl = case mDecl of
-  MethodDecl    _ _ _ _ params _ _ -> paramsToDep params 
-  ConstructorDecl _ _ _ params _ _ -> paramsToDep params
-  _ -> M.empty 
-
-paramsToDep :: [FormalParam] -> DepMap
-paramsToDep params = 
-  M.fromList $ map paramToDep params 
-
-paramToDep :: FormalParam -> (AbsVar,(Tag,[AbsVar]))
-paramToDep (FormalParam a b c varId) = 
-  case varId of
-    VarId i -> (SName (Name [i]),(Input,[]))
-    VarDeclArray vId -> paramToDep $ FormalParam a b c vId
+       Just r  ->  case r of
+         [(_,x)] -> x
+         _ -> error $ "memberDep: invalid result " ++ show r
 
 -- The main fixpoint for the dependence analysis
 -- It requires the initial DepMap that specifies the inputs
-fixpt :: ClassSum -> DepGraph -> DepMap -> ResultList 
-fixpt class_sum cfg@Graph{..} initMap =
+fixpt :: ClassSum -> DepGraph -> AbsElem -> ResultList 
+fixpt class_sum cfg@Graph{..} initVal = 
   -- reset the node table information with the information passed
-  let node_table' = M.insert entry_node [initMap] $ M.map (const []) node_table
+  let node_table' = M.insert entry_node [initVal] $ M.map (const []) node_table
       cfg' = cfg { node_table = node_table' }
       wlist = map (\(a,b) -> (entry_node,a,b)) $ succs cfg' entry_node
       i_fix_st = FixState cfg' class_sum 
@@ -190,22 +221,22 @@ worklist _wlist = do
     [] -> return $ node_table fs_cfg 
     (it@(pre,eId,post):wlist) -> do
       -- get the current state in the pre
-      let depMap = case get_node_info fs_cfg pre of
+      let absElem = case get_node_info fs_cfg pre of
             [s] -> s
             l   -> error $ "worklist invalid pre states: " ++ show l
           -- get the edge info
           e@EdgeInfo{..} = get_edge_info fs_cfg eId
           rwlst = map (\(a,b) -> (post,a,b)) $ succs fs_cfg post
-          _depMap = transformer edge_code fs_cl_sum depMap
+          _absElem@(_cont,_depMap) = transformer edge_code fs_cl_sum absElem 
       (is_fix,node_table') <-
            case edge_tags of
              -- loop head point 
-             [LoopHead] -> return $ weak_update (node_table fs_cfg) post _depMap 
+             [LoopHead] -> return $ weak_update (node_table fs_cfg) post _absElem 
              -- join point: join the info in the cfg 
-             [IfJoin] -> return $ weak_update (node_table fs_cfg) post _depMap 
+             [IfJoin] -> return $ weak_update (node_table fs_cfg) post (tail _cont,_depMap)
              -- considering everything else the standard one: just replace 
              -- the information in the cfg and add the succs of post to the worklist
-             _ -> return $ weak_update (node_table fs_cfg) post _depMap 
+             _ -> return $ weak_update (node_table fs_cfg) post _absElem 
       cfg' <- update_node_table node_table'
       -- depending on the tags of the edge; the behaviour is different
       let nwlist = if is_fix || (Exit `elem` edge_tags) 
@@ -213,48 +244,50 @@ worklist _wlist = do
                    else (wlist ++ rwlst)
       worklist nwlist
 
-weak_update :: NodeTable -> NodeId -> DepMap -> (Bool, NodeTable)
-weak_update node_table node depMap =
+weak_update :: NodeTable -> NodeId -> AbsElem -> (Bool, NodeTable)
+weak_update node_table node el@(cont,depMap) =
   case M.lookup node node_table of
-    Nothing -> (False, M.insert node [depMap] node_table)
+    Nothing -> (False, M.insert node [el] node_table)
     Just lst -> case lst of
-      [] -> (False, M.insert node [depMap] node_table)
-      [depMap'] ->
+      [] -> (False, M.insert node [el] node_table)
+      [(cont',depMap')] ->
         let _depMap = depMap `join_depmap` depMap'
-        in if _depMap == depMap'
+        in if _depMap == depMap' && cont == cont'
            then (True, node_table)
-           else (False, M.insert node [_depMap] node_table)
+           else (False, M.insert node [(cont,_depMap)] node_table)
       _ -> error "join_update: more than one state in the list"
- 
-strong_update :: NodeTable -> NodeId -> DepMap -> (Bool, NodeTable)
-strong_update node_table node depMap = 
+
+strong_update :: NodeTable -> NodeId -> AbsElem -> (Bool, NodeTable)
+strong_update node_table node el = 
   case M.lookup node node_table of
-    Nothing -> (False, M.insert node [depMap] node_table) 
+    Nothing -> (False, M.insert node [el] node_table) 
     Just lst -> case lst of
-      [] -> (False, M.insert node [depMap] node_table)
-      [depMap'] ->
-        if depMap == depMap'
+      [] -> (False, M.insert node [el] node_table)
+      [el'] ->
+        if el == el'
         then (True, node_table)
-        else (False, M.insert node [depMap] node_table)
+        else (False, M.insert node [el] node_table)
       _ -> error "strong_update: more than one state in the list" 
 
-transformer :: Stmt -> ClassSum -> DepMap -> DepMap
-transformer stmt class_sum map = case stmt of
-  Skip -> map
-  Return _e -> case _e of 
-    Nothing -> map
-    Just e -> 
+transformer :: Stmt -> ClassSum -> AbsElem -> AbsElem 
+transformer stmt class_sum el@(k,dmap) = 
+  let kvars = nub $ concat k 
+  in case stmt of
+    Skip -> el 
+    Return _e -> case _e of 
+      Nothing -> el 
+      Just e -> 
+        let (r,w) = transformer_expr class_sum e
+        in if null w
+           then (k, foldr set_output dmap r) 
+           else error $ "transformer: Write set of return should be empty, " ++ show w 
+    ExpStmt e -> 
       let (r,w) = transformer_expr class_sum e
-      in if null w
-         then foldr set_output map r 
-         else error $ "transformer: Write set of return should be empty, " ++ show w 
-  ExpStmt e -> 
-    let (r,w) = transformer_expr class_sum e
-    in foldr (set_dep r) map w 
-  Assume e -> 
-    let (r,w) = transformer_expr class_sum e
-    in foldr (set_dep r) map w 
-  _ -> error $ "transformer: " ++ show stmt
+      in (k, foldr (set_dep $ r ++ kvars) dmap w) 
+    Assume e -> 
+      let (r,w) = transformer_expr class_sum e
+      in (r:k, foldr (set_dep $ r ++ kvars) dmap w) 
+    _ -> error $ "transformer: " ++ show stmt
 
 set_output :: AbsVar -> DepMap -> DepMap 
 set_output v m = -- trace ("set_output: " ++ show v) $  
@@ -285,7 +318,7 @@ transformer_methInv class_sum m =
         PrimaryMethodCall This [] i args -> (findMethodGen i class_sum, args) 
         _ -> error $ "transformer_methInv : " ++ show m
       cfgs = map computeGraphMember mths
-      deps = map (readWriteSet . head . blockDep class_sum) cfgs
+      deps = map (readWriteSet . blockDep class_sum) cfgs
       (r,w) = foldr (\(a,b) (c,d) -> (a++c, b++d)) ([],[]) deps
   in (rSet++r, w)
 
@@ -339,4 +372,3 @@ getReadSetInv mi = case mi of
   MethodCall n args -> concatMap getReadSet args
   PrimaryMethodCall e _ _ args -> getReadSet e ++ concatMap getReadSet args
   _ -> error $ "getReadSetInv: " ++ show mi 
-
