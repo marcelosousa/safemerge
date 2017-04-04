@@ -426,6 +426,21 @@ computeGraphStmt stmt = do
             Just [] -> stmt
             Just st -> StmtBlock $ Block $ (BlockStmt stmt):map (BlockStmt . ExpStmt) st
       computeWhile cond body False 
+    -- Enhanced For: converts to a while loop *PART OF THE COLLECTIONS*
+    EnhancedFor mods ty ident exp body -> do
+      -- create an internal counter that will traverse the collection
+      --  and the variable ident
+      let idI = Ident "wiz_i" 
+          varI = VarDecl (VarId idI) $ Just $ InitExp $ Lit $ Int 0 
+          nameI = ExpName $ Name [idI]
+          varK = VarDecl (VarId ident) $ Just $ InitExp $ ArrayAccess $ ArrayIndex exp [nameI] 
+      mapM_ (computeGraphStmt . localToStmt) [varI, varK]
+      -- create the condition of the loop 
+      let cond = BinOp nameI LThan $ MethodInv $ PrimaryMethodCall exp [] (Ident "length") [] 
+      -- create the increment
+          inc = ExpStmt $ BinOp nameI Add $ Lit $ Int 1 
+          body' = StmtBlock $ Block [BlockStmt body, BlockStmt inc] 
+      computeWhile cond body' False
     -- Switch statement
     --  i.   generate all the condition expressions 
     --  ii.  generate for each switch block the condi

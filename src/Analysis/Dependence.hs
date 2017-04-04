@@ -316,7 +316,7 @@ transformer_methInv class_sum m =
       (mths,args) = case m of
         MethodCall (Name [i])       args -> (findMethodGen i class_sum, args) 
         PrimaryMethodCall This [] i args -> (findMethodGen i class_sum, args) 
-        _ -> error $ "transformer_methInv : " ++ show m
+        _ -> T.trace ("transformer_methInv unsupported: " ++ show m) ([],[])
       cfgs = map computeGraphMember mths
       deps = map (readWriteSet . blockDep class_sum) cfgs
       (r,w) = foldr (\(a,b) (c,d) -> (a++c, b++d)) ([],[]) deps

@@ -164,13 +164,13 @@ computeGraph	./Analysis/Java/Flow.hs	260;"	v
 computeGraphBStmt	./Analysis/Java/Flow.hs	285;"	v
 computeGraphBody	./Analysis/Java/Flow.hs	271;"	v
 computeGraphMember	./Analysis/Java/Flow.hs	204;"	v
-computeGraphSimpleStmt	./Analysis/Java/Flow.hs	456;"	v
+computeGraphSimpleStmt	./Analysis/Java/Flow.hs	477;"	v
 computeGraphStmt	./Analysis/Java/Flow.hs	319;"	v
 computeGraphs	./Analysis/Java/Flow.hs	199;"	v
 computeItDefs	./Analysis/Java/Flow.hs	241;"	v
 computeMDeclDefs	./Analysis/Java/Flow.hs	245;"	v
-computeSwitchBody	./Analysis/Java/Flow.hs	524;"	v
-computeWhile	./Analysis/Java/Flow.hs	542;"	v
+computeSwitchBody	./Analysis/Java/Flow.hs	545;"	v
+computeWhile	./Analysis/Java/Flow.hs	564;"	v
 current	./Analysis/Java/Flow.hs	37;"	v
 defs	./Analysis/Java/Flow.hs	32;"	v
 depAnalysis	./Analysis/Dependence.hs	155;"	v
@@ -210,7 +210,7 @@ enc_new_var	./Analysis/Engine.hs	149;"	v
 entries	./Analysis/Java/Flow.hs	33;"	v
 entry_node	./Analysis/Java/Graph.hs	38;"	v
 exit	./Analysis/Java/Flow.hs	40;"	v
-expToLhs	./Analysis/Java/Flow.hs	517;"	v
+expToLhs	./Analysis/Java/Flow.hs	538;"	v
 field_info	./Analysis/Java/ClassInfo.hs	143;"	v
 findClass	./Analysis/Java/ClassInfo.hs	39;"	v
 findMethod	./Analysis/Java/ClassInfo.hs	45;"	v
@@ -269,7 +269,7 @@ is_output	./Analysis/Dependence.hs	57;"	v
 join_depmap	./Analysis/Dependence.hs	82;"	v
 join_tag	./Analysis/Dependence.hs	47;"	v
 lcs	./Edit/Diff.hs	33;"	v
-lhsToExp	./Analysis/Java/Flow.hs	511;"	v
+lhsToExp	./Analysis/Java/Flow.hs	532;"	v
 liff	./Analysis/Java/Liff.hs	34;"	v
 lin	./Analysis/Engine.hs	85;"	v
 lk	./Edit/Diff.hs	22;"	v
@@ -289,8 +289,8 @@ next	./Analysis/Java/Flow.hs	39;"	v
 next_block	./Analysis/Optimiser.hs	32;"	v
 node_table	./Analysis/Java/Graph.hs	41;"	v
 normalize	./Edit/Normalize.hs	17;"	v
-normalizeExp	./Analysis/Java/Flow.hs	473;"	v
-normalizeStmt	./Analysis/Java/Flow.hs	468;"	v
+normalizeExp	./Analysis/Java/Flow.hs	494;"	v
+normalizeStmt	./Analysis/Java/Flow.hs	489;"	v
 normalize_block	./Edit/Normalize.hs	91;"	v
 normalize_blockstmt	./Edit/Normalize.hs	96;"	v
 normalize_class	./Edit/Normalize.hs	37;"	v
@@ -315,10 +315,10 @@ post_op_inner	./Analysis/Verifier.hs	520;"	v	file:
 post_process	./Edit/Gen.hs	148;"	v
 postcond	./Analysis/Engine.hs	93;"	v
 postcond'	./Analysis/Engine.hs	98;"	v
-pp_dot_edge	./Analysis/Java/Flow.hs	587;"	v
-pp_dot_edges	./Analysis/Java/Flow.hs	584;"	v
-pp_dot_graph	./Analysis/Java/Flow.hs	581;"	v
-pp_dot_graphs	./Analysis/Java/Flow.hs	574;"	v
+pp_dot_edge	./Analysis/Java/Flow.hs	609;"	v
+pp_dot_edges	./Analysis/Java/Flow.hs	606;"	v
+pp_dot_graph	./Analysis/Java/Flow.hs	603;"	v
+pp_dot_graphs	./Analysis/Java/Flow.hs	596;"	v
 prev	./Analysis/Java/Flow.hs	35;"	v
 printAbsElem	./Analysis/Dependence.hs	123;"	v
 printDepInfo	./Analysis/Dependence.hs	132;"	v
@@ -365,7 +365,7 @@ toFlow	./Analysis/Java/Flow.hs	210;"	v
 toIdent	./Analysis/Java/ClassInfo.hs	151;"	v
 toMemberSig	./Analysis/Java/ClassInfo.hs	72;"	v
 toMethodInv	./Analysis/Verifier.hs	189;"	v	file:
-toOp	./Analysis/Java/Flow.hs	498;"	v
+toOp	./Analysis/Java/Flow.hs	519;"	v
 toString	./Analysis/Util.hs	32;"	v
 to_info	./Analysis/Java/ClassInfo.hs	132;"	v
 to_s	./Edit/Print.hs	26;"	v
