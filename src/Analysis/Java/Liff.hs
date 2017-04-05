@@ -74,10 +74,11 @@ mbody_diff bdy_o bdy_a bdy_b bdy_m =
      c2 = True -- bdy_o /= bdy_b
      c3 = bdy_a /= bdy_b
      c4 = bdy_m /= bdy_a || bdy_m /= bdy_b
-     c5 = isInfixOf "Return" $ show bdy_o
-     c6 = not $ isInfixOf "Synchronized" $ show bdy_o
-     c7 = not $ isInfixOf "Synchronised" $ show bdy_o
-     c8 = not $ isInfixOf "Exception" $ show bdy_o
+     [bo,ba,bb,bm] = [show bdy_o, show bdy_a, show bdy_b, show bdy_m] 
+     c5 = isInfixOf "Return" bo 
+     c6 = and $ map (\x -> not $ isInfixOf "Synchronized" x) [bo,ba,bb,bm] 
+     c7 = and $ map (\x -> not $ isInfixOf "Throw"        x) [bo,ba,bb,bm] 
+     c8 = and $ map (\x -> not $ isInfixOf "Exception"    x) [bo,ba,bb,bm] 
      c9 = True -- not $ isInfixOf "Public" $ show bdy_o
      c10 = True -- and $ map (\c -> not $ isInfixOf "lock" $ show c) [bdy_o,bdy_a,bdy_b,bdy_m]
  in and [c1,c2,c3,c4,c5,c6,c7,c8,c9,c10] 

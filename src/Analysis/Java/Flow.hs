@@ -15,6 +15,7 @@ module Analysis.Java.Flow where
 
 import Analysis.Java.ClassInfo
 import Analysis.Java.Graph
+import Analysis.Java.Simplifier
 import Control.Monad.State.Lazy
 import Data.List 
 import Data.Map (Map)
@@ -481,66 +482,13 @@ computeGraphSimpleStmt stmt = do
   edgeId <- incEdCounter
   curr <- getCurrent
   next <- getNext
-  let eInfo = EdgeInfo [] $ normalizeStmt stmt 
+  let eInfo = EdgeInfo [] $ simplifyStmt stmt 
   addEdgeInfo edgeId eInfo
   addEdge curr edgeId next 
   replaceCurrent next
   popNext
   return False 
 
-normalizeStmt :: Stmt -> Stmt 
-normalizeStmt stmt = case stmt of
-  ExpStmt exp -> ExpStmt $ normalizeExp exp
-  _ -> stmt
-
-normalizeExp :: Exp -> Exp
-normalizeExp exp = 
-  let one = Lit $ Int 1
-  in case exp of
-    PostIncrement e ->
-      let lhs = expToLhs e
-      in  Assign lhs EqualA $ BinOp e Add one
-    PreIncrement  e -> 
-      let lhs = expToLhs e
-      in  Assign lhs EqualA $ BinOp e Add one
-    PostDecrement e ->
-      let lhs = expToLhs e
-      in  Assign lhs EqualA $ BinOp e Sub one
-    PreDecrement  e -> 
-      let lhs = expToLhs e
-      in  Assign lhs EqualA $ BinOp e Sub one
-    Assign lhs op rhs -> 
-      case op of
-        EqualA -> exp
-        _ ->
-          let e = lhsToExp lhs 
-              op' = toOp op
-          in Assign lhs EqualA $ BinOp e op' rhs
-    _ -> exp
-
-toOp :: AssignOp -> Op
-toOp op = case op of
-  MultA -> Mult
-  DivA  -> Div
-  RemA  -> Rem
-  AddA  -> Add
-  SubA  -> Sub
-  LShiftA -> LShift
-  RShiftA -> RShift
-  AndA -> And
-  XorA -> Xor
-  OrA  -> Or
-
-lhsToExp :: Lhs -> Exp
-lhsToExp lhs = case lhs of
-  NameLhs n -> ExpName n
-  FieldLhs f -> FieldAccess f
-  ArrayLhs ai -> ArrayAccess ai
-
-expToLhs :: Exp -> Lhs
-expToLhs e = case e of
-  ExpName n -> NameLhs n
-  _ -> error $ "expToLhs: Unsupported " ++ show e
 
 -- computeSwitchBody: 
 --  Receives the initial node id and the expression to generate the condition

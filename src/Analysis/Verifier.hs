@@ -9,6 +9,7 @@ module Analysis.Verifier (wiz) where
 import Analysis.Dependence
 import Analysis.Engine
 import Analysis.Java.ClassInfo
+import Analysis.Java.Simplifier
 import Analysis.Java.Flow
 import Analysis.Java.Liff
 import Analysis.Optimiser
@@ -36,18 +37,31 @@ wiz diff@MInst{..} = mapM_ (wiz_meth diff) _merges
 -- Assume the parameters names are the same in all 4 versions of the method 
 wiz_meth :: DiffInst -> MethInst -> IO ()
 wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = do 
-  putStrLn $ "wiz_meth: " ++ show mth_id
-  putStrLn $ "wiz_meth: " ++ prettyPrint mth 
-  putStrLn $ "wiz_meth: " ++ show mth 
+--  putStrLn $ "wiz_meth: " ++ show mth_id
+  putStrLn $ "original wiz_meth:\n" ++ prettyPrint mth 
+  putStrLn $ "original edit o:\n" ++ (unlines $ map prettyPrint e_o) 
+  putStrLn $ "original edit a:\n" ++ (unlines $ map prettyPrint e_a) 
+  putStrLn $ "original edit b:\n" ++ (unlines $ map prettyPrint e_b) 
+  putStrLn $ "original edit m:\n" ++ (unlines $ map prettyPrint e_m) 
+  let _mth = simplifyMDecl mth
+      _e_o = simplifyEdit e_o
+      _e_a = simplifyEdit e_a
+      _e_b = simplifyEdit e_b
+      _e_m = simplifyEdit e_m
+  putStrLn $ "simplified wiz_meth:\n" ++ prettyPrint _mth 
+  putStrLn $ "simplified edit o:\n" ++ (unlines $ map prettyPrint _e_o) 
+  putStrLn $ "simplified edit a:\n" ++ (unlines $ map prettyPrint _e_a) 
+  putStrLn $ "simplified edit b:\n" ++ (unlines $ map prettyPrint _e_b) 
+  putStrLn $ "simplified edit m:\n" ++ (unlines $ map prettyPrint _e_m) 
+ -- putStrLn $ "wiz_meth: " ++ show mth 
   let o_class = findClass mth_id _o_info 
       a_class = findClass mth_id _a_info 
       b_class = findClass mth_id _b_info 
       m_class = findClass mth_id _m_info 
       classes = [o_class, a_class, b_class, m_class]
   putStrLn $ "wiz_meth: Fields" 
-  putStrLn $ show $ concatMap toMemberSig $ M.elems $ M.unions $ map _cl_fields classes 
-  (res,mstr) <- evalZ3 $ verify (mth_id, mth) classes [e_o,e_a,e_b,e_m] 
-  putStrLn $ prettyPrint mth
+  putStrLn $ show $ concatMap (\l -> map fst $ toMemberSig l) $ M.elems $ M.unions $ map _cl_fields classes 
+  (res,mstr) <- evalZ3 $ verify (mth_id, _mth) classes [_e_o,_e_a,_e_b,_e_m] 
   if res == Unsat
   then putStrLn "No semantic conflict found"
   else do

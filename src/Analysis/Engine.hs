@@ -46,7 +46,7 @@ z3_gen_inout (params, fields) = do
       inFields = map (\s -> map (\ar -> s ++ "_" ++ show ar) [1..arity]) fieldsId
       outFields = map (\s -> map (\ar -> "ret_"++s++show ar) [1..arity]) fieldsId
   intSort <- mkIntSort
-  inFieldsZ3  <- T.trace ("inFields : " ++ show inFields) $ mapM (mapM (\inp -> mkFreshConst inp intSort)) inFields 
+  inFieldsZ3  <- trace ("inFields : " ++ show inFields) $ mapM (mapM (\inp -> mkFreshConst inp intSort)) inFields 
   outFieldsZ3 <- mapM (mapM (\inp -> mkFreshConst inp intSort)) outFields 
   let pFieldsIn = foldl (\r (k,v) -> M.insert (Ident k) v r) M.empty $ zip fieldsId inFieldsZ3
       pFields = foldl (\r (k,v) -> M.insert (Ident $ "ret_" ++ k) v r) pFieldsIn $ zip fieldsId outFieldsZ3 
@@ -54,7 +54,7 @@ z3_gen_inout (params, fields) = do
       inputSig = map (toString . fst) params 
       inputs = map (\s -> map (\ar -> s ++ show ar) [1..arity]) inputSig 
       returns = map (\ar -> "ret" ++ show ar) [1..arity] 
-  inZ3  <- T.trace ("inputs: " ++ show inputs) $ mapM (mapM (\inp -> mkFreshConst inp intSort)) inputs 
+  inZ3  <- trace ("inputs: " ++ show inputs) $ mapM (mapM (\inp -> mkFreshConst inp intSort)) inputs 
   outZ3 <- mapM (\out -> mkFreshConst out intSort) returns 
   let pInput = foldl (\r (k,v) -> M.insert (Ident k) v r) pFields $ zip inputSig inZ3
       pInOut = M.insert (Ident "ret") outZ3 pInput
