@@ -36,4 +36,4 @@ Dependence analysis
 
 
 (x) Make a library out of Liff so that it can be used from the main verification tool  
-(-) AST re-write pass to get rid of for loops
+(x) AST re-write pass to get rid of for loops

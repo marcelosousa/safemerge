@@ -40,7 +40,6 @@ simplifyBStmt bstmt = case bstmt of
   BlockStmt s -> BlockStmt $ simplifyStmt s
   _ -> bstmt
 
--- TODO: Complete
 simplifyStmt :: Stmt -> Stmt 
 simplifyStmt stmt = case stmt of
   StmtBlock b -> StmtBlock $ simplifyBlock b

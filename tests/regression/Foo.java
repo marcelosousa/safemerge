@@ -7,7 +7,7 @@ public class Foo
 {
   private int x;
   private String name;
-  private List intArray;
+  private ArrayList<int> intArray;
 
   public Foo(int _x, String _name, List _intArray)
   {
