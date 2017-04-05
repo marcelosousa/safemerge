@@ -272,9 +272,12 @@ computeGraphBody mDecl = case mDecl of
   MethodDecl _ _ _ _ _ _ (MethodBody mBlock) -> case mBlock of
     Nothing -> return () 
     Just (Block block) -> do
-      if isInfixOf "Return" $ show block
-      then mapM_ computeGraphBStmt block
-      else mapM_ computeGraphBStmt (block ++ [BlockStmt $ Return Nothing])
+      let blockStr = show block
+      if isInfixOf "Throw" blockStr || isInfixOf "Synchronized" blockStr || isInfixOf "Try" blockStr
+      then return () 
+      else if isInfixOf "Return" blockStr 
+           then mapM_ computeGraphBStmt block
+           else mapM_ computeGraphBStmt (block ++ [BlockStmt $ Return Nothing])
   ConstructorDecl _ _ sym _ _ (ConstructorBody mInv block) -> do
     let inv = invToStmt sym mInv
     mapM_ computeGraphStmt inv

@@ -154,6 +154,7 @@ verify ofl afl bfl mfl = do
   let mergeInst = liff oast aast bast mast
   -- computes per method, the edit scripts and the method with holes
       diffInst = diffMethods mergeInst
+  print diffInst
   wiz diffInst 
 
 {-

@@ -15,6 +15,7 @@ import GitMerge.Analysis.Types
 import Language.Java.Parser 
 import Language.Java.Pretty hiding (opt)
 import Language.Java.Syntax
+import System.Directory
 import System.FilePath.Posix
 import qualified Data.List as L 
 import qualified Data.Map as M
@@ -33,31 +34,36 @@ main = do
       let merge_lines = lines merges
       versions <- foldM merge_base [] merge_lines 
       relevant_merges <- foldM analyse_merge_tree [] versions 
-      mapM liff_merge relevant_merges 
+      foldM_ liff_merge 1 relevant_merges 
       putStrLn "Done"
 
-liff_merge :: GitMerge -> IO ()
-liff_merge m@(GitMerge args chs) = mapM_ (liff_main args) chs
+liff_merge :: Int -> GitMerge -> IO Int
+liff_merge n m@(GitMerge args chs) = foldM (liff_main args) n chs
 
-liff_main :: [String] -> Change -> IO ()
-liff_main [o,m,a,b] ch@(Change _ f) = do 
-  o_ast <- parse_git_show o f >>= \m -> return $ maybe (error "liff_main") id m 
-  a_ast <- parse_git_show a f >>= \m -> return $ maybe (error "liff_main") id m 
-  b_ast <- parse_git_show b f >>= \m -> return $ maybe (error "liff_main") id m 
-  m_ast <- parse_git_show m f >>= \m -> return $ maybe (error "liff_main") id m 
+liff_main :: [String] -> Int -> Change -> IO Int
+liff_main [o,m,a,b] i ch@(Change _ f) = do 
+  (o_ast,o_str) <- parse_git_show o f >>= \m -> return $ maybe (error "liff_main") id m 
+  (a_ast,a_str) <- parse_git_show a f >>= \m -> return $ maybe (error "liff_main") id m 
+  (b_ast,b_str) <- parse_git_show b f >>= \m -> return $ maybe (error "liff_main") id m 
+  (m_ast,m_str) <- parse_git_show m f >>= \m -> return $ maybe (error "liff_main") id m 
   let r = liff o_ast a_ast b_ast m_ast
   if null $ _merges r
-  then return ()
-  else putStrLn $ show r 
-{-
-    putStrLn $ "Changes found in versions of file:" ++ f
-    putStrLn $ "Base: " ++ o
-    putStrLn $ "Variant A: " ++ a
-    putStrLn $ "Variant B: " ++ b
-    putStrLn $ "Merge: " ++ m
-    putStrLn $ "Changes: " ++ show r'
-    putStrLn "-----------------"
--}
+  then return i
+  else do
+    let dir = "results/inst"++show i++"/"
+        fl  = takeBaseName f
+        f_o = dir ++ fl ++ "_o.java"
+        f_a = dir ++ fl ++ "_a.java"
+        f_b = dir ++ fl ++ "_b.java"
+        f_m = dir ++ fl ++ "_m.java"
+    putStrLn $ "liff_main: found changes in " ++ f ++ "\n" ++ show [o,a,b,m]
+    putStrLn $"\t: printing to files " ++ show [f_o,f_a,f_b,f_m]
+    createDirectoryIfMissing True dir
+    writeFile f_o o_str
+    writeFile f_a a_str
+    writeFile f_b b_str
+    writeFile f_m m_str
+    return $ i + 1
 
 -- | API to retrieve & process information from git commands
 -- | Analyse a git merge-tree result
@@ -88,7 +94,7 @@ merge_base res merge_line = do
       return ((o++args):res)
 
 -- | Parse the result of a git show
-parse_git_show :: String -> FilePath -> IO (Maybe Program)
+parse_git_show :: String -> FilePath -> IO (Maybe (Program, String))
 parse_git_show hash file = do
   let arg = hash++":"++file
   mStr <- git_show arg
@@ -97,5 +103,5 @@ parse_git_show hash file = do
     Just str -> do 
       let ast_ = parser compilationUnit str 
       case ast_ of
-        Right ast -> return $ Just ast 
+        Right ast -> return $ Just (ast, str) 
         Left err -> return Nothing -- error $ "parse error..." ++ show err

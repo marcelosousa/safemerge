@@ -185,7 +185,7 @@ memberDep :: ClassInfo -> MIdent ->  (MemberDecl,DepGraph) -> DepMap
 memberDep class_info mIdent (mDecl,cfg) = 
   let res = dependencies class_info mIdent (mDecl,cfg) 
   in case M.lookup (-1) res of
-       Nothing -> error $ "memberDep: no result"
+       Nothing -> T.trace ("memberDep: empty for " ++ show mIdent) $ M.empty 
        Just r  -> case r of
          [(_,x)] -> x
          _ -> error $ "memberDep: invalid result " ++ show r
@@ -196,7 +196,7 @@ blockDep class_sum cfg =
   let initVal = ([], M.empty)
       res = fixpt class_sum cfg initVal 
   in case M.lookup (-1) res of
-       Nothing -> error $ "blockDep: TODO convert the ResultList into a DepMap"
+       Nothing -> T.trace ("blockDep: empty ") $ M.empty 
        Just r  ->  case r of
          [(_,x)] -> x
          _ -> error $ "memberDep: invalid result " ++ show r
@@ -339,7 +339,7 @@ getReadSet :: ClassSum -> Exp -> [AbsVar]
 getReadSet class_sum e = case e of
   Lit l  -> [] 
   Nondet -> []
-  ClassLit m     -> error $ "getReadSet: " ++ show e 
+  ClassLit m     -> [] -- error $ "getReadSet: " ++ show e 
   This           -> [] -- error $ "getReadSet: " ++ show e 
   ThisClass name -> error $ "getReadSet: " ++ show e  
   -- [TypeArgument] ClassType [Argument] (Maybe ClassBody)

@@ -1,4 +1,5 @@
 {-# LANGUAGE DoAndIfThenElse #-}
+{-# LANGUAGE RecordWildCards #-}
 module Analysis.Java.Liff where
 
 -- Liff: Lightweight Diff 
@@ -13,6 +14,7 @@ import Analysis.Java.ClassInfo
 import System.FilePath.Posix
 import qualified Data.List as L 
 import qualified Data.Map as M
+import qualified Debug.Trace as T
 
 trace a b = b
 
@@ -26,8 +28,11 @@ data PMergeInst a = MInst
  , _m_info :: ClassInfo
  , _merges :: [a]
  }
- deriving (Show,Ord,Eq)
+ deriving (Ord,Eq)
 
+instance Show a => Show (PMergeInst a) where
+  show m@MInst{..} = "Merges: " ++show _merges
+         
 -- | Liff: Checks the AST differences between 4 sets of classes
 --         based on the methods that were present in the original version
 liff :: Program -> Program -> Program -> Program -> MergeInst 
@@ -54,7 +59,7 @@ class_diff cls cl_o cl_a cl_b cl_m r =
   M.foldWithKey (class_diff' cls (_cl_meths cl_a) (_cl_meths cl_b) (_cl_meths cl_m)) r (_cl_meths cl_o)
  where
    class_diff' :: Ident -> MemberInfo -> MemberInfo -> MemberInfo -> MemberSig -> MemberDecl -> [MIdent] -> [MIdent]
-   class_diff' cls mi_a mi_b mi_m mth_sig m_o r = 
+   class_diff' cls mi_a mi_b mi_m mth_sig m_o r = trace ("checking method " ++ show mth_sig) $ 
      case (M.lookup mth_sig mi_a, M.lookup mth_sig mi_b, M.lookup mth_sig mi_m) of
        (Just m_a, Just m_b, Just m_m) -> 
          -- @TODO: make sure the parameters (names) are the same
@@ -73,6 +78,6 @@ mbody_diff bdy_o bdy_a bdy_b bdy_m =
      c6 = not $ isInfixOf "Synchronized" $ show bdy_o
      c7 = not $ isInfixOf "Synchronised" $ show bdy_o
      c8 = not $ isInfixOf "Exception" $ show bdy_o
-     c9 = not $ isInfixOf "Public" $ show bdy_o
+     c9 = True -- not $ isInfixOf "Public" $ show bdy_o
      c10 = True -- and $ map (\c -> not $ isInfixOf "lock" $ show c) [bdy_o,bdy_a,bdy_b,bdy_m]
  in and [c1,c2,c3,c4,c5,c6,c7,c8,c9,c10] 
