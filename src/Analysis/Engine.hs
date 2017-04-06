@@ -41,24 +41,58 @@ helper pre post = do
 -- z3_gen_inout :: generates the input and output vars
 z3_gen_inout :: ([MemberSig], [MemberSig]) -> Z3 (Params, [[AST]], [[AST]])
 z3_gen_inout (params, fields) = do
+  -- encode fields
   let arity = 4
-      fieldsId = map (toString .fst) fields
-      inFields = map (\s -> map (\ar -> s ++ "_" ++ show ar) [1..arity]) fieldsId
-      outFields = map (\s -> map (\ar -> "ret_"++s++show ar) [1..arity]) fieldsId
-  intSort <- mkIntSort
-  inFieldsZ3  <- trace ("inFields : " ++ show inFields) $ mapM (mapM (\inp -> mkFreshConst inp intSort)) inFields 
-  outFieldsZ3 <- mapM (mapM (\inp -> mkFreshConst inp intSort)) outFields 
+      fieldsSig = map (\(id,tys) -> (toString id,check_types tys)) fields
+      fieldsId  = map fst fieldsSig
+      inFields  = map (\(s,tys) -> map (\ar -> (s ++ "_" ++ show ar,tys)) [1..arity]) fieldsSig
+      outFields = map (\(s,tys) -> map (\ar -> ("ret_"++s++show ar,tys))  [1..arity]) fieldsSig
+  inFieldsZ3  <- mapM (mapM enc_var) inFields 
+  outFieldsZ3 <- mapM (mapM enc_var) outFields 
   let pFieldsIn = foldl (\r (k,v) -> M.insert (Ident k) v r) M.empty $ zip fieldsId inFieldsZ3
-      pFields = foldl (\r (k,v) -> M.insert (Ident $ "ret_" ++ k) v r) pFieldsIn $ zip fieldsId outFieldsZ3 
-  -- taking care of input and return
-      inputSig = map (toString . fst) params 
-      inputs = map (\s -> map (\ar -> s ++ show ar) [1..arity]) inputSig 
-      returns = map (\ar -> "ret" ++ show ar) [1..arity] 
-  inZ3  <- trace ("inputs: " ++ show inputs) $ mapM (mapM (\inp -> mkFreshConst inp intSort)) inputs 
+      pFields   = foldl (\r (k,v) -> M.insert (Ident $ "ret_" ++ k) v r) pFieldsIn $ zip fieldsId outFieldsZ3 
+  -- encode input parameters 
+      inputsSig = map (\(id,tys) -> (toString id,check_types tys)) params 
+      inputsId  = map fst inputsSig 
+      inputs    = map (\(s,tys) -> map (\ar -> (s ++ show ar,tys)) [1..arity]) inputsSig 
+  inZ3  <- mapM (mapM enc_var) inputs 
+  -- encode return variable with default type int
+  intSort <- mkIntSort
+  let returns = map (\ar -> "ret" ++ show ar) [1..arity] 
   outZ3 <- mapM (\out -> mkFreshConst out intSort) returns 
-  let pInput = foldl (\r (k,v) -> M.insert (Ident k) v r) pFields $ zip inputSig inZ3
+  -- tie up 
+  let pInput = foldl (\r (k,v) -> M.insert (Ident k) v r) pFields $ zip inputsId inZ3
       pInOut = M.insert (Ident "ret") outZ3 pInput
   return (pInOut, inFieldsZ3 ++ inZ3, outZ3:outFieldsZ3)
+ where
+   check_types :: [Type] -> Type
+   check_types [] = error "z3_gen_inout: no type for the variable"
+   check_types [t] = t
+   check_types _  = error "z3_gen:inout: more than one type for the variable" 
+
+-- encode a variable
+enc_var :: (String, Type) -> Z3 AST 
+enc_var (id,ty) = do
+  tySort <- enc_type ty
+  mkFreshConst id tySort
+
+enc_type :: Type -> Z3 Sort
+enc_type ty = case ty of
+  PrimType pty -> case pty of
+    BooleanT -> mkBoolSort
+    ByteT    -> mkBvSort 8
+    ShortT   -> mkIntSort
+    IntT     -> mkIntSort
+    LongT    -> mkRealSort
+    CharT    -> error "enc_ty: CharT"
+    FloatT   -> mkRealSort
+    DoubleT  -> mkRealSort
+  RefType rty -> case rty of
+    ClassRefType cty -> error $ "enc_type: " ++ show cty 
+    ArrayType    aty -> do
+      at <- enc_type aty
+      intSort <- mkIntSort
+      mkArraySort intSort at
 
 -- Generates the initial SSA Map for the fields and the parameters
 initial_SSAMap :: Params -> Z3 SSAMap
@@ -200,7 +234,31 @@ enc_exp_inner p expr = do
   PreNot nexpr -> do
     nexprEnc <- enc_exp_inner p nexpr
     lift $ mkNot nexprEnc
+  ArrayAccess ai -> enc_array_access p ai
+  FieldAccess fa -> enc_field_access p fa
   _ -> error $  "enc_exp_inner: " ++ show expr
+
+enc_array_access :: Int -> ArrayIndex -> EnvOp AST
+enc_array_access p exp@(ArrayIndex e args) = do
+  a <- enc_exp_inner p e 
+  case args of
+    [x] -> do
+      i <- enc_exp_inner p x
+      lift $ mkSelect a i
+    _ -> error $ "enc_array_access: " ++ show exp
+
+enc_field_access :: Int -> FieldAccess -> EnvOp AST
+enc_field_access p exp = do
+  case exp of
+    PrimaryFieldAccess This (ident@(Ident str)) -> do
+      env@Env{..} <- get
+      case M.lookup ident _ssamap of
+        Nothing -> error $ "enc_field_access: " ++ show exp 
+        Just l -> case M.lookup p l of
+          Nothing -> error $ "enc_field_access: " ++ show exp 
+          Just (ast,_,_) -> return ast 
+    _ -> error $ "enc_field_access: " ++ show exp
+    
 
 enc_literal :: Literal -> Z3 AST
 enc_literal lit =

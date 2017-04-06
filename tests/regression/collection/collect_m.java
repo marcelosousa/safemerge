@@ -5,9 +5,10 @@ import java.util.Date;
 
 public class Collect 
 {
-  private List<Integer> _intArray;
+//  private List<Integer> _intArray;
   private int[] _otherArray;
 
+/*
   public Collect(List<Integer> intArray, int[] otherArray)
   {
     _intArray = new ArrayList(intArray);
@@ -26,6 +27,7 @@ public class Collect
     res += _otherArray[i] + " }";  
     return res;
   }
+*/
 
   public int test(int x)
   { 
@@ -34,7 +36,7 @@ public class Collect
     
     return k + m; 
   }
-  
+ /* 
   public static void main(String args[]) 
   {
     List s = new ArrayList(Arrays.asList(1,2,3,4));
@@ -44,7 +46,7 @@ public class Collect
     System.out.println("Hello World");
     System.out.println(f.toString());
     System.out.println(f.test(0));
-   
   }
+ */
 }
 
