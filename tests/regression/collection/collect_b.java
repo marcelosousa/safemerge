@@ -30,8 +30,9 @@ public class Collect
 */
   public int test(int x)
   { 
-    int k = 1; // this._intArray.get(x);
+    int k = 0; // this._intArray.get(x);
     int m = this._otherArray[x+1];
+    this._otherArray[1] = 1;
     
     return k + m; 
   }

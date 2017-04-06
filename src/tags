@@ -214,6 +214,7 @@ enc_var	./Analysis/Engine.hs	75;"	v
 entries	./Analysis/Java/Flow.hs	34;"	v
 entry_node	./Analysis/Java/Graph.hs	38;"	v
 exit	./Analysis/Java/Flow.hs	41;"	v
+expToIdent	./Analysis/Verifier.hs	556;"	v	file:
 expToLhs	./Analysis/Java/Simplifier.hs	139;"	v
 field_info	./Analysis/Java/ClassInfo.hs	143;"	v
 findClass	./Analysis/Java/ClassInfo.hs	39;"	v
@@ -312,8 +313,8 @@ pc_counter	./Analysis/Java/Flow.hs	42;"	v
 popEdits	./Analysis/Types.hs	83;"	v
 popNext	./Analysis/Java/Flow.hs	167;"	v
 popPrev	./Analysis/Java/Flow.hs	145;"	v
-post_op	./Analysis/Verifier.hs	529;"	v	file:
-post_op_inner	./Analysis/Verifier.hs	534;"	v	file:
+post_op	./Analysis/Verifier.hs	563;"	v	file:
+post_op_inner	./Analysis/Verifier.hs	568;"	v	file:
 post_process	./Edit/Gen.hs	148;"	v
 postcond	./Analysis/Engine.hs	127;"	v
 postcond'	./Analysis/Engine.hs	132;"	v

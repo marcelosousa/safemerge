@@ -18,7 +18,7 @@ import qualified Debug.Trace as T
 
 -- receives the parameters and returns to specify the pre and post-condition
 -- need to use maps for the parameters, returns, fields
-type Params = Map Ident [AST]
+type Params = Map Ident [(AST,Sort)]
 type Res  = [AST]
 type Fields = Map Ident FuncDecl
 type Prop = (Params, Res, Fields) -> Z3 (AST, AST)

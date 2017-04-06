@@ -511,6 +511,36 @@ assign_inner pid _exp lhs aOp rhs = T.trace ("assign_inner: " ++ show pid ++ " "
    updatePre pre
    updateSSAMap ssamap
    incrementAssignMap ident rhs
+  ArrayLhs (ArrayIndex e args) -> do
+   let ident@(Ident str) = expToIdent e
+   (plhsAST,sort, i) <- T.trace ("the ident is " ++ show ident) $  
+     case M.lookup ident _ssamap of
+       -- new variable
+       Nothing -> assign_inner' pid ident
+       Just l -> case M.lookup pid l of
+         Nothing -> assign_inner' pid ident
+         Just r  -> return r 
+   let cstr = str ++ "_" ++ show pid ++ "_" ++ show i
+       ni = i+1
+       nstr = str ++ "_" ++ show pid ++ "_" ++ show ni
+   sym <- lift $ mkStringSymbol nstr
+   astVar <- lift $ mkVar sym sort
+   let ssamap = update_ssamap pid ident (astVar, sort, ni) _ssamap
+   a <- enc_exp_inner pid e
+   i <- case args of
+          [x] -> enc_exp_inner pid x
+          _ -> error $ "assign: ArrayLhs " ++ show lhs 
+   aSortStr <- lift $ getSort a >>= sortToString
+   iSortStr <- lift $ getSort i >>= sortToString
+   rhsSortStr <- lift $ getSort rhsAst >>= sortToString
+   astSortStr <- lift $ getSort astVar >>= sortToString
+   sortStr <- lift $ sortToString sort
+   _rhsAst <- T.trace ("sorts = " ++ show (aSortStr,iSortStr,rhsSortStr,astSortStr,sortStr)) $ lift $ mkStore a i rhsAst
+   ass <- lift $ mkEq _rhsAst astVar
+   pre <- lift $ mkAnd [_pre, ass]
+   updatePre pre
+   updateSSAMap ssamap
+   incrementAssignMap ident rhs
   _ -> error $ show _exp ++ " not supported"
  where
   assign_inner' pid ident@(Ident str) = do
@@ -523,7 +553,14 @@ assign_inner pid _exp lhs aOp rhs = T.trace ("assign_inner: " ++ show pid ++ " "
         nssamap = update_ssamap pid ident res _ssamap
     updateSSAMap nssamap
     return res 
-    
+
+-- 
+expToIdent :: Exp -> Ident
+expToIdent exp = case exp of
+  FieldAccess (PrimaryFieldAccess _ i) -> i
+  ArrayAccess (ArrayIndex e _) -> expToIdent e
+  ExpName n -> toIdent n
+
 -- Analyse Post De/Increment
 post_op :: Pid -> Exp -> Exp -> Op -> String -> EnvOp ()
 post_op pid _exp lhs op str = do

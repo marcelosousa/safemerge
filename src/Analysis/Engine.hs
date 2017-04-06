@@ -39,7 +39,7 @@ helper pre post = do
   T.trace ("helper: " ++ preStr) $ return (r,m)
 
 -- z3_gen_inout :: generates the input and output vars
-z3_gen_inout :: ([MemberSig], [MemberSig]) -> Z3 (Params, [[AST]], [[AST]])
+z3_gen_inout :: ([MemberSig], [MemberSig]) -> Z3 (Params, [[(AST,Sort)]], [[(AST,Sort)]])
 z3_gen_inout (params, fields) = do
   -- encode fields
   let arity = 4
@@ -59,7 +59,7 @@ z3_gen_inout (params, fields) = do
   -- encode return variable with default type int
   intSort <- mkIntSort
   let returns = map (\ar -> "ret" ++ show ar) [1..arity] 
-  outZ3 <- mapM (\out -> mkFreshConst out intSort) returns 
+  outZ3 <- mapM (\out -> mkFreshConst out intSort >>= \ast -> return (ast, intSort)) returns 
   -- tie up 
   let pInput = foldl (\r (k,v) -> M.insert (Ident k) v r) pFields $ zip inputsId inZ3
       pInOut = M.insert (Ident "ret") outZ3 pInput
@@ -71,10 +71,11 @@ z3_gen_inout (params, fields) = do
    check_types _  = error "z3_gen:inout: more than one type for the variable" 
 
 -- encode a variable
-enc_var :: (String, Type) -> Z3 AST 
+enc_var :: (String, Type) -> Z3 (AST,Sort)
 enc_var (id,ty) = do
   tySort <- enc_type ty
-  mkFreshConst id tySort
+  ast <- mkFreshConst id tySort
+  return (ast,tySort)
 
 enc_type :: Type -> Z3 Sort
 enc_type ty = case ty of
@@ -101,15 +102,15 @@ initial_SSAMap params = do
   fn <- mkFreshFuncDecl "null" [] iSort
   ast <- mkApp fn []
   let i = M.singleton (Ident "null") (M.fromList $ zip [1..4] (replicate 4 (ast, iSort, 0)))
-      fn l = zip [1..4] [(e, iSort, 0) | e <- l]
+      fn l = zip [1..4] $ map (\(e,s) -> (e,s,0)) l 
       ps = M.map (\a -> M.fromList $ fn a) params
   return $ M.union i ps
 
 -- Verification pre-condition
-initial_precond :: [[AST]] -> Z3 AST 
+initial_precond :: [[(AST,Sort)]] -> Z3 AST 
 initial_precond inputs =  do 
   let l = map lin inputs
-  eqs <- mapM (\inp -> mapM (\(a,b) -> mkEq a b) $ lin inp) inputs
+  eqs <- mapM (\inp -> mapM (\((a,_),(b,_)) -> mkEq a b) $ lin inp) inputs
   let _eqs = concat eqs
   if null _eqs
   then mkTrue
@@ -123,13 +124,13 @@ lin (x:xs) = lin' x xs
   lin' l [] = []
   lin' l (x:xs) = (l,x):lin' x xs
 
-postcond :: [[AST]] -> Z3 AST
+postcond :: [[(AST,Sort)]] -> Z3 AST
 postcond outs = do
   cond <- mapM postcond' outs 
   mkAnd cond 
 
-postcond' :: [AST] -> Z3 AST
-postcond' res = case res of
+postcond' :: [(AST,Sort)] -> Z3 AST
+postcond' res = case map fst res of
   [r_o, r_a, r_b, r_m] -> do 
     oa <- mkEq r_o r_a
     noa <- mkNot oa
