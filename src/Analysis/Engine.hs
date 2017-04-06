@@ -89,7 +89,12 @@ enc_type ty = case ty of
     FloatT   -> mkRealSort
     DoubleT  -> mkRealSort
   RefType rty -> case rty of
-    ClassRefType cty -> error $ "enc_type: " ++ show cty 
+    ClassRefType cty@(ClassType l) -> 
+      case l of 
+        [(Ident "List",_)] -> do 
+          intSort <- mkIntSort
+          mkArraySort intSort intSort
+        _ -> error $ "enc_type: " ++ show cty 
     ArrayType    aty -> do
       at <- enc_type aty
       intSort <- mkIntSort
@@ -224,9 +229,6 @@ enc_exp_inner p expr = do
   PreMinus nexpr -> do 
     nexprEnc <- enc_exp_inner p nexpr
     lift $ mkUnaryMinus nexprEnc
-  MethodInv (MethodCall name args) -> T.trace ("enc_exp_inner: " ++ show expr) $ do
-    argsAST <- mapM (enc_exp_inner p) args
-    enc_meth p (toIdent name) argsAST
   Cond cond _then _else -> do
     condEnc <- enc_exp_inner p cond
     _thenEnc <- enc_exp_inner p _then
@@ -237,7 +239,20 @@ enc_exp_inner p expr = do
     lift $ mkNot nexprEnc
   ArrayAccess ai -> enc_array_access p ai
   FieldAccess fa -> enc_field_access p fa
+  MethodInv m -> enc_meth_inv p m
   _ -> error $  "enc_exp_inner: " ++ show expr
+
+enc_meth_inv :: Int -> MethodInvocation -> EnvOp AST
+enc_meth_inv p m = case m of  
+  MethodCall name args -> do
+    argsAST <- mapM (enc_exp_inner p) args
+    enc_meth p (toIdent name) argsAST
+  PrimaryMethodCall e tys mName args ->
+    case mName of
+      -- convert get into an array access
+      Ident "get" -> enc_array_access p $ ArrayIndex e args 
+      _ -> error $ "enc_meth_inv: " ++ show m
+  _ -> error $ "enc_meth_inv: " ++ show m
 
 enc_array_access :: Int -> ArrayIndex -> EnvOp AST
 enc_array_access p exp@(ArrayIndex e args) = do

@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class Collect 
 {
-//  private List<Integer> _intArray;
+  private List<Integer> _intArray;
   private int[] _otherArray;
 /*
   public Collect(List<Integer> intArray, int[] otherArray)
@@ -29,7 +29,7 @@ public class Collect
 */
   public int test(int x)
   { 
-    int k = 0; //this._intArray.get(x);
+    int k = this._intArray.get(x);
     int m = this._otherArray[x];
     this._otherArray[0] = 1;
 
