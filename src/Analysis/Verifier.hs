@@ -228,9 +228,10 @@ analyser_stmt (pid, stmt) rest =
    analyser_stmt (pid,ifthenelse) rest
   IfThenElse cond s1 s2   -> analyse_conditional pid cond s1 s2 rest
   ExpStmt expr            -> analyse_exp pid expr rest
-  While _cond _body       -> analyse_loop _cond _body rest
+  While _cond _body       -> analyse_loop pid _cond _body rest
   Hole                    -> analyse_hole rest
   Skip                    -> analyser rest 
+  Empty                   -> analyser rest
   _                       -> error $ "analyser_stmt: not supported " ++ show stmt
 
 -- | The analysis of a hole
@@ -249,9 +250,8 @@ analyse_exp :: Pid -> Exp -> ProdProgram -> EnvOp (Result, Maybe Model)
 analyse_exp pid _exp rest =
  case _exp of
   MethodInv minv -> do
-    error "analyse_exp: currently not supported" 
---   method_call minv
---   analyser rest
+   enc_meth_inv pid minv 
+   analyser rest
   Assign lhs aOp rhs -> do
    assign pid _exp lhs aOp rhs
    analyser rest 
@@ -416,16 +416,6 @@ applyFusion list = do
     return (iAST,iApp)
    -- End Fusion Utility Functions
 
--- Analyse Method Call
-method_call :: MethodInvocation -> EnvOp ()
-method_call minv =
- case minv of 
-  MethodCall (Name [Ident "assume"]) [expr] -> do 
-   env@Env{..} <- get
-   expAST <- lift $ processExp (_objSort,_params,_res,_fields,_ssamap) expr
-   pre <- lift $ mkAnd [_pre,expAST]
-   updatePre pre
-  _ -> error $ show minv ++ " not supported"
 -}
 
 -- Analyse Return

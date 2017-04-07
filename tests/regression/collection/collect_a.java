@@ -35,6 +35,9 @@ public class Collect
     int m = this._otherArray[x];
     this._otherArray[0] = 1;
     
+    if ( x > 0 )
+      k = 1;
+
     return k + m; 
   }
 /*  
