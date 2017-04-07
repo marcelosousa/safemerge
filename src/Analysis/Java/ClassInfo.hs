@@ -68,15 +68,19 @@ varDeclIdToIdent v = case v of
   VarId i -> i
   VarDeclArray v' -> varDeclIdToIdent v'
 
-toMemberSig :: MemberDecl -> [MemberSig]
-toMemberSig mDecl = case mDecl of
-  MethodDecl _ _ _ _ params _ _ -> 
-    map (\(FormalParam _ ty _ v) -> (varDeclIdToIdent v,[ty])) params
-  ConstructorDecl _ _ _ params _ _ -> 
-    map (\(FormalParam _ ty _ v) -> (varDeclIdToIdent v,[ty])) params
-  FieldDecl _ ty varDecls ->
-    map (\(VarDecl v _) -> (varDeclIdToIdent v,[ty])) varDecls
-  _ -> []
+class Signature a where
+  toMemberSig :: a -> [MemberSig]
+
+instance Signature MemberDecl where
+  -- toMemberSig :: MemberDecl -> [MemberSig]
+  toMemberSig mDecl = case mDecl of
+    MethodDecl _ _ _ _ params _ _ -> 
+      map (\(FormalParam _ ty _ v) -> (varDeclIdToIdent v,[ty])) params
+    ConstructorDecl _ _ _ params _ _ -> 
+      map (\(FormalParam _ ty _ v) -> (varDeclIdToIdent v,[ty])) params
+    FieldDecl _ ty varDecls ->
+      map (\(VarDecl v _) -> (varDeclIdToIdent v,[ty])) varDecls
+    _ -> []
 
 i_clsum :: [Ident] -> ClassSum
 i_clsum name = ClassSum name M.empty M.empty M.empty 

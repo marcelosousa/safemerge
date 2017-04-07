@@ -10,9 +10,8 @@
 -------------------------------------------------------------------------------
 module Analysis.Java.AST where
 
-import Edit.Types
 import Language.Java.Syntax 
-import Analysis.Java.Simplifier 
+import Analysis.Java.ClassInfo
 
 data AnnMemberDecl
   = AnnFieldDecl [Modifier] Type [VarDecl]
@@ -31,17 +30,22 @@ data AnnMemberDecl
                        AnnConstructorBody
   | AnnMemberClassDecl ClassDecl
   | AnnMemberInterfaceDecl InterfaceDecl
+  deriving Show
 
 data AnnMethodBody = AnnMethodBody (Maybe AnnBlock)
+  deriving Show
 
 data AnnBlock = AnnBlock [AnnBlockStmt]
+  deriving Show
 
 data AnnConstructorBody = AnnConstructorBody (Maybe ExplConstrInv) [AnnBlockStmt]
+  deriving Show
 
 data AnnBlockStmt =
    AnnBlockStmt AnnStmt
  | AnnLocalClass ClassDecl
  | AnnLocalVars [Int] [Modifier] Type [VarDecl]
+  deriving Show
 
 data AnnStmt 
   = AnnStmtBlock    [Int] AnnBlock
@@ -65,14 +69,20 @@ data AnnStmt
   | AnnLabeled      [Int] Ident AnnStmt
   | AnnHole         [Int]
   | AnnSkip         [Int]
+  deriving Show
 
 data AnnSwitchBlock = AnnSwitchBlock [Int] SwitchLabel [AnnBlockStmt]
+  deriving Show
 
 data AnnCatch = AnnCatch [Int] FormalParam AnnBlock
+  deriving Show
 
 class Annotate a b where
-  toAnn :: [Int] -> a -> b
+  toAnn   :: [Int] -> a -> b
   fromAnn :: b -> a
+
+class GetAnnotation a where
+  getAnn  :: a -> [Int]
 
 instance Annotate MemberDecl AnnMemberDecl where
   toAnn p mDecl = case mDecl of
@@ -88,6 +98,12 @@ instance Annotate MemberDecl AnnMemberDecl where
     AnnMemberClassDecl c -> MemberClassDecl c
     AnnMemberInterfaceDecl i -> MemberInterfaceDecl i
 
+instance GetAnnotation AnnMemberDecl where
+  getAnn amDecl = case amDecl of
+    AnnMethodDecl m ts t i ps e bdy    -> getAnn bdy 
+    AnnConstructorDecl m ts i ps e bdy -> getAnn bdy
+    _ -> []
+
 instance Annotate MethodBody AnnMethodBody where
   toAnn p (MethodBody mBlock) =
     case mBlock of
@@ -97,14 +113,26 @@ instance Annotate MethodBody AnnMethodBody where
     case mBlock of
       Nothing -> MethodBody Nothing
       Just b  -> MethodBody $ Just $ fromAnn b 
-  
+
+instance GetAnnotation AnnMethodBody where
+  getAnn (AnnMethodBody mBlock) =
+    case mBlock of
+      Nothing -> [] 
+      Just b  -> getAnn b 
+
 instance Annotate ConstructorBody AnnConstructorBody where
   toAnn p (ConstructorBody mInv blockStmts) = AnnConstructorBody mInv $ map (toAnn p) blockStmts 
   fromAnn (AnnConstructorBody mInv blockStmts) = ConstructorBody mInv $ map fromAnn blockStmts 
 
+instance GetAnnotation AnnConstructorBody where
+  getAnn (AnnConstructorBody mInv blockStmts) = getAnn $ head blockStmts 
+
 instance Annotate Block AnnBlock where
   toAnn p (Block stmts) = AnnBlock $ map (toAnn p) stmts 
   fromAnn (AnnBlock stmts) = Block $ map fromAnn stmts 
+
+instance GetAnnotation AnnBlock where
+  getAnn  (AnnBlock stmts) = getAnn $ head stmts 
 
 instance Annotate BlockStmt AnnBlockStmt where
   toAnn p blockStmt =  
@@ -117,6 +145,13 @@ instance Annotate BlockStmt AnnBlockStmt where
       AnnBlockStmt stmt -> BlockStmt $ fromAnn stmt
       AnnLocalClass cl  -> LocalClass cl
       AnnLocalVars p mods ty decls -> LocalVars mods ty decls
+
+instance GetAnnotation AnnBlockStmt where
+  getAnn blockStmt = 
+    case blockStmt of
+      AnnBlockStmt stmt -> getAnn stmt
+      AnnLocalVars p mods ty decls -> p 
+      _ -> []
 
 instance Annotate Stmt AnnStmt where
   toAnn p stmt = 
@@ -166,10 +201,55 @@ instance Annotate Stmt AnnStmt where
       AnnHole         p           -> Hole         
       AnnSkip         p           -> Skip         
 
+instance GetAnnotation AnnStmt where
+  getAnn stmt = 
+    case stmt of
+      AnnStmtBlock    p b         -> p 
+      AnnIfThen       p e s       -> p 
+      AnnIfThenElse   p e s t     -> p 
+      AnnWhile        p e s       -> p 
+      AnnBasicFor     p e f g s   -> p 
+      AnnEnhancedFor  p m t i e s -> p 
+      AnnEmpty        p           -> p 
+      AnnExpStmt      p e         -> p 
+      AnnAssert       p e f       -> p 
+      AnnAssume       p e         -> p 
+      AnnSwitch       p e b       -> p 
+      AnnDo           p s e       -> p 
+      AnnBreak        p i         -> p 
+      AnnContinue     p i         -> p 
+      AnnReturn       p e         -> p 
+      AnnSynchronized p e b       -> p 
+      AnnThrow        p e         -> p 
+      AnnTry          p b c mb    -> p 
+      AnnLabeled      p i s       -> p 
+      AnnHole         p           -> p 
+      AnnSkip         p           -> p 
+
 instance Annotate SwitchBlock AnnSwitchBlock where
   toAnn p (SwitchBlock l stmts) = AnnSwitchBlock p l (map (toAnn p) stmts)
   fromAnn (AnnSwitchBlock p l stmts) = SwitchBlock l (map fromAnn stmts)
 
+instance GetAnnotation AnnSwitchBlock where
+  getAnn (AnnSwitchBlock p l stmts) = p 
+
 instance Annotate Catch AnnCatch where
   toAnn p (Catch fp b) = AnnCatch p fp (toAnn p b) 
   fromAnn (AnnCatch p fp b) = Catch fp (fromAnn b)
+
+instance GetAnnotation AnnCatch where
+  getAnn (AnnCatch p fp b) = p 
+
+instance Signature AnnMemberDecl where
+  toMemberSig mDecl = case mDecl of
+    AnnMethodDecl _ _ _ _ params _ _ -> 
+      map (\(FormalParam _ ty _ v) -> (varDeclIdToIdent v,[ty])) params
+    AnnConstructorDecl _ _ _ params _ _ -> 
+      map (\(FormalParam _ ty _ v) -> (varDeclIdToIdent v,[ty])) params
+    AnnFieldDecl _ ty varDecls ->
+      map (\(VarDecl v _) -> (varDeclIdToIdent v,[ty])) varDecls
+    _ -> []
+
+ann_mth_body :: AnnMemberDecl -> AnnMethodBody
+ann_mth_body (AnnMethodDecl _ _ _ _ _ _ b) = b
+ann_mth_body m = error $ "ann_mth_body: fatal " ++ show m 

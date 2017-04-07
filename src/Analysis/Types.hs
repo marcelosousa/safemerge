@@ -5,6 +5,7 @@
 -------------------------------------------------------------------------------
 module Analysis.Types where
 
+import Analysis.Java.AST
 import Analysis.Java.ClassInfo
 import Analysis.Dependence
 import Control.Monad.ST
@@ -68,10 +69,10 @@ data Env = Env
   , _post    :: AST
   , _invpost :: AST
   , _classes :: [ClassSum]
-  , _edits   :: [Edit]
+  , _edits   :: [AnnEdit]
   , _debug   :: Bool
   , _numret  :: Int
-  , _pid     :: Int -- If the pid is 0, we are executing all versions 
+  , _pid     :: [Int] -- If the pid is 0, we are executing all versions 
   , _anonym  :: Int -- The number of anonymous functions
   }
 
@@ -79,7 +80,7 @@ type EnvOp a = StateT Env Z3 a
 
 _default = (Unsat, Nothing)
 
-popEdits :: EnvOp [BlockStmt]
+popEdits :: EnvOp [AnnBlockStmt]
 popEdits = do
   s@Env{..} <- get
   let (res,edits) = unzip $ map (\e -> (head e, tail e)) _edits 
@@ -87,7 +88,7 @@ popEdits = do
   return res 
 
 -- @ update the pid
-updatePid :: Int -> EnvOp ()
+updatePid :: [Int] -> EnvOp ()
 updatePid pid = do
   s@Env{..} <- get
   put s{ _pid = pid }

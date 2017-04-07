@@ -8,6 +8,7 @@ module Calculus where
 import Language.Java.Parser hiding (opt)
 import Language.Java.Pretty hiding (opt)
 import Language.Java.Syntax
+import Analysis.Java.AST
 
 import Data.Map (Map)
 import qualified Data.Map as M
@@ -16,13 +17,17 @@ import qualified Debug.Trace as T
 import Edit.Types
 
 type Pid = Int
-type ProdProgram = [(Pid, [BlockStmt])]
+type ProdProgram = [AnnBlockStmt]
+
+every :: [Pid] -> Bool
+every [1,2,3,4] = True
+every _ = False
 
 -- | If any of them are ifs apply the if rule
 --   If all of them are whiles apply the while rule
 --   Otherwise, consume and move on
-miniproduct :: [(Pid, BlockStmt)] -> ProdProgram 
-miniproduct stmts = map (\(pid, s) -> (pid, [s])) stmts 
+miniproduct :: [AnnBlockStmt] -> ProdProgram 
+miniproduct stmts = undefined -- map (\(pid, s) -> (pid, [s])) stmts 
   
 is_if :: BlockStmt -> Bool
 is_if b = case b of

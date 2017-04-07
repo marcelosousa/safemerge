@@ -8,6 +8,7 @@ module Analysis.Verifier (wiz) where
 -- import Analysis.Invariant
 import Analysis.Dependence
 import Analysis.Engine
+import Analysis.Java.AST
 import Analysis.Java.ClassInfo
 import Analysis.Java.Simplifier
 import Analysis.Java.Flow
@@ -48,12 +49,16 @@ wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = do
       _e_a = simplifyEdit e_a
       _e_b = simplifyEdit e_b
       _e_m = simplifyEdit e_m
+      f_mth = toAnn [1,2,3,4] _mth
+      f_e_o = map (toAnn [1]) _e_o
+      f_e_a = map (toAnn [2]) _e_a
+      f_e_b = map (toAnn [3]) _e_b
+      f_e_m = map (toAnn [4]) _e_m
   putStrLn $ "simplified wiz_meth:\n" ++ prettyPrint _mth 
   putStrLn $ "simplified edit o:\n" ++ (unlines $ map prettyPrint _e_o) 
   putStrLn $ "simplified edit a:\n" ++ (unlines $ map prettyPrint _e_a) 
   putStrLn $ "simplified edit b:\n" ++ (unlines $ map prettyPrint _e_b) 
   putStrLn $ "simplified edit m:\n" ++ (unlines $ map prettyPrint _e_m) 
- -- putStrLn $ "wiz_meth: " ++ show mth 
   let o_class = findClass mth_id _o_info 
       a_class = findClass mth_id _a_info 
       b_class = findClass mth_id _b_info 
@@ -61,7 +66,7 @@ wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = do
       classes = [o_class, a_class, b_class, m_class]
   putStrLn $ "wiz_meth: Fields" 
   putStrLn $ show $ concatMap (\l -> map fst $ toMemberSig l) $ M.elems $ M.unions $ map _cl_fields classes 
-  (res,mstr) <- evalZ3 $ verify (mth_id, _mth) classes [_e_o,_e_a,_e_b,_e_m] 
+  (res,mstr) <- evalZ3 $ verify (mth_id, f_mth) classes [f_e_o,f_e_a,f_e_b,f_e_m] 
   if res == Unsat
   then putStrLn "No semantic conflict found"
   else do
@@ -71,7 +76,7 @@ wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = do
       Just str -> putStrLn str    
 
 -- The main verification function
-verify :: (MIdent, MemberDecl) -> [ClassSum]-> [Edit] -> Z3 (Result, Maybe String) 
+verify :: (MIdent, AnnMemberDecl) -> [ClassSum]-> [AnnEdit] -> Z3 (Result, Maybe String) 
 verify (mid, mth) classes edits = do 
   -- compute the set of inputs 
   -- i. union the fields of all classes
@@ -87,12 +92,11 @@ verify (mid, mth) classes edits = do
   preStr <- astToString pre
   post <- T.trace ("verify: " ++ preStr) $ postcond out
   iSSAMap <- initial_SSAMap params 
-  let iEnv = Env iSSAMap M.empty M.empty pre post post classes edits True 0 0 0
-      body = case mth_body mth of
-               MethodBody Nothing -> []
-               MethodBody (Just (Block b)) -> b 
-      p = [(0, body)]
-  ((res, model), _) <- runStateT (analyser p) iEnv
+  let iEnv = Env iSSAMap M.empty M.empty pre post post classes edits True 0 [1,2,3,4] 0
+      body = case ann_mth_body mth of
+               AnnMethodBody Nothing -> []
+               AnnMethodBody (Just (AnnBlock b)) -> b 
+  ((res, model), _) <- runStateT (analyser body) iEnv
   case res of 
    Unsat -> return (Unsat, Nothing)
    Sat -> do
@@ -129,43 +133,31 @@ analyser_debug stmts = do
              unsafePerformIO $ getChar
     k `seq` analyse stmts
   (bstmt:_) -> do 
-    let k = case bstmt of 
-          (_,[]) -> '0'
-          _  -> T.trace (_triple preStr (prettyPrint (head $ snd bstmt) ++ "\n PID = " ++ 
-                show (fst bstmt)) postStr ++ "\n" ++ printSSAMap _ssamap ++ 
-                "\nKeys in Function Map: " ++ show (M.keys _fnmap)) $ unsafePerformIO $ getChar
+    let k = T.trace (_triple preStr (show bstmt) postStr ++ "\n" ++ printSSAMap _ssamap ++ 
+            "\nKeys in Function Map: " ++ show (M.keys _fnmap)) $ unsafePerformIO $ getChar
     k `seq` analyse stmts
 
+-- main verification heavyweight function 
+-- checks if the PID = (ALL) and calls 
+-- the optimiser to obtain the block and 
+-- call the dependence analysis to deal 
+-- with it.
+-- otherwise, calls the standard analysis 
 analyse :: ProdProgram -> EnvOp (Result,Maybe Model)   
 analyse stmts = do
  env@Env{..} <- get
  case stmts of
   [] -> lift $ local $ helper _pre _post
-  (bstmt:rest) -> analyser_pid bstmt rest 
-
--- main verification heavyweight function 
--- checks if the PID = 0 (ALL) and calls 
---  the optimiser to obtain the block and 
---  call the dependence analysis to deal 
---  with it.
--- otherwise, calls the usual analysis 
--- to deal with a PID /= 0
-analyser_pid :: (Pid, [BlockStmt]) -> ProdProgram -> EnvOp (Result, Maybe Model)
-analyser_pid (pid,stmts) rest = 
-  case pid of 
-    0 -> case next_block stmts of
-      (Left b, r) -> T.trace ("analyser_pid: block encoding " ++ show b)$  do
-        analyser_block b
-        if null r
-        then analyser rest 
-        else analyser_pid (0,r) rest 
+  (bstmt:rest) -> 
+    if every $ getAnn bstmt 
+    then case next_block stmts of
+      (Left b, r) -> T.trace ("analyser: block encoding") $ do
+        analyser_block $ map fromAnn b 
+        analyse r
       (Right bstmt, r) ->
         -- we know that bstmt is a high level hole
-        analyser_bstmt (pid,bstmt) ((pid,r):rest) 
-    _ -> case stmts of
-     [] -> analyser rest
-     (bstmt:stmts_pid) ->
-        analyser_bstmt (pid,bstmt) ((pid,stmts_pid):rest)
+        analyser_bstmt bstmt r 
+    else analyser_bstmt bstmt rest 
 
 -- optimised a block that is shared by all variants
 --  i. generate the CFG for the block b
@@ -175,7 +167,6 @@ analyser_pid (pid,stmts) rest =
 --  iii. with the result, update the SSAMap and 
 --       use uninterpreted functions to model 
 --       the changes using assignments 
---       
 analyser_block :: [BlockStmt] -> EnvOp ()
 analyser_block b = do
   env@Env{..} <- get
@@ -197,7 +188,7 @@ analyser_block_dep (out, (_,inp)) = do
   let lhs = symLocToLhs out 
       rhs = toMethodInv num inp
       _exp = Assign lhs EqualA rhs
-  assign 0 _exp lhs EqualA rhs
+  assign [1,2,3,4] _exp lhs EqualA rhs
 
 toMethodInv :: Int -> [AbsVar] -> Exp
 toMethodInv n inp =
@@ -206,71 +197,70 @@ toMethodInv n inp =
 
 -- pre-condition: pid == 0 && bstmt has a hole 
 --             or pid != 0 
-analyser_bstmt :: (Pid, BlockStmt) -> ProdProgram -> EnvOp (Result, Maybe Model)
-analyser_bstmt (pid,bstmt) rest = case bstmt of
-  BlockStmt stmt -> do 
-    updatePid pid
-    analyser_stmt (pid,stmt) rest
-  LocalVars mods ty vars -> do
+analyser_bstmt :: AnnBlockStmt -> ProdProgram -> EnvOp (Result, Maybe Model)
+analyser_bstmt bstmt rest = case bstmt of
+  AnnBlockStmt stmt -> analyser_stmt stmt rest
+  AnnLocalVars pids mods ty vars -> do
     env@Env{..} <- get
     sort <- lift $ processType ty    
-    mapM_ (enc_new_var pid sort 0) vars 
+    mapM_ (enc_new_var pids sort 0) vars 
     analyser rest
 
-analyser_stmt :: (Pid, Stmt) -> ProdProgram -> EnvOp (Result, Maybe Model)
-analyser_stmt (pid, stmt) rest =
+analyser_stmt :: AnnStmt -> ProdProgram -> EnvOp (Result, Maybe Model)
+analyser_stmt stmt rest =
  case stmt of
-  StmtBlock (Block block) -> analyser ((pid,block):rest)
-  -- Need to revert this change
-  Return mexpr            -> ret pid mexpr rest
-  IfThen cond s1          -> do
-   let ifthenelse = IfThenElse cond s1 (StmtBlock (Block []))
-   analyser_stmt (pid,ifthenelse) rest
-  IfThenElse cond s1 s2   -> analyse_conditional pid cond s1 s2 rest
-  ExpStmt expr            -> analyse_exp pid expr rest
-  While _cond _body       -> analyse_loop pid _cond _body rest
-  Hole                    -> analyse_hole rest
-  Skip                    -> analyser rest 
-  Empty                   -> analyser rest
-  _                       -> error $ "analyser_stmt: not supported " ++ show stmt
+  AnnStmtBlock pid (AnnBlock b) -> analyser $ b ++ rest
+  AnnReturn pid mexpr           -> analyse_ret pid mexpr rest
+  AnnIfThen pid cond s1         -> do
+   let ifthenelse = AnnIfThenElse pid cond s1 $ AnnStmtBlock pid $ AnnBlock []
+   analyser_stmt ifthenelse rest
+  AnnIfThenElse pid cond s1 s2  -> analyse_conditional pid cond s1 s2 rest
+  AnnExpStmt pid expr           -> analyse_exp pid expr rest
+  AnnWhile pid _cond _body      -> analyse_loop pid _cond _body rest
+  AnnHole  pid                  -> analyse_hole pid rest
+  AnnSkip  pid                  -> analyser rest 
+  AnnEmpty pid                  -> analyser rest
+  _                             -> error $ "analyser_stmt: not supported " ++ show stmt
 
 -- | The analysis of a hole
 --   Assume that there are no nested holes
-analyse_hole :: ProdProgram -> EnvOp (Result, Maybe Model)
-analyse_hole rest = do
-   -- Get the edit statements for this hole.
-  edits <- popEdits
-  let prod_prog = miniproduct $ zip [1..4] edits
-  analyser $ prod_prog ++ rest
-
-analyse_loop = undefined
+--   @NOTE: April'17: it should support nested holes
+analyse_hole :: [Pid] -> ProdProgram -> EnvOp (Result, Maybe Model)
+analyse_hole pid rest =
+  if every pid 
+  then do
+    -- Get the edit statements for this hole.
+    edits <- popEdits
+    let prod_prog = miniproduct edits
+    analyser $ prod_prog ++ rest
+  else error $ "analyse_hole: pids = " ++ show pid
 
 -- Analyse Expressions
-analyse_exp :: Pid -> Exp -> ProdProgram -> EnvOp (Result, Maybe Model)
-analyse_exp pid _exp rest =
+analyse_exp :: [Pid] -> Exp -> ProdProgram -> EnvOp (Result, Maybe Model)
+analyse_exp pids _exp rest =
  case _exp of
   MethodInv minv -> do
-   enc_meth_inv pid minv 
+   mapM_ (\pid -> enc_meth_inv pid minv) pids 
    analyser rest
   Assign lhs aOp rhs -> do
-   assign pid _exp lhs aOp rhs
+   assign pids _exp lhs aOp rhs
    analyser rest 
   PostIncrement lhs -> do
-   post_op pid _exp lhs Add "PostIncrement"
+   post_op pids _exp lhs Add "PostIncrement"
    analyser rest
   PostDecrement lhs -> do
-   post_op pid _exp lhs Sub "PostDecrement"
+   post_op pids _exp lhs Sub "PostDecrement"
    analyser rest
 
 -- Analyse If Then Else
-analyse_conditional :: Pid -> Exp -> Stmt -> Stmt -> ProdProgram -> EnvOp (Result,Maybe Model)
+analyse_conditional :: [Pid] -> Exp -> AnnStmt -> AnnStmt -> ProdProgram -> EnvOp (Result,Maybe Model)
 analyse_conditional pid cond s1 s2 rest = T.trace ("analyse conditional of pid " ++ show pid) $
  if cond == Nondet
  then do
   env@Env{..} <- get
-  resThen <- analyser ((pid, [BlockStmt s1]):rest)
+  resThen <- analyser $ (AnnBlockStmt s1):rest
   put env
-  resElse <- analyser ((pid, [BlockStmt s2]):rest)
+  resElse <- analyser $ (AnnBlockStmt s2):rest
   combine resThen resElse                
  else do
   condSmt <- enc_exp pid cond
@@ -288,7 +278,7 @@ analyse_conditional pid cond s1 s2 rest = T.trace ("analyse conditional of pid "
    analyse_branch phi branch = do
     env@Env{..} <- get
     updatePre phi
-    let r = ((pid, [BlockStmt branch]):rest)
+    let r = (AnnBlockStmt branch):rest
     cPhi <- lift $ checkSAT phi
     if cPhi == Unsat
     then return _default
@@ -298,6 +288,7 @@ analyse_conditional pid cond s1 s2 rest = T.trace ("analyse conditional of pid "
    combine (Unsat,_) res = return res
    combine res _ = return res
 
+analyse_loop = undefined
 {-
 -- Analyse Loops
 analyse_loop :: Int -> [BlockStmt] -> [(Int,Block)] -> Exp -> Stmt -> EnvOp (Result,Maybe Model)
@@ -419,10 +410,9 @@ applyFusion list = do
 -}
 
 -- Analyse Return
-ret :: Pid -> Maybe Exp -> ProdProgram -> EnvOp (Result, Maybe Model)
-ret pid _exp pro = do 
-  let l = if pid == 0 then [1..4] else [pid]
-  mapM_ (\p -> ret_inner p _exp) l
+analyse_ret :: [Pid] -> Maybe Exp -> ProdProgram -> EnvOp (Result, Maybe Model)
+analyse_ret pids _exp pro = do 
+  mapM_ (\p -> ret_inner p _exp) pids
   env@Env{..} <- get
   if _numret == 4
   then lift $ local $ helper _pre _post
@@ -451,13 +441,12 @@ ret_inner pid mexpr = do
  updateNumRet
 
 -- Analyse Assign
-assign :: Pid -> Exp -> Lhs -> AssignOp -> Exp -> EnvOp ()
-assign pid _exp lhs aOp rhs = T.trace ("assign: " ++ show pid) $ do
-  let l = if pid == 0 then [1..4] else [pid]
-  mapM_ (\p -> assign_inner p _exp lhs aOp rhs) l
+assign :: [Pid] -> Exp -> Lhs -> AssignOp -> Exp -> EnvOp ()
+assign pids _exp lhs aOp rhs = T.trace ("assign: " ++ show pids) $ do
+  mapM_ (\p -> assign_inner p _exp lhs aOp rhs) pids
  
 assign_inner :: Pid -> Exp -> Lhs -> AssignOp -> Exp -> EnvOp ()
-assign_inner pid _exp lhs aOp rhs = T.trace ("assign_inner: " ++ show pid ++ " " ++ show _exp) $ do
+assign_inner pid _exp lhs aOp rhs = do
  rhsAst <- enc_exp_inner pid rhs
  env@Env{..} <- get
  case lhs of
@@ -537,7 +526,7 @@ assign_inner pid _exp lhs aOp rhs = T.trace ("assign_inner: " ++ show pid ++ " "
     env@Env{..} <- get
     iSort <- lift $ mkIntSort
     let i = 0
-    idAsts <- lift $ enc_ident pid str i iSort
+    idAsts <- lift $ enc_ident [pid] str i iSort
     let idAst = snd $ head idAsts
         res = (idAst,iSort,i)
         nssamap = update_ssamap pid ident res _ssamap
@@ -552,10 +541,9 @@ expToIdent exp = case exp of
   ExpName n -> toIdent n
 
 -- Analyse Post De/Increment
-post_op :: Pid -> Exp -> Exp -> Op -> String -> EnvOp ()
-post_op pid _exp lhs op str = do
-  let l = if pid == 0 then [1..4] else [pid]
-  mapM_ (\p -> post_op_inner p _exp lhs op str) l
+-- @NOTE: April'17: These expressions were optimised?
+post_op :: [Pid] -> Exp -> Exp -> Op -> String -> EnvOp ()
+post_op pids _exp lhs op str = mapM_ (\p -> post_op_inner p _exp lhs op str) pids
 
 post_op_inner :: Pid -> Exp -> Exp -> Op -> String -> EnvOp ()
 post_op_inner pid _exp lhs op str = do

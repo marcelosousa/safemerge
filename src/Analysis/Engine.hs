@@ -175,32 +175,31 @@ processAssign lhs op rhs plhs =
       mkEq lhs rhs'
     _ -> error $ "processAssign: " ++ show op ++ " not supported"
 
-enc_ident :: Int -> String -> Int -> Sort -> Z3 [(Int, AST)]
-enc_ident pid str i sort = 
-  let l = if pid == 0 then [1..4] else [pid]
-  in mapM (\j -> do
+enc_ident :: [Int] -> String -> Int -> Sort -> Z3 [(Int, AST)]
+enc_ident pids str i sort = 
+  mapM (\j -> do
     let nstr = str ++ "_" ++ show j ++ "_" ++ show i
     sym <- mkStringSymbol nstr
     ast <- mkVar sym sort
-    return (j,ast)) l
+    return (j,ast)) pids
 
 -- encode the first variable definition 
-enc_new_var :: Int -> Sort -> Int -> VarDecl -> EnvOp ()
-enc_new_var pid sort i (VarDecl varid mvarinit) = do
+enc_new_var :: [Int] -> Sort -> Int -> VarDecl -> EnvOp ()
+enc_new_var pids sort i (VarDecl varid mvarinit) = do
   env@Env{..} <- get
   (ident, idAsts) <- lift $ 
     case varid of
       VarId ident@(Ident str) -> do
-        vars <- enc_ident pid str i sort
+        vars <- enc_ident pids str i sort
         return (ident, vars)
       _ -> error $ "enc_new_var: not supported " ++ show varid
   let nssamap = 
-       foldr (\(_pid,idAst) r -> update_ssamap pid ident (idAst, sort, i) r) _ssamap idAsts
+       foldr (\(_pid,idAst) r -> update_ssamap _pid ident (idAst, sort, i) r) _ssamap idAsts
   updateSSAMap nssamap
   case mvarinit of
     Nothing -> return ()
     Just (InitExp expr) -> do
-      expAsts <- enc_exp pid expr
+      expAsts <- enc_exp pids expr
       let id_exp = zip idAsts expAsts
       eqIdExps <- lift $ mapM (\((_,idAst),expAst) -> mkEq idAst expAst) id_exp
       let nassmap = M.insert ident expr _assmap
@@ -210,10 +209,8 @@ enc_new_var pid sort i (VarDecl varid mvarinit) = do
     Just _ -> error "enc_new_var: not supported"
 
 -- enc_exp: encodes an expression for a version 
-enc_exp :: Int -> Exp -> EnvOp [AST]
-enc_exp p expr = do
-  let l = if p == 0 then [1..4] else [p]
-  mapM (\p -> enc_exp_inner p expr) l
+enc_exp :: [Int] -> Exp -> EnvOp [AST]
+enc_exp pids expr = mapM (\p -> enc_exp_inner p expr) pids
 
 -- | Encode an expression for a version 
 --   (ast,sort,count)pre-condition: pid != 0 
