@@ -253,3 +253,23 @@ instance Signature AnnMemberDecl where
 ann_mth_body :: AnnMemberDecl -> AnnMethodBody
 ann_mth_body (AnnMethodDecl _ _ _ _ _ _ b) = b
 ann_mth_body m = error $ "ann_mth_body: fatal " ++ show m 
+
+size_of :: AnnBlockStmt -> Int
+size_of stmt = case stmt of
+  AnnBlockStmt (AnnStmtBlock _ (AnnBlock stmts)) -> foldr (\s r -> size_of s + r) 1 stmts
+  _ -> 1 
+
+flatten :: AnnBlockStmt -> [AnnBlockStmt]
+flatten stmt = case stmt of
+  AnnBlockStmt (AnnStmtBlock _ (AnnBlock stmts)) -> concatMap flatten stmts
+  _ -> [stmt] 
+
+add_skip :: Int -> Int -> AnnBlockStmt -> [AnnBlockStmt]
+add_skip pid n stmt =
+  let skip = AnnBlockStmt $ AnnSkip [pid]
+  in flatten stmt ++ replicate n skip 
+
+is_loop :: AnnBlockStmt -> Bool
+is_loop stmt = case stmt of
+  AnnBlockStmt (AnnWhile _ _ _) -> True
+  _ -> False 

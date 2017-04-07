@@ -6,6 +6,7 @@
 module Main where
 
 import Analysis.Dependence
+import Analysis.Java.AST
 import Analysis.Java.ClassInfo
 import Analysis.Java.Flow
 import Analysis.Java.Liff
