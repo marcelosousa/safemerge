@@ -264,9 +264,10 @@ flatten stmt = case stmt of
   AnnBlockStmt (AnnStmtBlock _ (AnnBlock stmts)) -> concatMap flatten stmts
   _ -> [stmt] 
 
-add_skip :: Int -> Int -> AnnBlockStmt -> [AnnBlockStmt]
-add_skip pid n stmt =
-  let skip = AnnBlockStmt $ AnnSkip [pid]
+add_skip :: Int -> AnnBlockStmt -> [AnnBlockStmt]
+add_skip n stmt =
+  let pid = getAnn stmt
+      skip = AnnBlockStmt $ AnnSkip pid
   in flatten stmt ++ replicate n skip 
 
 is_loop :: AnnBlockStmt -> Bool

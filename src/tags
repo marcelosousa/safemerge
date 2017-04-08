@@ -203,6 +203,7 @@ assign_inner	./Analysis/Verifier.hs	449;"	v	file:
 b	Main.hs	49;"	v
 base	Main.hs	50;"	v
 blockDep	./Analysis/Dependence.hs	195;"	v
+checkPids	./Calculus.hs	80;"	v
 checkSAT	./Analysis/Engine.hs	27;"	v
 check_edit_soundness	./Edit.hs	100;"	v
 class_diff	./Analysis/Java/Liff.hs	58;"	v
@@ -222,6 +223,7 @@ computeMDeclDefs	./Analysis/Java/Flow.hs	246;"	v
 computeSwitchBody	./Analysis/Java/Flow.hs	496;"	v
 computeWhile	./Analysis/Java/Flow.hs	515;"	v
 current	./Analysis/Java/Flow.hs	38;"	v
+decomposeWhile	./Calculus.hs	85;"	v
 defs	./Analysis/Java/Flow.hs	33;"	v
 depAnalysis	./Analysis/Dependence.hs	155;"	v
 dependencies	./Analysis/Dependence.hs	160;"	v
@@ -322,7 +324,7 @@ is_cond	./Analysis/Java/Graph.hs	62;"	v
 is_exit	./Analysis/Java/Graph.hs	65;"	v
 is_input	./Analysis/Dependence.hs	64;"	v
 is_join	./Analysis/Java/Graph.hs	68;"	v
-is_loop	./Analysis/Java/AST.hs	273;"	v
+is_loop	./Analysis/Java/AST.hs	274;"	v
 is_null	./Analysis/Java/ClassInfo.hs	89;"	v
 is_output	./Analysis/Dependence.hs	57;"	v
 join_depmap	./Analysis/Dependence.hs	82;"	v
@@ -426,11 +428,14 @@ symLocToExp	./Analysis/Dependence.hs	38;"	v
 symLocToLhs	./Analysis/Dependence.hs	32;"	v
 this	./Analysis/Java/Flow.hs	32;"	v
 toAnn	./Analysis/Java/AST.hs	81;"	v
+toAnnStmt	./Calculus.hs	90;"	v
 toBlockStmt	./Analysis/Optimiser.hs	56;"	v
 toClassInfo	./Analysis/Java/ClassInfo.hs	108;"	v
 toClassInfo_ty	./Analysis/Java/ClassInfo.hs	118;"	v
 toFlow	./Analysis/Java/Flow.hs	211;"	v
 toIdent	./Analysis/Java/ClassInfo.hs	155;"	v
+toIf	./Calculus.hs	101;"	v
+toIfs	./Calculus.hs	95;"	v
 toMemberSig	./Analysis/Java/ClassInfo.hs	72;"	v
 toMethodInv	./Analysis/Verifier.hs	194;"	v	file:
 toOp	./Analysis/Java/Simplifier.hs	120;"	v
