@@ -18,9 +18,9 @@ High-level procedure
           that capture the changes  
           (x) If these blocks make method calls, it is possible that we need to call uninterpreted functions specific to versions if the methods have been modified   
   (x) Revisit the product construction for the edit scripts  
-  (-) Verification algorithm:  
-      (-) Support for containers (modelling)  
-      (-) Support for loops (houdini style)  
+  (x) Verification algorithm:  
+      (x) Support for containers (modelling)  
+      (x) Support for loops (houdini style)  
       (-) Matching of methods   
 
  
