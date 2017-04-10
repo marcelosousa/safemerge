@@ -309,7 +309,10 @@ houdini preds cond body = do
   env <- get
   let pre = _pre env 
   inv <- lift $ if null preds then mkTrue else mkAnd preds
-  npre <- lift $ mkAnd [inv, cond] 
+  invStr <- lift $ astToString inv
+  let k = T.trace ("loop invariant: \n" ++ invStr ++ "\n" ) $ 
+             unsafePerformIO $ getChar
+  npre <- k `seq` lift $ mkAnd [inv, cond] 
   updatePre npre 
   analyser_stmt body []
   nenv <- get
