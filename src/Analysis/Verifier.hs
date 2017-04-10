@@ -92,7 +92,8 @@ verify (mid, mth) classes edits = do
   preStr <- astToString pre
   post <- T.trace ("verify: " ++ preStr) $ postcond out
   iSSAMap <- initial_SSAMap params 
-  let iEnv = Env iSSAMap M.empty M.empty pre post post classes edits True 0 [1,2,3,4] 0
+  iFuncMap <- initial_FuncMap
+  let iEnv = Env iSSAMap M.empty iFuncMap pre post post classes edits True 0 [1,2,3,4] 0
       body = case ann_mth_body mth of
                AnnMethodBody Nothing -> []
                AnnMethodBody (Just (AnnBlock b)) -> b 
@@ -133,7 +134,7 @@ analyser_debug stmts = do
              unsafePerformIO $ getChar
     k `seq` analyse stmts
   (bstmt:_) -> do 
-    let k = T.trace (_triple preStr (show bstmt) postStr ++ "\n" ++ printSSAMap _ssamap ++ 
+    let k = T.trace (_triple preStr (show bstmt ++ "\n" ++ prettyPrint (fromAnn bstmt :: BlockStmt)) postStr ++ "\n" ++ printSSAMap _ssamap ++ 
             "\nKeys in Function Map: " ++ show (M.keys _fnmap)) $ unsafePerformIO $ getChar
     k `seq` analyse stmts
 
@@ -207,7 +208,7 @@ analyser_bstmt bstmt rest = case bstmt of
     analyser rest
 
 analyser_stmt :: AnnStmt -> ProdProgram -> EnvOp (Result, Maybe Model)
-analyser_stmt stmt rest =
+analyser_stmt stmt rest = T.trace ("analyser_stmt: " ++ show stmt) $ 
  case stmt of
   AnnStmtBlock pid (AnnBlock b) -> analyser $ b ++ rest
   AnnReturn pid mexpr           -> analyse_ret pid mexpr rest
@@ -288,127 +289,56 @@ analyse_conditional pid cond s1 s2 rest = T.trace ("analyse conditional of pid "
    combine (Unsat,_) res = return res
    combine res _ = return res
 
-analyse_loop = undefined
-{-
 -- Analyse Loops
-analyse_loop :: Int -> [BlockStmt] -> [(Int,Block)] -> Exp -> Stmt -> EnvOp (Result,Maybe Model)
-analyse_loop pid r1 rest _cond _body = do
- let bstmt = BlockStmt $ While _cond _body
+--  Houdini style loop invariant generation
+analyse_loop :: [Pid] -> Exp -> AnnStmt -> ProdProgram -> EnvOp (Result,Maybe Model) 
+analyse_loop pid cond body rest = do
  env@Env{..} <- get
- invs <- guessInvariants (pid+1) _cond _body
- if _fuse
- then if all isLoop rest
-      then do 
-       (checkFusion,cont) <- applyFusion ((pid,Block (bstmt:r1)):rest)
-       if checkFusion
-       then analyse cont
-       else analyse_loop_w_inv invs       
-      else analyse $ rest ++ [(pid,Block (bstmt:r1))] -- apply commutativity
- else analyse_loop_w_inv invs
- where
-   isLoop :: (Int, Block) -> Bool
-   isLoop (_, Block ((BlockStmt (While _ _)):rest)) = True
-   isLoop _ = False
-   analyse_loop_w_inv [] = error "none of the invariants was able to prove the property."
-   analyse_loop_w_inv (inv:is) = do
-    env@Env{..} <- get
-    it_res <- _analyse_loop rest pid _cond _body inv
-    if it_res
-    then do
---     pre <- lift $ mkAnd [inv,_pre]
-     put env
-     updatePre inv -- pre
-     analyser ((pid,Block r1):rest)
-    else analyse_loop_w_inv is
-   
---
-_analyse_loop :: [(Int,Block)] -> Int -> Exp -> Stmt -> AST -> EnvOp Bool
-_analyse_loop rest pid _cond _body inv = do
- invStr  <- lift $ astToString inv
- env@Env{..} <- get
- (checkPre,_) <- lift $ local $ helper _axioms _pre inv
- case checkPre of
-  Unsat -> do
-   condAst <- lift $ processExp (_objSort,_params,_res,_fields,_ssamap) _cond
-   ncondAst <- lift $ mkNot condAst
-   (checkInv,_) <- lift $ mkAnd [inv,ncondAst] >>= \npre -> local $ helper _axioms npre inv
-   case checkInv of
-    Unsat -> do
-     pre <- lift $ mkAnd [inv,condAst]
-     let s = [(pid, Block [BlockStmt _body])]
-     updatePre pre
-     updatePost inv
-     (bodyCheck,m) <- analyser s
-     case bodyCheck of
-      Unsat -> return True
-      Sat -> do
-       put env
-       return  False -- {inv && cond} body {inv} failed
-    Sat -> return False -- inv && not_cond =/=> inv
-  Sat -> return False -- pre =/=> inv
+ -- use equality predicates between variables in the assignment map
+ all_preds <- get_predicates _ssamap 
+ -- filter out predicates not implied by Pre
+ not_preds <- lift $ filterM (\p -> _pre `not_implies` p) all_preds
+ let init_preds = all_preds \\ not_preds
+ cond_ast <- enc_exp pid cond >>= lift . mkAnd
+ houdini init_preds cond_ast body 
+ analyser rest
 
-applyFusion :: [(Int, Block)] -> EnvOp (Bool,[(Int,Block)])
-applyFusion list = do
- env@Env{..} <- get
- let (loops,rest) = unzip $ map takeHead list
-     (_conds,bodies) = unzip $ map splitLoop loops
-     (pids,conds) = unzip _conds
- astApps <- lift $ mapM (makeApp _ssamap) pids
- let (asts,apps) = unzip astApps
- inv' <- lift $ mkExistsConst [] apps _pre
- -- equality constraints between the loop counter iterations: i1 = i2 and i1 = i3 ...
- eqs <- lift $ mapM (\c -> mkEq (head asts) c) (tail asts)
- eqInv <- lift $ mkAnd eqs
- -- the candidate invariant
- inv <- lift $ mkAnd [inv',eqInv]
- (checkInv,_) <- lift $ local $ helper _axioms _pre inv
- --invStr <- astToString inv
- --preStr <- astToString pre
- --let k = T.trace ("\nPrecondition:\n"++ preStr ++ "\nInvariant:\n" ++ invStr) $ unsafePerformIO $ getChar
- case checkInv of
-  Unsat -> do
-   -- the new precondition inside the loop
-   condsAsts <- lift $ mapM (processExp (_objSort,_params,_res,_fields,_ssamap)) conds 
-   ncondsAsts <- lift $ mapM mkNot condsAsts
-   bodyPre <- lift $ mkAnd $ inv:condsAsts
-   updatePre bodyPre
-   updatePost inv
-   (bodyCheck,_) <- analyser bodies
-   case bodyCheck of
-    Unsat -> do
-     condsNAst <- lift $ mkAnd condsAsts >>= mkNot
-     nPre <- lift $ mkAnd [inv,condsNAst]
-     ncondAst <- lift $ mkAnd ncondsAsts
-     (lastCheck,_) <- lift $ local $ helper _axioms nPre ncondAst
-     case lastCheck of
-      Unsat -> do
-       put env
-       updatePre nPre
-       return (True,rest)
-      Sat -> return (False,[]) -- "lastCheck failed"
-    Sat -> return (False,[]) -- "couldnt prove the loop bodies with invariant"
-  Sat -> return (False,[]) -- "precondition does not imply the invariant"
- where
-   -- Begin Fusion Utility Functions
-   takeHead :: (Int, Block) -> ((Int, Stmt), (Int,Block))
-   takeHead (pid, Block []) = error "takeHead"
-   takeHead (pid, Block ((BlockStmt b):rest)) = ((pid,b), (pid, Block rest))
-   splitLoop :: (Int, Stmt) -> ((Int, Exp), (Int, Block))
-   splitLoop (pid, While cond body) = 
-    case body of
-     StmtBlock block -> ((pid, cond), (pid,block))
-     _ -> error "splitLoop constructing block out of loop body"
-   splitLoop _ = error "splitLoop"
-   makeApp :: SSAMap -> Int -> Z3 (AST,App)
-   makeApp ssamap pid = do
-    let i = Ident $ "i" ++ show (pid+1)
-        (iAST,_,_)  = safeLookup "guessInvariant: i" i ssamap
-    iApp <- toApp iAST
-    return (iAST,iApp)
-   -- End Fusion Utility Functions
+-- houdini: 
+houdini :: [AST] -> AST -> AnnStmt -> EnvOp ()
+houdini preds cond body = do 
+  env <- get
+  let pre = _pre env 
+  inv <- lift $ if null preds then mkTrue else mkAnd preds
+  npre <- lift $ mkAnd [inv, cond] 
+  updatePre npre 
+  analyser_stmt body []
+  nenv <- get
+  let post = _pre nenv
+  -- get the preds that are not implied by the post
+  not_preds <- lift $ filterM (\p -> post `not_implies` p) preds
+  -- revert to the original environment
+  put env
+  -- fixpoint check 
+  if null not_preds
+  -- we are done
+  then do
+    neg_cond <- lift $ mkNot cond
+    new_pre <- lift $ mkAnd [inv, neg_cond]
+    updatePre new_pre 
+  -- we are not done unless preds == [] where we just default to True
+  else if null preds
+       then error $ "houdini: unable to compute inductive fixpoint" 
+       else do
+         put env
+         houdini (preds \\ not_preds) cond body
 
--}
-
+get_predicates :: SSAMap -> EnvOp [AST]
+get_predicates m = do
+  let pairs = concat $ M.map (\m' -> 
+        let k = map (\(a,b,c) -> a) $ M.elems m'
+        in lin k) m  
+  lift $ mapM (\(a,b) -> mkEq a b) pairs
+  
 -- Analyse Return
 analyse_ret :: [Pid] -> Maybe Exp -> ProdProgram -> EnvOp (Result, Maybe Model)
 analyse_ret pids _exp pro = do 

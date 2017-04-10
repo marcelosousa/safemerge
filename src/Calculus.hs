@@ -25,15 +25,14 @@ every [1,2,3,4] = True
 every _ = False
 
 miniproduct :: ProdProgram -> ProdProgram
-miniproduct = concatMap pproduct . match 
+miniproduct = concatMap pproduct . match  . map flatten_block
 
 -- post condition: no more AnnStmtBlock
 match :: ProdProgram -> [ProdProgram]
-match list@[a,b,c,d] =
+match list = 
   let max_size = maximum $ map size_of list
       list' = map (\k -> add_skip (max_size - size_of k) k) list 
   in L.transpose list' 
-match l = error $ "match: invalid input " ++ show l
 
 -- | mini product construction 
 --   in the case that one of the ann block statement
@@ -52,7 +51,8 @@ pproduct (s:r) =
         in [AnnBlockStmt ns] 
       AnnWhile _ _ _  -> 
         if all is_loop (s:r)
-        then apply_loop (s:r)
+        then let w = apply_loop (s:r)
+             in w 
         else pproduct (r ++ [s])
       AnnSwitch p e b  -> error $ "miniproduct: switch" 
       AnnHole   p      -> error $ "miniproduct: no support for nested holes" 
@@ -63,7 +63,7 @@ pproduct (s:r) =
     AnnLocalVars pids mods ty varDecls -> s:(miniproduct r) 
 
 apply_loop :: ProdProgram -> ProdProgram
-apply_loop stmts =
+apply_loop stmts = 
   let parts = map decomposeWhile stmts
       pids = [a | (a,b,c) <- parts]
       conds = [b | (a,b,c) <- parts]
@@ -72,9 +72,9 @@ apply_loop stmts =
       true = Lit $ Boolean True
       exp = foldr (\a b -> BinOp a And b) true conds
       (checkPid,npids) = foldr checkPids (True,[]) pids
-      while = if checkPid then AnnWhile npids exp body else error "apply_loop: overlapping pids" 
+      while = if checkPid then AnnWhile npids exp body else error "apply_loop:overlapping pids" 
       ifs = toIfs parts
-  in map AnnBlockStmt [while,ifs] 
+  in map AnnBlockStmt [flatten_stmt while, flatten_stmt ifs] 
 
 checkPids :: [Int] -> (Bool, [Int]) -> (Bool, [Int])
 checkPids pid (b,pids) =
@@ -103,3 +103,25 @@ toIf pid e bdy rest =
       body = AnnStmtBlock pid $ AnnBlock $ map AnnBlockStmt [bdy,whl] 
   in AnnIfThenElse pid e body rest 
 
+flatten_block :: AnnBlockStmt -> AnnBlockStmt
+flatten_block a = case a of
+  AnnBlockStmt stmt -> case stmt of
+    AnnStmtBlock pid (AnnBlock [x]) -> flatten_block x
+    AnnStmtBlock pid (AnnBlock l) -> 
+      AnnBlockStmt $ AnnStmtBlock pid $ AnnBlock $ map flatten_block l
+    _ -> AnnBlockStmt $ flatten_stmt stmt 
+  _ -> a
+
+flatten_stmt :: AnnStmt -> AnnStmt
+flatten_stmt stmt = case stmt of
+  AnnStmtBlock pid (AnnBlock l) -> AnnStmtBlock pid $ AnnBlock $ map flatten_block l 
+  AnnIfThen pid e s  -> AnnIfThen pid e $ flatten_stmt s 
+  AnnIfThenElse pid e s t -> AnnIfThenElse pid e (flatten_stmt s) (flatten_stmt t)
+  AnnWhile pid e s -> AnnWhile pid e $ flatten_stmt s
+  AnnSwitch pid e b -> AnnSwitch pid e $ map flatten_switch_block b
+  AnnLabeled pid i s -> AnnLabeled pid i $ flatten_stmt s
+  _ -> stmt
+
+flatten_switch_block :: AnnSwitchBlock -> AnnSwitchBlock
+flatten_switch_block (AnnSwitchBlock pid l b) =
+  AnnSwitchBlock pid l $ map flatten_block b

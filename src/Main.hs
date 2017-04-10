@@ -158,20 +158,3 @@ verify ofl afl bfl mfl = do
   -- print diffInst
   wiz diffInst 
 
-{-
-verify :: FilePath -> FilePath -> FilePath -> FilePath -> IO ()
-verify ofl afl bfl mfl = do
-  (o,a,b,m) <- parse4 ofl afl bfl mfl
-  let (fo,e_o,e_a,e_b,e_m) = diff4gen o a b m 
-      pairs = [(o,fo,e_o),(a,fo,e_a),(b,fo,e_b),(m,fo,e_m)]
-      es = [e_o,e_a,e_b,e_m]
-  putStrLn "Program with holes:"
-  putStrLn $ prettyPrint fo 
-  putStrLn ""
-  mapM_ print_edit $ zip es [0..]
-  let res = map check_edit_soundness pairs
-  if all id res 
-  then wiz fo e_o e_a e_b e_m 
-  else do
-    putStrLn "Some edit when applied does not yield the original program"
--}

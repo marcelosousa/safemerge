@@ -38,6 +38,21 @@ helper pre post = do
   preStr  <- astToString pre
   T.trace ("helper: " ++ preStr) $ return (r,m)
 
+-- \phi not models \psi
+-- \phi |= \psi 
+not_implies :: AST -> AST -> Z3 Bool
+not_implies phi psi = do 
+  psi' <- mkNot psi
+  formula <- mkImplies phi psi' >>= mkNot 
+  push 
+  assert formula 
+  res <- check
+  pop 1
+  case res of
+    Unsat -> return True
+    _ -> return False 
+
+
 -- z3_gen_inout :: generates the input and output vars
 z3_gen_inout :: ([MemberSig], [MemberSig]) -> Z3 (Params, [[(AST,Sort)]], [[(AST,Sort)]])
 z3_gen_inout (params, fields) = do
@@ -94,11 +109,21 @@ enc_type ty = case ty of
         [(Ident "List",_)] -> do 
           intSort <- mkIntSort
           mkArraySort intSort intSort
+        [(Ident "ArrayList",_)] -> do 
+          intSort <- mkIntSort
+          mkArraySort intSort intSort
         _ -> error $ "enc_type: " ++ show cty 
     ArrayType    aty -> do
       at <- enc_type aty
       intSort <- mkIntSort
       mkArraySort intSort at
+
+initial_FuncMap :: Z3 FunctMap
+initial_FuncMap = do
+  iSort <- mkIntSort
+  iArray <- mkArraySort iSort iSort
+  fn <- mkFreshFuncDecl "size" [iArray] iSort
+  return $ M.singleton (Ident "size",1) (fn, M.empty)
 
 -- Generates the initial SSA Map for the fields and the parameters
 initial_SSAMap :: Params -> Z3 SSAMap
@@ -272,7 +297,6 @@ enc_field_access p exp = do
           Just (ast,_,_) -> return ast 
     _ -> error $ "enc_field_access: " ++ show exp
     
-
 enc_literal :: Literal -> Z3 AST
 enc_literal lit =
   case lit of

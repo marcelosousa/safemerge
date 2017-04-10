@@ -27,8 +27,8 @@ next_block :: ProdProgram -> (Either ProdProgram AnnBlockStmt, ProdProgram)
 next_block [] = (Left [], [])
 next_block (b:bs) =
   let (res,bs') = next_block bs
-  in case split_hole b of
-    (Nothing, Nothing) -> error $ "next_block: split_hole returned Nothing Nothing"
+  in case split_bstmt b of
+    (Nothing, Nothing) -> error $ "next_block: split_bstmt returned Nothing Nothing"
     (Nothing, Just b') -> (Right b, bs)
     (Just b', Nothing) -> -- no hole 
       case res of
@@ -39,14 +39,14 @@ next_block (b:bs) =
 
 -- 2. Checks if a blockstmt has a hole and splits it 
 --                         (Maybe PartWithNoHole, Maybe PartWithHole)
-split_hole :: AnnBlockStmt -> (Maybe AnnBlockStmt, Maybe AnnBlockStmt) 
-split_hole bstmt = case bstmt of
+split_bstmt :: AnnBlockStmt -> (Maybe AnnBlockStmt, Maybe AnnBlockStmt) 
+split_bstmt bstmt = case bstmt of
   AnnBlockStmt s -> case s of 
     AnnStmtBlock pids (AnnBlock b) -> case next_block b of
       (Left _, []) -> (Just bstmt, Nothing)
       (Left b',bs) -> (Just $ toBlockStmt pids b', Just $ toBlockStmt pids bs)
       (Right s, _) -> (Nothing, Just bstmt)
-    _ -> if hasHole s
+    _ -> if not $ is_common s
          then (Nothing, Just bstmt)
          else (Just bstmt, Nothing)
   -- Not a BlockStmt
@@ -55,46 +55,31 @@ split_hole bstmt = case bstmt of
 toBlockStmt :: [Int] -> ProdProgram -> AnnBlockStmt
 toBlockStmt p = AnnBlockStmt . AnnStmtBlock p . AnnBlock
 
-hasHoleBlock :: AnnBlock -> Bool
-hasHoleBlock (AnnBlock b) = case next_block b of
+is_common_block :: AnnBlock -> Bool
+is_common_block (AnnBlock b) = case next_block b of
   (Left _, []) -> False 
   _ -> True
 
-hasHoleSwitchBlock :: AnnSwitchBlock -> Bool
-hasHoleSwitchBlock (AnnSwitchBlock _ _ b) = hasHoleBlock (AnnBlock b)
+is_common_switch_block :: AnnSwitchBlock -> Bool
+is_common_switch_block (AnnSwitchBlock _ _ b) = is_common_block (AnnBlock b)
 
-hasHoleCatch :: AnnCatch -> Bool
-hasHoleCatch (AnnCatch _ _ b) = hasHoleBlock b
+is_common_catch :: AnnCatch -> Bool
+is_common_catch (AnnCatch _ _ b) = is_common_block b
 
-hasHole :: AnnStmt -> Bool
-hasHole s = case s of
-  AnnStmtBlock    _ b             -> hasHoleBlock b 
-  AnnIfThen       _ _ stmt        -> hasHole stmt
-  AnnIfThenElse   _ _ t e         -> hasHole t || hasHole e
-  AnnWhile        _ _ bdy         -> hasHole bdy
-  AnnBasicFor     _ _ _ _ bdy     -> hasHole bdy 
-  AnnEnhancedFor  _ _ _ _ _ bdy   -> hasHole bdy 
-  AnnSwitch       _ _ sblocks     -> any hasHoleSwitchBlock sblocks
-  AnnDo           _ bdy _         -> hasHole bdy
-  AnnSynchronized _ _ b           -> hasHoleBlock b 
-  AnnTry          _ b1 catchs mB2 -> hasHoleBlock b1 || any hasHoleCatch catchs || 
-                                     maybe True hasHoleBlock mB2 
-  AnnLabeled      _ _ stmt        -> hasHole stmt
-  AnnHole         _               -> True
-  AnnReturn       _ _             -> True
-  _                               -> False
-
--- removes redudant instances of StmtBlock
-flatten_block :: [BlockStmt] -> [BlockStmt]
-flatten_block [] = []
-flatten_block (b:bs) = case b of
-  BlockStmt s -> case s of
-    StmtBlock (Block bbs) -> flatten_block $ bbs ++ bs
-    _ -> let s' = BlockStmt $ flatten_stmt s
-         in s':(flatten_block bs)
-  _ -> b:(flatten_block bs)
-
-flatten_stmt :: Stmt -> Stmt
-flatten_stmt s = case s of
-  StmtBlock (Block bbs) -> StmtBlock $ Block $ flatten_block bbs 
-  _ -> s
+is_common :: AnnStmt -> Bool
+is_common s = case s of
+  AnnStmtBlock    p b             -> every p && is_common_block b 
+  AnnIfThen       p _ stmt        -> every p && is_common stmt
+  AnnIfThenElse   p _ t e         -> every p && is_common t || is_common e
+  AnnWhile        p _ bdy         -> every p && is_common bdy
+  AnnBasicFor     p _ _ _ bdy     -> every p && is_common bdy 
+  AnnEnhancedFor  p _ _ _ _ bdy   -> every p && is_common bdy 
+  AnnSwitch       p _ sblocks     -> every p && all is_common_switch_block sblocks
+  AnnDo           p bdy _         -> every p && is_common bdy
+  AnnSynchronized p _ b           -> every p && is_common_block b 
+  AnnTry          p b1 catchs mB2 -> every p && is_common_block b1 || all is_common_catch catchs || 
+                                     maybe True is_common_block mB2 
+  AnnLabeled      p _ stmt        -> every p && is_common stmt
+  AnnHole         p               -> False 
+  AnnReturn       p _             -> False 
+  _                               -> every $ getAnn s

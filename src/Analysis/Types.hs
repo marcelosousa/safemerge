@@ -72,8 +72,8 @@ data Env = Env
   , _edits   :: [AnnEdit]
   , _debug   :: Bool
   , _numret  :: Int
-  , _pid     :: [Int] -- If the pid is 0, we are executing all versions 
-  , _anonym  :: Int -- The number of anonymous functions
+  , _pid     :: [Int] 
+  , _anonym  :: Int       -- The number of anonymous functions
   }
 
 type EnvOp a = StateT Env Z3 a
