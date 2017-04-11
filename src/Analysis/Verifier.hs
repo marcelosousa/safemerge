@@ -217,7 +217,7 @@ analyser_stmt stmt rest = T.trace ("analyser_stmt: " ++ show stmt) $
    analyser_stmt ifthenelse rest
   AnnIfThenElse pid cond s1 s2  -> analyse_conditional pid cond s1 s2 rest
   AnnExpStmt pid expr           -> analyse_exp pid expr rest
-  AnnWhile pid _cond _body      -> analyse_loop pid _cond _body rest
+  AnnWhile _cond _body          -> analyse_loop _cond _body rest
   AnnHole  pid                  -> analyse_hole pid rest
   AnnSkip  pid                  -> analyser rest 
   AnnEmpty pid                  -> analyser rest
@@ -291,15 +291,15 @@ analyse_conditional pid cond s1 s2 rest = T.trace ("analyse conditional of pid "
 
 -- Analyse Loops
 --  Houdini style loop invariant generation
-analyse_loop :: [Pid] -> Exp -> AnnStmt -> ProdProgram -> EnvOp (Result,Maybe Model) 
-analyse_loop pid cond body rest = do
+analyse_loop :: [(Pid,Exp)] -> AnnStmt -> ProdProgram -> EnvOp (Result,Maybe Model) 
+analyse_loop conds body rest = do
  env@Env{..} <- get
  -- use equality predicates between variables in the assignment map
  all_preds <- get_predicates _ssamap 
  -- filter out predicates not implied by Pre
  not_preds <- lift $ filterM (\p -> _pre `not_implies` p) all_preds
  let init_preds = all_preds \\ not_preds
- cond_ast <- enc_exp pid cond >>= lift . mkAnd
+ cond_ast <- mapM (\(pid,cond) -> enc_exp [pid] cond >>= lift . mkAnd) conds >>= lift . mkAnd
  houdini init_preds cond_ast body 
  analyser rest
 

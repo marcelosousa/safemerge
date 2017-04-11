@@ -49,7 +49,7 @@ pproduct (s:r) =
             er = AnnStmtBlock p $ AnnBlock $ miniproduct $ (AnnBlockStmt sElse):r
             ns = AnnIfThenElse p e tr er
         in [AnnBlockStmt ns] 
-      AnnWhile _ _ _  -> 
+      AnnWhile _ _  -> 
         if all is_loop (s:r)
         then let w = apply_loop (s:r)
              in w 
@@ -65,25 +65,16 @@ pproduct (s:r) =
 apply_loop :: ProdProgram -> ProdProgram
 apply_loop stmts = 
   let parts = map decomposeWhile stmts
-      pids = [a | (a,b,c) <- parts]
-      conds = [b | (a,b,c) <- parts]
-      bodies = [c | (a,b,c) <- parts]
+      (conds,bodies) = unzip parts 
+      cond = concat conds
       body = AnnStmtBlock [] $ AnnBlock $ miniproduct $ map AnnBlockStmt bodies
-      true = Lit $ Boolean True
-      exp = foldr (\a b -> BinOp a And b) true conds
-      (checkPid,npids) = foldr checkPids (True,[]) pids
-      while = if checkPid then AnnWhile npids exp body else error "apply_loop:overlapping pids" 
+      while = AnnWhile cond body 
       ifs = toIfs parts
   in map AnnBlockStmt [flatten_stmt while, flatten_stmt ifs] 
 
-checkPids :: [Int] -> (Bool, [Int]) -> (Bool, [Int])
-checkPids pid (b,pids) =
-  let check = null $ L.intersect pid pids
-  in (b && check, pid ++ pids) 
-
-decomposeWhile :: AnnBlockStmt -> ([Int], Exp, AnnStmt)
+decomposeWhile :: AnnBlockStmt -> ([(Int,Exp)], AnnStmt)
 decomposeWhile ann = case ann of
-  AnnBlockStmt (AnnWhile pid e s) -> (pid,e,s)
+  AnnBlockStmt (AnnWhile e s) -> (e,s)
   _ -> error $ "decomposeWhile: not a While" 
 
 toAnnStmt :: AnnBlockStmt -> AnnStmt
@@ -91,17 +82,18 @@ toAnnStmt ann = case ann of
   AnnBlockStmt s -> s
   _ -> error $ "toAnnStmt: invalid input " ++ show ann
 
-toIfs :: [([Int],Exp,AnnStmt)] -> AnnStmt
+toIfs :: [([(Int,Exp)],AnnStmt)] -> AnnStmt
 toIfs [] = error "toIfs: invalid input []"
-toIfs [(pid,e,bdy)] = toIf pid e bdy (AnnSkip pid)
-toIfs ((pid,e,bdy):xs) =
-  toIf pid e bdy $ toIfs xs 
+toIfs [([(pid,e)],bdy)] = toIf [(pid,e)] bdy (AnnSkip [pid])
+toIfs ((e,bdy):xs) =
+  toIf e bdy $ toIfs xs 
   
-toIf :: [Int] -> Exp -> AnnStmt -> AnnStmt -> AnnStmt
-toIf pid e bdy rest =
-  let whl = AnnWhile pid e bdy 
-      body = AnnStmtBlock pid $ AnnBlock $ map AnnBlockStmt [bdy,whl] 
-  in AnnIfThenElse pid e body rest 
+toIf :: [(Int,Exp)] -> AnnStmt -> AnnStmt -> AnnStmt
+toIf w@[(pid,e)] bdy rest =
+  let whl = AnnWhile w bdy 
+      body = AnnStmtBlock [pid] $ AnnBlock $ map AnnBlockStmt [bdy,whl] 
+  in AnnIfThenElse [pid] e body rest 
+
 
 flatten_block :: AnnBlockStmt -> AnnBlockStmt
 flatten_block a = case a of
@@ -117,7 +109,7 @@ flatten_stmt stmt = case stmt of
   AnnStmtBlock pid (AnnBlock l) -> AnnStmtBlock pid $ AnnBlock $ map flatten_block l 
   AnnIfThen pid e s  -> AnnIfThen pid e $ flatten_stmt s 
   AnnIfThenElse pid e s t -> AnnIfThenElse pid e (flatten_stmt s) (flatten_stmt t)
-  AnnWhile pid e s -> AnnWhile pid e $ flatten_stmt s
+  AnnWhile e s -> AnnWhile e $ flatten_stmt s
   AnnSwitch pid e b -> AnnSwitch pid e $ map flatten_switch_block b
   AnnLabeled pid i s -> AnnLabeled pid i $ flatten_stmt s
   _ -> stmt

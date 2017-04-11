@@ -51,7 +51,7 @@ data AnnStmt
   = AnnStmtBlock    [Int] AnnBlock
   | AnnIfThen       [Int] Exp AnnStmt
   | AnnIfThenElse   [Int] Exp AnnStmt AnnStmt
-  | AnnWhile        [Int] Exp AnnStmt
+  | AnnWhile        [(Int,Exp)] AnnStmt
   | AnnBasicFor     [Int] (Maybe ForInit) (Maybe Exp) (Maybe [Exp]) AnnStmt
   | AnnEnhancedFor  [Int] [Modifier] Type Ident Exp AnnStmt
   | AnnEmpty        [Int]
@@ -159,7 +159,7 @@ instance Annotate Stmt AnnStmt where
       StmtBlock    b         -> AnnStmtBlock    p (toAnn p b)
       IfThen       e s       -> AnnIfThen       p e (toAnn p s)
       IfThenElse   e s t     -> AnnIfThenElse   p e (toAnn p s) (toAnn p t)
-      While        e s       -> AnnWhile        p e (toAnn p s)       
+      While        e s       -> AnnWhile        [(_p,e) | _p <- p] (toAnn p s)       
       BasicFor     e f g s   -> AnnBasicFor     p e f g (toAnn p s) 
       EnhancedFor  m t i e s -> AnnEnhancedFor  p m t i e (toAnn p s) 
       Empty                  -> AnnEmpty        p
@@ -182,7 +182,7 @@ instance Annotate Stmt AnnStmt where
       AnnStmtBlock    p b         -> StmtBlock    (fromAnn b)
       AnnIfThen       p e s       -> IfThen       e (fromAnn s)
       AnnIfThenElse   p e s t     -> IfThenElse   e (fromAnn s) (fromAnn t)
-      AnnWhile        p e s       -> While        e (fromAnn s)       
+      AnnWhile        p s         -> While        (andAST $ snd $ unzip p) (fromAnn s)       
       AnnBasicFor     p e f g s   -> BasicFor     e f g (fromAnn s) 
       AnnEnhancedFor  p m t i e s -> EnhancedFor  m t i e (fromAnn s) 
       AnnEmpty        p           -> Empty        
@@ -201,13 +201,16 @@ instance Annotate Stmt AnnStmt where
       AnnHole         p           -> Hole         
       AnnSkip         p           -> Skip         
 
+andAST :: [Exp] -> Exp
+andAST = foldr (\a b -> BinOp a And b) $ Lit $ Boolean True 
+
 instance GetAnnotation AnnStmt where
   getAnn stmt = 
     case stmt of
       AnnStmtBlock    p b         -> p 
       AnnIfThen       p e s       -> p 
       AnnIfThenElse   p e s t     -> p 
-      AnnWhile        p e s       -> p 
+      AnnWhile        p s         -> fst $ unzip p 
       AnnBasicFor     p e f g s   -> p 
       AnnEnhancedFor  p m t i e s -> p 
       AnnEmpty        p           -> p 
@@ -272,5 +275,5 @@ add_skip n stmt =
 
 is_loop :: AnnBlockStmt -> Bool
 is_loop stmt = case stmt of
-  AnnBlockStmt (AnnWhile _ _ _) -> True
+  AnnBlockStmt (AnnWhile _ _) -> True
   _ -> False 

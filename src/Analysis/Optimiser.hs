@@ -71,7 +71,7 @@ is_common s = case s of
   AnnStmtBlock    p b             -> every p && is_common_block b 
   AnnIfThen       p _ stmt        -> every p && is_common stmt
   AnnIfThenElse   p _ t e         -> every p && is_common t || is_common e
-  AnnWhile        p _ bdy         -> every p && is_common bdy
+  AnnWhile        p bdy           -> every (fst $ unzip p) && is_common bdy
   AnnBasicFor     p _ _ _ bdy     -> every p && is_common bdy 
   AnnEnhancedFor  p _ _ _ _ bdy   -> every p && is_common bdy 
   AnnSwitch       p _ sblocks     -> every p && all is_common_switch_block sblocks

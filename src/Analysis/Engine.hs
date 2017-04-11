@@ -112,6 +112,9 @@ enc_type ty = case ty of
         [(Ident "ArrayList",_)] -> do 
           intSort <- mkIntSort
           mkArraySort intSort intSort
+        [(Ident l,_)] -> do
+          sym <- mkStringSymbol l
+          mkUninterpretedSort sym
         _ -> error $ "enc_type: " ++ show cty 
     ArrayType    aty -> do
       at <- enc_type aty
