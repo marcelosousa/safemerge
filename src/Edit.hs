@@ -24,6 +24,18 @@ import qualified Debug.Trace as T
 type MethInst = (MIdent, MemberDecl, Edit, Edit, Edit, Edit)
 type DiffInst = PMergeInst MethInst 
 
+printMethInsts :: [MethInst] -> String
+printMethInsts [] = ""
+printMethInsts ((mid,mdecl,o,a,b,m):rest) = 
+  let header = "Merge Instance for method " ++ show mid ++ "\n"
+      mDStr   = prettyPrint mdecl ++ "\n"
+      oStr   = "Edit Base:\n" ++ printEdit o ++ "\n"
+      aStr   = "Edit A:\n" ++ printEdit a ++ "\n"
+      bStr   = "Edit B:\n" ++ printEdit b ++ "\n"
+      mStr   = "Edit M:\n" ++ printEdit m ++ "\n"
+      restStr = printMethInsts rest
+  in header++mDStr++oStr++aStr++bStr++mStr++restStr
+
 diffMethods :: MergeInst -> DiffInst
 diffMethods m@MInst{..} = 
   let merges = foldr (diffMethods' m) []  _merges  

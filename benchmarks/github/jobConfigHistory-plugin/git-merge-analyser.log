@@ -1,8 +1,0 @@
-Changes found in versions of file:src/main/java/hudson/plugins/jobConfigHistory/FileHistoryDao.java
-Base: 801a6ee0fd7c36f587cf33b2038f19b7562053d6
-Variant A: 4d8f6713f9babf408314672eb5dcd8de3a1b067b
-Variant B: 7ecfda815ab010e6e25e6ed4cc9760c11419475a
-Merge: dd21ee9cdc54195ca5246776d72b731c5ae42b9d
-Changes: [(Ident "FileHistoryDao",Ident "deleteItem"),(Ident "FileHistoryDao",Ident "deleteNode")]
------------------
-Done

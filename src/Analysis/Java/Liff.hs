@@ -70,15 +70,14 @@ class_diff cls cl_o cl_a cl_b cl_m r =
 
 mbody_diff :: MethodBody -> MethodBody -> MethodBody -> MethodBody -> Bool 
 mbody_diff bdy_o bdy_a bdy_b bdy_m =
- let c1 = bdy_o /= bdy_a || bdy_o /= bdy_b
-     c2 = True -- bdy_o /= bdy_b
-     c3 = bdy_a /= bdy_b
-     c4 = bdy_m /= bdy_a || bdy_m /= bdy_b
+ let c1 = bdy_o /= bdy_a && bdy_o /= bdy_b
+     c2 = bdy_a /= bdy_b
+     c3 = bdy_m /= bdy_a || bdy_m /= bdy_b
      [bo,ba,bb,bm] = [show bdy_o, show bdy_a, show bdy_b, show bdy_m] 
-     c5 = isInfixOf "Return" bo 
-     c6 = and $ map (\x -> not $ isInfixOf "Synchronized" x) [bo,ba,bb,bm] 
-     c7 = and $ map (\x -> not $ isInfixOf "Throw"        x) [bo,ba,bb,bm] 
-     c8 = and $ map (\x -> not $ isInfixOf "Exception"    x) [bo,ba,bb,bm] 
-     c9 = True -- not $ isInfixOf "Public" $ show bdy_o
-     c10 = True -- and $ map (\c -> not $ isInfixOf "lock" $ show c) [bdy_o,bdy_a,bdy_b,bdy_m]
- in and [c1,c2,c3,c4,c5,c6,c7,c8,c9,c10] 
+     c4 = isInfixOf "Return" bo 
+     c5 = and $ map (\x -> not $ isInfixOf "Synchronized" x) [bo,ba,bb,bm] 
+     c6 = and $ map (\x -> not $ isInfixOf "Throw"        x) [bo,ba,bb,bm] 
+     c7 = and $ map (\x -> not $ isInfixOf "Exception"    x) [bo,ba,bb,bm] 
+     c8 = True -- not $ isInfixOf "Public" $ show bdy_o
+     c9 = True -- and $ map (\c -> not $ isInfixOf "lock" $ show c) [bdy_o,bdy_a,bdy_b,bdy_m]
+ in and [c1,c2,c3,c4,c5,c6,c7,c8,c9] 

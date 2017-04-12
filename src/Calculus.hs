@@ -94,7 +94,6 @@ toIf w@[(pid,e)] bdy rest =
       body = AnnStmtBlock [pid] $ AnnBlock $ map AnnBlockStmt [bdy,whl] 
   in AnnIfThenElse [pid] e body rest 
 
-
 flatten_block :: AnnBlockStmt -> AnnBlockStmt
 flatten_block a = case a of
   AnnBlockStmt stmt -> case stmt of

@@ -287,6 +287,7 @@ transformer stmt class_sum el@(k,dmap) =
     Assume e -> 
       let (r,w) = transformer_expr class_sum e
       in (r:k, foldr (set_dep $ r ++ kvars) dmap w) 
+    Empty -> el
     _ -> error $ "transformer: " ++ show stmt
 
 set_output :: AbsVar -> DepMap -> DepMap 

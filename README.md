@@ -21,6 +21,7 @@ High-level procedure
   (x) Verification algorithm:  
       (x) Support for containers (modelling)  
       (x) Support for loops (houdini style)  
+      (-) Object instances
       (-) Matching of methods   
 
  
@@ -39,3 +40,18 @@ Dependence analysis
 (x) AST re-write pass to get rid of for loops  
 (x) Pass that annotates each Stmt with [PID]  
 (-) Pretty printing for the new AST  
+
+Benchmarks
+----------
+
+About 50 benchmarks (8-10 instances x 5 projects)   
+ Description of the benchmarks   
+ - Agilefant:
+ - Voldemort
+ - Libgdx
+ - Apache Storm?
+ - Android 
+ - Netty
+ - PMD
+ - DrJava
+  

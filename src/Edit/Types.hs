@@ -21,3 +21,5 @@ type AnnEdit = [AnnBlockStmt]
 type AnnAnnEdits = [(AnnEdit,AnnEdit,AnnEdit,AnnEdit)]
 type Method = ([FormalParam],Block) 
 
+printEdit :: Edit -> String
+printEdit e = unlines $ map (\(n,s) -> "Hole " ++ show n ++ ":\n" ++ prettyPrint s) $ zip [1..] e 
