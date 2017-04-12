@@ -52,16 +52,16 @@ findMethod (cls,name,tys) class_info =
           Just m -> m
         Just m -> m
 
-findMethodGen :: Ident -> ClassSum -> [MemberDecl]
-findMethodGen i cl@ClassSum{..} = 
-  findMethodGen' i $ M.toList _cl_meths 
+findMethodGen :: Ident -> Int -> ClassSum -> [MemberDecl]
+findMethodGen i ar cl@ClassSum{..} = 
+  findMethodGen' i ar $ M.toList _cl_meths 
   where 
-   findMethodGen' :: Ident -> [(MethodSig,MemberDecl)] -> [MemberDecl]
-   findMethodGen' i [] = []
-   findMethodGen' i (((i',_),m):rest) = 
-     if i == i'
-     then m:(findMethodGen' i rest)
-     else findMethodGen' i rest 
+   findMethodGen' :: Ident -> Int -> [(MethodSig,MemberDecl)] -> [MemberDecl]
+   findMethodGen' i a [] = []
+   findMethodGen' i a (((i',a'),m):rest) = 
+     if i == i' && a == (length a')
+     then m:(findMethodGen' i a rest)
+     else findMethodGen' i a rest 
 
 varDeclIdToIdent :: VarDeclId -> Ident 
 varDeclIdToIdent v = case v of
@@ -144,8 +144,13 @@ to_info decl _clsum =
    _ -> _clsum
 
 field_info :: [Modifier] -> Type -> VarDecl -> ClassSum -> ClassSum
-field_info mod ty d@(VarDecl (VarId id) _) _clsum = 
-  add_clfield id (FieldDecl mod ty [d]) _clsum 
+field_info mod ty d@(VarDecl id _) _clsum = 
+  add_clfield (toVarIdent id) (FieldDecl mod ty [d]) _clsum 
+
+toVarIdent :: VarDeclId -> Ident
+toVarIdent vid = case vid of
+  VarId i -> i
+  VarDeclArray v -> toVarIdent v 
 
 mth_body :: MemberDecl -> MethodBody
 mth_body (MethodDecl _ _ _ _ _ _ b) = b

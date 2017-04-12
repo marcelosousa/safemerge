@@ -19,7 +19,9 @@ import Data.List
 import Data.Map (Map)
 import Data.Set (Set)
 import Debug.Trace as T
+import Language.Java.Pretty
 import Language.Java.Syntax
+import System.IO.Unsafe
 import qualified Data.Map as M
 import qualified Data.Set as S
 
@@ -315,13 +317,14 @@ transformer_methInv :: ClassSum -> MethodInvocation -> ([AbsVar], [AbsVarAnn])
 transformer_methInv class_sum m =
   let rSet = getReadSetInv class_sum m 
       (mths,args) = case m of
-        MethodCall (Name [i])       args -> (findMethodGen i class_sum, args) 
-        PrimaryMethodCall This [] i args -> (findMethodGen i class_sum, args) 
+        MethodCall (Name [i])       args -> (findMethodGen i (length args) class_sum, args) 
+        PrimaryMethodCall This [] i args -> (findMethodGen i (length args) class_sum, args) 
         _ -> T.trace ("transformer_methInv unsupported: " ++ show m) ([],[])
       cfgs = map computeGraphMember mths
       deps = map (readWriteSet . blockDep class_sum) cfgs
       (r,w) = foldr (\(a,b) (c,d) -> (a++c, b++d)) ([],[]) deps
-  in (rSet++r, w)
+      k = T.trace ("transformer: " ++ prettyPrint m ++ "\n" ++ unlines (map prettyPrint mths)) $ unsafePerformIO $ getChar
+  in k `seq` (rSet++r, w)
 
 getWrite :: ClassSum -> Lhs -> [AbsVarAnn]
 getWrite class_sum lhs = case lhs of

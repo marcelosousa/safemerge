@@ -23,6 +23,9 @@ High-level procedure
       (x) Support for loops (houdini style)  
       (-) Object instances
       (-) Matching of methods   
+      (-) Conditionals expressions bug
+      (-) Support for Strings? 
+  (-) Collapse consecutive holes
 
  
 Dependence analysis  
@@ -46,12 +49,12 @@ Benchmarks
 
 About 50 benchmarks (8-10 instances x 5 projects)   
  Description of the benchmarks   
- - Agilefant:
- - Voldemort
- - Libgdx
- - Apache Storm?
- - Android 
- - Netty
- - PMD
- - DrJava
-  
+ - Agilefant     (9)  
+ - Voldemort     (11) 
+ - Libgdx        (7)
+ - Apache Storm  (4)
+ - Netty         (5)
+ - PMD           (2)
+ - elasticsearch (6)
+ - okhttp        (3) 
+ - retrofit      (2) 

@@ -90,7 +90,7 @@ edit_decl_gen o_decl v_decl =
 edit_member_gen :: MemberDecl -> MemberDecl -> (MemberDecl,Edit,Edit)
 edit_member_gen o_mem v_mem = 
   case (o_mem,v_mem) of
-    (FieldDecl _ _ _,_) -> if o_mem == v_mem then (o_mem,[],[]) else error "edit_member_gen: unsupported differences"
+    (FieldDecl _ _ _,_) -> if o_mem == v_mem then (o_mem,[],[]) else error "edit_member_gen 1: unsupported differences"
     (MethodDecl o_mods o_tys o_ty o_id o_fpars o_ex o_mbody, MethodDecl v_mods v_tys v_ty v_id v_fpars v_ex v_mbody) ->
       let checks = [ o_mods == v_mods
                    , o_tys == v_tys
@@ -101,7 +101,7 @@ edit_member_gen o_mem v_mem =
           (no_mbody,o_edit,v_edit) = edit_method_body_gen o_mbody v_mbody
       in if all id checks
          then (MethodDecl o_mods o_tys o_ty o_id o_fpars o_ex no_mbody, o_edit, v_edit)
-         else error "edit_member_gen: unsupported differences"
+         else error $ "edit_member_gen 2: unsupported differences" ++ show checks
     (ConstructorDecl o_mods o_tys o_id o_fpars o_ex o_cbody, ConstructorDecl v_mods v_tys v_id v_fpars v_ex v_cbody) ->
       let checks = [ o_mods == v_mods
                    , o_tys == v_tys
@@ -111,11 +111,11 @@ edit_member_gen o_mem v_mem =
           (no_cbody,o_edit,v_edit) = edit_constructor_body_gen o_cbody v_cbody
       in if all id checks
          then (ConstructorDecl o_mods o_tys o_id o_fpars o_ex no_cbody, o_edit, v_edit)
-         else error "edit_member_gen: unsupported differences"
+         else error "edit_member_gen 3: unsupported differences"
     (MemberClassDecl o_class, MemberClassDecl v_class) ->
       let (no_class,o_edit,v_edit) = edit_class_gen o_class v_class
       in (MemberClassDecl no_class, o_edit, v_edit) 
-    _ -> error "edit_member_gen: unsupported differences"
+    _ -> error "edit_member_gen 4: unsupported differences"
 
 edit_method_body_gen :: MethodBody -> MethodBody -> (MethodBody,Edit,Edit)
 edit_method_body_gen o_mbody v_mbody =

@@ -329,7 +329,7 @@ enc_meth pid id@(Ident ident) args = do
   env@Env{..} <- get
   let arity = length args
       class_sum = _classes !! (pid - 1) 
-      meths = findMethodGen id class_sum
+      meths = findMethodGen id arity class_sum
       cfgs = map computeGraphMember meths
       deps = foldr (\cfg res -> M.union res $ blockDep class_sum cfg) M.empty cfgs
   case M.lookup (id,arity) _fnmap of

@@ -170,7 +170,8 @@ analyse stmts = do
 --       the changes using assignments 
 analyser_block :: [BlockStmt] -> EnvOp ()
 analyser_block b = do
-  env@Env{..} <- get
+  let k = T.trace ("analyser_block" ) $ unsafePerformIO $ getChar
+  env@Env{..} <- k `seq` get
   let mid = (Ident "", Ident "", [])
       mth_bdy = MethodBody $ Just $ Block (b ++ [BlockStmt $ Return Nothing])
       mth = MethodDecl [] [] Nothing (Ident "") [] [] mth_bdy 

@@ -63,8 +63,20 @@ diff4gen_meth ident o a b m =
       (nno, eab)   = gen_edit_member no b [eo,ea]
   in case gen_edit_member nno m eab of
       (fo,[[]]) -> (ident, fo, [], [], [], [])
-      (fo, [e_o,e_a,e_b,e_m]) -> (ident, fo, e_o, e_a, e_b, e_m)
-      (fo, es ) -> error $ show es
+      (fo, [e_o,e_a,e_b,e_m]) ->
+        let _o = fst $ apply_edit_member fo e_o
+            _a = fst $ apply_edit_member fo e_a
+            _b = fst $ apply_edit_member fo e_b
+            _m = fst $ apply_edit_member fo e_m
+            res = (ident, fo, e_o, e_a, e_b, e_m)
+        in if o == _o && a == _a && b == _b && m == _m 
+           then res 
+           else 
+             let oStr   = "Edit Base:\n" ++ printEdit e_o ++ "\n"
+                 aStr   = "Edit A:\n" ++ printEdit e_a ++ "\n"
+                 bStr   = "Edit B:\n" ++ printEdit e_b ++ "\n"
+                 mStr   = "Edit M:\n" ++ printEdit e_m ++ "\n"
+             in error $ "diff4gen_meth: bug in the edit script generation\n" ++ prettyPrint fo ++ "\n" ++ prettyPrint o ++ oStr -- ++ aStr ++ bStr ++ mStr
 
 gen_edit_member :: MemberDecl -> MemberDecl -> [Edit] -> (MemberDecl, [Edit])
 gen_edit_member p1 p2 eis =
@@ -97,7 +109,8 @@ gen_edit p1 p2 eis =
 
 gen_edit_aux :: [Edit] -> (Int,[Edit]) -> (BlockStmt,BlockStmt) -> (Int,[Edit])
 gen_edit_aux eis (i,eis') (e1,e2)
- | e2 == skip || e1 == hole = (i+1,push (map (\e -> e!!i) eis) eis') 
+ | e1 == hole = -- T.trace ("gen_edit:\neis = " ++ show eis ++ "\neis' = " ++ show eis' ++ "\n(e1,e2) = " ++ show (e1,e2)) $  
+    (i+1,push (map (\e ->  e!!i) eis) eis') 
  | otherwise = (i, push (replicate (length eis) e1) eis')
 
 -- add each x to the ei
