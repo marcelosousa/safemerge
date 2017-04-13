@@ -1,0 +1,44 @@
+inst1: Benchmark
+liff_main: found changes in src/java/voldemort/client/AbstractStoreClientFactory.java
+["e90fa82d25decdbee1f102302e7746e06a2e4ba2","fcffeb5f06684dd65bc7612506ab589d422703fa","e77ee0f003449ad232e1a54dcf3fb30645bab0ad","a86a9e5a05cb8afbe94bbd0eb23999e39508b8a8"]
+
+inst2: Benchmark
+liff_main: found changes in src/java/voldemort/store/stats/RequestCounter.java
+["36bd7f12e0fb0b875ee19fb57beb274052a3cdd2","06bb3ef5f3ffdc319a8a81f3fd9033210eab3265","83e2957a5d5ac9c924285819f5b099a86e0f1f4a","3a5713a56b3d5cfd333ff76bb6bc0d3ac8172e9d"]
+
+inst3: Benchmark
+liff_main: found changes in test/unit/voldemort/store/readonly/ReadOnlyStorageEngineTestInstance.java
+["042da34a6940d1a2fa20db59331a347da16d4a9e","566b4bc712f6f3945a1a74bf1293f070c615868b","01fad80c857610cedc5b146c6f6d3c405509ac79","9702607f6213cf072715080ff7e08eccb4fad3cc"]
+
+inst4: Benchmark
+liff_main: found changes in src/java/voldemort/store/rebalancing/RedirectingStore.java
+["042da34a6940d1a2fa20db59331a347da16d4a9e","566b4bc712f6f3945a1a74bf1293f070c615868b","01fad80c857610cedc5b146c6f6d3c405509ac79","9702607f6213cf072715080ff7e08eccb4fad3cc"]
+
+inst5: Benchmark
+liff_main: found changes in src/java/voldemort/store/readonly/ReadOnlyStorageEngine.java
+["e12fd4986f233c04f70ea84d6cb5ae08e42600b4","61f4d167b2675fbf5aad29d0e8d6f94871c2986b","1f21e507ffd56dd419fd70e38c09fc23179131cb","bcf4b413b41005416449852f5610f9185a260bfc"]
+
+inst6: Benchmark for variable renaming
+liff_main: found changes in test/integration/voldemort/performance/benchmark/Measurement.java
+["f9687d62fe65eb5a97d8aba71597daa43c8962ce","e88d32d42b889a4f796e2bda924e103a3fb231ea","9509899cf80e666b50b3398b61e167d56cc26ace","8d6f4fadcea8333c562445912426226587b3312b"]
+
+inst7: Benchmark
+liff_main: found changes in src/java/voldemort/server/VoldemortServer.java
+["c9af7b2ae895f0aee34a6fc9d0e3ae110ba230b4","54c90faffbc00bea025ff3edd8759e9a1f2ccce3","1f1d05f4e817dcdbd110f56b028ea341f933512b","daa286ed4cc6c1d78072592a5b46abb092a8d655"]
+
+inst8: Benchmark (potential for overview section)
+liff_main: found changes in src/java/voldemort/client/protocol/admin/AdminClient.java
+["8830901c94e0bad3b38a08e9f366c2185a0466e0","33d85e25c3488bf3277bc5fb3f5ee0fa8216db71","c3e93f8e5052c35893ecd4d8290ec45e6edacb54","454597def7d70a549db89e2bba9c4809582d75d0"]
+
+inst9: Simple Benchmarks
+liff_main: found changes in src/java/voldemort/store/invalidmetadata/InvalidMetadataCheckingStore.java
+["f1e5ec710bdd4d2df684932e6fe602133426c98f","77b906f47aa8efc3b9dd3cbfe159785e87b68e3b","a7a33b41f1894614e79794dfc72edf8a3892550e","9ece26ca6a638fa3e60f08197d2f3f481da6aae9"]
+
+inst10: Benchmark
+liff_main: found changes in test/unit/voldemort/store/readonly/ReadOnlyStorageEngineTestInstance.java
+["bb6064a6881c315befe238363e590e6d225ac07c","efcdd2626dd0c81cbd5d71e6ff5322b463b68fb3","f318a72df95c213357b966fccb09b9f4bd64fd6f","c9bec07b51e928efac16d4f5db21875c07c51dba"]
+
+inst11: Benchmark
+liff_main: found changes in test/common/voldemort/TestUtils.java
+["bb6064a6881c315befe238363e590e6d225ac07c","efcdd2626dd0c81cbd5d71e6ff5322b463b68fb3","f318a72df95c213357b966fccb09b9f4bd64fd6f","c9bec07b51e928efac16d4f5db21875c07c51dba"]
+

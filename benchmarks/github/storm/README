@@ -1,0 +1,16 @@
+inst1: Benchmark
+liff_main: found changes in external/storm-kafka/src/jvm/storm/kafka/PartitionManager.java
+["f582b8fd00d4429f1639ff4b39b3062bee9e9609","8cb379fd995c489f765dac81d334946993ab6bd9","8ba776bfda2b8070767100d429b29a1a1adb00bd","fe882009aa1070b3abb216064f7b54e6a5ac56c1"]
+
+inst2: Benchmark
+liff_main: found changes in external/storm-redis/src/test/java/org/apache/storm/redis/trident/WordCountTridentRedisCluster.java
+["b367ab4418de5a19b74cad7c5904b9ff12357230","98704ec81a7629d11a95a744ee47d3baf7c2de6a","0c2b3a4f640d1b2905c093eb85f03190ceb0a711","037a9754fdee063d2238a9c41e6ffdb79759d33d"]
+
+inst3: Benchmark
+liff_main: found changes in external/storm-redis/src/test/java/org/apache/storm/redis/trident/WordCountTridentRedis.java
+["b367ab4418de5a19b74cad7c5904b9ff12357230","98704ec81a7629d11a95a744ee47d3baf7c2de6a","0c2b3a4f640d1b2905c093eb85f03190ceb0a711","037a9754fdee063d2238a9c41e6ffdb79759d33d"]
+
+inst4: Benchmark (Possible for overview)
+liff_main: found changes in jstorm-server/src/main/java/com/alibaba/jstorm/daemon/nimbus/NimbusUtils.java
+["79eaa416637b47471ef10dfa4976b25479a7518c","88ba8a75b1cb11583d46225317edb5f62b4ecaaf","4d8004fede639376d9d229d35436041fb54261e7","a0f12142dde3fe8ad41ed8237cbbc12f5f3f2c79"]
+

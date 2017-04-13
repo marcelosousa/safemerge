@@ -1,0 +1,19 @@
+inst1: benchmark 
+liff_main: found changes in example/src/main/java/io/netty/example/http2/client/Http2Client.java
+["856c89dd708fe13f5a8ed2d4fdff8af05580ca7e","086dc9140a15d731d2e21848d6d54e9333fa1e5f","46ed3d4c97a505693a7a43ac7b70a28fcecf03ae","054e4c5233b23564a62ad6c5a705c5fa5d36cae2"]
+
+inst2: benchmark 
+liff_main: found changes in handler/src/main/java/io/netty/handler/stream/ChunkedWriteHandler.java
+["d66cf2cbfa604048543594a7ab96bb78d1607186","6d39c342b636362a2068e6644cc9451182cc03a9","326b88c43005f9b295f305b59d8ae43fc7f09410","ef4ee498006384016717c30bce43116d7f65e9de"]
+
+inst3: benchmark
+liff_main: found changes in codec-http/src/main/java/io/netty/handler/codec/http/websocketx/WebSocketClientHandshaker13.java
+["d66cf2cbfa604048543594a7ab96bb78d1607186","6d39c342b636362a2068e6644cc9451182cc03a9","326b88c43005f9b295f305b59d8ae43fc7f09410","ef4ee498006384016717c30bce43116d7f65e9de"]
+
+inst4: benchmark
+liff_main: found changes in codec-http/src/main/java/io/netty/handler/codec/http/websocketx/WebSocketClientHandshaker08.java
+["d66cf2cbfa604048543594a7ab96bb78d1607186","6d39c342b636362a2068e6644cc9451182cc03a9","326b88c43005f9b295f305b59d8ae43fc7f09410","ef4ee498006384016717c30bce43116d7f65e9de"]
+
+inst5: benchmark
+liff_main: found changes in codec-http/src/main/java/io/netty/handler/codec/http/websocketx/WebSocketClientHandshaker00.java
+["d66cf2cbfa604048543594a7ab96bb78d1607186","6d39c342b636362a2068e6644cc9451182cc03a9","326b88c43005f9b295f305b59d8ae43fc7f09410","ef4ee498006384016717c30bce43116d7f65e9de"]
