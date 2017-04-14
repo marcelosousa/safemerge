@@ -25,7 +25,7 @@ High-level procedure
       (-) Matching of methods   
       (-) Conditionals expressions bug
       (-) Support for Strings? 
-  (-) Collapse consecutive holes
+  (x) Collapse consecutive holes
 
  
 Dependence analysis  
