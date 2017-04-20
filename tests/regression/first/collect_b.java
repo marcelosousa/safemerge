@@ -38,25 +38,17 @@ public class Collect
    i++;
    this.x[i] = 2;
  
-   if (x[1] == y)
-     {
-       return 1;
-     }
-   if (x[1] == z)
-   {
-     return 2;
-   }
-   return 0;
+   return 1;
  }
 /*
-  public int test(int y)
+  public int test(int x)
   { 
-    int i = 0;
+    int r = 0;
 
-    
     for (int k = 0; k <= x; k++)
     {
       r = r + this._otherArray[k];
+      r = r + 1;
     }
 
     return r; 

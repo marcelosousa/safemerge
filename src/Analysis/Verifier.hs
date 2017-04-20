@@ -39,11 +39,11 @@ wiz diff@MInst{..} = mapM_ (wiz_meth diff) _merges
 wiz_meth :: DiffInst -> MethInst -> IO ()
 wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = do 
 --  putStrLn $ "wiz_meth: " ++ show mth_id
-  putStrLn $ "original wiz_meth:\n" ++ prettyPrint mth 
-  putStrLn $ "original edit o:\n" ++ (unlines $ map prettyPrint e_o) 
-  putStrLn $ "original edit a:\n" ++ (unlines $ map prettyPrint e_a) 
-  putStrLn $ "original edit b:\n" ++ (unlines $ map prettyPrint e_b) 
-  putStrLn $ "original edit m:\n" ++ (unlines $ map prettyPrint e_m) 
+--  putStrLn $ "original wiz_meth:\n" ++ prettyPrint mth 
+--  putStrLn $ "original edit o:\n" ++ (unlines $ map prettyPrint e_o) 
+--  putStrLn $ "original edit a:\n" ++ (unlines $ map prettyPrint e_a) 
+--  putStrLn $ "original edit b:\n" ++ (unlines $ map prettyPrint e_b) 
+--  putStrLn $ "original edit m:\n" ++ (unlines $ map prettyPrint e_m) 
   let _mth = simplifyMDecl mth
       _e_o = simplifyEdit e_o
       _e_a = simplifyEdit e_a
@@ -54,18 +54,18 @@ wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = do
       f_e_a = map (toAnn [2]) _e_a
       f_e_b = map (toAnn [3]) _e_b
       f_e_m = map (toAnn [4]) _e_m
-  putStrLn $ "simplified wiz_meth:\n" ++ prettyPrint _mth 
-  putStrLn $ "simplified edit o:\n" ++ (unlines $ map prettyPrint _e_o) 
-  putStrLn $ "simplified edit a:\n" ++ (unlines $ map prettyPrint _e_a) 
-  putStrLn $ "simplified edit b:\n" ++ (unlines $ map prettyPrint _e_b) 
-  putStrLn $ "simplified edit m:\n" ++ (unlines $ map prettyPrint _e_m) 
+  putStrLn $ "wiz_meth:\n" ++ prettyPrint _mth 
+  putStrLn $ "edit o:\n" ++ (unlines $ map prettyPrint _e_o) 
+  putStrLn $ "edit a:\n" ++ (unlines $ map prettyPrint _e_a) 
+  putStrLn $ "edit b:\n" ++ (unlines $ map prettyPrint _e_b) 
+  putStrLn $ "edit m:\n" ++ (unlines $ map prettyPrint _e_m) 
   let o_class = findClass mth_id _o_info 
       a_class = findClass mth_id _a_info 
       b_class = findClass mth_id _b_info 
       m_class = findClass mth_id _m_info 
       classes = [o_class, a_class, b_class, m_class]
-  putStrLn $ "wiz_meth: Fields" 
-  putStrLn $ show $ concatMap (\l -> map fst $ toMemberSig l) $ M.elems $ M.unions $ map _cl_fields classes 
+--  putStrLn $ "wiz_meth: Fields" 
+--  putStrLn $ show $ concatMap (\l -> map fst $ toMemberSig l) $ M.elems $ M.unions $ map _cl_fields classes 
   (res,mstr) <- evalZ3 $ verify (mth_id, f_mth) classes [f_e_o,f_e_a,f_e_b,f_e_m] 
   if res == Unsat
   then putStrLn "No semantic conflict found"
@@ -134,8 +134,9 @@ analyser_debug stmts = do
              unsafePerformIO $ getChar
     k `seq` analyse stmts
   (bstmt:_) -> do 
-    let k = T.trace (_triple preStr (show bstmt ++ "\n" ++ prettyPrint (fromAnn bstmt :: BlockStmt)) postStr ++ "\n" ++ printSSAMap _ssamap ++ 
-            "\nKeys in Function Map: " ++ show (M.keys _fnmap)) $ unsafePerformIO $ getChar
+    --let k = T.trace (_triple preStr (show bstmt ++ "\n" ++ prettyPrint (fromAnn bstmt :: BlockStmt)) postStr ++ "\n" ++ printSSAMap _ssamap ++ 
+    --        "\nKeys in Function Map: " ++ show (M.keys _fnmap)) $ unsafePerformIO $ getChar
+    let k = T.trace (_triple preStr (show bstmt ++ "\n" ++ prettyPrint (fromAnn bstmt :: BlockStmt)) "") $ unsafePerformIO $ getChar
     k `seq` analyse stmts
 
 -- main verification heavyweight function 
@@ -151,10 +152,15 @@ analyse stmts = do
   [] -> lift $ local $ helper _pre _post
   (bstmt:rest) -> 
     if every $ getAnn bstmt 
-    then case next_block stmts of
+    then -- only apply dependence analysis if all variables are equal is all versions
+      case next_block stmts of
       (Left b, r) -> T.trace ("analyser: block encoding") $ do
-        analyser_block $ map fromAnn b 
-        analyse r
+        case b of
+          [b'] -> 
+            analyser_bstmt bstmt r
+          _ -> do
+            analyser_block $ map fromAnn b 
+            analyser r
       (Right bstmt, r) ->
         -- we know that bstmt is a high level hole
         analyser_bstmt bstmt r 
@@ -169,9 +175,8 @@ analyse stmts = do
 --       use uninterpreted functions to model 
 --       the changes using assignments 
 analyser_block :: [BlockStmt] -> EnvOp ()
-analyser_block b = do
-  let k = T.trace ("analyser_block" ) $ unsafePerformIO $ getChar
-  env@Env{..} <- k `seq` get
+analyser_block b = T.trace ("analyser_block:\n" ++ (unlines $ map prettyPrint b)) $ do
+  env@Env{..} <- get
   let mid = (Ident "", Ident "", [])
       mth_bdy = MethodBody $ Just $ Block (b ++ [BlockStmt $ Return Nothing])
       mth = MethodDecl [] [] Nothing (Ident "") [] [] mth_bdy 
@@ -179,23 +184,30 @@ analyser_block b = do
       -- blockDep returns a list of DepMap [O,A,B,M]
       -- assume for now that they are all the same
       deps = M.toList $ blockDep (head _classes) cfg 
-  mapM_ analyser_block_dep deps 
+      -- need to get the all the inputs first 
+  list <- mapM get_inputs deps
+  mapM_ analyser_block_dep list 
+
+get_inputs :: (AbsVar, (Tag, [AbsVar])) -> EnvOp (AbsVar, [[AST]])
+get_inputs (out, (_,inp)) = do
+  let args = map symLocToExp inp
+  argsAST <- mapM (enc_exp [1,2,3,4]) args 
+  return (out, transpose argsAST)
 
 -- | analyser_block_dep: analyses for each dependence graph
 --   the assignments:
 --    output = _anonymous (dep1, ..., depn)
-analyser_block_dep :: (AbsVar, (Tag, [AbsVar])) -> EnvOp ()
-analyser_block_dep (out, (_,inp)) = do
+--    include the older versions of the variables in the dependencies
+analyser_block_dep :: (AbsVar, [[AST]]) -> EnvOp ()
+analyser_block_dep (out,inp) = T.trace ("analyser_block_dep: out = " ++ show out ++ "\nlength = " ++ show (length inp)) $  do
   num <- incAnonym 
   let lhs = symLocToLhs out 
-      rhs = toMethodInv num inp
-      _exp = Assign lhs EqualA rhs
-  assign [1,2,3,4] _exp lhs EqualA rhs
-
-toMethodInv :: Int -> [AbsVar] -> Exp
-toMethodInv n inp =
-  let args = map symLocToExp inp
-  in MethodInv $ MethodCall (Name [Ident $ "Anonymous"++ show n]) args 
+      id = Ident $ "Anonymous"++ show num
+  (ident, (_,sort,_)) <- enc_lhs 1 lhs
+  rhs <- if null inp 
+         then mapM (\pid -> enc_meth_special pid id sort []) [1..4]
+         else mapM (\(pid,args) -> enc_meth_special pid id sort args) $ zip [1..4] inp 
+  mapM_ (\(pid,ast) -> assign_special pid lhs ast) $ zip [1..4] rhs
 
 -- pre-condition: pid == 0 && bstmt has a hole 
 --             or pid != 0 
@@ -376,9 +388,81 @@ ret_inner pid mexpr = do
 
 -- Analyse Assign
 assign :: [Pid] -> Exp -> Lhs -> AssignOp -> Exp -> EnvOp ()
-assign pids _exp lhs aOp rhs = T.trace ("assign: " ++ show pids) $ do
+assign pids _exp lhs aOp rhs = -- trace ("assign: " ++ show pids ++ ", lhs = " ++ prettyPrint lhs ++ ", rhs = " ++ prettyPrint rhs) $ do
   mapM_ (\p -> assign_inner p _exp lhs aOp rhs) pids
- 
+
+enc_lhs :: Pid -> Lhs -> EnvOp (Ident,(AST,Sort,Int))
+enc_lhs pid lhs = do 
+ env@Env{..} <- get
+ case lhs of
+  NameLhs (Name [ident@(Ident str)]) -> do
+   case M.lookup ident _ssamap of
+       -- new variable
+       Nothing -> enc_lhs_inner pid ident
+       Just l -> case M.lookup pid l of
+         Nothing -> enc_lhs_inner pid ident
+         Just r  -> return (ident,r) 
+  FieldLhs (PrimaryFieldAccess This (ident@(Ident str))) -> do
+   case M.lookup ident _ssamap of
+       -- new variable
+       Nothing -> T.trace ("new field variable?") $ enc_lhs_inner pid ident
+       Just l -> case M.lookup pid l of
+         Nothing -> enc_lhs_inner pid ident
+         Just r  -> return (ident,r) 
+
+enc_lhs_inner pid ident@(Ident str) = do
+  env@Env{..} <- get
+  iSort <- lift $ mkIntSort
+  let i = 0
+  idAsts <- lift $ enc_ident [pid] str i iSort
+  let idAst = snd $ head idAsts
+      res = (idAst,iSort,i)
+      nssamap = update_ssamap pid ident res _ssamap
+  updateSSAMap nssamap
+  return (ident,res)
+
+assign_special :: Pid -> Lhs -> AST -> EnvOp ()
+assign_special pid lhs rhsAst = T.trace ("assign_special: " ++ show pid ++ " " ++ show lhs) $ do
+ env@Env{..} <- get
+ case lhs of
+  ArrayLhs (ArrayIndex e args) -> do
+   let ident@(Ident str) = expToIdent e
+   (plhsAST,sort, i) <- T.trace ("the ident is " ++ show ident) $  
+     case M.lookup ident _ssamap of
+       -- new variable
+       Nothing -> enc_lhs_inner pid ident >>= return . snd
+       Just l -> case M.lookup pid l of
+         Nothing -> enc_lhs_inner pid ident >>= return . snd
+         Just r  -> return r 
+   let cstr = str ++ "_" ++ show pid ++ "_" ++ show i
+       ni = i+1
+       nstr = str ++ "_" ++ show pid ++ "_" ++ show ni
+   sym <- lift $ mkStringSymbol nstr
+   astVar <- lift $ mkVar sym sort
+   let ssamap = update_ssamap pid ident (astVar, sort, ni) _ssamap
+   a <- enc_exp_inner pid e
+   i <- case args of
+          [x] -> enc_exp_inner pid x
+          _ -> error $ "assign: ArrayLhs " ++ show lhs 
+   _rhsAst <- lift $ mkStore a i rhsAst
+   ass <- lift $ mkEq _rhsAst astVar
+   pre <- lift $ mkAnd [_pre, ass]
+   updatePre pre
+   updateSSAMap ssamap
+  _ -> do 
+   (ident@(Ident str),(plhsAST,sort,i)) <- enc_lhs pid lhs 
+   let cstr = str ++ "_" ++ show pid ++ "_" ++ show i
+       ni = i+1
+       nstr = str ++ "_" ++ show pid ++ "_" ++ show ni
+   sym <- lift $ mkStringSymbol nstr
+   var <- lift $ mkFreshFuncDecl nstr [] sort
+   astVar <- lift $ mkApp var []
+   let ssamap = update_ssamap pid ident (astVar, sort, ni) _ssamap
+   ass <- lift $ processAssign astVar EqualA rhsAst plhsAST
+   pre <- lift $ mkAnd [_pre, ass]
+   updatePre pre
+   updateSSAMap ssamap
+
 assign_inner :: Pid -> Exp -> Lhs -> AssignOp -> Exp -> EnvOp ()
 assign_inner pid _exp lhs aOp rhs = do
  rhsAst <- enc_exp_inner pid rhs

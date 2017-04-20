@@ -34,7 +34,10 @@ symLocToLhs :: SymLoc -> Lhs
 symLocToLhs sym = case sym of
   SField i -> FieldLhs $ PrimaryFieldAccess This i
   SName  n -> NameLhs n
-  SArray a -> ArrayLhs a 
+  SArray (ArrayIndex a _) -> case a of
+    FieldAccess fa -> FieldLhs $ fa
+    ExpName n -> NameLhs n
+    _ -> error "symLocToLhs"
 
 symLocToExp :: SymLoc -> Exp
 symLocToExp sym = case sym of
@@ -200,7 +203,7 @@ blockDep class_sum cfg =
   in case M.lookup (-1) res of
        Nothing -> T.trace ("blockDep: empty ") $ M.empty 
        Just r  ->  case r of
-         [(_,x)] -> x
+         [(_,x)] -> T.trace ("block dependences result: " ++ show x) x
          _ -> error $ "memberDep: invalid result " ++ show r
 
 -- The main fixpoint for the dependence analysis
@@ -305,11 +308,11 @@ set_dep r (w,t) m = M.insert w (t,r) m
 transformer_expr :: ClassSum -> Exp -> ([AbsVar], [AbsVarAnn])
 transformer_expr class_sum e = case e of
   Assign lhs op rhs -> 
-    let writeSet = getWrite class_sum lhs
+    let (rSet,writeSet) = getWrite class_sum lhs
         (readSet,wSet) = transformer_expr class_sum rhs
     in case op of
-      EqualA -> (readSet, writeSet++wSet)
-      _ -> (map fst writeSet++readSet, writeSet)
+      EqualA -> (readSet++rSet, writeSet++wSet)
+      _ -> (map fst writeSet++readSet++rSet, writeSet)
   MethodInv m -> transformer_methInv class_sum m
   _ -> (getReadSet class_sum e,[]) 
 
@@ -326,18 +329,18 @@ transformer_methInv class_sum m =
       k = T.trace ("transformer: " ++ prettyPrint m ++ "\n" ++ unlines (map prettyPrint mths)) $ unsafePerformIO $ getChar
   in k `seq` (rSet++r, w)
 
-getWrite :: ClassSum -> Lhs -> [AbsVarAnn]
+getWrite :: ClassSum -> Lhs -> ([AbsVar],[AbsVarAnn])
 getWrite class_sum lhs = case lhs of
   NameLhs  n  -> 
     let i = toIdent n
     in case M.lookup i (_cl_fields class_sum) of
-         Nothing -> [(SName n,None)] 
-         Just m  -> (SName n,None):(map (\(i,_) -> (SField i,Both)) $ toMemberSig m) 
+         Nothing -> ([],[(SName n,None)]) 
+         Just m  -> ([],(SName n,None):(map (\(i,_) -> (SField i,Both)) $ toMemberSig m)) 
   FieldLhs fa -> case fa of
-    PrimaryFieldAccess e i -> [(SField i,Both)]
-    SuperFieldAccess i     -> [(SField i,Both)]
-    ClassFieldAccess n i   -> [(SField i,Both)] 
-  ArrayLhs ai -> [(SArray ai,None)] 
+    PrimaryFieldAccess e i -> ([],[(SField i,Both)])
+    SuperFieldAccess i     -> ([],[(SField i,Both)])
+    ClassFieldAccess n i   -> ([],[(SField i,Both)])
+  ArrayLhs ai@(ArrayIndex _ args) -> (concatMap (getReadSet class_sum) args,[(SArray ai,None)]) 
 
 getReadSet :: ClassSum -> Exp -> [AbsVar]
 getReadSet class_sum e = case e of

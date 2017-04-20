@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class Collect 
 {
-//  private List<Integer> _intArray;
+  private List<int[]> res;
   private int[] x;
 
 /*
@@ -28,41 +28,43 @@ public class Collect
     return res;
   }
 */
-
  public int test(int y,int z)
  {
    int i=0;
 
    i++;
+   this.x[i] = 0;
+   i++;
    this.x[i] = 1;
    i++;
    this.x[i] = 2;
  
-   if (x[1] == y)
+   if (x[2] == y)
      {
        return 1;
      }
-   if (x[1] == z)
+   if (x[2] == z)
    {
      return 2;
    }
    return 0;
  }
-/*
-  public int test(int y)
-  { 
-    int i = 0;
 
-    
+/*
+  public int test(int x)
+  { 
+    int r = 0;
+
     for (int k = 0; k <= x; k++)
     {
       r = r + this._otherArray[k];
+      r = r + 1;
     }
 
     return r; 
   }
 */
-/*  
+ /* 
   public static void main(String args[]) 
   {
     List s = new ArrayList(Arrays.asList(1,2,3,4));
@@ -73,6 +75,6 @@ public class Collect
     System.out.println(f.toString());
     System.out.println(f.test(0));
   }
-*/
+ */
 }
 

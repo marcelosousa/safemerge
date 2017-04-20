@@ -72,12 +72,12 @@ diff4gen_meth ident o a b m =
             res = (ident, fo, e_o, e_a, e_b, e_m)
             nres = (ident,n_fo, n_e_o, n_e_a, n_e_b, n_e_m)
         in if o == _o && a == _a && b == _b && m == _m 
-           then res 
+           then nres 
            else 
-             let oStr   = "Edit Base:\n" ++ printEdit e_o ++ "\n"
-                 aStr   = "Edit A:\n" ++ printEdit e_a ++ "\n"
-                 bStr   = "Edit B:\n" ++ printEdit e_b ++ "\n"
-                 mStr   = "Edit M:\n" ++ printEdit e_m ++ "\n"
+             let oStr = "Edit Base:\n" ++ printEdit e_o ++ "\n"
+                 aStr = "Edit A:\n" ++ printEdit e_a ++ "\n"
+                 bStr = "Edit B:\n" ++ printEdit e_b ++ "\n"
+                 mStr = "Edit M:\n" ++ printEdit e_m ++ "\n"
              in error $ "diff4gen_meth: bug in the edit script generation\n" ++ prettyPrint fo ++ "\n" ++ prettyPrint o ++ oStr -- ++ aStr ++ bStr ++ mStr
 
 gen_edit_member :: MemberDecl -> MemberDecl -> [Edit] -> (MemberDecl, [Edit])
@@ -154,11 +154,11 @@ opt_holes_bstmt es (ph,nh,bs,_es) b =
           Nothing -> (ph',nh',bs,es')
           Just stmt' ->
             let b' = BlockStmt stmt'
-            in (ph',nh',bs++[b],es')
+            in (ph',nh',bs++[b'],es')
     _ -> (False,nh,bs++[b],_es) 
 
 opt_holes_stmt ::[Edit] -> (Bool,Int,[Edit]) -> Stmt -> (Bool,Int,Maybe Stmt,[Edit])
-opt_holes_stmt es (ph,nh,_es) stmt =
+opt_holes_stmt es (ph,nh,_es) stmt = -- T.trace ("opt_holes_stmt: " ++ prettyPrint stmt) $ 
  case stmt of
    StmtBlock (Block block) ->
      let (ph',nh',b',es') = opt_holes_block es (ph,nh,_es) block

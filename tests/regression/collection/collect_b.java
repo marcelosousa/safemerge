@@ -6,7 +6,7 @@ import java.util.Date;
 public class Collect 
 {
 //  private List<Integer> _intArray;
-  private int[] _otherArray;
+  private int[] x;
 
 /*
   public Collect(List<Integer> intArray, int[] otherArray)
@@ -29,6 +29,28 @@ public class Collect
   }
 */
 
+ public int test(int y,int z)
+ {
+   int i=0;
+
+   i++;
+   this.x[i] = 0;
+   i++;
+   this.x[i] = 1;
+   i++;
+   this.x[i] = 2;
+ 
+   if (x[2] == y)
+     {
+       return 1;
+     }
+   if (x[2] == z)
+   {
+     return 2;
+   }
+   return 0;
+ }
+/*
   public int test(int x)
   { 
     int r = 0;
@@ -41,6 +63,7 @@ public class Collect
 
     return r; 
   }
+*/
 /*  
   public static void main(String args[]) 
   {

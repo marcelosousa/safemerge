@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class Collect 
 {
-//  private List<Integer> _intArray;
+  private List<int[]> res;
   private int[] x;
 
 /*

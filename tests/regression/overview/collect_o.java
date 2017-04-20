@@ -5,9 +5,8 @@ import java.util.Date;
 
 public class Collect 
 {
-//  private List<Integer> _intArray;
+  private List<int[]> res;
   private int[] x;
-
 /*
   public Collect(List<Integer> intArray, int[] otherArray)
   {
@@ -28,7 +27,6 @@ public class Collect
     return res;
   }
 */
-
  public int test(int y,int z)
  {
    int i=0;
@@ -42,10 +40,6 @@ public class Collect
      {
        return 1;
      }
-   if (x[1] == z)
-   {
-     return 2;
-   }
    return 0;
  }
 /*
@@ -53,7 +47,6 @@ public class Collect
   { 
     int i = 0;
 
-    
     for (int k = 0; k <= x; k++)
     {
       r = r + this._otherArray[k];
@@ -73,6 +66,6 @@ public class Collect
     System.out.println(f.toString());
     System.out.println(f.test(0));
   }
-*/
+ */
 }
 

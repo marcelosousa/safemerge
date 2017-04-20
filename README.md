@@ -25,7 +25,9 @@ High-level procedure
       (-) Matching of methods   
       (-) Conditionals expressions bug
       (-) Support for Strings? 
+      (-) Support for assignment of entire arrays? Type analysis in the assignments!
   (x) Collapse consecutive holes
+  (-) Edit script generation is using LCS and not the AST Diff at the level of blocks
 
  
 Dependence analysis  

@@ -15,8 +15,8 @@ liff_main: found changes in src/java/voldemort/store/rebalancing/RedirectingStor
 ["042da34a6940d1a2fa20db59331a347da16d4a9e","566b4bc712f6f3945a1a74bf1293f070c615868b","01fad80c857610cedc5b146c6f6d3c405509ac79","9702607f6213cf072715080ff7e08eccb4fad3cc"]
 
 inst5: Benchmark
-liff_main: found changes in src/java/voldemort/store/readonly/ReadOnlyStorageEngine.java
-["e12fd4986f233c04f70ea84d6cb5ae08e42600b4","61f4d167b2675fbf5aad29d0e8d6f94871c2986b","1f21e507ffd56dd419fd70e38c09fc23179131cb","bcf4b413b41005416449852f5610f9185a260bfc"]
+liff_main: found changes in test/common/voldemort/TestUtils.java
+["bb6064a6881c315befe238363e590e6d225ac07c","efcdd2626dd0c81cbd5d71e6ff5322b463b68fb3","f318a72df95c213357b966fccb09b9f4bd64fd6f","c9bec07b51e928efac16d4f5db21875c07c51dba"]
 
 inst6: Benchmark for variable renaming
 liff_main: found changes in test/integration/voldemort/performance/benchmark/Measurement.java
@@ -38,7 +38,4 @@ inst10: Benchmark
 liff_main: found changes in test/unit/voldemort/store/readonly/ReadOnlyStorageEngineTestInstance.java
 ["bb6064a6881c315befe238363e590e6d225ac07c","efcdd2626dd0c81cbd5d71e6ff5322b463b68fb3","f318a72df95c213357b966fccb09b9f4bd64fd6f","c9bec07b51e928efac16d4f5db21875c07c51dba"]
 
-inst11: Benchmark
-liff_main: found changes in test/common/voldemort/TestUtils.java
-["bb6064a6881c315befe238363e590e6d225ac07c","efcdd2626dd0c81cbd5d71e6ff5322b463b68fb3","f318a72df95c213357b966fccb09b9f4bd64fd6f","c9bec07b51e928efac16d4f5db21875c07c51dba"]
 

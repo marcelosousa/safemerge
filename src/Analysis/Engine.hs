@@ -243,10 +243,10 @@ enc_exp pids expr = mapM (\p -> enc_exp_inner p expr) pids
 -- | Encode an expression for a version 
 --   (ast,sort,count)pre-condition: pid != 0 
 enc_exp_inner :: Int -> Exp -> EnvOp AST
-enc_exp_inner p expr = do
+enc_exp_inner p expr = trace ("enc_exp_inner: " ++ show expr) $ do
  case expr of
   Lit lit -> lift $ enc_literal lit 
-  ExpName name -> T.trace ("enc_exp_inner: " ++ show expr) $ enc_name p (toIdent name) []
+  ExpName name -> enc_name p (toIdent name) []
   BinOp lhsE op rhsE -> do
     lhs <- enc_exp_inner p lhsE
     rhs <- enc_exp_inner p rhsE
@@ -286,6 +286,11 @@ enc_array_access p exp@(ArrayIndex e args) = do
     [x] -> do
       i <- enc_exp_inner p x
       lift $ mkSelect a i
+    [x,y] -> do
+      i <- enc_exp_inner p x
+      j <- enc_exp_inner p y
+      b <- lift $ mkSelect a i
+      lift $ mkSelect b j
     _ -> error $ "enc_array_access: " ++ show exp
 
 enc_field_access :: Int -> FieldAccess -> EnvOp AST
@@ -334,13 +339,25 @@ enc_meth pid id@(Ident ident) args = do
       deps = foldr (\cfg res -> M.union res $ blockDep class_sum cfg) M.empty cfgs
   case M.lookup (id,arity) _fnmap of
     Nothing -> do
+      sorts <- lift $ mapM getSort args 
       iSort <- lift $ mkIntSort
-      fn <- lift $ mkFreshFuncDecl ident (replicate arity iSort) iSort
+      fn <- lift $ mkFreshFuncDecl ident sorts iSort
       ast <- lift $ mkApp fn args
       let fnmap = M.insert (id,arity) (fn,deps) _fnmap 
       updateFunctMap fnmap 
       return ast 
     Just (ast,dep) -> lift $ mkApp ast args 
+
+enc_meth_special :: Int -> Ident -> Sort -> [AST] -> EnvOp AST
+enc_meth_special pid id@(Ident ident) sort args = do
+  env@Env{..} <- get
+  let arity = length args
+  sorts <- lift $ mapM getSort args 
+  fn <- lift $ mkFreshFuncDecl ident sorts sort 
+  ast <- lift $ mkApp fn args
+  let fnmap = M.insert (id,arity) (fn,M.empty) _fnmap 
+  updateFunctMap fnmap 
+  return ast 
 
 {-
 processName env@(objSort, pars, res, fields, ssamap) (Name [ident]) args = do

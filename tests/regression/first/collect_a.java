@@ -32,21 +32,13 @@ public class Collect
  public int test(int y,int z)
  {
    int i=0;
-
+   y = 1;
    i++;
    this.x[i] = 1;
    i++;
    this.x[i] = 2;
  
-   if (x[1] == y)
-     {
-       return 1;
-     }
-   if (x[1] == z)
-   {
-     return 2;
-   }
-   return 0;
+   return 3;
  }
 /*
   public int test(int y)
