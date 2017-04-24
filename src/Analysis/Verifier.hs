@@ -150,8 +150,9 @@ analyse stmts = do
  env@Env{..} <- get
  case stmts of
   [] -> lift $ local $ helper _pre _post
-  (bstmt:rest) -> 
-    if every $ getAnn bstmt 
+  (bstmt:rest) -> do
+    applyDepCheck <- checkDep  
+    if (every $ getAnn bstmt) && applyDepCheck 
     then -- only apply dependence analysis if all variables are equal is all versions
       case next_block stmts of
       (Left b, r) -> T.trace ("analyser: block encoding") $ do
@@ -165,6 +166,14 @@ analyse stmts = do
         -- we know that bstmt is a high level hole
         analyser_bstmt bstmt r 
     else analyser_bstmt bstmt rest 
+
+checkDep :: EnvOp Bool
+checkDep = do
+  env@Env{..} <- get
+  preds <- get_predicates _ssamap 
+  tmp_post <- lift $ mkAnd preds 
+  (r,_) <- lift $ helper _pre tmp_post
+  return (r == Unsat) 
 
 -- optimised a block that is shared by all variants
 --  i. generate the CFG for the block b
