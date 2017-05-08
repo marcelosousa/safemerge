@@ -33,7 +33,6 @@ public class Collect
  {
    int i=0;
 
-   i++;
    this.x[i] = 1;
    i++;
    this.x[i] = 2;
@@ -42,9 +41,12 @@ public class Collect
      {
        return 1;
      }
-   if (x[1] == z)
-   {
-     return 2;
+   else 
+   { 
+     if (x[1] == z)
+     {
+       return 2;
+     }
    }
    return 0;
  }

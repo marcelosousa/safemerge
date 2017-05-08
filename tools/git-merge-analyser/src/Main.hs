@@ -32,6 +32,7 @@ main = do
     Nothing -> error "liff_project: failed to obtain the merges from git log"
     Just merges -> do
       let merge_lines = lines merges
+      -- in each element of merge_lines, we have [merge,varA,varB]
       versions <- foldM merge_base [] merge_lines 
       relevant_merges <- foldM analyse_merge_tree [] versions 
       foldM_ liff_merge 1 relevant_merges 
@@ -71,18 +72,27 @@ liff_main [o,m,a,b] i ch@(Change _ f) = do
 -- | API to retrieve & process information from git commands
 -- | Analyse a git merge-tree result
 analyse_merge_tree :: [GitMerge] -> [String] -> IO [GitMerge]
-analyse_merge_tree gmerges as@[o,m,a,b] = do 
-  let args = [o,a,b]
-  mStr <- git_merge_tree args
-  case mStr of
-    Nothing -> return gmerges
-    Just str -> do
-      let str_lines = lines str
-          changes = analyse_changes str_lines []
-          gmerge = GitMerge as changes
-      if not $ null changes
-      then return (gmerge:gmerges) 
-      else return gmerges 
+analyse_merge_tree gmerges as@[o,m,a,b] = 
+  -- removes the triangle pattern:
+  --     m
+  --     | \
+  --     |  b
+  --     | /
+  --     a
+  if o == a || o == b
+  then return gmerges
+  else do
+    let args = [o,a,b]
+    mStr <- git_merge_tree args
+    case mStr of
+      Nothing -> return gmerges
+      Just str -> do
+        let str_lines = lines str
+            changes = analyse_changes str_lines []
+            gmerge = GitMerge as changes
+        if not $ null changes
+        then return (gmerge:gmerges) 
+        else return gmerges 
 
 -- ^ merge_base: retrieves the hash of the base based on the variants
 merge_base :: [[String]] -> String -> IO [[String]]

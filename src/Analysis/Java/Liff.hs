@@ -72,7 +72,7 @@ mbody_diff :: MethodBody -> MethodBody -> MethodBody -> MethodBody -> Bool
 mbody_diff bdy_o bdy_a bdy_b bdy_m =
  let c1 = bdy_o /= bdy_a && bdy_o /= bdy_b
      c2 = bdy_a /= bdy_b
-     c3 = bdy_m /= bdy_a || bdy_m /= bdy_b
+     c3 = bdy_m /= bdy_a && bdy_m /= bdy_b
      [bo,ba,bb,bm] = [show bdy_o, show bdy_a, show bdy_b, show bdy_m] 
      c4 = isInfixOf "Return" bo 
      c5 = and $ map (\x -> not $ isInfixOf "Synchronized" x) [bo,ba,bb,bm] 

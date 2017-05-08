@@ -12,7 +12,7 @@ import Analysis.Java.AST
 import Analysis.Java.ClassInfo
 import Analysis.Java.Simplifier
 import Analysis.Java.Flow
-import Analysis.Java.Liff
+import Analysis.Java.Liff hiding (trace)
 import Analysis.Optimiser
 import Analysis.Types
 import Analysis.Util
@@ -90,7 +90,7 @@ verify (mid, mth) classes edits = do
   --  which is a special dummy variable res_version
   pre  <- initial_precond inp  
   preStr <- astToString pre
-  post <- T.trace ("verify: " ++ preStr) $ postcond out
+  post <- trace ("verify: " ++ preStr) $ postcond out
   iSSAMap <- initial_SSAMap params 
   iFuncMap <- initial_FuncMap
   let iEnv = Env iSSAMap M.empty iFuncMap pre post post classes edits True 0 [1,2,3,4] 0
@@ -132,12 +132,14 @@ analyser_debug stmts = do
   [] -> do 
     let k = T.trace (_triple preStr "end" postStr ++ "\n" ++ printSSAMap _ssamap) $ 
              unsafePerformIO $ getChar
-    k `seq` analyse stmts
+    analyse stmts
+    -- k `seq` analyse stmts
   (bstmt:_) -> do 
     --let k = T.trace (_triple preStr (show bstmt ++ "\n" ++ prettyPrint (fromAnn bstmt :: BlockStmt)) postStr ++ "\n" ++ printSSAMap _ssamap ++ 
     --        "\nKeys in Function Map: " ++ show (M.keys _fnmap)) $ unsafePerformIO $ getChar
     let k = T.trace (_triple preStr (show bstmt ++ "\n" ++ prettyPrint (fromAnn bstmt :: BlockStmt)) "") $ unsafePerformIO $ getChar
-    k `seq` analyse stmts
+    -- k `seq` analyse stmts
+    analyse stmts
 
 -- main verification heavyweight function 
 -- checks if the PID = (ALL) and calls 
@@ -230,7 +232,7 @@ analyser_bstmt bstmt rest = case bstmt of
     analyser rest
 
 analyser_stmt :: AnnStmt -> ProdProgram -> EnvOp (Result, Maybe Model)
-analyser_stmt stmt rest = T.trace ("analyser_stmt: " ++ show stmt) $ 
+analyser_stmt stmt rest = 
  case stmt of
   AnnStmtBlock pid (AnnBlock b) -> analyser $ b ++ rest
   AnnReturn pid mexpr           -> analyse_ret pid mexpr rest
@@ -277,7 +279,7 @@ analyse_exp pids _exp rest =
 
 -- Analyse If Then Else
 analyse_conditional :: [Pid] -> Exp -> AnnStmt -> AnnStmt -> ProdProgram -> EnvOp (Result,Maybe Model)
-analyse_conditional pid cond s1 s2 rest = T.trace ("analyse conditional of pid " ++ show pid) $
+analyse_conditional pid cond s1 s2 rest = 
  if cond == Nondet
  then do
   env@Env{..} <- get
@@ -290,12 +292,12 @@ analyse_conditional pid cond s1 s2 rest = T.trace ("analyse conditional of pid "
   env@Env{..} <- get
   -- then branch
   preThen <- lift $ mkAnd (_pre:condSmt)
-  resThen <- analyse_branch preThen s1
+  resThen <- T.trace ("analyse:" ++ show pid ++ "  " ++ prettyPrint cond) $ analyse_branch preThen s1
   -- else branch
   put env
   ncondSmt <- lift $ mapM mkNot condSmt
   preElse <- lift $ mkAnd (_pre:ncondSmt)
-  resElse <- analyse_branch preElse s2
+  resElse <- T.trace ("analyse:" ++ show pid ++ " Not " ++ prettyPrint cond) $ analyse_branch preElse s2
   combine resThen resElse
  where
    analyse_branch phi branch = do
@@ -303,9 +305,10 @@ analyse_conditional pid cond s1 s2 rest = T.trace ("analyse conditional of pid "
     updatePre phi
     let r = (AnnBlockStmt branch):rest
     cPhi <- lift $ checkSAT phi
+    cPhiStr <- lift $ astToString phi 
     if cPhi == Unsat
-    then return _default
-    else analyser r
+    then T.trace ("analyse: " ++ cPhiStr ++ "\nanalyse: Unreachable") $ return _default
+    else T.trace ("analyse: Reachable") $ analyser r
    combine :: (Result, Maybe Model) -> (Result, Maybe Model) -> EnvOp (Result, Maybe Model)
    combine (Unsat,_) (Unsat,_) = return _default
    combine (Unsat,_) res = return res
@@ -334,7 +337,8 @@ houdini preds cond body = do
   invStr <- lift $ astToString inv
   let k = T.trace ("loop invariant: \n" ++ invStr ++ "\n" ) $ 
              unsafePerformIO $ getChar
-  npre <- k `seq` lift $ mkAnd [inv, cond] 
+  -- npre <- k `seq` lift $ mkAnd [inv, cond] 
+  npre <- lift $ mkAnd [inv, cond] 
   updatePre npre 
   analyser_stmt body []
   nenv <- get
@@ -436,7 +440,7 @@ assign_special pid lhs rhsAst = T.trace ("assign_special: " ++ show pid ++ " " +
  case lhs of
   ArrayLhs (ArrayIndex e args) -> do
    let ident@(Ident str) = expToIdent e
-   (plhsAST,sort, i) <- T.trace ("the ident is " ++ show ident) $  
+   (plhsAST,sort, i) <- trace ("the ident is " ++ show ident) $  
      case M.lookup ident _ssamap of
        -- new variable
        Nothing -> enc_lhs_inner pid ident >>= return . snd
@@ -519,7 +523,7 @@ assign_inner pid _exp lhs aOp rhs = do
    incrementAssignMap ident rhs
   ArrayLhs (ArrayIndex e args) -> do
    let ident@(Ident str) = expToIdent e
-   (plhsAST,sort, i) <- T.trace ("the ident is " ++ show ident) $  
+   (plhsAST,sort, i) <- trace ("the ident is " ++ show ident) $  
      case M.lookup ident _ssamap of
        -- new variable
        Nothing -> assign_inner' pid ident
@@ -541,7 +545,7 @@ assign_inner pid _exp lhs aOp rhs = do
    rhsSortStr <- lift $ getSort rhsAst >>= sortToString
    astSortStr <- lift $ getSort astVar >>= sortToString
    sortStr <- lift $ sortToString sort
-   _rhsAst <- T.trace ("sorts = " ++ show (aSortStr,iSortStr,rhsSortStr,astSortStr,sortStr)) $ lift $ mkStore a i rhsAst
+   _rhsAst <- trace ("sorts = " ++ show (aSortStr,iSortStr,rhsSortStr,astSortStr,sortStr)) $ lift $ mkStore a i rhsAst
    ass <- lift $ mkEq _rhsAst astVar
    pre <- lift $ mkAnd [_pre, ass]
    updatePre pre

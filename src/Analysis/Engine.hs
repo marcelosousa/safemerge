@@ -36,7 +36,7 @@ helper pre post = do
   assert formula
   (r, m) <- getModel
   preStr  <- astToString pre
-  T.trace ("helper: " ++ preStr) $ return (r,m)
+  trace ("helper: " ++ preStr) $ return (r,m)
 
 -- \phi not models \psi
 -- \phi |= \psi 

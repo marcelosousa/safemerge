@@ -31,7 +31,6 @@ public class Collect
  {
    int i=0;
 
-   i++;
    this.x[i] = 1;
    i++;
    this.x[i] = 2;
