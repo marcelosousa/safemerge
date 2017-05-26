@@ -1,0 +1,523 @@
+Parsing files...
+Merge Instance for method (Ident "RoutedStore",Ident "availableNodes",[RefType (ClassRefType (ClassType [(Ident "List",[ActualType (ClassRefType (ClassType [(Ident "Node",[])]))])]))])
+private List<Node> availableNodes (List<Node> list)
+{
+  List<Node> available = new ArrayList<Node>(list.size());
+  for (Node node : list) <?HOLE?>
+  return available;
+}
+Edit Base:
+Hole 1:
+[SCond,SLoop]: if (isAvailable(node))
+  available.add(node);
+
+Edit A:
+Hole 1:
+[SCond,SLoop]: if (failureDetector.isAvailable(node))
+  available.add(node);
+
+Edit B:
+Hole 1:
+[SLoop]: if (isAvailable(node))
+  available.add(node);
+
+Edit M:
+Hole 1:
+[SLoop]: if (failureDetector.isAvailable(node))
+  available.add(node);
+
+Merge Instance for method (Ident "RoutedStore",Ident "getAll",[RefType (ClassRefType (ClassType [(Ident "Iterable",[ActualType (ClassRefType (ClassType [(Ident "ByteArray",[])]))])]))])
+public Map<ByteArray, List<Versioned<byte[]>>> getAll (Iterable<ByteArray> keys) throws VoldemortException
+{
+  StoreUtils.assertValidKeys(keys);
+  Map<ByteArray, List<Versioned<byte[]>>> result = StoreUtils.newEmptyHashMap(keys);
+  Map<Node, List<ByteArray>> nodeToKeysMap = Maps.newHashMap();
+  Map<ByteArray, List<Node>> keyToExtraNodesMap = Maps.newHashMap();
+  for (ByteArray key : keys) {
+                               List<Node> availableNodes = availableNodes(routingStrategy.routeRequest(key.get()));
+                               checkRequiredReads(availableNodes);
+                               int preferredReads = storeDef.getPreferredReads();
+                               List<Node> preferredNodes = Lists.newArrayListWithCapacity(preferredReads);
+                               List<Node> extraNodes = Lists.newArrayListWithCapacity(3);
+                               for (Node node : availableNodes) {
+                                                                  if (preferredNodes.size() < preferredReads)
+                                                                    preferredNodes.add(node);
+                                                                  else
+                                                                    extraNodes.add(node);
+                                                                }
+                               for (Node node : preferredNodes) {
+                                                                  List<ByteArray> nodeKeys = nodeToKeysMap.get(node);
+                                                                  if (nodeKeys == null)
+                                                                  {
+                                                                    nodeKeys = Lists.newArrayList();
+                                                                    nodeToKeysMap.put(node, nodeKeys);
+                                                                  }
+                                                                  nodeKeys.add(key);
+                                                                }
+                               if (!extraNodes.isEmpty())
+                               {
+                                 List<Node> nodes = keyToExtraNodesMap.get(key);
+                                 if (nodes == null)
+                                   keyToExtraNodesMap.put(key, extraNodes);
+                                 else
+                                   nodes.addAll(extraNodes);
+                               }
+                             }
+  List<Callable<GetAllResult>> callables = Lists.newArrayList();
+  for (Map.Entry<Node, List<ByteArray>> entry : nodeToKeysMap.entrySet()) {
+                                                                            final Node node = entry.getKey();
+                                                                            final Collection<ByteArray> nodeKeys = entry.getValue();
+                                                                            <?HOLE?>
+                                                                          }
+  List<Throwable> failures = Lists.newArrayList();
+  List<NodeValue<ByteArray, byte[]>> nodeValues = Lists.newArrayList();
+  Map<ByteArray, MutableInt> keyToSuccessCount = Maps.newHashMap();
+  for (ByteArray key : keys) keyToSuccessCount.put(key, new MutableInt(0));
+  List<Future<GetAllResult>> futures;
+  try
+  {
+    futures = executor.invokeAll(callables, (timeoutMs * 3), TimeUnit.MILLISECONDS);
+  }
+  catch (InterruptedException e)
+  {
+    throw new InsufficientOperationalNodesException("getAll operation interrupted.", e);
+  }
+  for (Future<GetAllResult> f : futures) {
+                                           if (f.isCancelled())
+                                           {
+                                             logger.warn(("Get operation timed out after " + timeoutMs + " ms."));
+                                             continue;
+                                           }
+                                           try
+                                           {
+                                             GetAllResult getResult = f.get();
+                                             if (getResult.exception != null)
+                                             {
+                                               failures.add(getResult.exception);
+                                               continue;
+                                             }
+                                             for (ByteArray key : getResult.callable.nodeKeys) {
+                                                                                                 List<Versioned<byte[]>> retrieved = getResult.retrieved.get(key);
+                                                                                                 MutableInt successCount = keyToSuccessCount.get(key);
+                                                                                                 successCount.increment();
+                                                                                                 if (retrieved != null)
+                                                                                                 {
+                                                                                                   List<Versioned<byte[]>> existing = result.get(key);
+                                                                                                   if (existing == null)
+                                                                                                     result.put(key, Lists.newArrayList(retrieved));
+                                                                                                   else
+                                                                                                     existing.addAll(retrieved);
+                                                                                                 }
+                                                                                               }
+                                             nodeValues.addAll(getResult.nodeValues);
+                                           }
+                                           catch (InterruptedException e)
+                                           {
+                                             throw new InsufficientOperationalNodesException("getAll operation interrupted.", e);
+                                           }
+                                           catch (ExecutionException e)
+                                           {
+                                             if (e.getCause() instanceof Error)
+                                               throw (Error) e.getCause();
+                                             else
+                                               logger.error(e.getMessage(), e);
+                                           }
+                                         }
+  for (ByteArray key : keys) {
+                               MutableInt successCountWrapper = keyToSuccessCount.get(key);
+                               int successCount = successCountWrapper.intValue();
+                               if (successCount < storeDef.getPreferredReads())
+                               {
+                                 List<Node> extraNodes = keyToExtraNodesMap.get(key);
+                                 if (extraNodes != null)
+                                 {
+                                   for (Node node : extraNodes) {
+                                                                  <?HOLE?>
+                                                                }
+                                 }
+                               }
+                               successCountWrapper.setValue(successCount);
+                             }
+  repairReads(nodeValues);
+  for (Map.Entry<ByteArray, MutableInt> mapEntry : keyToSuccessCount.entrySet()) {
+                                                                                   int successCount = mapEntry.getValue().intValue();
+                                                                                   if (successCount < storeDef.getRequiredReads())
+                                                                                     throw new InsufficientOperationalNodesException(this.storeDef.getRequiredReads() + " reads required, but " + successCount + " succeeded.", failures);
+                                                                                 }
+  return result;
+}
+Edit Base:
+Hole 1:
+[SCond,SLoop]: if (isAvailable(node))
+  callables.add(new GetAllCallable(node, nodeKeys));
+Hole 2:
+[SLoop,SCond,SCond,SLoop]: try
+{
+  List<Versioned<byte[]>> values = innerStores.get(node.getId()).get(key);
+  fillRepairReadsValues(nodeValues, key, node, values);
+  List<Versioned<byte[]>> versioneds = result.get(key);
+  if (versioneds == null)
+    result.put(key, Lists.newArrayList(values));
+  else
+    versioneds.addAll(values);
+  node.getStatus().setAvailable();
+  if (++successCount >= storeDef.getPreferredReads())
+    break;
+}
+catch (UnreachableStoreException e)
+{
+  failures.add(e);
+  markUnavailable(node, e);
+}
+catch (Exception e)
+{
+  logger.warn(("Error in GET_ALL on node " + node.getId() + "(" + node.getHost() + ")"), e);
+  failures.add(e);
+}
+
+Edit A:
+Hole 1:
+[SCond,SLoop]: if (failureDetector.isAvailable(node))
+  callables.add(new GetAllCallable(node, nodeKeys));
+Hole 2:
+[SLoop,SCond,SCond,SLoop]: try
+{
+  List<Versioned<byte[]>> values = innerStores.get(node.getId()).get(key);
+  fillRepairReadsValues(nodeValues, key, node, values);
+  List<Versioned<byte[]>> versioneds = result.get(key);
+  if (versioneds == null)
+    result.put(key, Lists.newArrayList(values));
+  else
+    versioneds.addAll(values);
+  failureDetector.recordSuccess(node);
+  if (++successCount >= storeDef.getPreferredReads())
+    break;
+}
+catch (UnreachableStoreException e)
+{
+  failures.add(e);
+  failureDetector.recordException(node, e);
+}
+catch (Exception e)
+{
+  logger.warn(("Error in GET_ALL on node " + node.getId() + "(" + node.getHost() + ")"), e);
+  failures.add(e);
+}
+
+Edit B:
+Hole 1:
+[SLoop]: if (isAvailable(node))
+  callables.add(new GetAllCallable(node, nodeKeys));
+Hole 2:
+[SLoop,SCond,SCond,SLoop]: try
+{
+  List<Versioned<byte[]>> values = innerStores.get(node.getId()).get(key);
+  fillRepairReadsValues(nodeValues, key, node, values);
+  List<Versioned<byte[]>> versioneds = result.get(key);
+  if (versioneds == null)
+    result.put(key, Lists.newArrayList(values));
+  else
+    versioneds.addAll(values);
+  node.getStatus().setAvailable();
+  if (++successCount >= storeDef.getPreferredReads())
+    break;
+}
+catch (UnreachableStoreException e)
+{
+  failures.add(e);
+  markUnavailable(node, e);
+}
+catch (Exception e)
+{
+  logger.warn(("Error in GET_ALL on node " + node.getId() + "(" + node.getHost() + ")"), e);
+  failures.add(e);
+}
+
+Edit M:
+Hole 1:
+[SLoop]: if (failureDetector.isAvailable(node))
+  callables.add(new GetAllCallable(node, nodeKeys));
+Hole 2:
+[SLoop,SCond,SCond,SLoop]: try
+{
+  List<Versioned<byte[]>> values = innerStores.get(node.getId()).get(key);
+  fillRepairReadsValues(nodeValues, key, node, values);
+  List<Versioned<byte[]>> versioneds = result.get(key);
+  if (versioneds == null)
+    result.put(key, Lists.newArrayList(values));
+  else
+    versioneds.addAll(values);
+  failureDetector.recordSuccess(node);
+  if (++successCount >= storeDef.getPreferredReads())
+    break;
+}
+catch (UnreachableStoreException e)
+{
+  failures.add(e);
+  failureDetector.recordException(node, e);
+}
+catch (Exception e)
+{
+  logger.warn(("Error in GET_ALL on node " + node.getId() + "(" + node.getHost() + ")"), e);
+  failures.add(e);
+}
+
+Merge Instance for method (Ident "RoutedStore",Ident "put",[RefType (ClassRefType (ClassType [(Ident "ByteArray",[])])),RefType (ClassRefType (ClassType [(Ident "Versioned",[ActualType (ArrayType (PrimType ByteT))])]))])
+public void put (final ByteArray key, final Versioned<byte[]> versioned) throws VoldemortException
+{
+  long startNs = System.nanoTime();
+  StoreUtils.assertValidKey(key);
+  final List<Node> nodes = availableNodes(routingStrategy.routeRequest(key.get()));
+  final int numNodes = nodes.size();
+  if (numNodes < this.storeDef.getRequiredWrites())
+    throw new InsufficientOperationalNodesException("Only " + numNodes + " nodes in preference list, but " + this.storeDef.getRequiredWrites() + " writes required.");
+  final AtomicInteger successes = new AtomicInteger(0);
+  final List<Exception> failures = Collections.synchronizedList(new ArrayList<Exception>(1));
+  Node master = null;
+  int currentNode = 0;
+  Versioned<byte[]> versionedCopy = null;
+  for (; currentNode < numNodes ; currentNode++)
+  {
+    Node current = nodes.get(currentNode);
+    <?HOLE?>
+  }
+  if (successes.get() < 1)
+    throw new InsufficientOperationalNodesException("No master node succeeded!", failures.size() > 0 ? failures.get(0) : null);
+  else
+    currentNode++;
+  final Versioned<byte[]> finalVersionedCopy = versionedCopy;
+  final Semaphore semaphore = new Semaphore(0, false);
+  int attempts = 0;
+  for (; currentNode < numNodes ; currentNode++)
+  {
+    attempts++;
+    final Node node = nodes.get(currentNode);
+    <?HOLE?>
+  }
+  int blockCount = Math.min((storeDef.getPreferredWrites() - 1), attempts);
+  boolean noTimeout = blockOnPut(startNs, semaphore, 0, blockCount, successes, storeDef.getPreferredWrites());
+  if (successes.get() < storeDef.getRequiredWrites())
+  {
+    if (noTimeout)
+    {
+      int startingIndex = blockCount - 1;
+      blockCount = Math.max((storeDef.getPreferredWrites() - 1), attempts);
+      blockOnPut(startNs, semaphore, startingIndex, blockCount, successes, storeDef.getRequiredWrites());
+    }
+    if (successes.get() < storeDef.getRequiredWrites())
+      throw new InsufficientOperationalNodesException(successes.get() + " writes succeeded, but " + this.storeDef.getRequiredWrites() + " are required.", failures);
+  }
+  VectorClock versionedClock = (VectorClock) versioned.getVersion();
+  versionedClock.incrementVersion(master.getId(), time.getMilliseconds());
+}
+Edit Base:
+Hole 1:
+[SLoop]: try
+{
+  versionedCopy = incremented(versioned, current.getId());
+  innerStores.get(current.getId()).put(key, versionedCopy);
+  successes.getAndIncrement();
+  current.getStatus().setAvailable();
+  master = current;
+  break;
+}
+catch (UnreachableStoreException e)
+{
+  markUnavailable(current, e);
+  failures.add(e);
+}
+catch (ObsoleteVersionException e)
+{
+  throw e;
+}
+catch (Exception e)
+{
+  failures.add(e);
+}
+Hole 2:
+[SLoop]: this.executor.execute(new Runnable()
+                      {
+                        public void run ()
+                        {
+                          try
+                          {
+                            innerStores.get(node.getId()).put(key, finalVersionedCopy);
+                            successes.incrementAndGet();
+                            node.getStatus().setAvailable();
+                          }
+                          catch (UnreachableStoreException e)
+                          {
+                            markUnavailable(node, e);
+                            failures.add(e);
+                          }
+                          catch (Exception e)
+                          {
+                            logger.warn(("Error in PUT on node " + node.getId() + "(" + node.getHost() + ")"), e);
+                            failures.add(e);
+                          }
+                          finally {
+                                    semaphore.release();
+                                  }
+                        }
+                      });
+
+Edit A:
+Hole 1:
+[SLoop]: try
+{
+  versionedCopy = incremented(versioned, current.getId());
+  innerStores.get(current.getId()).put(key, versionedCopy);
+  successes.getAndIncrement();
+  failureDetector.recordSuccess(current);
+  master = current;
+  break;
+}
+catch (UnreachableStoreException e)
+{
+  failureDetector.recordException(current, e);
+  failures.add(e);
+}
+catch (ObsoleteVersionException e)
+{
+  throw e;
+}
+catch (Exception e)
+{
+  failures.add(e);
+}
+Hole 2:
+[SLoop]: this.executor.execute(new Runnable()
+                      {
+                        public void run ()
+                        {
+                          try
+                          {
+                            innerStores.get(node.getId()).put(key, finalVersionedCopy);
+                            successes.incrementAndGet();
+                            failureDetector.recordSuccess(node);
+                          }
+                          catch (UnreachableStoreException e)
+                          {
+                            failureDetector.recordException(node, e);
+                            failures.add(e);
+                          }
+                          catch (Exception e)
+                          {
+                            logger.warn(("Error in PUT on node " + node.getId() + "(" + node.getHost() + ")"), e);
+                            failures.add(e);
+                          }
+                          finally {
+                                    semaphore.release();
+                                  }
+                        }
+                      });
+
+Edit B:
+Hole 1:
+[SLoop]: try
+{
+  versionedCopy = incremented(versioned, current.getId());
+  innerStores.get(current.getId()).put(key, versionedCopy);
+  successes.getAndIncrement();
+  current.getStatus().setAvailable();
+  master = current;
+  break;
+}
+catch (UnreachableStoreException e)
+{
+  markUnavailable(current, e);
+  failures.add(e);
+}
+catch (ObsoleteVersionException e)
+{
+  throw e;
+}
+catch (Exception e)
+{
+  failures.add(e);
+}
+Hole 2:
+[SLoop]: this.executor.execute(new Runnable()
+                      {
+                        public void run ()
+                        {
+                          try
+                          {
+                            innerStores.get(node.getId()).put(key, finalVersionedCopy);
+                            successes.incrementAndGet();
+                            node.getStatus().setAvailable();
+                          }
+                          catch (UnreachableStoreException e)
+                          {
+                            markUnavailable(node, e);
+                            failures.add(e);
+                          }
+                          catch (ObsoleteVersionException e)
+                          {
+                          }
+                          catch (Exception e)
+                          {
+                            logger.warn(("Error in PUT on node " + node.getId() + "(" + node.getHost() + ")"), e);
+                            failures.add(e);
+                          }
+                          finally {
+                                    semaphore.release();
+                                  }
+                        }
+                      });
+
+Edit M:
+Hole 1:
+[SLoop]: try
+{
+  versionedCopy = incremented(versioned, current.getId());
+  innerStores.get(current.getId()).put(key, versionedCopy);
+  successes.getAndIncrement();
+  failureDetector.recordSuccess(current);
+  master = current;
+  break;
+}
+catch (UnreachableStoreException e)
+{
+  failureDetector.recordException(current, e);
+  failures.add(e);
+}
+catch (ObsoleteVersionException e)
+{
+  throw e;
+}
+catch (Exception e)
+{
+  failures.add(e);
+}
+Hole 2:
+[SLoop]: this.executor.execute(new Runnable()
+                      {
+                        public void run ()
+                        {
+                          try
+                          {
+                            innerStores.get(node.getId()).put(key, finalVersionedCopy);
+                            successes.incrementAndGet();
+                            failureDetector.recordSuccess(node);
+                          }
+                          catch (UnreachableStoreException e)
+                          {
+                            failureDetector.recordException(node, e);
+                            failures.add(e);
+                          }
+                          catch (ObsoleteVersionException e)
+                          {
+                          }
+                          catch (Exception e)
+                          {
+                            logger.warn(("Error in PUT on node " + node.getId() + "(" + node.getHost() + ")"), e);
+                            failures.add(e);
+                          }
+                          finally {
+                                    semaphore.release();
+                                  }
+                        }
+                      });
+
+

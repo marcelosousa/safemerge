@@ -1,0 +1,47 @@
+Parsing files...
+Merge Instance for method (Ident "SlopPusherTest",Ident "checkPush",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "Versioned",[ActualType (ClassRefType (ClassType [(Ident "Slop",[])]))])])))),RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "Versioned",[ActualType (ClassRefType (ClassType [(Ident "Slop",[])]))])]))))])
+private void checkPush (Versioned<Slop>[] delivered, Versioned<Slop>[] undelivered)
+{
+  for (Versioned<Slop> vs : delivered) {
+                                         Slop slop = vs.getValue();
+                                         <?HOLE?>
+                                         <?HOLE?>
+                                       }
+  for (Versioned<Slop> vs : undelivered) {
+                                           Slop slop = vs.getValue();
+                                           <?HOLE?>
+                                         }
+}
+Edit Base:
+Hole 1:
+[SLoop]: assertEquals("Slop remains.", 0, repo.getSlopStore().get(slop.makeKey()).size());
+Hole 2:
+[SLoop]: assertTrue(bytesEqual(slop.getValue(), repo.getNodeStore(STORE_NAME, slop.getNodeId()).get(slop.makeKey()).get(0).getValue()));
+Hole 3:
+[SLoop]: assertEquals("Slop is gone!", 1, repo.getSlopStore().get(slop.makeKey()).size());
+
+Edit A:
+Hole 1:
+[SLoop]: assertEquals("Slop remains.", 0, repo.getSlopStore().get(slop.makeKey(), null).size());
+Hole 2:
+[SLoop]: assertTrue(bytesEqual(slop.getValue(), repo.getNodeStore(STORE_NAME, slop.getNodeId()).get(slop.makeKey(), null).get(0).getValue()));
+Hole 3:
+[SLoop]: assertEquals("Slop is gone!", 1, repo.getSlopStore().get(slop.makeKey(), null).size());
+
+Edit B:
+Hole 1:
+[SLoop]: assertEquals("Slop remains.", 0, repo.getSlopStore().get(slop.makeKey()).size());
+Hole 2:
+[SLoop]: assertTrue(bytesEqual(slop.getValue(), repo.getNodeStore(STORE_NAME, slop.getNodeId()).get(slop.getKey()).get(0).getValue()));
+Hole 3:
+[SLoop]: assertEquals("Slop is gone!", 1, repo.getSlopStore().get(slop.makeKey()).size());
+
+Edit M:
+Hole 1:
+[SLoop]: assertEquals("Slop remains.", 0, repo.getSlopStore().get(slop.makeKey(), null).size());
+Hole 2:
+[SLoop]: assertTrue(bytesEqual(slop.getValue(), repo.getNodeStore(STORE_NAME, slop.getNodeId()).get(slop.getKey(), null).get(0).getValue()));
+Hole 3:
+[SLoop]: assertEquals("Slop is gone!", 1, repo.getSlopStore().get(slop.makeKey(), null).size());
+
+

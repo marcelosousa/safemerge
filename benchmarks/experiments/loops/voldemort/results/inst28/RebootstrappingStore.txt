@@ -1,0 +1,53 @@
+Parsing files...
+Merge Instance for method (Ident "RebootstrappingStore",Ident "checkAndAddNodeStore",[])
+private void checkAndAddNodeStore ()
+{
+  for (Node node : metadata.getCluster().getNodes()) {
+                                                       <?HOLE?>
+                                                     }
+}
+Edit Base:
+Hole 1:
+[SCond,SLoop]: if (!routedStore.getInnerStores().containsKey(node.getId()))
+{
+  if (!storeRepository.hasNodeStore(getName(), node.getId()))
+  {
+    storeRepository.addNodeStore(node.getId(), createNodeStore(node));
+  }
+  routedStore.getInnerStores().put(node.getId(), storeRepository.getNodeStore(getName(), node.getId()));
+}
+
+Edit A:
+Hole 1:
+[SCond,SLoop]: if (!routableStore.getInnerStores().containsKey(node.getId()))
+{
+  if (!storeRepository.hasNodeStore(getName(), node.getId()))
+  {
+    storeRepository.addNodeStore(node.getId(), createNodeStore(node));
+  }
+  routableStore.getInnerStores().put(node.getId(), storeRepository.getNodeStore(getName(), node.getId()));
+}
+
+Edit B:
+Hole 1:
+[SLoop]: if (!routedStore.getInnerStores().containsKey(node.getId()))
+{
+  if (!storeRepository.hasNodeStore(getName(), node.getId()))
+  {
+    storeRepository.addNodeStore(node.getId(), createNodeStore(node));
+  }
+  routedStore.getInnerStores().put(node.getId(), storeRepository.getNodeStore(getName(), node.getId()));
+}
+
+Edit M:
+Hole 1:
+[SLoop]: if (!routableStore.getInnerStores().containsKey(node.getId()))
+{
+  if (!storeRepository.hasNodeStore(getName(), node.getId()))
+  {
+    storeRepository.addNodeStore(node.getId(), createNodeStore(node));
+  }
+  routableStore.getInnerStores().put(node.getId(), storeRepository.getNodeStore(getName(), node.getId()));
+}
+
+

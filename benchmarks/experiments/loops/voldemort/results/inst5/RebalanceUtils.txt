@@ -1,0 +1,130 @@
+Parsing files...
+Merge Instance for method (Ident "RebalanceUtils",Ident "printMap",[RefType (ClassRefType (ClassType [(Ident "Map",[ActualType (ClassRefType (ClassType [(Ident "Integer",[])])),ActualType (ClassRefType (ClassType [(Ident "Set",[ActualType (ClassRefType (ClassType [(Ident "Pair",[ActualType (ClassRefType (ClassType [(Ident "Integer",[])])),ActualType (ClassRefType (ClassType [(Ident "Integer",[])]))])]))])]))])]))])
+public static String printMap (final Map<Integer, Set<Pair<Integer, Integer>>> nodeIdToAllPartitions)
+{
+  StringBuilder sb = new StringBuilder();
+  for (Map.Entry<Integer, Set<Pair<Integer, Integer>>> entry : nodeIdToAllPartitions.entrySet()) {
+                                                                                                   final Integer nodeId = entry.getKey();
+                                                                                                   final Set<Pair<Integer, Integer>> allPartitions = entry.getValue();
+                                                                                                   final HashMap<Integer, List<Integer>> replicaTypeToPartitions = flattenPartitionTuples(allPartitions);
+                                                                                                   <?HOLE?>
+                                                                                                   sb.append(nodeId);
+                                                                                                   if (replicaTypeToPartitions.size() > 0)
+                                                                                                   {
+                                                                                                     <?HOLE?>
+                                                                                                   }
+                                                                                                   else
+                                                                                                   {
+                                                                                                     sb.append(" - empty");
+                                                                                                   }
+                                                                                                   sb.append(Utils.NEWLINE);
+                                                                                                 }
+  return sb.toString();
+}
+Edit Base:
+Hole 1:
+[SLoop]: <SKIP>
+Hole 2:
+[SLoop,SCond,SLoop]: for (Entry<Integer, List<Integer>> partitions : replicaTypeToPartitions.entrySet()) {
+                                                                                      sb.append((" - " + partitions.getValue()));
+                                                                                    }
+
+Edit A:
+Hole 1:
+[SLoop]: final TreeMap<Integer, List<Integer>> sortedReplicaTypeToPartitions = new TreeMap<Integer, List<Integer>>(replicaTypeToPartitions);
+Hole 2:
+[SLoop,SCond,SLoop]: for (Entry<Integer, List<Integer>> partitions : sortedReplicaTypeToPartitions.entrySet()) {
+                                                                                            Collections.sort(partitions.getValue());
+                                                                                            sb.append((" - " + partitions.getValue()));
+                                                                                          }
+
+Edit B:
+Hole 1:
+[SLoop]: <SKIP>
+Hole 2:
+[SCond,SLoop]: for (Entry<Integer, List<Integer>> partitions : replicaTypeToPartitions.entrySet()) {
+                                                                                      sb.append((" - " + partitions.getValue()));
+                                                                                    }
+
+Edit M:
+Hole 1:
+[SLoop]: final TreeMap<Integer, List<Integer>> sortedReplicaTypeToPartitions = new TreeMap<Integer, List<Integer>>(replicaTypeToPartitions);
+Hole 2:
+[SCond,SLoop]: for (Entry<Integer, List<Integer>> partitions : sortedReplicaTypeToPartitions.entrySet()) {
+                                                                                            Collections.sort(partitions.getValue());
+                                                                                            sb.append((" - " + partitions.getValue()));
+                                                                                          }
+
+Merge Instance for method (Ident "RebalanceUtils",Ident "validateClusterState",[RefType (ClassRefType (ClassType [(Ident "Cluster",[])])),RefType (ClassRefType (ClassType [(Ident "AdminClient",[])]))])
+public static void validateClusterState (final Cluster cluster, final AdminClient adminClient)
+{
+  for (Node node : cluster.getNodes()) {
+                                         <?HOLE?>
+                                         <?HOLE?>
+                                       }
+}
+Edit Base:
+Hole 1:
+[SLoop]: Versioned<String> versioned = adminClient.getRemoteMetadata(node.getId(), MetadataStore.SERVER_STATE_KEY);
+Hole 2:
+[SCond,SLoop]: if (!VoldemortState.NORMAL_SERVER.name().equals(versioned.getValue()))
+{
+  throw new VoldemortRebalancingException("Cannot rebalance since node " + node.getId() + " (" + node.getHost() + ") is not in normal state, but in " + versioned.getValue());
+}
+else
+{
+  if (logger.isInfoEnabled())
+  {
+    logger.info(("Node " + node.getId() + " (" + node.getHost() + ") is ready for rebalance."));
+  }
+}
+
+Edit A:
+Hole 1:
+[SLoop]: Versioned<VoldemortState> versioned = adminClient.getRemoteServerState(node.getId());
+Hole 2:
+[SCond,SLoop]: if (!VoldemortState.NORMAL_SERVER.equals(versioned.getValue()))
+{
+  throw new VoldemortRebalancingException("Cannot rebalance since node " + node.getId() + " (" + node.getHost() + ") is not in normal state, but in " + versioned.getValue());
+}
+else
+{
+  if (logger.isInfoEnabled())
+  {
+    logger.info(("Node " + node.getId() + " (" + node.getHost() + ") is ready for rebalance."));
+  }
+}
+
+Edit B:
+Hole 1:
+[SLoop]: Versioned<String> versioned = adminClient.getRemoteMetadata(node.getId(), MetadataStore.SERVER_STATE_KEY);
+Hole 2:
+[SLoop]: if (!VoldemortState.NORMAL_SERVER.name().equals(versioned.getValue()))
+{
+  throw new VoldemortRebalancingException("Cannot rebalance since node " + node.getId() + " (" + node.getHost() + ") is not in normal state, but in " + versioned.getValue());
+}
+else
+{
+  if (logger.isInfoEnabled())
+  {
+    logger.info(("Node " + node.getId() + " (" + node.getHost() + ") is ready for rebalance."));
+  }
+}
+
+Edit M:
+Hole 1:
+[SLoop]: Versioned<VoldemortState> versioned = adminClient.getRemoteServerState(node.getId());
+Hole 2:
+[SLoop]: if (!VoldemortState.NORMAL_SERVER.equals(versioned.getValue()))
+{
+  throw new VoldemortRebalancingException("Cannot rebalance since node " + node.getId() + " (" + node.getHost() + ") is not in normal state, but in " + versioned.getValue());
+}
+else
+{
+  if (logger.isInfoEnabled())
+  {
+    logger.info(("Node " + node.getId() + " (" + node.getHost() + ") is ready for rebalance."));
+  }
+}
+
+

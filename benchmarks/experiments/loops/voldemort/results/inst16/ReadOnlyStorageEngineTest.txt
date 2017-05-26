@@ -1,0 +1,81 @@
+Parsing files...
+Merge Instance for method (Ident "ReadOnlyStorageEngineTest",Ident "canMultigetGoodValues",[])
+@Test
+ public void canMultigetGoodValues () throws Exception
+{
+  ReadOnlyStorageEngineTestInstance testData = ReadOnlyStorageEngineTestInstance.create(strategy, dir, TEST_SIZE, 2, 2, serDef, serDef);
+  Set<String> keys = testData.getData().keySet();
+  Set<String> gotten = new HashSet<String>();
+  <?HOLE?>
+  assertEquals(keys, gotten);
+  testData.delete();
+}
+Edit Base:
+Hole 1:
+[SLoop]: for (Map.Entry<Integer, Store<String, String>> entry : testData.getNodeStores().entrySet()) {
+                                                                                              Set<String> queryKeys = new HashSet<String>();
+                                                                                              for (String key : keys) for (Node node : testData.routeRequest(key)) if (Integer.valueOf(node.getId()).equals(entry.getKey()))
+                                                                                                                                                                     queryKeys.add(key);
+                                                                                              Map<String, List<Versioned<String>>> values = entry.getValue().getAll(queryKeys);
+                                                                                              assertEquals("Returned fewer keys than expected.", queryKeys.size(), values.size());
+                                                                                              for (Map.Entry<String, List<Versioned<String>>> returned : values.entrySet()) {
+                                                                                                                                                                              assertTrue(queryKeys.contains(returned.getKey()));
+                                                                                                                                                                              assertEquals(1, returned.getValue().size());
+                                                                                                                                                                              Versioned<String> val = returned.getValue().get(0);
+                                                                                                                                                                              assertEquals(testData.getData().get(returned.getKey()), val.getValue());
+                                                                                                                                                                              gotten.add(returned.getKey());
+                                                                                                                                                                            }
+                                                                                            }
+
+Edit A:
+Hole 1:
+[SLoop]: for (Map.Entry<Integer, Store<String, String, String>> entry : testData.getNodeStores().entrySet()) {
+                                                                                                      Set<String> queryKeys = new HashSet<String>();
+                                                                                                      for (String key : keys) for (Node node : testData.routeRequest(key)) if (Integer.valueOf(node.getId()).equals(entry.getKey()))
+                                                                                                                                                                             queryKeys.add(key);
+                                                                                                      Map<String, List<Versioned<String>>> values = entry.getValue().getAll(queryKeys, null);
+                                                                                                      assertEquals("Returned fewer keys than expected.", queryKeys.size(), values.size());
+                                                                                                      for (Map.Entry<String, List<Versioned<String>>> returned : values.entrySet()) {
+                                                                                                                                                                                      assertTrue(queryKeys.contains(returned.getKey()));
+                                                                                                                                                                                      assertEquals(1, returned.getValue().size());
+                                                                                                                                                                                      Versioned<String> val = returned.getValue().get(0);
+                                                                                                                                                                                      assertEquals(testData.getData().get(returned.getKey()), val.getValue());
+                                                                                                                                                                                      gotten.add(returned.getKey());
+                                                                                                                                                                                    }
+                                                                                                    }
+
+Edit B:
+Hole 1:
+[]: for (Map.Entry<Integer, Store<String, String>> entry : testData.getNodeStores().entrySet()) {
+                                                                                              Set<String> queryKeys = new HashSet<String>();
+                                                                                              for (String key : keys) for (Node node : testData.routeRequest(key)) if (Integer.valueOf(node.getId()).equals(entry.getKey()))
+                                                                                                                                                                     queryKeys.add(key);
+                                                                                              Map<String, List<Versioned<String>>> values = entry.getValue().getAll(queryKeys);
+                                                                                              assertEquals("Returned fewer keys than expected.", queryKeys.size(), values.size());
+                                                                                              for (Map.Entry<String, List<Versioned<String>>> returned : values.entrySet()) {
+                                                                                                                                                                              assertTrue(queryKeys.contains(returned.getKey()));
+                                                                                                                                                                              assertEquals(1, returned.getValue().size());
+                                                                                                                                                                              Versioned<String> val = returned.getValue().get(0);
+                                                                                                                                                                              assertEquals(testData.getData().get(returned.getKey()), val.getValue());
+                                                                                                                                                                              gotten.add(returned.getKey());
+                                                                                                                                                                            }
+                                                                                            }
+
+Edit M:
+Hole 1:
+[]: for (Map.Entry<Integer, Store<String, String, String>> entry : testData.getNodeStores().entrySet()) {
+                                                                                                      Set<String> queryKeys = new HashSet<String>();
+                                                                                                      for (String key : keys) for (Node node : testData.routeRequest(key)) if (Integer.valueOf(node.getId()).equals(entry.getKey()))
+                                                                                                                                                                             queryKeys.add(key);
+                                                                                                      Map<String, List<Versioned<String>>> values = entry.getValue().getAll(queryKeys, null);
+                                                                                                      assertEquals("Returned fewer keys than expected.", queryKeys.size(), values.size());
+                                                                                                      for (Map.Entry<String, List<Versioned<String>>> returned : values.entrySet()) {
+                                                                                                                                                                                      assertTrue(queryKeys.contains(returned.getKey()));
+                                                                                                                                                                                      assertEquals(1, returned.getValue().size());
+                                                                                                                                                                                      Versioned<String> val = returned.getValue().get(0);
+                                                                                                                                                                                      assertEquals(testData.getData().get(returned.getKey()), val.getValue());
+                                                                                                                                                                                      gotten.add(returned.getKey());
+                                                                                                                                                                                    }
+                                                                                                    }
+
+

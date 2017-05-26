@@ -1,0 +1,34 @@
+Parsing files...
+Merge Instance for method (Ident "ReadOnlyStoreManagementServlet",Ident "getReadOnlyStores",[RefType (ClassRefType (ClassType [(Ident "VoldemortServer",[])]))])
+private List<ReadOnlyStorageEngine> getReadOnlyStores (VoldemortServer server)
+{
+  StorageService storage = (StorageService) Utils.notNull(server).getService(ServiceType.STORAGE);
+  List<ReadOnlyStorageEngine> l = Lists.newArrayList();
+  <?HOLE?>
+  return l;
+}
+Edit Base:
+Hole 1:
+[SLoop]: for (StorageEngine<ByteArray, byte[]> engine : storage.getStoreRepository().getStorageEnginesByClass(ReadOnlyStorageEngine.class)) {
+                                                                                                                                     l.add(((ReadOnlyStorageEngine) engine));
+                                                                                                                                   }
+
+Edit A:
+Hole 1:
+[SLoop]: for (StorageEngine<ByteArray, byte[], byte[]> engine : storage.getStoreRepository().getStorageEnginesByClass(ReadOnlyStorageEngine.class)) {
+                                                                                                                                             l.add(((ReadOnlyStorageEngine) engine));
+                                                                                                                                           }
+
+Edit B:
+Hole 1:
+[]: for (StorageEngine<ByteArray, byte[]> engine : storage.getStoreRepository().getStorageEnginesByClass(ReadOnlyStorageEngine.class)) {
+                                                                                                                                     l.add(((ReadOnlyStorageEngine) engine));
+                                                                                                                                   }
+
+Edit M:
+Hole 1:
+[]: for (StorageEngine<ByteArray, byte[], byte[]> engine : storage.getStoreRepository().getStorageEnginesByClass(ReadOnlyStorageEngine.class)) {
+                                                                                                                                             l.add(((ReadOnlyStorageEngine) engine));
+                                                                                                                                           }
+
+

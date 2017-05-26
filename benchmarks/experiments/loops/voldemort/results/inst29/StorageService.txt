@@ -1,0 +1,127 @@
+Parsing files...
+Merge Instance for method (Ident "StorageService",Ident "stopInner",[])
+@Override
+ protected void stopInner ()
+{
+  Exception lastException = null;
+  logger.info("Closing all stores.");
+  <?HOLE?>
+  for (Store<ByteArray, byte[]> store : this.storeRepository.getAllStorageEngines()) {
+                                                                                       logger.info(("Closing storage engine for " + store.getName()));
+                                                                                       try
+                                                                                       {
+                                                                                         store.close();
+                                                                                       }
+                                                                                       catch (Exception e)
+                                                                                       {
+                                                                                         logger.error(e);
+                                                                                         lastException = e;
+                                                                                       }
+                                                                                     }
+  logger.info("All stores closed.");
+  if (this.storeRepository.hasSlopStore())
+  {
+    try
+    {
+      this.storeRepository.getSlopStore().close();
+    }
+    catch (Exception e)
+    {
+      logger.error(e);
+      lastException = e;
+    }
+  }
+  logger.info("Closing storage configurations.");
+  for (StorageConfiguration config : storageConfigs.values()) {
+                                                                logger.info(("Closing " + config.getType() + " storage config."));
+                                                                try
+                                                                {
+                                                                  config.close();
+                                                                }
+                                                                catch (Exception e)
+                                                                {
+                                                                  logger.error(e);
+                                                                  lastException = e;
+                                                                }
+                                                              }
+  this.clientThreadPool.shutdownNow();
+  logger.info("Closed client threadpool.");
+  if (this.failureDetector != null)
+  {
+    try
+    {
+      this.failureDetector.destroy();
+    }
+    catch (Exception e)
+    {
+      lastException = e;
+    }
+  }
+  logger.info("Closed failure detector.");
+  if (lastException instanceof VoldemortException)
+    throw (VoldemortException) lastException;
+  else
+    if (lastException != null)
+      throw new VoldemortException(lastException);
+}
+Edit Base:
+Hole 1:
+[SLoop]: for (Store<ByteArray, byte[]> store : this.storeRepository.getAllRoutedStores()) {
+                                                                                   logger.info(("Closing routed store for " + store.getName()));
+                                                                                   try
+                                                                                   {
+                                                                                     store.close();
+                                                                                   }
+                                                                                   catch (Exception e)
+                                                                                   {
+                                                                                     logger.error(e);
+                                                                                     lastException = e;
+                                                                                   }
+                                                                                 }
+
+Edit A:
+Hole 1:
+[SLoop]: for (Store<ByteArray, byte[]> store : this.storeRepository.getAllRoutableStores()) {
+                                                                                     logger.info(("Closing routed store for " + store.getName()));
+                                                                                     try
+                                                                                     {
+                                                                                       store.close();
+                                                                                     }
+                                                                                     catch (Exception e)
+                                                                                     {
+                                                                                       logger.error(e);
+                                                                                       lastException = e;
+                                                                                     }
+                                                                                   }
+
+Edit B:
+Hole 1:
+[]: for (Store<ByteArray, byte[]> store : this.storeRepository.getAllRoutedStores()) {
+                                                                                   logger.info(("Closing routed store for " + store.getName()));
+                                                                                   try
+                                                                                   {
+                                                                                     store.close();
+                                                                                   }
+                                                                                   catch (Exception e)
+                                                                                   {
+                                                                                     logger.error(e);
+                                                                                     lastException = e;
+                                                                                   }
+                                                                                 }
+
+Edit M:
+Hole 1:
+[]: for (Store<ByteArray, byte[]> store : this.storeRepository.getAllRoutableStores()) {
+                                                                                     logger.info(("Closing routed store for " + store.getName()));
+                                                                                     try
+                                                                                     {
+                                                                                       store.close();
+                                                                                     }
+                                                                                     catch (Exception e)
+                                                                                     {
+                                                                                       logger.error(e);
+                                                                                       lastException = e;
+                                                                                     }
+                                                                                   }
+
+
