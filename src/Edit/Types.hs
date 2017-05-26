@@ -1,4 +1,6 @@
 {-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
 -------------------------------------------------------------------------------
 -- Module    :  Edit.Types
 -- Copyright :  (c) 2016 Marcelo Sousa
@@ -15,11 +17,25 @@ import qualified Data.Map as M
 
 import qualified Debug.Trace as T
 
-type Edit = [BlockStmt] 
+data Scope = SLoop | SCond 
+  deriving (Eq,Ord,Show)
+type SEdit = (BlockStmt,[Scope])
+type Edit = [SEdit]
 type Edits = [(Edit,Edit,Edit,Edit)]
 type AnnEdit = [AnnBlockStmt] 
 type AnnAnnEdits = [(AnnEdit,AnnEdit,AnnEdit,AnnEdit)]
 type Method = ([FormalParam],Block) 
 
-printEdit :: Edit -> String
-printEdit e = unlines $ map (\(n,s) -> "Hole " ++ show n ++ ":\n" ++ prettyPrint s) $ zip [1..] e 
+loop_scope :: Edit -> Bool
+loop_scope = any (\(_,sc) -> any (==SLoop) sc) 
+
+-- add each x to the ei
+push :: Edit -> [Edit] -> [Edit]
+push xs [] = map (:[]) xs
+push xs eis =
+  let a = zip xs eis
+  in map (\(x,ei) -> ei++[x]) a
+
+instance Annotate SEdit AnnBlockStmt where
+  toAnn p (a,b) = toAnn p a
+  fromAnn b = (fromAnn b, [])

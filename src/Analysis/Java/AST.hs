@@ -84,6 +84,7 @@ class Annotate a b where
 class GetAnnotation a where
   getAnn  :: a -> [Int]
 
+
 instance Annotate MemberDecl AnnMemberDecl where
   toAnn p mDecl = case mDecl of
     FieldDecl  m t v -> AnnFieldDecl m t v

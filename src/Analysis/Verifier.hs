@@ -28,9 +28,9 @@ import Edit.Types
 import Language.Java.Pretty
 import Language.Java.Syntax
 import System.IO.Unsafe
+import Util
 import Z3.Monad
 import qualified Data.Map as M
-import qualified Debug.Trace as T
 
 wiz :: DiffInst -> IO () 
 wiz diff@MInst{..} = mapM_ (wiz_meth diff) _merges 
@@ -55,10 +55,10 @@ wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = do
       f_e_b = map (toAnn [3]) _e_b
       f_e_m = map (toAnn [4]) _e_m
   putStrLn $ "wiz_meth:\n" ++ prettyPrint _mth 
-  putStrLn $ "edit o:\n" ++ (unlines $ map prettyPrint _e_o) 
-  putStrLn $ "edit a:\n" ++ (unlines $ map prettyPrint _e_a) 
-  putStrLn $ "edit b:\n" ++ (unlines $ map prettyPrint _e_b) 
-  putStrLn $ "edit m:\n" ++ (unlines $ map prettyPrint _e_m) 
+  putStrLn $ "edit o:\n" ++ (unlines $ map (prettyPrint . fst) _e_o) 
+  putStrLn $ "edit a:\n" ++ (unlines $ map (prettyPrint . fst) _e_a) 
+  putStrLn $ "edit b:\n" ++ (unlines $ map (prettyPrint . fst) _e_b) 
+  putStrLn $ "edit m:\n" ++ (unlines $ map (prettyPrint . fst) _e_m) 
   let o_class = findClass mth_id _o_info 
       a_class = findClass mth_id _a_info 
       b_class = findClass mth_id _b_info 
@@ -130,14 +130,14 @@ analyser_debug stmts = do
  postStr <- lift $ astToString _post
  case stmts of
   [] -> do 
-    let k = T.trace (_triple preStr "end" postStr ++ "\n" ++ printSSAMap _ssamap) $ 
+    let k = trace (_triple preStr "end" postStr ++ "\n" ++ printSSAMap _ssamap) $ 
              unsafePerformIO $ getChar
     analyse stmts
     -- k `seq` analyse stmts
   (bstmt:_) -> do 
-    --let k = T.trace (_triple preStr (show bstmt ++ "\n" ++ prettyPrint (fromAnn bstmt :: BlockStmt)) postStr ++ "\n" ++ printSSAMap _ssamap ++ 
+    --let k = trace (_triple preStr (show bstmt ++ "\n" ++ prettyPrint (fromAnn bstmt :: BlockStmt)) postStr ++ "\n" ++ printSSAMap _ssamap ++ 
     --        "\nKeys in Function Map: " ++ show (M.keys _fnmap)) $ unsafePerformIO $ getChar
-    let k = T.trace (_triple preStr (show bstmt ++ "\n" ++ prettyPrint (fromAnn bstmt :: BlockStmt)) "") $ unsafePerformIO $ getChar
+    let k = trace (_triple preStr (show bstmt ++ "\n" ++ prettyPrint (fromAnn bstmt :: BlockStmt)) "") $ unsafePerformIO $ getChar
     -- k `seq` analyse stmts
     analyse stmts
 
@@ -157,7 +157,7 @@ analyse stmts = do
     if (every $ getAnn bstmt) && applyDepCheck 
     then -- only apply dependence analysis if all variables are equal is all versions
       case next_block stmts of
-      (Left b, r) -> T.trace ("analyser: block encoding") $ do
+      (Left b, r) -> trace ("analyser: block encoding") $ do
         case b of
           [b'] -> 
             analyser_bstmt bstmt r
@@ -186,7 +186,7 @@ checkDep = do
 --       use uninterpreted functions to model 
 --       the changes using assignments 
 analyser_block :: [BlockStmt] -> EnvOp ()
-analyser_block b = T.trace ("analyser_block:\n" ++ (unlines $ map prettyPrint b)) $ do
+analyser_block b = trace ("analyser_block:\n" ++ (unlines $ map prettyPrint b)) $ do
   env@Env{..} <- get
   let mid = (Ident "", Ident "", [])
       mth_bdy = MethodBody $ Just $ Block (b ++ [BlockStmt $ Return Nothing])
@@ -210,7 +210,7 @@ get_inputs (out, (_,inp)) = do
 --    output = _anonymous (dep1, ..., depn)
 --    include the older versions of the variables in the dependencies
 analyser_block_dep :: (AbsVar, [[AST]]) -> EnvOp ()
-analyser_block_dep (out,inp) = T.trace ("analyser_block_dep: out = " ++ show out ++ "\nlength = " ++ show (length inp)) $  do
+analyser_block_dep (out,inp) = trace ("analyser_block_dep: out = " ++ show out ++ "\nlength = " ++ show (length inp)) $  do
   num <- incAnonym 
   let lhs = symLocToLhs out 
       id = Ident $ "Anonymous"++ show num
@@ -292,12 +292,12 @@ analyse_conditional pid cond s1 s2 rest =
   env@Env{..} <- get
   -- then branch
   preThen <- lift $ mkAnd (_pre:condSmt)
-  resThen <- T.trace ("analyse:" ++ show pid ++ "  " ++ prettyPrint cond) $ analyse_branch preThen s1
+  resThen <- trace ("analyse:" ++ show pid ++ "  " ++ prettyPrint cond) $ analyse_branch preThen s1
   -- else branch
   put env
   ncondSmt <- lift $ mapM mkNot condSmt
   preElse <- lift $ mkAnd (_pre:ncondSmt)
-  resElse <- T.trace ("analyse:" ++ show pid ++ " Not " ++ prettyPrint cond) $ analyse_branch preElse s2
+  resElse <- trace ("analyse:" ++ show pid ++ " Not " ++ prettyPrint cond) $ analyse_branch preElse s2
   combine resThen resElse
  where
    analyse_branch phi branch = do
@@ -307,8 +307,8 @@ analyse_conditional pid cond s1 s2 rest =
     cPhi <- lift $ checkSAT phi
     cPhiStr <- lift $ astToString phi 
     if cPhi == Unsat
-    then T.trace ("analyse: " ++ cPhiStr ++ "\nanalyse: Unreachable") $ return _default
-    else T.trace ("analyse: Reachable") $ analyser r
+    then trace ("analyse: " ++ cPhiStr ++ "\nanalyse: Unreachable") $ return _default
+    else trace ("analyse: Reachable") $ analyser r
    combine :: (Result, Maybe Model) -> (Result, Maybe Model) -> EnvOp (Result, Maybe Model)
    combine (Unsat,_) (Unsat,_) = return _default
    combine (Unsat,_) res = return res
@@ -335,7 +335,7 @@ houdini preds cond body = do
   let pre = _pre env 
   inv <- lift $ if null preds then mkTrue else mkAnd preds
   invStr <- lift $ astToString inv
-  let k = T.trace ("loop invariant: \n" ++ invStr ++ "\n" ) $ 
+  let k = trace ("loop invariant: \n" ++ invStr ++ "\n" ) $ 
              unsafePerformIO $ getChar
   -- npre <- k `seq` lift $ mkAnd [inv, cond] 
   npre <- lift $ mkAnd [inv, cond] 
@@ -418,7 +418,7 @@ enc_lhs pid lhs = do
   FieldLhs (PrimaryFieldAccess This (ident@(Ident str))) -> do
    case M.lookup ident _ssamap of
        -- new variable
-       Nothing -> T.trace ("new field variable?") $ enc_lhs_inner pid ident
+       Nothing -> trace ("new field variable?") $ enc_lhs_inner pid ident
        Just l -> case M.lookup pid l of
          Nothing -> enc_lhs_inner pid ident
          Just r  -> return (ident,r) 
@@ -435,7 +435,7 @@ enc_lhs_inner pid ident@(Ident str) = do
   return (ident,res)
 
 assign_special :: Pid -> Lhs -> AST -> EnvOp ()
-assign_special pid lhs rhsAst = T.trace ("assign_special: " ++ show pid ++ " " ++ show lhs) $ do
+assign_special pid lhs rhsAst = trace ("assign_special: " ++ show pid ++ " " ++ show lhs) $ do
  env@Env{..} <- get
  case lhs of
   ArrayLhs (ArrayIndex e args) -> do

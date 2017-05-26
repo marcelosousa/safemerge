@@ -33,7 +33,7 @@ simplifyCBody (ConstructorBody m stmts) =
   ConstructorBody m $ map simplifyBStmt stmts
 
 simplifyEdit :: Edit -> Edit
-simplifyEdit = map simplifyBStmt
+simplifyEdit = map (\(stmt,s) -> (simplifyBStmt stmt,s))
 
 simplifyBStmt :: BlockStmt -> BlockStmt
 simplifyBStmt bstmt = case bstmt of

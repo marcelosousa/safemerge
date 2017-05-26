@@ -8,13 +8,14 @@ module Edit.Gen where
 import Data.Map (Map)
 import Edit.Diff
 import Edit.Types
+import Edit.Print
 import Language.Java.Parser hiding (opt)
 import Language.Java.Pretty hiding (opt)
 import Language.Java.Syntax
+import Util
 import qualified Data.Map as M
-import qualified Debug.Trace as T
 
--- | Edit generation
+-- | Edit generation for 2 programs
 edit_gen :: Program -> Program -> (Program, Edit, Edit)
 edit_gen o_ast v_ast =
   case (o_ast, v_ast) of
@@ -81,7 +82,7 @@ edit_decl_gen o_decl v_decl =
       let (no_mem,o_edit,v_edit) = edit_member_gen o_mem v_mem
       in (MemberDecl no_mem, o_edit, v_edit)
     (InitDecl o_b o_block, InitDecl v_b v_block) ->
-      let (no_block,o_edit,v_edit) = edit_block_gen o_block v_block 
+      let (no_block,o_edit,v_edit) = edit_block_gen [] o_block v_block 
       in if o_b == v_b
          then (InitDecl o_b no_block, o_edit, v_edit)
          else error "edit_decl_gen: unsupported differences"
@@ -123,10 +124,10 @@ edit_method_body_gen o_mbody v_mbody =
   then (o_mbody, [], [])
   else -- the method bodies are for sure not the same
     case (o_mbody, v_mbody) of
-      (MethodBody Nothing, MethodBody (Just block)) -> (MethodBody $ Just $ Block [hole], [skip], [BlockStmt $ StmtBlock block])
-      (MethodBody (Just block), MethodBody Nothing) -> (MethodBody $ Just $ Block [hole], [BlockStmt $ StmtBlock block], [skip])
+      (MethodBody Nothing, MethodBody (Just block)) -> (MethodBody $ Just $ Block [hole], [(skip,[])], [(BlockStmt $ StmtBlock block, [])])
+      (MethodBody (Just block), MethodBody Nothing) -> (MethodBody $ Just $ Block [hole], [(BlockStmt $ StmtBlock block, [])], [(skip,[])])
       (MethodBody (Just o_block), MethodBody (Just v_block)) ->
-        let (no_block,o_edit,v_edit) = edit_block_gen o_block v_block
+        let (no_block,o_edit,v_edit) = edit_block_gen [] o_block v_block
         in (MethodBody $ Just no_block, o_edit, v_edit) 
 
 edit_constructor_body_gen :: ConstructorBody -> ConstructorBody -> (ConstructorBody,Edit,Edit)
@@ -136,86 +137,95 @@ edit_constructor_body_gen o_cbody v_cbody =
   else case (o_cbody, v_cbody) of
     (ConstructorBody o_e o_stmts, ConstructorBody v_e v_stmts) -> error "todo" 
 
--- | Need to continue here with AST Diff
-edit_block_gen :: Block -> Block -> (Block, Edit, Edit)
-edit_block_gen (Block o_block) (Block v_block) =
+-- | AST Diff Algorithm:
+--   Start by application the longest common sequence algorithm 
+--   to generate a first approximation.
+--   We refine that result by applying a new algorithm that traverses
+--   the program with holes and refines the results.
+edit_block_gen :: [Scope] -> Block -> Block -> (Block, Edit, Edit)
+edit_block_gen scope (Block o_block) (Block v_block) =
   let c = lcs o_block v_block
-      (no_block, o_edit, v_edit) = diff2edit o_block v_block c (length o_block, length v_block) ([],[],[]) 
-      (f_no_block, f_o_edit, f_v_edit) = post_process no_block o_edit v_edit
+      (no_block  , o_edit  , v_edit  ) = diff2edit o_block v_block c (length o_block, length v_block) ([],[],[]) 
+      (f_no_block, f_o_edit, f_v_edit) = post_process scope no_block o_edit v_edit
   in (Block f_no_block, f_o_edit, f_v_edit)
 
-post_process :: [BlockStmt] -> Edit -> Edit -> ([BlockStmt], Edit, Edit)
-post_process []  ea eb = ([],  ea, eb)
-post_process [x] ea eb = ([x], ea, eb)
-post_process sts ea eb = 
-  let (holes,rest) = span (== (BlockStmt Hole)) sts
-      len_holes = length holes
-      (a,a') = (take len_holes ea, drop len_holes ea)
-      (b,b') = (take len_holes eb, drop len_holes eb)
-      (nholes, na, nb) = collapse holes a b
-      (nrest, na', nb') = post_process rest a' b'
+-- | post_process: performs an AST based refinement for conditionals and loops
+post_process :: [Scope] -> [BlockStmt] -> [BlockStmt] -> [BlockStmt] -> ([BlockStmt],Edit,Edit)
+post_process s []  ea eb = ([],  map (\e -> (e,s)) ea, map (\e -> (e,s)) eb)
+post_process s [x] ea eb = ([x], map (\e -> (e,s)) ea, map (\e -> (e,s)) eb)
+post_process s sts ea eb = 
+      -- gets the first sequence of holes 
+  let (holes,rest)       = span (== hole) sts
+      len_holes          = length holes
+      (a,a')             = (take len_holes ea, drop len_holes ea)
+      (b,b')             = (take len_holes eb, drop len_holes eb)
+      -- collapses consecutive holes
+      (nholes, na , nb ) = collapse s holes a b
+      (nrest , na', nb') = post_process s rest a' b'
   in if len_holes == 0
-     then let (nrest, na', nb') = post_process (tail sts) ea eb
+     -- the first part of the new program with holes is not a hole
+     then let (nrest, na', nb') = post_process s (tail sts) ea eb
           in (head sts:nrest, na', nb')
      else (nholes++nrest, na++na', nb++nb')
 
-collapse :: [BlockStmt] -> Edit -> Edit -> ([BlockStmt], Edit, Edit)
-collapse [] [] [] = ([], [], [])
-collapse [] _  _  = error "collapse: fatal:"
-collapse x  a  b  =  
-  let -- nx = [BlockStmt Hole]
-      na = filter (/= (BlockStmt Skip)) a
-      nb = filter (/= (BlockStmt Skip)) b
-  in special_diff na nb
- -- in if length na == length nb
- --    then (nx, na, nb)
- --    else error $ "collapse: fatal: final lengths do not match\ninput: " ++ show (x,a,b) ++ "\nafter filtering: " ++ show (na,nb)
+-- collapse receives Holes statements according to 2 Edit scripts
+-- and merges them. 
+collapse :: [Scope] -> [BlockStmt] -> [BlockStmt] -> [BlockStmt] -> ([BlockStmt], Edit, Edit)
+collapse s [] [] [] = ([], [], [])
+collapse s [] _  _  = error "collapse: fatal:"
+collapse s x  a  b  =  
+  let na = filter (/= skip) a
+      nb = filter (/= skip) b
+  in special_diff s na nb
 
 -- this will be the simplest diff possible
 -- it will pair up each edit and generate a hole per change
 -- in the future it could be interesting to generate the smallest number of holes
-special_diff :: Edit -> Edit -> ([BlockStmt], Edit, Edit)
-special_diff []      []      = ([], [], [])
-special_diff []      r       = (map (const hole) r, map (const skip) r, r)
-special_diff r       []      = (map (const hole) r, r, map (const skip) r)
-special_diff (e1:r1) (e2:r2) = 
-  let (h,a,b) = special_diff r1 r2
-      (_h,_a,_b) = special_diff_inner e1 e2
+special_diff :: [Scope] -> [BlockStmt] -> [BlockStmt] -> ([BlockStmt], Edit, Edit)
+special_diff s [] []      = ([], [], [])
+special_diff s [] r       = (map (const hole) r, map (const (skip,s)) r, map (\e -> (e,s)) r)
+special_diff s r  []      = (map (const hole) r, map (\e -> (e,s)) r, map (const (skip,s)) r)
+special_diff s (e1:r1) (e2:r2) = 
+  let (h,a,b)    = special_diff s r1 r2
+      (_h,_a,_b) = special_diff_inner s e1 e2
   in  (_h:h, _a++a, _b++b) 
 
-special_diff_inner :: BlockStmt -> BlockStmt -> (BlockStmt, Edit, Edit)
-special_diff_inner b1 b2 =
+special_diff_inner :: [Scope] -> BlockStmt -> BlockStmt -> (BlockStmt, Edit, Edit)
+special_diff_inner s b1 b2 = trace ("special_diff_inner:\n" ++ prettyPrint b1 ++ "\n" ++ prettyPrint b2) $ 
   if b1 == b2
-  then (hole, [b1], [b2])
+  then (hole, [(b1,[])], [(b2,[])])
   else case (b1, b2) of
          (BlockStmt s1, BlockStmt s2) ->
-           let (h1, f1, f2) = special_diff_stmt s1 s2
+           let (h1, f1, f2) = special_diff_stmt s s1 s2
            in (BlockStmt h1, f1, f2)
-         _ -> (hole, [b1], [b2]) 
+         _ -> (hole, [(b1,s)], [(b2,s)]) 
 
-special_diff_stmt :: Stmt -> Stmt -> (Stmt, Edit, Edit)
-special_diff_stmt s1 s2 = 
+special_diff_stmt :: [Scope] -> Stmt -> Stmt -> (Stmt, Edit, Edit)
+special_diff_stmt scope s1 s2 = trace ("special_diff_stmt:\nscope" ++ show scope ++ "\n" ++ prettyPrint s1 ++ "\n" ++ prettyPrint s2) $ 
   if s1 == s2
   then (s1, [], [])
   else case (s1, s2) of 
         (IfThen c1 t1, IfThen c2 t2) ->
-          if c1 == c2
-          then let (h1, t1a, t2b) = special_diff_stmt t1 t2
-               in (IfThen c1 h1, t1a, t2b) 
-          else (Hole, [BlockStmt s1], [BlockStmt s2]) 
+          let nscope = SCond:scope
+          in if c1 == c2
+             then let (h1, t1a, t2b) = special_diff_stmt nscope t1 t2
+                  in (IfThen c1 h1, t1a, t2b) 
+             else (Hole, [(BlockStmt s1,nscope)], [(BlockStmt s2,nscope)]) 
         (IfThenElse c1 t1 e1, IfThenElse c2 t2 e2) ->
-          if c1 == c2
-          then let (ht1, t1a, t2b) = special_diff_stmt t1 t2
-                   (he1, e1a, e2b) = special_diff_stmt e1 e2
-               in (IfThenElse c1 ht1 he1, t1a ++ e1a, t2b ++ e2b) 
-          else (Hole, [BlockStmt s1], [BlockStmt s2]) 
+          let nscope = SCond:scope
+          in if c1 == c2
+             then let (ht1, t1a, t2b) = special_diff_stmt nscope t1 t2
+                      (he1, e1a, e2b) = special_diff_stmt nscope e1 e2
+                  in (IfThenElse c1 ht1 he1, t1a ++ e1a, t2b ++ e2b) 
+             else (Hole, [(BlockStmt s1,nscope)], [(BlockStmt s2,nscope)]) 
         (While c1 bdy1, While c2 bdy2) ->
-          if c1 == c2
-          then let (h1, bdy1a, bdy2b) = special_diff_stmt bdy1 bdy2
-               in (While c1 h1, bdy1a, bdy2b) 
-          else (Hole, [BlockStmt s1], [BlockStmt s2]) 
+          let nscope = SLoop:scope
+          in if c1 == c2
+             then let (h1, bdy1a, bdy2b) = special_diff_stmt nscope bdy1 bdy2
+                  in (While c1 h1, bdy1a, bdy2b) 
+             else (Hole, [(BlockStmt s1,nscope)], [(BlockStmt s2,nscope)]) 
         (StmtBlock b1, StmtBlock b2) ->
-          let (res, ne1, ne2) = edit_block_gen b1 b2
+          let (res, ne1, ne2) = edit_block_gen scope b1 b2
           in (StmtBlock res, ne1, ne2) 
-        _ -> (Hole, [BlockStmt s1], [BlockStmt s2])  
+        _ -> (Hole, [(BlockStmt s1,scope)], [(BlockStmt s2,scope)])  
 

@@ -16,12 +16,9 @@ import Data.Maybe
 import Language.Java.Pretty
 import Language.Java.Syntax
 import System.IO.Unsafe
+import Util
 import Z3.Monad hiding (Params)
 import qualified Data.Map as M
-import qualified Debug.Trace as T
-
-trace a b = b
---trace = T.trace
 
 -- Performs a SAT-query.
 checkSAT phi = do
@@ -429,12 +426,12 @@ replaceVariable a fnB ast = do
         nParams <- getAppNumArgs app
         args <- mapM (\i -> getAppArg app i) [0..(nParams-1)]
         args' <- mapM (replaceVariable a fnB) args
-        mkApp fnB args' --T.trace ("FN " ++ symName) $ mkApp fn args'
+        mkApp fnB args' --trace ("FN " ++ symName) $ mkApp fn args'
       else do 
         nParams <- getAppNumArgs app
         args <- mapM (\i -> getAppArg app i) [0..(nParams-1)]
         args' <- mapM (replaceVariable a fnB) args
-        mkApp fn args' --T.trace ("FN " ++ symName) $ mkApp fn args'
+        mkApp fn args' --trace ("FN " ++ symName) $ mkApp fn args'
     Z3_VAR_AST        -> return ast
     Z3_QUANTIFIER_AST -> return ast --error "traverse"
     Z3_SORT_AST       -> return ast

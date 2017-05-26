@@ -5,6 +5,7 @@ module Main where
 
 import Analysis.Java.ClassInfo
 import Analysis.Java.Liff
+import Edit 
 import Control.Monad
 import Data.List
 import Data.Map (Map) 
@@ -59,8 +60,14 @@ liff_main [o,m,a,b] i ch@(Change _ f) = do
             f_a = dir ++ fl ++ "_a.java"
             f_b = dir ++ fl ++ "_b.java"
             f_m = dir ++ fl ++ "_m.java"
-        putStrLn $ "liff_main: found changes in " ++ f ++ "\n" ++ show [o,a,b,m]
-        putStrLn $"\t: printing to files " ++ show [f_o,f_a,f_b,f_m]
+        putStrLn "-------------------------------------------"
+        putStrLn $ "Inst: " ++ show i
+        putStrLn $ "File: " ++ f 
+        putStrLn $ "Meth: " ++ show (_merges r)
+        putStrLn $ "Orig: " ++ o
+        putStrLn $ "VarA: " ++ a
+        putStrLn $ "VarB: " ++ b
+        putStrLn $ "Merg: " ++ m
         createDirectoryIfMissing True dir
         writeFile f_o o_str
         writeFile f_a a_str
@@ -93,6 +100,7 @@ analyse_merge_tree gmerges as@[o,m,a,b] =
         if not $ null changes
         then return (gmerge:gmerges) 
         else return gmerges 
+analyse_merge_tree gmerges _ = return gmerges
 
 -- ^ merge_base: retrieves the hash of the base based on the variants
 merge_base :: [[String]] -> String -> IO [[String]]

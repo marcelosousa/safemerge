@@ -30,3 +30,10 @@ Library
   Exposed-modules:
       Analysis.Java.Liff
       Analysis.Java.ClassInfo
+      Edit 
+      Edit.Gen 
+      Edit.Types
+      Edit.Normalize
+      Edit.Apply
+      Edit.Diff
+      Edit.Print

@@ -114,8 +114,8 @@ apply_edit_stmt e stmt = case stmt of
   StmtBlock b -> let (b', e') = apply_edit_block b e
                  in (Just $ BlockStmt $ StmtBlock b', e')
   Hole -> case e of
-    (BlockStmt Skip):e' -> (Nothing, e')
-    (bs:e')   -> (Just bs, e')
+    ((BlockStmt Skip,_):e') -> (Nothing, e')
+    ((bs,_):e')   -> (Just bs, e')
     _ -> error $ "apply_edit_stmt: " ++ show e
   Skip -> (Nothing, e)
   IfThen c1 t1 ->
