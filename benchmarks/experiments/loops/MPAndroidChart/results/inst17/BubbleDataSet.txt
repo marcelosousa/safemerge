@@ -1,0 +1,157 @@
+Parsing files...
+Merge Instance for method (Ident "BubbleDataSet",Ident "calcMinMax",[PrimType IntT,PrimType IntT])
+@Override
+ public void calcMinMax (int start, int end)
+{
+  <?HOLE?>
+  <?HOLE?>
+  int endValue;
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  for (int i = start ; i <= endValue ; i++)
+  {
+    <?HOLE?>
+    float ymin = yMin(entry);
+    float ymax = yMax(entry);
+    if (ymin < mYMin)
+    {
+      mYMin = ymin;
+    }
+    if (ymax > mYMax)
+    {
+      mYMax = ymax;
+    }
+    final float xmin = xMin(entry);
+    final float xmax = xMax(entry);
+    if (xmin < mXMin)
+    {
+      mXMin = xmin;
+    }
+    if (xmax > mXMax)
+    {
+      mXMax = xmax;
+    }
+    final float size = largestSize(entry);
+    if (size > mMaxSize)
+    {
+      mMaxSize = size;
+    }
+  }
+}
+Edit Base:
+Hole 1:
+[SCond]: if (mYVals == null)
+  return;
+Hole 2:
+[SCond]: if (mYVals.size() == 0)
+  return;
+Hole 3:
+[SCond]: if ((end == 0 || end) >= mYVals.size())
+  endValue = mYVals.size() - 1;
+else
+  endValue = end;
+Hole 4:
+[]: mYMin = yMin(mYVals.get(start));
+Hole 5:
+[]: mYMax = yMax(mYVals.get(start));
+Hole 6:
+[SLoop]: final BubbleEntry entry = mYVals.get(i);
+
+Edit A:
+Hole 1:
+[SCond]: if (mValues == null)
+  return;
+Hole 2:
+[SCond]: if (mValues.size() == 0)
+  return;
+Hole 3:
+[SCond]: if ((end == 0 || end) >= mValues.size())
+  endValue = mValues.size() - 1;
+else
+  endValue = end;
+Hole 4:
+[]: mYMin = yMin(mValues.get(start));
+Hole 5:
+[]: mYMax = yMax(mValues.get(start));
+Hole 6:
+[SLoop]: final BubbleEntry entry = mValues.get(i);
+
+Edit B:
+Hole 1:
+[]: if (mYVals == null)
+  return;
+Hole 2:
+[]: if (mYVals.size() == 0)
+  return;
+Hole 3:
+[]: if ((end == 0 || end) >= mYVals.size())
+  endValue = mYVals.size() - 1;
+else
+  endValue = end;
+Hole 4:
+[]: mYMin = yMin(mYVals.get(start));
+Hole 5:
+[]: mYMax = yMax(mYVals.get(start));
+Hole 6:
+[SLoop]: final BubbleEntry entry = mYVals.get(i);
+
+Edit M:
+Hole 1:
+[]: if (mValues == null)
+  return;
+Hole 2:
+[]: if (mValues.size() == 0)
+  return;
+Hole 3:
+[]: if ((end == 0 || end) >= mValues.size())
+  endValue = mValues.size() - 1;
+else
+  endValue = end;
+Hole 4:
+[]: mYMin = yMin(mValues.get(start));
+Hole 5:
+[]: mYMax = yMax(mValues.get(start));
+Hole 6:
+[SLoop]: final BubbleEntry entry = mValues.get(i);
+
+Merge Instance for method (Ident "BubbleDataSet",Ident "copy",[])
+@Override
+ public DataSet<BubbleEntry> copy ()
+{
+  List<BubbleEntry> yVals = new ArrayList<BubbleEntry>();
+  <?HOLE?>
+  BubbleDataSet copied = new BubbleDataSet(yVals, getLabel());
+  copied.mColors = mColors;
+  copied.mHighLightColor = mHighLightColor;
+  return copied;
+}
+Edit Base:
+Hole 1:
+[SLoop]: for (int i = 0 ; i < mYVals.size() ; i++)
+{
+  yVals.add(mYVals.get(i).copy());
+}
+
+Edit A:
+Hole 1:
+[SLoop]: for (int i = 0 ; i < mValues.size() ; i++)
+{
+  yVals.add(mValues.get(i).copy());
+}
+
+Edit B:
+Hole 1:
+[]: for (int i = 0 ; i < mYVals.size() ; i++)
+{
+  yVals.add(mYVals.get(i).copy());
+}
+
+Edit M:
+Hole 1:
+[]: for (int i = 0 ; i < mValues.size() ; i++)
+{
+  yVals.add(mValues.get(i).copy());
+}
+
+

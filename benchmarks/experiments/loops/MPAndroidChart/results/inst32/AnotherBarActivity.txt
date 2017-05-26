@@ -1,0 +1,158 @@
+Parsing files...
+Merge Instance for method (Ident "AnotherBarActivity",Ident "onProgressChanged",[RefType (ClassRefType (ClassType [(Ident "SeekBar",[])])),PrimType IntT,PrimType BooleanT])
+@Override
+ public void onProgressChanged (SeekBar seekBar, int progress, boolean fromUser)
+{
+  tvX.setText(("" + mSeekBarX.getProgress() + 1));
+  tvY.setText(("" + mSeekBarY.getProgress()));
+  ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+  for (int i = 0 ; (i < mSeekBarX.getProgress()) + 1 ; i++)
+  {
+    float mult = mSeekBarY.getProgress() + 1;
+    float val1 = ((float) (Math.random() * mult) + mult) / 3;
+    yVals1.add(new BarEntry(((int) val1), i));
+  }
+  <?HOLE?>
+  for (int i = 0 ; (i < mSeekBarX.getProgress()) + 1 ; i++)
+  {
+    <?HOLE?>
+    <?HOLE?>
+  }
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: ArrayList<String> xVals = new ArrayList<String>();
+Hole 2:
+[SLoop]: xVals.add(((int) yVals1.get(i).getVal() + ""));
+Hole 3:
+[SLoop]: <SKIP>
+Hole 4:
+[]: BarDataSet set1 = new BarDataSet(yVals1, "Data Set");
+Hole 5:
+[]: set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
+Hole 6:
+[]: set1.setDrawValues(false);
+Hole 7:
+[]: ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+Hole 8:
+[]: dataSets.add(set1);
+Hole 9:
+[]: BarData data = new BarData(xVals, dataSets);
+Hole 10:
+[]: mChart.setData(data);
+Hole 11:
+[]: mChart.invalidate();
+
+Edit A:
+Hole 1:
+[]: ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
+Hole 2:
+[SLoop]: XAxisValue xValue = new XAxisValue(i, (int) yVals1.get(i).getVal() + "");
+Hole 3:
+[SLoop]: xVals.add(xValue);
+Hole 4:
+[]: BarDataSet set1 = new BarDataSet(yVals1, "Data Set");
+Hole 5:
+[]: set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
+Hole 6:
+[]: set1.setDrawValues(false);
+Hole 7:
+[]: ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+Hole 8:
+[]: dataSets.add(set1);
+Hole 9:
+[]: BarData data = new BarData(xVals, dataSets);
+Hole 10:
+[]: mChart.setData(data);
+Hole 11:
+[]: mChart.invalidate();
+
+Edit B:
+Hole 1:
+[]: ArrayList<String> xVals = new ArrayList<String>();
+Hole 2:
+[SLoop]: xVals.add(((int) yVals1.get(i).getVal() + ""));
+Hole 3:
+[SLoop]: <SKIP>
+Hole 4:
+[]: BarDataSet set1;
+Hole 5:
+[]: if ((mChart.getData() != null && mChart.getData().getDataSetCount()) > 0)
+{
+  set1 = (BarDataSet) mChart.getData().getDataSetByIndex(0);
+  set1.setYVals(yVals1);
+  mChart.notifyDataSetChanged();
+}
+else
+{
+  set1 = new BarDataSet(yVals1, "Data Set");
+  set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
+  set1.setDrawValues(false);
+  ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+  dataSets.add(set1);
+  BarData data = new BarData(xVals, dataSets);
+  mChart.setData(data);
+  mChart.invalidate();
+}
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+Hole 10:
+[]: <SKIP>
+Hole 11:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
+Hole 2:
+[SLoop]: XAxisValue xValue = new XAxisValue(i, (int) yVals1.get(i).getVal() + "");
+Hole 3:
+[SLoop]: xVals.add(xValue);
+Hole 4:
+[]: BarDataSet set1;
+Hole 5:
+[]: if ((mChart.getData() != null && mChart.getData().getDataSetCount()) > 0)
+{
+  set1 = (BarDataSet) mChart.getData().getDataSetByIndex(0);
+  set1.setYVals(yVals1);
+  mChart.notifyDataSetChanged();
+}
+else
+{
+  set1 = new BarDataSet(yVals1, "Data Set");
+  set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
+  set1.setDrawValues(false);
+  ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+  dataSets.add(set1);
+  BarData data = new BarData(xVals, dataSets);
+  mChart.setData(data);
+  mChart.invalidate();
+}
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+Hole 10:
+[]: <SKIP>
+Hole 11:
+[]: <SKIP>
+
+

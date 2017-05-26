@@ -1,0 +1,46 @@
+Parsing files...
+Merge Instance for method (Ident "BarDataSet",Ident "copy",[])
+@Override
+ public DataSet<BarEntry> copy ()
+{
+  List<BarEntry> yVals = new ArrayList<BarEntry>();
+  <?HOLE?>
+  BarDataSet copied = new BarDataSet(yVals, getLabel());
+  copied.mColors = mColors;
+  copied.mStackSize = mStackSize;
+  copied.mBarSpace = mBarSpace;
+  copied.mBarShadowColor = mBarShadowColor;
+  copied.mStackLabels = mStackLabels;
+  copied.mHighLightColor = mHighLightColor;
+  copied.mHighLightAlpha = mHighLightAlpha;
+  return copied;
+}
+Edit Base:
+Hole 1:
+[SLoop]: for (int i = 0 ; i < mYVals.size() ; i++)
+{
+  yVals.add(((BarEntry) mYVals.get(i)).copy());
+}
+
+Edit A:
+Hole 1:
+[SLoop]: for (int i = 0 ; i < mValues.size() ; i++)
+{
+  yVals.add(((BarEntry) mValues.get(i)).copy());
+}
+
+Edit B:
+Hole 1:
+[]: for (int i = 0 ; i < mYVals.size() ; i++)
+{
+  yVals.add(((BarEntry) mYVals.get(i)).copy());
+}
+
+Edit M:
+Hole 1:
+[]: for (int i = 0 ; i < mValues.size() ; i++)
+{
+  yVals.add(((BarEntry) mValues.get(i)).copy());
+}
+
+

@@ -1,0 +1,138 @@
+Parsing files...
+Merge Instance for method (Ident "BarLineChartBase",Ident "drawVerticalGrid",[])
+protected void drawVerticalGrid ()
+{
+  if (!mDrawVerticalGrid)
+    return;
+  float[] position = new float[] {
+                                   0.0F,
+                                   0.0F,
+                                 };
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[SLoop]: for (int i = 0 ; i < mCurrentData.getXValCount() ; i++)
+{
+  if (i % mXLabels.mXAxisLabelModulus == 0)
+  {
+    position[0] = i;
+    transformPointArray(position);
+    if ((position[0] >= mOffsetLeft && position[0]) <= getWidth())
+    {
+      mDrawCanvas.drawLine(position[0], mOffsetTop, position[0], (getHeight() - mOffsetBottom), mGridPaint);
+    }
+  }
+}
+
+Edit A:
+Hole 1:
+[SLoop]: for (int i = 0 ; i < mCurrentData.getXValCount() ; i += mXLabels.mXAxisLabelModulus)
+{
+  position[0] = i;
+  transformPointArray(position);
+  if ((position[0] >= mOffsetLeft && position[0]) <= getWidth())
+  {
+    mDrawCanvas.drawLine(position[0], mOffsetTop, position[0], (getHeight() - mOffsetBottom), mGridPaint);
+  }
+}
+
+Edit B:
+Hole 1:
+[]: for (int i = 0 ; i < mCurrentData.getXValCount() ; i++)
+{
+  if (i % mXLabels.mXAxisLabelModulus == 0)
+  {
+    position[0] = i;
+    transformPointArray(position);
+    if ((position[0] >= mOffsetLeft && position[0]) <= getWidth())
+    {
+      mDrawCanvas.drawLine(position[0], mOffsetTop, position[0], (getHeight() - mOffsetBottom), mGridPaint);
+    }
+  }
+}
+
+Edit M:
+Hole 1:
+[]: for (int i = 0 ; i < mCurrentData.getXValCount() ; i += mXLabels.mXAxisLabelModulus)
+{
+  position[0] = i;
+  transformPointArray(position);
+  if ((position[0] >= mOffsetLeft && position[0]) <= getWidth())
+  {
+    mDrawCanvas.drawLine(position[0], mOffsetTop, position[0], (getHeight() - mOffsetBottom), mGridPaint);
+  }
+}
+
+Merge Instance for method (Ident "BarLineChartBase",Ident "drawXLabels",[PrimType FloatT])
+private void drawXLabels (float yPos)
+{
+  float[] position = new float[] {
+                                   0.0F,
+                                   0.0F,
+                                 };
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[SLoop]: for (int i = 0 ; i < mCurrentData.getXValCount() ; i++)
+{
+  if (i % mXLabels.mXAxisLabelModulus == 0)
+  {
+    position[0] = i;
+    if (mXLabels.isCenterXLabelsEnabled())
+      position[0] += 0.5F;
+    transformPointArray(position);
+    if (((position[0] >= mOffsetLeft && position[0]) <= getWidth()) - mOffsetRight)
+    {
+      mDrawCanvas.drawText(mCurrentData.getXVals().get(i), position[0], yPos, mXLabelPaint);
+    }
+  }
+}
+
+Edit A:
+Hole 1:
+[SLoop]: for (int i = 0 ; i < mCurrentData.getXValCount() ; i += mXLabels.mXAxisLabelModulus)
+{
+  position[0] = i;
+  if (mXLabels.isCenterXLabelsEnabled())
+    position[0] += 0.5F;
+  transformPointArray(position);
+  if (((position[0] >= mOffsetLeft && position[0]) <= getWidth()) - mOffsetRight)
+  {
+    mDrawCanvas.drawText(mCurrentData.getXVals().get(i), position[0], yPos, mXLabelPaint);
+  }
+}
+
+Edit B:
+Hole 1:
+[]: for (int i = 0 ; i < mCurrentData.getXValCount() ; i++)
+{
+  if (i % mXLabels.mXAxisLabelModulus == 0)
+  {
+    position[0] = i;
+    if (mXLabels.isCenterXLabelsEnabled())
+      position[0] += 0.5F;
+    transformPointArray(position);
+    if (((position[0] >= mOffsetLeft && position[0]) <= getWidth()) - mOffsetRight)
+    {
+      mDrawCanvas.drawText(mCurrentData.getXVals().get(i), position[0], yPos, mXLabelPaint);
+    }
+  }
+}
+
+Edit M:
+Hole 1:
+[]: for (int i = 0 ; i < mCurrentData.getXValCount() ; i += mXLabels.mXAxisLabelModulus)
+{
+  position[0] = i;
+  if (mXLabels.isCenterXLabelsEnabled())
+    position[0] += 0.5F;
+  transformPointArray(position);
+  if (((position[0] >= mOffsetLeft && position[0]) <= getWidth()) - mOffsetRight)
+  {
+    mDrawCanvas.drawText(mCurrentData.getXVals().get(i), position[0], yPos, mXLabelPaint);
+  }
+}
+
+

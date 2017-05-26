@@ -1,0 +1,163 @@
+Parsing files...
+Merge Instance for method (Ident "DataSet",Ident "getEntryIndex",[PrimType IntT,RefType (ClassRefType (ClassType [(Ident "Rounding",[])]))])
+@Override
+ public int getEntryIndex (int xIndex, Rounding rounding)
+{
+  int low = 0;
+  <?HOLE?>
+  int closest = -1;
+  while (low <= high)
+  {
+    int m = (high + low) / 2;
+    <?HOLE?>
+    <?HOLE?>
+    closest = m;
+  }
+  if (closest != -1)
+  {
+    <?HOLE?>
+    if (rounding == Rounding.UP)
+    {
+      <?HOLE?>
+    }
+    else
+      if (rounding == Rounding.DOWN)
+      {
+        if ((closestXIndex > xIndex && closest) > 0)
+        {
+          --closest;
+        }
+      }
+  }
+  return closest;
+}
+Edit Base:
+Hole 1:
+[]: int high = mYVals.size() - 1;
+Hole 2:
+[SCond,SLoop]: if (xIndex == mYVals.get(m).getXIndex())
+{
+  while ((m > 0 && mYVals.get((m - 1)).getXIndex()) == xIndex)
+    m--;
+  return m;
+}
+Hole 3:
+[SCond,SLoop]: if (xIndex > mYVals.get(m).getXIndex())
+  low = m + 1;
+else
+  high = m - 1;
+Hole 4:
+[SCond]: int closestXIndex = mYVals.get(closest).getXIndex();
+Hole 5:
+[SCond,SCond,SCond]: if (((closestXIndex < xIndex && closest) < mYVals.size()) - 1)
+{
+  ++closest;
+}
+
+Edit A:
+Hole 1:
+[]: int high = mValues.size() - 1;
+Hole 2:
+[SCond,SLoop]: if (xIndex == mValues.get(m).getXIndex())
+{
+  while ((m > 0 && mValues.get((m - 1)).getXIndex()) == xIndex)
+    m--;
+  return m;
+}
+Hole 3:
+[SCond,SLoop]: if (xIndex > mValues.get(m).getXIndex())
+  low = m + 1;
+else
+  high = m - 1;
+Hole 4:
+[SCond]: int closestXIndex = mValues.get(closest).getXIndex();
+Hole 5:
+[SCond,SCond,SCond]: if (((closestXIndex < xIndex && closest) < mValues.size()) - 1)
+{
+  ++closest;
+}
+
+Edit B:
+Hole 1:
+[]: int high = mYVals.size() - 1;
+Hole 2:
+[SLoop]: if (xIndex == mYVals.get(m).getXIndex())
+{
+  while ((m > 0 && mYVals.get((m - 1)).getXIndex()) == xIndex)
+    m--;
+  return m;
+}
+Hole 3:
+[SLoop]: if (xIndex > mYVals.get(m).getXIndex())
+  low = m + 1;
+else
+  high = m - 1;
+Hole 4:
+[SCond]: int closestXIndex = mYVals.get(closest).getXIndex();
+Hole 5:
+[SCond,SCond]: if (((closestXIndex < xIndex && closest) < mYVals.size()) - 1)
+{
+  ++closest;
+}
+
+Edit M:
+Hole 1:
+[]: int high = mValues.size() - 1;
+Hole 2:
+[SLoop]: if (xIndex == mValues.get(m).getXIndex())
+{
+  while ((m > 0 && mValues.get((m - 1)).getXIndex()) == xIndex)
+    m--;
+  return m;
+}
+Hole 3:
+[SLoop]: if (xIndex > mValues.get(m).getXIndex())
+  low = m + 1;
+else
+  high = m - 1;
+Hole 4:
+[SCond]: int closestXIndex = mValues.get(closest).getXIndex();
+Hole 5:
+[SCond,SCond]: if (((closestXIndex < xIndex && closest) < mValues.size()) - 1)
+{
+  ++closest;
+}
+
+Merge Instance for method (Ident "DataSet",Ident "toString",[])
+@Override
+ public String toString ()
+{
+  StringBuffer buffer = new StringBuffer();
+  buffer.append(toSimpleString());
+  <?HOLE?>
+  return buffer.toString();
+}
+Edit Base:
+Hole 1:
+[SLoop]: for (int i = 0 ; i < mYVals.size() ; i++)
+{
+  buffer.append((mYVals.get(i).toString() + " "));
+}
+
+Edit A:
+Hole 1:
+[SLoop]: for (int i = 0 ; i < mValues.size() ; i++)
+{
+  buffer.append((mValues.get(i).toString() + " "));
+}
+
+Edit B:
+Hole 1:
+[]: for (int i = 0 ; i < mYVals.size() ; i++)
+{
+  buffer.append((mYVals.get(i).toString() + " "));
+}
+
+Edit M:
+Hole 1:
+[]: for (int i = 0 ; i < mValues.size() ; i++)
+{
+  buffer.append((mValues.get(i).toString() + " "));
+}
+
+

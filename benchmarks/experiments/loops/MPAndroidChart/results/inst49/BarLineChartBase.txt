@@ -1,0 +1,104 @@
+Parsing files...
+Merge Instance for method (Ident "BarLineChartBase",Ident "drawBorder",[])
+protected void drawBorder ()
+{
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[SCond]: if ((!mDrawBorder || mBorderStyles) == null)
+  return;
+Hole 2:
+[SLoop]: for (int i = 0 ; i < mBorderStyles.length ; i++)
+{
+  switch (mBorderStyles[i])
+  {
+    case LEFT:
+      mDrawCanvas.drawLine(mOffsetLeft, mOffsetTop, mOffsetLeft, (getHeight() - mOffsetBottom), mBorderPaint);
+      break;
+    case RIGHT:
+      mDrawCanvas.drawLine((getWidth() - mOffsetRight), mOffsetTop, (getWidth() - mOffsetRight), (getHeight() - mOffsetBottom), mBorderPaint);
+      break;
+    case TOP:
+      mDrawCanvas.drawLine(mOffsetLeft, mOffsetTop, (getWidth() - mOffsetRight), mOffsetTop, mBorderPaint);
+      break;
+    case BOTTOM:
+      mDrawCanvas.drawLine(mOffsetLeft, (getHeight() - mOffsetBottom), (getWidth() - mOffsetRight), (getHeight() - mOffsetBottom), mBorderPaint);
+      break;
+  }
+}
+
+Edit A:
+Hole 1:
+[SCond]: if ((!mDrawBorder || mBorderPositions) == null)
+  return;
+Hole 2:
+[SLoop]: for (int i = 0 ; i < mBorderPositions.length ; i++)
+{
+  switch (mBorderPositions[i])
+  {
+    case LEFT:
+      mDrawCanvas.drawLine(mOffsetLeft, mOffsetTop, mOffsetLeft, (getHeight() - mOffsetBottom), mBorderPaint);
+      break;
+    case RIGHT:
+      mDrawCanvas.drawLine((getWidth() - mOffsetRight), mOffsetTop, (getWidth() - mOffsetRight), (getHeight() - mOffsetBottom), mBorderPaint);
+      break;
+    case TOP:
+      mDrawCanvas.drawLine(mOffsetLeft, mOffsetTop, (getWidth() - mOffsetRight), mOffsetTop, mBorderPaint);
+      break;
+    case BOTTOM:
+      mDrawCanvas.drawLine(mOffsetLeft, (getHeight() - mOffsetBottom), (getWidth() - mOffsetRight), (getHeight() - mOffsetBottom), mBorderPaint);
+      break;
+  }
+}
+
+Edit B:
+Hole 1:
+[]: if ((!mDrawBorder || mBorderStyles) == null)
+  return;
+Hole 2:
+[]: for (int i = 0 ; i < mBorderStyles.length ; i++)
+{
+  switch (mBorderStyles[i])
+  {
+    case LEFT:
+      mDrawCanvas.drawLine(mOffsetLeft, mOffsetTop, mOffsetLeft, (getHeight() - mOffsetBottom), mBorderPaint);
+      break;
+    case RIGHT:
+      mDrawCanvas.drawLine((getWidth() - mOffsetRight), mOffsetTop, (getWidth() - mOffsetRight), (getHeight() - mOffsetBottom), mBorderPaint);
+      break;
+    case TOP:
+      mDrawCanvas.drawLine(mOffsetLeft, mOffsetTop, (getWidth() - mOffsetRight), mOffsetTop, mBorderPaint);
+      break;
+    case BOTTOM:
+      mDrawCanvas.drawLine(mOffsetLeft, (getHeight() - mOffsetBottom), (getWidth() - mOffsetRight), (getHeight() - mOffsetBottom), mBorderPaint);
+      break;
+  }
+}
+
+Edit M:
+Hole 1:
+[]: if ((!mDrawBorder || mBorderPositions) == null)
+  return;
+Hole 2:
+[]: for (int i = 0 ; i < mBorderPositions.length ; i++)
+{
+  switch (mBorderPositions[i])
+  {
+    case LEFT:
+      mDrawCanvas.drawLine(mOffsetLeft, mOffsetTop, mOffsetLeft, (getHeight() - mOffsetBottom), mBorderPaint);
+      break;
+    case RIGHT:
+      mDrawCanvas.drawLine((getWidth() - mOffsetRight), mOffsetTop, (getWidth() - mOffsetRight), (getHeight() - mOffsetBottom), mBorderPaint);
+      break;
+    case TOP:
+      mDrawCanvas.drawLine(mOffsetLeft, mOffsetTop, (getWidth() - mOffsetRight), mOffsetTop, mBorderPaint);
+      break;
+    case BOTTOM:
+      mDrawCanvas.drawLine(mOffsetLeft, (getHeight() - mOffsetBottom), (getWidth() - mOffsetRight), (getHeight() - mOffsetBottom), mBorderPaint);
+      break;
+  }
+}
+
+
