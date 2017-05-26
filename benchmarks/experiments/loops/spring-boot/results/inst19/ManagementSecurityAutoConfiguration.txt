@@ -1,0 +1,62 @@
+Parsing files...
+Merge Instance for method (Ident "ManagementSecurityAutoConfiguration",Ident "getEndpointPaths",[RefType (ClassRefType (ClassType [(Ident "EndpointHandlerMapping",[])])),PrimType BooleanT])
+private static String[] getEndpointPaths (EndpointHandlerMapping endpointHandlerMapping, boolean secure)
+{
+  if (endpointHandlerMapping == null)
+  {
+    return NO_PATHS;
+  }
+  Set<? extends MvcEndpoint> endpoints = endpointHandlerMapping.getEndpoints();
+  List<String> paths = new ArrayList<String>(endpoints.size());
+  for (MvcEndpoint endpoint : endpoints) {
+                                           if (endpoint.isSensitive() == secure)
+                                           {
+                                             <?HOLE?>
+                                             paths.add(path);
+                                             <?HOLE?>
+                                             <?HOLE?>
+                                           }
+                                         }
+  return paths.toArray(new String[paths.size()]);
+}
+Edit Base:
+Hole 1:
+[SCond,SLoop]: String path = endpointHandlerMapping.getPrefix() + endpoint.getPath();
+Hole 2:
+[SCond,SLoop]: if (secure)
+{
+  paths.add((path + "/"));
+  paths.add((path + ".*"));
+}
+Hole 3:
+[SCond,SLoop]: <SKIP>
+
+Edit A:
+Hole 1:
+[SCond,SLoop]: String path = endpointHandlerMapping.getPath(endpoint.getPath());
+Hole 2:
+[SCond,SLoop]: paths.add((path + "/"));
+Hole 3:
+[SCond,SLoop]: paths.add((path + ".*"));
+
+Edit B:
+Hole 1:
+[SCond,SLoop]: String path = endpointHandlerMapping.getPrefix() + endpoint.getPath();
+Hole 2:
+[SCond,SLoop]: if (secure)
+{
+  paths.add((path + "/**"));
+  paths.add((path + ".*"));
+}
+Hole 3:
+[SCond,SLoop]: <SKIP>
+
+Edit M:
+Hole 1:
+[SCond,SLoop]: String path = endpointHandlerMapping.getPath(endpoint.getPath());
+Hole 2:
+[SCond,SLoop]: paths.add((path + "/**"));
+Hole 3:
+[SCond,SLoop]: paths.add((path + ".*"));
+
+

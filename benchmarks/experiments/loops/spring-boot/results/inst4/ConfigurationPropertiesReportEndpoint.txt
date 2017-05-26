@@ -1,0 +1,69 @@
+Parsing files...
+Merge Instance for method (Ident "ConfigurationPropertiesReportEndpoint",Ident "sanitize",[RefType (ClassRefType (ClassType [(Ident "String",[])])),RefType (ClassRefType (ClassType [(Ident "Map",[ActualType (ClassRefType (ClassType [(Ident "String",[])])),ActualType (ClassRefType (ClassType [(Ident "Object",[])]))])]))])
+@SuppressWarnings("unchecked")
+ private Map<String, Object> sanitize (String prefix, Map<String, Object> map)
+{
+  for (Map.Entry<String, Object> entry : map.entrySet()) {
+                                                           String key = entry.getKey();
+                                                           <?HOLE?>
+                                                           Object value = entry.getValue();
+                                                           if (value instanceof Map)
+                                                           {
+                                                             map.put(key, sanitize(qualifiedKey, ((Map<String, Object>) value)));
+                                                           }
+                                                           else
+                                                             <?HOLE?>
+                                                         }
+  return map;
+}
+Edit Base:
+Hole 1:
+[SLoop]: String qualifiedKey = (prefix.length() == 0 ? prefix : prefix + ".") + key;
+Hole 2:
+[SCond,SLoop]: {
+  value = this.sanitizer.sanitize(key, value);
+  value = this.sanitizer.sanitize(qualifiedKey, value);
+  map.put(key, value);
+}
+
+Edit A:
+Hole 1:
+[SLoop]: String qualifiedKey = (prefix.isEmpty() ? prefix : prefix + ".") + key;
+Hole 2:
+[SCond,SLoop]: {
+  value = this.sanitizer.sanitize(key, value);
+  value = this.sanitizer.sanitize(qualifiedKey, value);
+  map.put(key, value);
+}
+
+Edit B:
+Hole 1:
+[SLoop]: String qualifiedKey = (prefix.length() == 0 ? prefix : prefix + ".") + key;
+Hole 2:
+[SCond,SLoop]: if (value instanceof List)
+{
+  map.put(key, sanitize(qualifiedKey, ((List<Object>) value)));
+}
+else
+{
+  value = this.sanitizer.sanitize(key, value);
+  value = this.sanitizer.sanitize(qualifiedKey, value);
+  map.put(key, value);
+}
+
+Edit M:
+Hole 1:
+[SLoop]: String qualifiedKey = (prefix.isEmpty() ? prefix : prefix + ".") + key;
+Hole 2:
+[SCond,SLoop]: if (value instanceof List)
+{
+  map.put(key, sanitize(qualifiedKey, ((List<Object>) value)));
+}
+else
+{
+  value = this.sanitizer.sanitize(key, value);
+  value = this.sanitizer.sanitize(qualifiedKey, value);
+  map.put(key, value);
+}
+
+

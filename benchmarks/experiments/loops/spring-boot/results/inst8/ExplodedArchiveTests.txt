@@ -1,0 +1,33 @@
+Parsing files...
+Merge Instance for method (Ident "ExplodedArchiveTests",Ident "getEntriesMap",[RefType (ClassRefType (ClassType [(Ident "Archive",[])]))])
+private Map<String, Archive.Entry> getEntriesMap (Archive archive)
+{
+  Map<String, Archive.Entry> entries = new HashMap<String, Archive.Entry>();
+  <?HOLE?>
+  return entries;
+}
+Edit Base:
+Hole 1:
+[SLoop]: for (Archive.Entry entry : archive.getEntries()) {
+                                                   entries.put(entry.getName().toString(), entry);
+                                                 }
+
+Edit A:
+Hole 1:
+[SLoop]: for (Archive.Entry entry : archive) {
+                                      entries.put(entry.getName().toString(), entry);
+                                    }
+
+Edit B:
+Hole 1:
+[]: for (Archive.Entry entry : archive.getEntries()) {
+                                                   entries.put(entry.getName().toString(), entry);
+                                                 }
+
+Edit M:
+Hole 1:
+[]: for (Archive.Entry entry : archive) {
+                                      entries.put(entry.getName().toString(), entry);
+                                    }
+
+

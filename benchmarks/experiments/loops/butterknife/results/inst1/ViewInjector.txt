@@ -1,0 +1,373 @@
+Parsing files...
+Merge Instance for method (Ident "ViewInjector",Ident "emitListenerBindings",[RefType (ClassRefType (ClassType [(Ident "StringBuilder",[])])),RefType (ClassRefType (ClassType [(Ident "ViewInjection",[])]))])
+private void emitListenerBindings (StringBuilder builder, ViewInjection injection)
+{
+  <?HOLE?>
+  if (bindings.isEmpty())
+  {
+    return;
+  }
+  String extraIndent = "";
+  boolean needsNullChecked = injection.getRequiredBindings().isEmpty();
+  if (needsNullChecked)
+  {
+    builder.append("    if (view != null) {\n");
+    extraIndent = "  ";
+  }
+  <?HOLE?>
+  if (needsNullChecked)
+  {
+    builder.append("    }\n");
+  }
+}
+Edit Base:
+Hole 1:
+[]: Map<ListenerClass, Map<ListenerMethod, ListenerBinding>> bindings = injection.getListenerBindings();
+Hole 2:
+[SLoop]: for (Map.Entry<ListenerClass, Map<ListenerMethod, ListenerBinding>> e : bindings.entrySet()) {
+                                                                                               ListenerClass listener = e.getKey();
+                                                                                               Map<ListenerMethod, ListenerBinding> methodBindings = e.getValue();
+                                                                                               boolean needsCast = !VIEW_TYPE.equals(listener.targetType());
+                                                                                               builder.append(extraIndent).append("    ");
+                                                                                               if (needsCast)
+                                                                                               {
+                                                                                                 builder.append("((").append(listener.targetType());
+                                                                                                 if (listener.genericArguments() > 0)
+                                                                                                 {
+                                                                                                   builder.append('<');
+                                                                                                   for (int i = 0 ; i < listener.genericArguments() ; i++)
+                                                                                                   {
+                                                                                                     if (i > 0)
+                                                                                                     {
+                                                                                                       builder.append(", ");
+                                                                                                     }
+                                                                                                     builder.append('?');
+                                                                                                   }
+                                                                                                   builder.append('>');
+                                                                                                 }
+                                                                                                 builder.append(") ");
+                                                                                               }
+                                                                                               builder.append("view");
+                                                                                               if (needsCast)
+                                                                                               {
+                                                                                                 builder.append(')');
+                                                                                               }
+                                                                                               builder.append('.').append(listener.setter()).append("(\n");
+                                                                                               builder.append(extraIndent).append("      new ").append(listener.type()).append("() {\n");
+                                                                                               for (ListenerMethod method : getListenerMethods(listener)) {
+                                                                                                                                                            builder.append(extraIndent).append("        @Override public ").append(method.returnType()).append(' ').append(method.name()).append("(\n");
+                                                                                                                                                            String[] parameterTypes = method.parameters();
+                                                                                                                                                            for (int i = 0, count = parameterTypes.length ; i < count ; i++)
+                                                                                                                                                            {
+                                                                                                                                                              builder.append(extraIndent).append("          ").append(parameterTypes[i]).append(" p").append(i);
+                                                                                                                                                              if ((i < count) - 1)
+                                                                                                                                                              {
+                                                                                                                                                                builder.append(',');
+                                                                                                                                                              }
+                                                                                                                                                              builder.append('\n');
+                                                                                                                                                            }
+                                                                                                                                                            builder.append(extraIndent).append("        ) {\n");
+                                                                                                                                                            builder.append(extraIndent).append("          ");
+                                                                                                                                                            boolean hasReturnType = !"void".equals(method.returnType());
+                                                                                                                                                            if (hasReturnType)
+                                                                                                                                                            {
+                                                                                                                                                              builder.append("return ");
+                                                                                                                                                            }
+                                                                                                                                                            if (methodBindings.containsKey(method))
+                                                                                                                                                            {
+                                                                                                                                                              ListenerBinding binding = methodBindings.get(method);
+                                                                                                                                                              builder.append("target.").append(binding.getName()).append('(');
+                                                                                                                                                              List<Parameter> parameters = binding.getParameters();
+                                                                                                                                                              String[] listenerParameters = method.parameters();
+                                                                                                                                                              for (int i = 0, count = parameters.size() ; i < count ; i++)
+                                                                                                                                                              {
+                                                                                                                                                                Parameter parameter = parameters.get(i);
+                                                                                                                                                                int listenerPosition = parameter.getListenerPosition();
+                                                                                                                                                                emitCastIfNeeded(builder, listenerParameters[listenerPosition], parameter.getType());
+                                                                                                                                                                builder.append('p').append(listenerPosition);
+                                                                                                                                                                if ((i < count) - 1)
+                                                                                                                                                                {
+                                                                                                                                                                  builder.append(", ");
+                                                                                                                                                                }
+                                                                                                                                                              }
+                                                                                                                                                              builder.append(");");
+                                                                                                                                                            }
+                                                                                                                                                            else
+                                                                                                                                                              if (hasReturnType)
+                                                                                                                                                              {
+                                                                                                                                                                builder.append(method.defaultReturn()).append(';');
+                                                                                                                                                              }
+                                                                                                                                                            builder.append('\n');
+                                                                                                                                                            builder.append(extraIndent).append("        }\n");
+                                                                                                                                                          }
+                                                                                               builder.append(extraIndent).append("      });\n");
+                                                                                             }
+
+Edit A:
+Hole 1:
+[]: Map<ListenerClass, Map<ListenerMethod, Set<ListenerBinding>>> bindings = injection.getListenerBindings();
+Hole 2:
+[SLoop]: for (Map.Entry<ListenerClass, Map<ListenerMethod, Set<ListenerBinding>>> e : bindings.entrySet()) {
+                                                                                                    ListenerClass listener = e.getKey();
+                                                                                                    Map<ListenerMethod, Set<ListenerBinding>> methodBindings = e.getValue();
+                                                                                                    boolean needsCast = !VIEW_TYPE.equals(listener.targetType());
+                                                                                                    builder.append(extraIndent).append("    ");
+                                                                                                    if (needsCast)
+                                                                                                    {
+                                                                                                      builder.append("((").append(listener.targetType());
+                                                                                                      if (listener.genericArguments() > 0)
+                                                                                                      {
+                                                                                                        builder.append('<');
+                                                                                                        for (int i = 0 ; i < listener.genericArguments() ; i++)
+                                                                                                        {
+                                                                                                          if (i > 0)
+                                                                                                          {
+                                                                                                            builder.append(", ");
+                                                                                                          }
+                                                                                                          builder.append('?');
+                                                                                                        }
+                                                                                                        builder.append('>');
+                                                                                                      }
+                                                                                                      builder.append(") ");
+                                                                                                    }
+                                                                                                    builder.append("view");
+                                                                                                    if (needsCast)
+                                                                                                    {
+                                                                                                      builder.append(')');
+                                                                                                    }
+                                                                                                    builder.append('.').append(listener.setter()).append("(\n");
+                                                                                                    builder.append(extraIndent).append("      new ").append(listener.type()).append("() {\n");
+                                                                                                    for (ListenerMethod method : getListenerMethods(listener)) {
+                                                                                                                                                                 builder.append(extraIndent).append("        @Override public ").append(method.returnType()).append(' ').append(method.name()).append("(\n");
+                                                                                                                                                                 String[] parameterTypes = method.parameters();
+                                                                                                                                                                 for (int i = 0, count = parameterTypes.length ; i < count ; i++)
+                                                                                                                                                                 {
+                                                                                                                                                                   builder.append(extraIndent).append("          ").append(parameterTypes[i]).append(" p").append(i);
+                                                                                                                                                                   if ((i < count) - 1)
+                                                                                                                                                                   {
+                                                                                                                                                                     builder.append(',');
+                                                                                                                                                                   }
+                                                                                                                                                                   builder.append('\n');
+                                                                                                                                                                 }
+                                                                                                                                                                 builder.append(extraIndent).append("        ) {\n");
+                                                                                                                                                                 builder.append(extraIndent).append("          ");
+                                                                                                                                                                 boolean hasReturnType = !"void".equals(method.returnType());
+                                                                                                                                                                 if (hasReturnType)
+                                                                                                                                                                 {
+                                                                                                                                                                   builder.append("return ");
+                                                                                                                                                                 }
+                                                                                                                                                                 if (methodBindings.containsKey(method))
+                                                                                                                                                                 {
+                                                                                                                                                                   Set<ListenerBinding> set = methodBindings.get(method);
+                                                                                                                                                                   Iterator<ListenerBinding> iterator = set.iterator();
+                                                                                                                                                                   while (iterator.hasNext())
+                                                                                                                                                                   {
+                                                                                                                                                                     ListenerBinding binding = iterator.next();
+                                                                                                                                                                     builder.append("target.").append(binding.getName()).append('(');
+                                                                                                                                                                     List<Parameter> parameters = binding.getParameters();
+                                                                                                                                                                     String[] listenerParameters = method.parameters();
+                                                                                                                                                                     for (int i = 0, count = parameters.size() ; i < count ; i++)
+                                                                                                                                                                     {
+                                                                                                                                                                       Parameter parameter = parameters.get(i);
+                                                                                                                                                                       int listenerPosition = parameter.getListenerPosition();
+                                                                                                                                                                       emitCastIfNeeded(builder, listenerParameters[listenerPosition], parameter.getType());
+                                                                                                                                                                       builder.append('p').append(listenerPosition);
+                                                                                                                                                                       if ((i < count) - 1)
+                                                                                                                                                                       {
+                                                                                                                                                                         builder.append(", ");
+                                                                                                                                                                       }
+                                                                                                                                                                     }
+                                                                                                                                                                     builder.append(");");
+                                                                                                                                                                     if (iterator.hasNext())
+                                                                                                                                                                     {
+                                                                                                                                                                       builder.append("\n").append("          ");
+                                                                                                                                                                     }
+                                                                                                                                                                   }
+                                                                                                                                                                 }
+                                                                                                                                                                 else
+                                                                                                                                                                   if (hasReturnType)
+                                                                                                                                                                   {
+                                                                                                                                                                     builder.append(method.defaultReturn()).append(';');
+                                                                                                                                                                   }
+                                                                                                                                                                 builder.append('\n');
+                                                                                                                                                                 builder.append(extraIndent).append("        }\n");
+                                                                                                                                                               }
+                                                                                                    builder.append(extraIndent).append("      });\n");
+                                                                                                  }
+
+Edit B:
+Hole 1:
+[]: Map<ListenerClass, Map<ListenerMethod, ListenerBinding>> bindings = injection.getListenerBindings();
+Hole 2:
+[]: for (Map.Entry<ListenerClass, Map<ListenerMethod, ListenerBinding>> e : bindings.entrySet()) {
+                                                                                               ListenerClass listener = e.getKey();
+                                                                                               Map<ListenerMethod, ListenerBinding> methodBindings = e.getValue();
+                                                                                               boolean needsCast = !VIEW_TYPE.equals(listener.targetType());
+                                                                                               builder.append(extraIndent).append("    ");
+                                                                                               if (needsCast)
+                                                                                               {
+                                                                                                 builder.append("((").append(listener.targetType());
+                                                                                                 if (listener.genericArguments() > 0)
+                                                                                                 {
+                                                                                                   builder.append('<');
+                                                                                                   for (int i = 0 ; i < listener.genericArguments() ; i++)
+                                                                                                   {
+                                                                                                     if (i > 0)
+                                                                                                     {
+                                                                                                       builder.append(", ");
+                                                                                                     }
+                                                                                                     builder.append('?');
+                                                                                                   }
+                                                                                                   builder.append('>');
+                                                                                                 }
+                                                                                                 builder.append(") ");
+                                                                                               }
+                                                                                               builder.append("view");
+                                                                                               if (needsCast)
+                                                                                               {
+                                                                                                 builder.append(')');
+                                                                                               }
+                                                                                               builder.append('.').append(listener.setter()).append("(\n");
+                                                                                               builder.append(extraIndent).append("      new ").append(listener.type()).append("() {\n");
+                                                                                               for (ListenerMethod method : getListenerMethods(listener)) {
+                                                                                                                                                            builder.append(extraIndent).append("        @Override public ").append(method.returnType()).append(' ').append(method.name()).append("(\n");
+                                                                                                                                                            String[] parameterTypes = method.parameters();
+                                                                                                                                                            for (int i = 0, count = parameterTypes.length ; i < count ; i++)
+                                                                                                                                                            {
+                                                                                                                                                              builder.append(extraIndent).append("          ").append(parameterTypes[i]).append(" p").append(i);
+                                                                                                                                                              if ((i < count) - 1)
+                                                                                                                                                              {
+                                                                                                                                                                builder.append(',');
+                                                                                                                                                              }
+                                                                                                                                                              builder.append('\n');
+                                                                                                                                                            }
+                                                                                                                                                            builder.append(extraIndent).append("        ) {\n");
+                                                                                                                                                            builder.append(extraIndent).append("          ");
+                                                                                                                                                            boolean hasReturnType = !"void".equals(method.returnType());
+                                                                                                                                                            if (hasReturnType)
+                                                                                                                                                            {
+                                                                                                                                                              builder.append("return ");
+                                                                                                                                                            }
+                                                                                                                                                            if (methodBindings.containsKey(method))
+                                                                                                                                                            {
+                                                                                                                                                              ListenerBinding binding = methodBindings.get(method);
+                                                                                                                                                              builder.append("target.").append(binding.getName()).append('(');
+                                                                                                                                                              List<Parameter> parameters = binding.getParameters();
+                                                                                                                                                              String[] listenerParameters = method.parameters();
+                                                                                                                                                              for (int i = 0, count = parameters.size() ; i < count ; i++)
+                                                                                                                                                              {
+                                                                                                                                                                Parameter parameter = parameters.get(i);
+                                                                                                                                                                int listenerPosition = parameter.getListenerPosition();
+                                                                                                                                                                emitCastIfNeeded(builder, listenerParameters[listenerPosition], parameter.getType());
+                                                                                                                                                                builder.append('p').append(listenerPosition);
+                                                                                                                                                                if ((i < count) - 1)
+                                                                                                                                                                {
+                                                                                                                                                                  builder.append(", ");
+                                                                                                                                                                }
+                                                                                                                                                              }
+                                                                                                                                                              builder.append(");");
+                                                                                                                                                            }
+                                                                                                                                                            else
+                                                                                                                                                              if (hasReturnType)
+                                                                                                                                                              {
+                                                                                                                                                                builder.append(method.defaultReturn()).append(';');
+                                                                                                                                                              }
+                                                                                                                                                            builder.append('\n');
+                                                                                                                                                            builder.append(extraIndent).append("        }\n");
+                                                                                                                                                          }
+                                                                                               builder.append(extraIndent).append("      });\n");
+                                                                                             }
+
+Edit M:
+Hole 1:
+[]: Map<ListenerClass, Map<ListenerMethod, Set<ListenerBinding>>> bindings = injection.getListenerBindings();
+Hole 2:
+[]: for (Map.Entry<ListenerClass, Map<ListenerMethod, Set<ListenerBinding>>> e : bindings.entrySet()) {
+                                                                                                    ListenerClass listener = e.getKey();
+                                                                                                    Map<ListenerMethod, Set<ListenerBinding>> methodBindings = e.getValue();
+                                                                                                    boolean needsCast = !VIEW_TYPE.equals(listener.targetType());
+                                                                                                    builder.append(extraIndent).append("    ");
+                                                                                                    if (needsCast)
+                                                                                                    {
+                                                                                                      builder.append("((").append(listener.targetType());
+                                                                                                      if (listener.genericArguments() > 0)
+                                                                                                      {
+                                                                                                        builder.append('<');
+                                                                                                        for (int i = 0 ; i < listener.genericArguments() ; i++)
+                                                                                                        {
+                                                                                                          if (i > 0)
+                                                                                                          {
+                                                                                                            builder.append(", ");
+                                                                                                          }
+                                                                                                          builder.append('?');
+                                                                                                        }
+                                                                                                        builder.append('>');
+                                                                                                      }
+                                                                                                      builder.append(") ");
+                                                                                                    }
+                                                                                                    builder.append("view");
+                                                                                                    if (needsCast)
+                                                                                                    {
+                                                                                                      builder.append(')');
+                                                                                                    }
+                                                                                                    builder.append('.').append(listener.setter()).append("(\n");
+                                                                                                    builder.append(extraIndent).append("      new ").append(listener.type()).append("() {\n");
+                                                                                                    for (ListenerMethod method : getListenerMethods(listener)) {
+                                                                                                                                                                 builder.append(extraIndent).append("        @Override public ").append(method.returnType()).append(' ').append(method.name()).append("(\n");
+                                                                                                                                                                 String[] parameterTypes = method.parameters();
+                                                                                                                                                                 for (int i = 0, count = parameterTypes.length ; i < count ; i++)
+                                                                                                                                                                 {
+                                                                                                                                                                   builder.append(extraIndent).append("          ").append(parameterTypes[i]).append(" p").append(i);
+                                                                                                                                                                   if ((i < count) - 1)
+                                                                                                                                                                   {
+                                                                                                                                                                     builder.append(',');
+                                                                                                                                                                   }
+                                                                                                                                                                   builder.append('\n');
+                                                                                                                                                                 }
+                                                                                                                                                                 builder.append(extraIndent).append("        ) {\n");
+                                                                                                                                                                 builder.append(extraIndent).append("          ");
+                                                                                                                                                                 boolean hasReturnType = !"void".equals(method.returnType());
+                                                                                                                                                                 if (hasReturnType)
+                                                                                                                                                                 {
+                                                                                                                                                                   builder.append("return ");
+                                                                                                                                                                 }
+                                                                                                                                                                 if (methodBindings.containsKey(method))
+                                                                                                                                                                 {
+                                                                                                                                                                   Set<ListenerBinding> set = methodBindings.get(method);
+                                                                                                                                                                   Iterator<ListenerBinding> iterator = set.iterator();
+                                                                                                                                                                   while (iterator.hasNext())
+                                                                                                                                                                   {
+                                                                                                                                                                     ListenerBinding binding = iterator.next();
+                                                                                                                                                                     builder.append("target.").append(binding.getName()).append('(');
+                                                                                                                                                                     List<Parameter> parameters = binding.getParameters();
+                                                                                                                                                                     String[] listenerParameters = method.parameters();
+                                                                                                                                                                     for (int i = 0, count = parameters.size() ; i < count ; i++)
+                                                                                                                                                                     {
+                                                                                                                                                                       Parameter parameter = parameters.get(i);
+                                                                                                                                                                       int listenerPosition = parameter.getListenerPosition();
+                                                                                                                                                                       emitCastIfNeeded(builder, listenerParameters[listenerPosition], parameter.getType());
+                                                                                                                                                                       builder.append('p').append(listenerPosition);
+                                                                                                                                                                       if ((i < count) - 1)
+                                                                                                                                                                       {
+                                                                                                                                                                         builder.append(", ");
+                                                                                                                                                                       }
+                                                                                                                                                                     }
+                                                                                                                                                                     builder.append(");");
+                                                                                                                                                                     if (iterator.hasNext())
+                                                                                                                                                                     {
+                                                                                                                                                                       builder.append("\n").append("          ");
+                                                                                                                                                                     }
+                                                                                                                                                                   }
+                                                                                                                                                                 }
+                                                                                                                                                                 else
+                                                                                                                                                                   if (hasReturnType)
+                                                                                                                                                                   {
+                                                                                                                                                                     builder.append(method.defaultReturn()).append(';');
+                                                                                                                                                                   }
+                                                                                                                                                                 builder.append('\n');
+                                                                                                                                                                 builder.append(extraIndent).append("        }\n");
+                                                                                                                                                               }
+                                                                                                    builder.append(extraIndent).append("      });\n");
+                                                                                                  }
+
+

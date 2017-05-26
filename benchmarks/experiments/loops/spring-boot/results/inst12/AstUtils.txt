@@ -1,0 +1,100 @@
+Parsing files...
+Merge Instance for method (Ident "AstUtils",Ident "getClosure",[RefType (ClassRefType (ClassType [(Ident "BlockStatement",[])])),RefType (ClassRefType (ClassType [(Ident "String",[])])),PrimType BooleanT])
+public static ClosureExpression getClosure (BlockStatement block, String name, boolean remove)
+{
+  <?HOLE?>
+  return null;
+}
+Edit Base:
+Hole 1:
+[SLoop]: for (Statement statement : new ArrayList<Statement>(block.getStatements())) {
+                                                                              if (statement instanceof ExpressionStatement)
+                                                                              {
+                                                                                Expression expression = ((ExpressionStatement) statement).getExpression();
+                                                                                if (expression instanceof MethodCallExpression)
+                                                                                {
+                                                                                  MethodCallExpression call = (MethodCallExpression) expression;
+                                                                                  Expression methodCall = call.getMethod();
+                                                                                  if (methodCall instanceof ConstantExpression)
+                                                                                  {
+                                                                                    ConstantExpression method = (ConstantExpression) methodCall;
+                                                                                    if (name.equals(method.getValue()))
+                                                                                    {
+                                                                                      ArgumentListExpression arguments = (ArgumentListExpression) call.getArguments();
+                                                                                      if (remove)
+                                                                                      {
+                                                                                        block.getStatements().remove(statement);
+                                                                                      }
+                                                                                      ClosureExpression closure = (ClosureExpression) arguments.getExpression(0);
+                                                                                      return closure;
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+
+Edit A:
+Hole 1:
+[SLoop]: for (ExpressionStatement statement : getExpressionStatements(block)) {
+                                                                       Expression expression = statement.getExpression();
+                                                                       if (expression instanceof MethodCallExpression)
+                                                                       {
+                                                                         ClosureExpression closure = getClosure(name, ((MethodCallExpression) expression));
+                                                                         if (closure != null)
+                                                                         {
+                                                                           if (remove)
+                                                                           {
+                                                                             block.getStatements().remove(statement);
+                                                                           }
+                                                                           return closure;
+                                                                         }
+                                                                       }
+                                                                     }
+
+Edit B:
+Hole 1:
+[]: for (Statement statement : new ArrayList<Statement>(block.getStatements())) {
+                                                                              if (statement instanceof ExpressionStatement)
+                                                                              {
+                                                                                Expression expression = ((ExpressionStatement) statement).getExpression();
+                                                                                if (expression instanceof MethodCallExpression)
+                                                                                {
+                                                                                  MethodCallExpression call = (MethodCallExpression) expression;
+                                                                                  Expression methodCall = call.getMethod();
+                                                                                  if (methodCall instanceof ConstantExpression)
+                                                                                  {
+                                                                                    ConstantExpression method = (ConstantExpression) methodCall;
+                                                                                    if (name.equals(method.getValue()))
+                                                                                    {
+                                                                                      ArgumentListExpression arguments = (ArgumentListExpression) call.getArguments();
+                                                                                      if (remove)
+                                                                                      {
+                                                                                        block.getStatements().remove(statement);
+                                                                                      }
+                                                                                      ClosureExpression closure = (ClosureExpression) arguments.getExpression(0);
+                                                                                      return closure;
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+
+Edit M:
+Hole 1:
+[]: for (ExpressionStatement statement : getExpressionStatements(block)) {
+                                                                       Expression expression = statement.getExpression();
+                                                                       if (expression instanceof MethodCallExpression)
+                                                                       {
+                                                                         ClosureExpression closure = getClosure(name, ((MethodCallExpression) expression));
+                                                                         if (closure != null)
+                                                                         {
+                                                                           if (remove)
+                                                                           {
+                                                                             block.getStatements().remove(statement);
+                                                                           }
+                                                                           return closure;
+                                                                         }
+                                                                       }
+                                                                     }
+
+

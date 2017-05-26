@@ -1,0 +1,39 @@
+Parsing files...
+Merge Instance for method (Ident "AbstractEmbeddedServletContainerFactory",Ident "getCommonDocumentRoot",[])
+private File getCommonDocumentRoot ()
+{
+  for (String commonDocRoot : COMMON_DOC_ROOTS) {
+                                                  File root = new File(commonDocRoot);
+                                                  <?HOLE?>
+                                                }
+  return null;
+}
+Edit Base:
+Hole 1:
+[SCond,SLoop]: if (root != null && root.exists() && root.isDirectory())
+{
+  return root.getAbsoluteFile();
+}
+
+Edit A:
+Hole 1:
+[SCond,SLoop]: if (root.exists() && root.isDirectory())
+{
+  return root.getAbsoluteFile();
+}
+
+Edit B:
+Hole 1:
+[SLoop]: if (root != null && root.exists() && root.isDirectory())
+{
+  return root.getAbsoluteFile();
+}
+
+Edit M:
+Hole 1:
+[SLoop]: if (root.exists() && root.isDirectory())
+{
+  return root.getAbsoluteFile();
+}
+
+

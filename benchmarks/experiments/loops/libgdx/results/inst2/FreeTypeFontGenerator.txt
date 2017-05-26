@@ -1,0 +1,312 @@
+Parsing files...
+Merge Instance for method (Ident "FreeTypeFontGenerator",Ident "generateData",[RefType (ClassRefType (ClassType [(Ident "FreeTypeFontParameter",[])])),RefType (ClassRefType (ClassType [(Ident "FreeTypeBitmapFontData",[])]))])
+public FreeTypeBitmapFontData generateData (FreeTypeFontParameter parameter, FreeTypeBitmapFontData data)
+{
+  parameter = parameter == null ? new FreeTypeFontParameter() : parameter;
+  char[] characters = parameter.characters.toCharArray();
+  int charactersLength = characters.length;
+  boolean incremental = parameter.incremental;
+  <?HOLE?>
+  setPixelSizes(0, parameter.size);
+  SizeMetrics fontMetrics = face.getSize().getMetrics();
+  data.flipped = parameter.flip;
+  data.ascent = FreeType.toInt(fontMetrics.getAscender());
+  data.descent = FreeType.toInt(fontMetrics.getDescender());
+  data.lineHeight = FreeType.toInt(fontMetrics.getHeight());
+  float baseLine = data.ascent;
+  if (bitmapped && data.lineHeight == 0)
+  {
+    for (int c = 32 ; c < 32 + face.getNumGlyphs() ; c++)
+    {
+      <?HOLE?>
+    }
+  }
+  data.lineHeight += parameter.spaceY;
+  <?HOLE?>
+  for (char xChar : data.xChars) {
+                                   <?HOLE?>
+                                   data.xHeight = FreeType.toInt(face.getGlyph().getMetrics().getHeight());
+                                   break;
+                                 }
+  if (data.xHeight == 0)
+    throw new GdxRuntimeException("No x-height character found in font");
+  for (char capChar : data.capChars) {
+                                       <?HOLE?>
+                                       data.capHeight = FreeType.toInt(face.getGlyph().getMetrics().getHeight());
+                                       break;
+                                     }
+  if ((!bitmapped && data.capHeight) == 1)
+    throw new GdxRuntimeException("No cap character found in font");
+  data.ascent -= data.capHeight;
+  data.down = -data.lineHeight;
+  if (parameter.flip)
+  {
+    data.ascent = -data.ascent;
+    data.down = -data.down;
+  }
+  boolean ownsAtlas = false;
+  PixmapPacker packer = parameter.packer;
+  if (packer == null)
+  {
+    int size;
+    PackStrategy packStrategy;
+    if (incremental)
+    {
+      size = maxTextureSize;
+      packStrategy = new GuillotineStrategy();
+    }
+    else
+    {
+      int maxGlyphHeight = (int) Math.ceil(data.lineHeight);
+      size = MathUtils.nextPowerOfTwo(((int) Math.sqrt((maxGlyphHeight * maxGlyphHeight * charactersLength))));
+      if (maxTextureSize > 0)
+        size = Math.min(size, maxTextureSize);
+      packStrategy = new SkylineStrategy();
+    }
+    ownsAtlas = true;
+    packer = new PixmapPacker(size, size, Format.RGBA8888, 1, false, packStrategy);
+    <?HOLE?>
+    <?HOLE?>
+    <?HOLE?>
+  }
+  if (incremental)
+    data.glyphs = new Array(charactersLength + 32);
+  Stroker stroker = null;
+  if (parameter.borderWidth > 0)
+  {
+    stroker = library.createStroker();
+    stroker.set(((int) (parameter.borderWidth * 64.0F)), (parameter.borderStraight ? FreeType.FT_STROKER_LINECAP_BUTT : FreeType.FT_STROKER_LINECAP_ROUND), (parameter.borderStraight ? FreeType.FT_STROKER_LINEJOIN_MITER_FIXED : FreeType.FT_STROKER_LINEJOIN_ROUND), 0);
+  }
+  Glyph missingGlyph = createGlyph('\u0000', data, parameter, stroker, baseLine, packer);
+  if (((missingGlyph != null && missingGlyph.width) != 0 && missingGlyph.height) != 0)
+  {
+    data.setGlyph('\u0000', missingGlyph);
+    if (incremental)
+      data.glyphs.add(missingGlyph);
+  }
+  int[] heights = new int[charactersLength];
+  for (int i = 0, n = charactersLength ; i < n ; i++)
+  {
+    <?HOLE?>
+    heights[i] = height;
+  }
+  int heightsCount = heights.length;
+  while (heightsCount > 0)
+  {
+    int best = 0, maxHeight = heights[0];
+    for (int i = 1 ; i < heightsCount ; i++)
+    {
+      int height = heights[i];
+      if (height > maxHeight)
+      {
+        maxHeight = height;
+        best = i;
+      }
+    }
+    char c = characters[best];
+    Glyph glyph = createGlyph(c, data, parameter, stroker, baseLine, packer);
+    if (glyph != null)
+    {
+      data.setGlyph(c, glyph);
+      if (incremental)
+        data.glyphs.add(glyph);
+    }
+    heightsCount--;
+    heights[best] = heights[heightsCount];
+    char tmpChar = characters[best];
+    characters[best] = characters[heightsCount];
+    characters[heightsCount] = tmpChar;
+  }
+  if (stroker != null && !incremental)
+    stroker.dispose();
+  if (incremental)
+  {
+    data.generator = this;
+    data.parameter = parameter;
+    data.stroker = stroker;
+    data.packer = packer;
+  }
+  parameter.kerning &= face.hasKerning();
+  if (parameter.kerning)
+  {
+    for (int i = 0 ; i < charactersLength ; i++)
+    {
+      char firstChar = characters[i];
+      Glyph first = data.getGlyph(firstChar);
+      if (first == null)
+        continue;
+      int firstIndex = face.getCharIndex(firstChar);
+      for (int ii = i ; ii < charactersLength ; ii++)
+      {
+        char secondChar = characters[ii];
+        Glyph second = data.getGlyph(secondChar);
+        if (second == null)
+          continue;
+        int secondIndex = face.getCharIndex(secondChar);
+        int kerning = face.getKerning(firstIndex, secondIndex, 0);
+        if (kerning != 0)
+          first.setKerning(secondChar, FreeType.toInt(kerning));
+        kerning = face.getKerning(secondIndex, firstIndex, 0);
+        if (kerning != 0)
+          second.setKerning(firstChar, FreeType.toInt(kerning));
+      }
+    }
+  }
+  if (ownsAtlas)
+  {
+    data.regions = new Array();
+    packer.updateTextureRegions(data.regions, parameter.minFilter, parameter.magFilter, parameter.genMipMaps);
+  }
+  Glyph spaceGlyph = data.getGlyph(' ');
+  if (spaceGlyph == null)
+  {
+    spaceGlyph = new Glyph();
+    spaceGlyph.xadvance = (int) data.spaceWidth + parameter.spaceX;
+    spaceGlyph.id = (int) ' ';
+    data.setGlyph(' ', spaceGlyph);
+  }
+  if (spaceGlyph.width == 0)
+    spaceGlyph.width = (int) (spaceGlyph.xadvance + data.padRight);
+  return data;
+}
+Edit Base:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[SCond,SLoop,SCond]: if (loadChar(c))
+{
+  int lh = FreeType.toInt(face.getGlyph().getMetrics().getHeight());
+  data.lineHeight = lh > data.lineHeight ? lh : data.lineHeight;
+}
+Hole 3:
+[SCond]: if (loadChar(' ') || loadChar('l'))
+{
+  data.spaceWidth = FreeType.toInt(face.getGlyph().getMetrics().getHoriAdvance());
+}
+else
+{
+  data.spaceWidth = face.getMaxAdvanceWidth();
+}
+Hole 4:
+[SCond,SLoop]: if (!loadChar(xChar))
+  continue;
+Hole 5:
+[SCond,SLoop]: if (!loadChar(capChar))
+  continue;
+Hole 6:
+[SCond]: <SKIP>
+Hole 7:
+[SCond]: <SKIP>
+Hole 8:
+[SCond]: <SKIP>
+Hole 9:
+[SLoop]: int height = loadChar(characters[i]) ? FreeType.toInt(face.getGlyph().getMetrics().getHeight()) : 0;
+
+Edit A:
+Hole 1:
+[]: int flags = getLoadingFlags(parameter);
+Hole 2:
+[SCond,SLoop,SCond]: if (loadChar(c, flags))
+{
+  int lh = FreeType.toInt(face.getGlyph().getMetrics().getHeight());
+  data.lineHeight = lh > data.lineHeight ? lh : data.lineHeight;
+}
+Hole 3:
+[SCond]: if (loadChar(' ', flags) || loadChar('l', flags))
+{
+  data.spaceWidth = FreeType.toInt(face.getGlyph().getMetrics().getHoriAdvance());
+}
+else
+{
+  data.spaceWidth = face.getMaxAdvanceWidth();
+}
+Hole 4:
+[SCond,SLoop]: if (!loadChar(xChar, flags))
+  continue;
+Hole 5:
+[SCond,SLoop]: if (!loadChar(capChar, flags))
+  continue;
+Hole 6:
+[SCond]: <SKIP>
+Hole 7:
+[SCond]: <SKIP>
+Hole 8:
+[SCond]: <SKIP>
+Hole 9:
+[SLoop]: int height = loadChar(characters[i], flags) ? FreeType.toInt(face.getGlyph().getMetrics().getHeight()) : 0;
+
+Edit B:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[SLoop,SCond]: if (loadChar(c))
+{
+  int lh = FreeType.toInt(face.getGlyph().getMetrics().getHeight());
+  data.lineHeight = lh > data.lineHeight ? lh : data.lineHeight;
+}
+Hole 3:
+[]: if (loadChar(' ') || loadChar('l'))
+{
+  data.spaceWidth = FreeType.toInt(face.getGlyph().getMetrics().getHoriAdvance());
+}
+else
+{
+  data.spaceWidth = face.getMaxAdvanceWidth();
+}
+Hole 4:
+[SLoop]: if (!loadChar(xChar))
+  continue;
+Hole 5:
+[SLoop]: if (!loadChar(capChar))
+  continue;
+Hole 6:
+[SCond]: packer.setTransparentColor(parameter.color);
+Hole 7:
+[SCond]: packer.getTransparentColor().a = 0;
+Hole 8:
+[SCond]: if (parameter.borderWidth > 0)
+{
+  packer.setTransparentColor(parameter.borderColor);
+  packer.getTransparentColor().a = 0;
+}
+Hole 9:
+[SLoop]: int height = loadChar(characters[i]) ? FreeType.toInt(face.getGlyph().getMetrics().getHeight()) : 0;
+
+Edit M:
+Hole 1:
+[]: int flags = getLoadingFlags(parameter);
+Hole 2:
+[SLoop,SCond]: if (loadChar(c, flags))
+{
+  int lh = FreeType.toInt(face.getGlyph().getMetrics().getHeight());
+  data.lineHeight = lh > data.lineHeight ? lh : data.lineHeight;
+}
+Hole 3:
+[]: if (loadChar(' ', flags) || loadChar('l', flags))
+{
+  data.spaceWidth = FreeType.toInt(face.getGlyph().getMetrics().getHoriAdvance());
+}
+else
+{
+  data.spaceWidth = face.getMaxAdvanceWidth();
+}
+Hole 4:
+[SLoop]: if (!loadChar(xChar, flags))
+  continue;
+Hole 5:
+[SLoop]: if (!loadChar(capChar, flags))
+  continue;
+Hole 6:
+[SCond]: packer.setTransparentColor(parameter.color);
+Hole 7:
+[SCond]: packer.getTransparentColor().a = 0;
+Hole 8:
+[SCond]: if (parameter.borderWidth > 0)
+{
+  packer.setTransparentColor(parameter.borderColor);
+  packer.getTransparentColor().a = 0;
+}
+Hole 9:
+[SLoop]: int height = loadChar(characters[i], flags) ? FreeType.toInt(face.getGlyph().getMetrics().getHeight()) : 0;
+
+

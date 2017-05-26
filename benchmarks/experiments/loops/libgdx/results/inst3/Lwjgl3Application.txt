@@ -1,0 +1,96 @@
+Parsing files...
+Merge Instance for method (Ident "Lwjgl3Application",Ident "loop",[])
+private void loop ()
+{
+  Array<Lwjgl3Window> closedWindows = new Array<Lwjgl3Window>();
+  while ((running && windows.size) > 0)
+  {
+    if (audio instanceof OpenALAudio)
+    {
+      ((OpenALAudio) audio).update();
+    }
+    closedWindows.clear();
+    for (Lwjgl3Window window : windows) {
+                                          Gdx.graphics = window.getGraphics();
+                                          <?HOLE?>
+                                          <?HOLE?>
+                                          Gdx.gl30 = window.getGraphics().getGL30();
+                                          <?HOLE?>
+                                          <?HOLE?>
+                                          Gdx.input = window.getInput();
+                                          GLFW.glfwMakeContextCurrent(window.getWindowHandle());
+                                          currentWindow = window;
+                                          synchronized (lifecycleListeners)
+                                          {
+                                            window.update(lifecycleListeners);
+                                          }
+                                          if (window.shouldClose())
+                                          {
+                                            closedWindows.add(window);
+                                          }
+                                        }
+    <?HOLE?>
+    synchronized (runnables)
+    {
+      executedRunnables.clear();
+      executedRunnables.addAll(runnables);
+      runnables.clear();
+    }
+    for (Runnable runnable : executedRunnables) {
+                                                  runnable.run();
+                                                }
+    for (Lwjgl3Window closedWindow : closedWindows) {
+                                                      closedWindow.dispose();
+                                                      windows.removeValue(closedWindow, false);
+                                                    }
+  }
+}
+Edit Base:
+Hole 1:
+[SLoop,SLoop]: Gdx.gl = window.getGraphics().getGL30() != null ? window.getGraphics().getGL30() : window.getGraphics().getGL20();
+Hole 2:
+[SLoop,SLoop]: Gdx.gl20 = window.getGraphics().getGL20();
+Hole 3:
+[SLoop,SLoop]: <SKIP>
+Hole 4:
+[SLoop,SLoop]: <SKIP>
+Hole 5:
+[SLoop]: <SKIP>
+
+Edit A:
+Hole 1:
+[SLoop,SLoop]: Gdx.gl = window.getGraphics().getGL30() != null ? window.getGraphics().getGL30() : window.getGraphics().getGL20();
+Hole 2:
+[SLoop,SLoop]: Gdx.gl20 = window.getGraphics().getGL20();
+Hole 3:
+[SLoop,SLoop]: <SKIP>
+Hole 4:
+[SLoop,SLoop]: <SKIP>
+Hole 5:
+[SLoop]: GLFW.glfwPollEvents();
+
+Edit B:
+Hole 1:
+[SLoop,SLoop]: <SKIP>
+Hole 2:
+[SLoop,SLoop]: <SKIP>
+Hole 3:
+[SLoop,SLoop]: Gdx.gl20 = Gdx.gl30 != null ? Gdx.gl30 : window.getGraphics().getGL20();
+Hole 4:
+[SLoop,SLoop]: Gdx.gl = Gdx.gl30 != null ? Gdx.gl30 : Gdx.gl20;
+Hole 5:
+[SLoop]: <SKIP>
+
+Edit M:
+Hole 1:
+[SLoop,SLoop]: <SKIP>
+Hole 2:
+[SLoop,SLoop]: <SKIP>
+Hole 3:
+[SLoop,SLoop]: Gdx.gl20 = Gdx.gl30 != null ? Gdx.gl30 : window.getGraphics().getGL20();
+Hole 4:
+[SLoop,SLoop]: Gdx.gl = Gdx.gl30 != null ? Gdx.gl30 : Gdx.gl20;
+Hole 5:
+[SLoop]: GLFW.glfwPollEvents();
+
+

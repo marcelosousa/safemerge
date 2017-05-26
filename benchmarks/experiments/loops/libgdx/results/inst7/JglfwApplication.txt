@@ -1,0 +1,299 @@
+Parsing files...
+Merge Instance for method (Ident "JglfwApplication",Ident "mainLoop",[])
+private void mainLoop ()
+{
+  listener.create();
+  listener.resize(graphics.getWidth(), graphics.getHeight());
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  graphics.lastTime = System.nanoTime();
+  while (running)
+  {
+    if (glfwWindowShouldClose(graphics.window))
+      exit();
+    <?HOLE?>
+    <?HOLE?>
+    <?HOLE?>
+    <?HOLE?>
+    <?HOLE?>
+    synchronized (runnables)
+    {
+      executedRunnables.clear();
+      executedRunnables.addAll(runnables);
+      runnables.clear();
+    }
+    <?HOLE?>
+    <?HOLE?>
+    <?HOLE?>
+    <?HOLE?>
+    <?HOLE?>
+    if (!running)
+      break;
+    <?HOLE?>
+    <?HOLE?>
+    <?HOLE?>
+    <?HOLE?>
+    <?HOLE?>
+  }
+  Array<LifecycleListener> listeners = lifecycleListeners;
+  synchronized (listeners)
+  {
+    for (LifecycleListener listener : listeners) {
+                                                   listener.pause();
+                                                   listener.dispose();
+                                                 }
+  }
+  listener.pause();
+  listener.dispose();
+  glfwDestroyWindow(graphics.window);
+  if (graphics.config.forceExit)
+    System.exit((-1));
+}
+Edit Base:
+Hole 1:
+[]: graphics.resize = false;
+Hole 2:
+[]: int lastWidth = graphics.getWidth();
+Hole 3:
+[]: int lastHeight = graphics.getHeight();
+Hole 4:
+[SLoop]: graphics.config.x = glfwGetWindowX(graphics.window);
+Hole 5:
+[SLoop]: graphics.config.y = glfwGetWindowY(graphics.window);
+Hole 6:
+[SLoop]: int width = glfwGetWindowWidth(graphics.window);
+Hole 7:
+[SLoop]: int height = glfwGetWindowHeight(graphics.window);
+Hole 8:
+[SLoop]: if (((graphics.resize || width) != graphics.config.width || height) != graphics.config.height)
+{
+  graphics.resize = false;
+  Gdx.gl.glViewport(0, 0, width, height);
+  graphics.config.width = width;
+  graphics.config.height = height;
+  if (listener != null)
+    listener.resize(width, height);
+  graphics.requestRendering();
+}
+Hole 9:
+[SLoop]: boolean shouldRender = false;
+Hole 10:
+[SLoop]: for (int i = 0 ; i < executedRunnables.size ; i++)
+{
+  shouldRender = true;
+  executedRunnables.get(i).run();
+}
+Hole 11:
+[SLoop]: if (!running)
+  break;
+Hole 12:
+[SLoop]: glfwPollEvents();
+Hole 13:
+[SLoop]: shouldRender |= graphics.shouldRender();
+Hole 14:
+[SCond,SLoop]: if (shouldRender)
+{
+  graphics.updateTime();
+  listener.render();
+  glfwSwapBuffers(graphics.window);
+}
+else
+{
+  try
+  {
+    Thread.sleep(16);
+  }
+  catch (InterruptedException ignored)
+  {
+  }
+}
+Hole 15:
+[SLoop]: <SKIP>
+Hole 16:
+[SLoop]: <SKIP>
+Hole 17:
+[SLoop]: <SKIP>
+Hole 18:
+[SLoop]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[SLoop]: <SKIP>
+Hole 5:
+[SLoop]: <SKIP>
+Hole 6:
+[SLoop]: <SKIP>
+Hole 7:
+[SLoop]: <SKIP>
+Hole 8:
+[SLoop]: <SKIP>
+Hole 9:
+[SLoop]: if (executedRunnables.size > 0)
+{
+  for (int i = 0 ; i < executedRunnables.size ; i++)
+    executedRunnables.get(i).run();
+  if (!running)
+    break;
+  graphics.requestRendering();
+}
+Hole 10:
+[SLoop]: input.update();
+Hole 11:
+[SLoop]: <SKIP>
+Hole 12:
+[SLoop]: <SKIP>
+Hole 13:
+[SLoop]: <SKIP>
+Hole 14:
+[SCond,SLoop]: if (graphics.shouldRender())
+  renderFrame();
+else
+{
+  try
+  {
+    Thread.sleep(16);
+  }
+  catch (InterruptedException ignored)
+  {
+  }
+}
+Hole 15:
+[SLoop]: <SKIP>
+Hole 16:
+[SLoop]: <SKIP>
+Hole 17:
+[SLoop]: <SKIP>
+Hole 18:
+[SLoop]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: graphics.resize = false;
+Hole 2:
+[]: int lastWidth = graphics.getWidth();
+Hole 3:
+[]: int lastHeight = graphics.getHeight();
+Hole 4:
+[SLoop]: graphics.config.x = glfwGetWindowX(graphics.window);
+Hole 5:
+[SLoop]: graphics.config.y = glfwGetWindowY(graphics.window);
+Hole 6:
+[SLoop]: int width = glfwGetWindowWidth(graphics.window);
+Hole 7:
+[SLoop]: int height = glfwGetWindowHeight(graphics.window);
+Hole 8:
+[SLoop]: if (((graphics.resize || width) != graphics.config.width || height) != graphics.config.height)
+{
+  graphics.resize = false;
+  Gdx.gl.glViewport(0, 0, width, height);
+  graphics.config.width = width;
+  graphics.config.height = height;
+  if (listener != null)
+    listener.resize(width, height);
+  graphics.requestRendering();
+}
+Hole 9:
+[SLoop]: boolean shouldRender = false;
+Hole 10:
+[SLoop]: for (int i = 0 ; i < executedRunnables.size ; i++)
+{
+  shouldRender = true;
+  executedRunnables.get(i).run();
+}
+Hole 11:
+[SLoop]: <SKIP>
+Hole 12:
+[SLoop]: <SKIP>
+Hole 13:
+[SLoop]: <SKIP>
+Hole 14:
+[SLoop]: input.resetStates();
+Hole 15:
+[SLoop]: glfwPollEvents();
+Hole 16:
+[SLoop]: shouldRender |= graphics.shouldRender();
+Hole 17:
+[SLoop]: if (!running)
+  break;
+Hole 18:
+[SLoop]: if (shouldRender)
+{
+  graphics.updateTime();
+  listener.render();
+  glfwSwapBuffers(graphics.window);
+}
+else
+{
+  try
+  {
+    Thread.sleep(16);
+  }
+  catch (InterruptedException ignored)
+  {
+  }
+}
+
+Edit M:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[SLoop]: <SKIP>
+Hole 5:
+[SLoop]: <SKIP>
+Hole 6:
+[SLoop]: <SKIP>
+Hole 7:
+[SLoop]: <SKIP>
+Hole 8:
+[SLoop]: <SKIP>
+Hole 9:
+[SLoop]: if (executedRunnables.size > 0)
+{
+  for (int i = 0 ; i < executedRunnables.size ; i++)
+    executedRunnables.get(i).run();
+  if (!running)
+    break;
+  graphics.requestRendering();
+}
+Hole 10:
+[SLoop]: input.update();
+Hole 11:
+[SLoop]: <SKIP>
+Hole 12:
+[SLoop]: <SKIP>
+Hole 13:
+[SLoop]: <SKIP>
+Hole 14:
+[SLoop]: if (graphics.shouldRender())
+  renderFrame();
+else
+{
+  try
+  {
+    Thread.sleep(16);
+  }
+  catch (InterruptedException ignored)
+  {
+  }
+}
+Hole 15:
+[SLoop]: <SKIP>
+Hole 16:
+[SLoop]: <SKIP>
+Hole 17:
+[SLoop]: <SKIP>
+Hole 18:
+[SLoop]: <SKIP>
+
+

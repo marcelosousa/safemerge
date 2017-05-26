@@ -1,0 +1,63 @@
+Parsing files...
+Merge Instance for method (Ident "PropertySourcesPropertyValues",Ident "processEnumerablePropertySource",[RefType (ClassRefType (ClassType [(Ident "EnumerablePropertySource",[Wildcard Nothing])])),RefType (ClassRefType (ClassType [(Ident "PropertySourcesPropertyResolver",[])])),RefType (ClassRefType (ClassType [(Ident "PropertyNamePatternsMatcher",[])]))])
+private void processEnumerablePropertySource (EnumerablePropertySource<?> source, PropertySourcesPropertyResolver resolver, PropertyNamePatternsMatcher includes)
+{
+  if (source.getPropertyNames().length > 0)
+  {
+    for (String propertyName : source.getPropertyNames()) {
+                                                            <?HOLE?>
+                                                            <?HOLE?>
+                                                            <?HOLE?>
+                                                          }
+  }
+}
+Edit Base:
+Hole 1:
+[SCond,SLoop,SCond]: if (PropertySourcesPropertyValues.PATTERN_MATCHED_PROPERTY_SOURCES.contains(source.getName()) && !includes.matches(propertyName))
+{
+  continue;
+}
+Hole 2:
+[SLoop,SCond]: Object value = getEnumerableProperty(source, resolver, propertyName);
+Hole 3:
+[SLoop,SCond]: if (!this.propertyValues.containsKey(propertyName))
+{
+  this.propertyValues.put(propertyName, new PropertyValue(propertyName, value));
+}
+
+Edit A:
+Hole 1:
+[SCond,SLoop,SCond]: if (includes.matches(propertyName))
+{
+  Object value = getEnumerableProperty(source, resolver, propertyName);
+  putIfAbsent(propertyName, value, source);
+}
+Hole 2:
+[SLoop,SCond]: <SKIP>
+Hole 3:
+[SLoop,SCond]: <SKIP>
+
+Edit B:
+Hole 1:
+[SLoop,SCond]: if (PropertySourcesPropertyValues.PATTERN_MATCHED_PROPERTY_SOURCES.contains(source.getName()) && !includes.matches(propertyName))
+{
+  continue;
+}
+Hole 2:
+[SLoop,SCond]: Object value = getEnumerableProperty(source, resolver, propertyName);
+Hole 3:
+[SLoop,SCond]: putIfAbsent(propertyName, value, source);
+
+Edit M:
+Hole 1:
+[SLoop,SCond]: if (includes.matches(propertyName))
+{
+  Object value = getEnumerableProperty(source, resolver, propertyName);
+  putIfAbsent(propertyName, value, source);
+}
+Hole 2:
+[SLoop,SCond]: <SKIP>
+Hole 3:
+[SLoop,SCond]: <SKIP>
+
+

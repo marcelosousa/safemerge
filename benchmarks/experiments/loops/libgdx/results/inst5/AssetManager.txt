@@ -1,0 +1,41 @@
+Parsing files...
+Merge Instance for method (Ident "AssetManager",Ident "update",[PrimType IntT])
+public boolean update (int millis)
+{
+  <?HOLE?>
+  while (true)
+  {
+    boolean done = update();
+    <?HOLE?>
+    ThreadUtils.yield();
+  }
+}
+Edit Base:
+Hole 1:
+[]: long endTime = System.currentTimeMillis() + millis;
+Hole 2:
+[SCond,SLoop]: if ((done || System.currentTimeMillis()) > endTime)
+  return done;
+
+Edit A:
+Hole 1:
+[]: long endTime = TimeUtils.millis() + millis;
+Hole 2:
+[SCond,SLoop]: if ((done || TimeUtils.millis()) > endTime)
+  return done;
+
+Edit B:
+Hole 1:
+[]: long endTime = System.currentTimeMillis() + millis;
+Hole 2:
+[SLoop]: if ((done || System.currentTimeMillis()) > endTime)
+  return done;
+
+Edit M:
+Hole 1:
+[]: long endTime = TimeUtils.millis() + millis;
+Hole 2:
+[SLoop]: if ((done || TimeUtils.millis()) > endTime)
+  return done;
+
+
