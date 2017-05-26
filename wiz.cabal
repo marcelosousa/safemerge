@@ -29,6 +29,7 @@ Library
   Hs-Source-Dirs: src/
   Exposed-modules:
       Analysis.Java.Liff
+      Analysis.Java.AST
       Analysis.Java.ClassInfo
       Edit 
       Edit.Gen 
@@ -37,3 +38,4 @@ Library
       Edit.Apply
       Edit.Diff
       Edit.Print
+      Edit.Opt
