@@ -1,0 +1,412 @@
+diff4gen_meth: unusable edit scripts [False,False,True,True]
+diff4: strange result: 2
+diff4: strange result: 2
+diff4: strange result: 2
+diff4: strange result: 2
+diff4: strange result: 2
+diff4: strange result: 2
+diff4: strange result: 2
+diff4: strange result: 2
+diff4gen_meth: unusable edit scripts [False,False,True,True]
+-------------------------------------------
+Inst: 1
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/fragments/SimpleFragment.java
+Meth: [(Ident "SimpleFragment",Ident "generateScatterData",[PrimType IntT,PrimType FloatT,PrimType IntT])]
+Orig: cb0226b2312dcd69c16d4dc0825f02c72471a8d8
+VarA: f01b90668be552ec5139264cda72c0924a5451e3
+VarB: 0f3f4b75b0e8bb386dd1618b50e7240a572e6eda
+Merg: af114d180da6ec5633d32c701ff5467f7629fcf3
+-------------------------------------------
+Inst: 2
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/ScatterChartActivity.java
+Meth: [(Ident "ScatterChartActivity",Ident "onProgressChanged",[RefType (ClassRefType (ClassType [(Ident "SeekBar",[])])),PrimType IntT,PrimType BooleanT])]
+Orig: cb0226b2312dcd69c16d4dc0825f02c72471a8d8
+VarA: f01b90668be552ec5139264cda72c0924a5451e3
+VarB: 0f3f4b75b0e8bb386dd1618b50e7240a572e6eda
+Merg: af114d180da6ec5633d32c701ff5467f7629fcf3
+-------------------------------------------
+Inst: 3
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/PiePolylineChartActivity.java
+Meth: [(Ident "PiePolylineChartActivity",Ident "setData",[PrimType IntT,PrimType FloatT])]
+Orig: 8bca4c79d3adf8f116d3226a9939badac7534918
+VarA: 2a2cee5d1c3f8c21eb6baa08a0aee65787f2d530
+VarB: 1b9b3da3deaea37114e1fe9423445dac4a97c2a5
+Merg: 7de481bca30ef6ca03c30c89733465333dc12c37
+-------------------------------------------
+Inst: 4
+File: MPChartLib/src/com/github/mikephil/charting/data/LineDataSet.java
+Meth: [(Ident "LineDataSet",Ident "copy",[])]
+Orig: 4b3825c68d2c21e61a1f852f054b935d3dbe39a9
+VarA: 3baf89c25d03776f8273c686c49c92e9ed204275
+VarB: 8bca4c79d3adf8f116d3226a9939badac7534918
+Merg: 2a2cee5d1c3f8c21eb6baa08a0aee65787f2d530
+-------------------------------------------
+Inst: 5
+File: MPChartLib/src/com/github/mikephil/charting/data/DataSet.java
+Meth: [(Ident "DataSet",Ident "getEntryIndex",[PrimType IntT,RefType (ClassRefType (ClassType [(Ident "Rounding",[])]))]),(Ident "DataSet",Ident "toString",[])]
+Orig: 4b3825c68d2c21e61a1f852f054b935d3dbe39a9
+VarA: 3baf89c25d03776f8273c686c49c92e9ed204275
+VarB: 8bca4c79d3adf8f116d3226a9939badac7534918
+Merg: 2a2cee5d1c3f8c21eb6baa08a0aee65787f2d530
+-------------------------------------------
+Inst: 6
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/StackedBarActivity.java
+Meth: [(Ident "StackedBarActivity",Ident "onProgressChanged",[RefType (ClassRefType (ClassType [(Ident "SeekBar",[])])),PrimType IntT,PrimType BooleanT])]
+Orig: 4b3825c68d2c21e61a1f852f054b935d3dbe39a9
+VarA: 3baf89c25d03776f8273c686c49c92e9ed204275
+VarB: 8bca4c79d3adf8f116d3226a9939badac7534918
+Merg: 2a2cee5d1c3f8c21eb6baa08a0aee65787f2d530
+-------------------------------------------
+Inst: 7
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/ScatterChartActivity.java
+Meth: [(Ident "ScatterChartActivity",Ident "onProgressChanged",[RefType (ClassRefType (ClassType [(Ident "SeekBar",[])])),PrimType IntT,PrimType BooleanT])]
+Orig: 4b3825c68d2c21e61a1f852f054b935d3dbe39a9
+VarA: 3baf89c25d03776f8273c686c49c92e9ed204275
+VarB: 8bca4c79d3adf8f116d3226a9939badac7534918
+Merg: 2a2cee5d1c3f8c21eb6baa08a0aee65787f2d530
+-------------------------------------------
+Inst: 8
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/LineChartActivity2.java
+Meth: [(Ident "LineChartActivity2",Ident "setData",[PrimType IntT,PrimType FloatT])]
+Orig: 4b3825c68d2c21e61a1f852f054b935d3dbe39a9
+VarA: 3baf89c25d03776f8273c686c49c92e9ed204275
+VarB: 8bca4c79d3adf8f116d3226a9939badac7534918
+Merg: 2a2cee5d1c3f8c21eb6baa08a0aee65787f2d530
+-------------------------------------------
+Inst: 9
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/LineChartActivity1.java
+Meth: [(Ident "LineChartActivity1",Ident "setData",[PrimType IntT,PrimType FloatT])]
+Orig: 4b3825c68d2c21e61a1f852f054b935d3dbe39a9
+VarA: 3baf89c25d03776f8273c686c49c92e9ed204275
+VarB: 8bca4c79d3adf8f116d3226a9939badac7534918
+Merg: 2a2cee5d1c3f8c21eb6baa08a0aee65787f2d530
+-------------------------------------------
+Inst: 10
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/CubicLineChartActivity.java
+Meth: [(Ident "CubicLineChartActivity",Ident "setData",[PrimType IntT,PrimType FloatT])]
+Orig: 4b3825c68d2c21e61a1f852f054b935d3dbe39a9
+VarA: 3baf89c25d03776f8273c686c49c92e9ed204275
+VarB: 8bca4c79d3adf8f116d3226a9939badac7534918
+Merg: 2a2cee5d1c3f8c21eb6baa08a0aee65787f2d530
+-------------------------------------------
+Inst: 11
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/AnotherBarActivity.java
+Meth: [(Ident "AnotherBarActivity",Ident "onProgressChanged",[RefType (ClassRefType (ClassType [(Ident "SeekBar",[])])),PrimType IntT,PrimType BooleanT])]
+Orig: 4b3825c68d2c21e61a1f852f054b935d3dbe39a9
+VarA: 3baf89c25d03776f8273c686c49c92e9ed204275
+VarB: 8bca4c79d3adf8f116d3226a9939badac7534918
+Merg: 2a2cee5d1c3f8c21eb6baa08a0aee65787f2d530
+-------------------------------------------
+Inst: 12
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/HorizontalBarChartActivity.java
+Meth: [(Ident "HorizontalBarChartActivity",Ident "setData",[PrimType IntT,PrimType FloatT])]
+Orig: 358770cd1301c9227e8c72fdaa5026b8c94572c4
+VarA: b28aae50fc6b0dd48a812831d6ef0c5c98ef8c0f
+VarB: 4b3825c68d2c21e61a1f852f054b935d3dbe39a9
+Merg: 3baf89c25d03776f8273c686c49c92e9ed204275
+-------------------------------------------
+Inst: 13
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/BarChartActivitySinus.java
+Meth: [(Ident "BarChartActivitySinus",Ident "setData",[PrimType IntT])]
+Orig: 358770cd1301c9227e8c72fdaa5026b8c94572c4
+VarA: b28aae50fc6b0dd48a812831d6ef0c5c98ef8c0f
+VarB: 4b3825c68d2c21e61a1f852f054b935d3dbe39a9
+Merg: 3baf89c25d03776f8273c686c49c92e9ed204275
+-------------------------------------------
+Inst: 14
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/BarChartActivityMultiDataset.java
+Meth: [(Ident "BarChartActivityMultiDataset",Ident "onProgressChanged",[RefType (ClassRefType (ClassType [(Ident "SeekBar",[])])),PrimType IntT,PrimType BooleanT])]
+Orig: 358770cd1301c9227e8c72fdaa5026b8c94572c4
+VarA: b28aae50fc6b0dd48a812831d6ef0c5c98ef8c0f
+VarB: 4b3825c68d2c21e61a1f852f054b935d3dbe39a9
+Merg: 3baf89c25d03776f8273c686c49c92e9ed204275
+-------------------------------------------
+Inst: 15
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/BarChartActivity.java
+Meth: [(Ident "BarChartActivity",Ident "setData",[PrimType IntT,PrimType FloatT])]
+Orig: 358770cd1301c9227e8c72fdaa5026b8c94572c4
+VarA: b28aae50fc6b0dd48a812831d6ef0c5c98ef8c0f
+VarB: 4b3825c68d2c21e61a1f852f054b935d3dbe39a9
+Merg: 3baf89c25d03776f8273c686c49c92e9ed204275
+-------------------------------------------
+Inst: 16
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/AnotherBarActivity.java
+Meth: [(Ident "AnotherBarActivity",Ident "onProgressChanged",[RefType (ClassRefType (ClassType [(Ident "SeekBar",[])])),PrimType IntT,PrimType BooleanT])]
+Orig: 358770cd1301c9227e8c72fdaa5026b8c94572c4
+VarA: b28aae50fc6b0dd48a812831d6ef0c5c98ef8c0f
+VarB: 4b3825c68d2c21e61a1f852f054b935d3dbe39a9
+Merg: 3baf89c25d03776f8273c686c49c92e9ed204275
+-------------------------------------------
+Inst: 17
+File: MPChartLib/src/com/github/mikephil/charting/data/BubbleDataSet.java
+Meth: [(Ident "BubbleDataSet",Ident "calcMinMax",[PrimType IntT,PrimType IntT]),(Ident "BubbleDataSet",Ident "copy",[])]
+Orig: 493da1d130db6498bde8d6dd486a9993198c7e45
+VarA: bc7ce8d0bd78fac96702db82eb093489845e4820
+VarB: 358770cd1301c9227e8c72fdaa5026b8c94572c4
+Merg: b28aae50fc6b0dd48a812831d6ef0c5c98ef8c0f
+-------------------------------------------
+Inst: 18
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/LineChartActivity2.java
+Meth: [(Ident "LineChartActivity2",Ident "setData",[PrimType IntT,PrimType FloatT])]
+Orig: 493da1d130db6498bde8d6dd486a9993198c7e45
+VarA: bc7ce8d0bd78fac96702db82eb093489845e4820
+VarB: 358770cd1301c9227e8c72fdaa5026b8c94572c4
+Merg: b28aae50fc6b0dd48a812831d6ef0c5c98ef8c0f
+-------------------------------------------
+Inst: 19
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/LineChartActivity1.java
+Meth: [(Ident "LineChartActivity1",Ident "setData",[PrimType IntT,PrimType FloatT])]
+Orig: 493da1d130db6498bde8d6dd486a9993198c7e45
+VarA: bc7ce8d0bd78fac96702db82eb093489845e4820
+VarB: 358770cd1301c9227e8c72fdaa5026b8c94572c4
+Merg: b28aae50fc6b0dd48a812831d6ef0c5c98ef8c0f
+-------------------------------------------
+Inst: 20
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/HorizontalBarChartActivity.java
+Meth: [(Ident "HorizontalBarChartActivity",Ident "setData",[PrimType IntT,PrimType FloatT])]
+Orig: 493da1d130db6498bde8d6dd486a9993198c7e45
+VarA: bc7ce8d0bd78fac96702db82eb093489845e4820
+VarB: 358770cd1301c9227e8c72fdaa5026b8c94572c4
+Merg: b28aae50fc6b0dd48a812831d6ef0c5c98ef8c0f
+-------------------------------------------
+Inst: 21
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/CubicLineChartActivity.java
+Meth: [(Ident "CubicLineChartActivity",Ident "setData",[PrimType IntT,PrimType FloatT])]
+Orig: 493da1d130db6498bde8d6dd486a9993198c7e45
+VarA: bc7ce8d0bd78fac96702db82eb093489845e4820
+VarB: 358770cd1301c9227e8c72fdaa5026b8c94572c4
+Merg: b28aae50fc6b0dd48a812831d6ef0c5c98ef8c0f
+-------------------------------------------
+Inst: 22
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/BarChartActivitySinus.java
+Meth: [(Ident "BarChartActivitySinus",Ident "setData",[PrimType IntT])]
+Orig: 493da1d130db6498bde8d6dd486a9993198c7e45
+VarA: bc7ce8d0bd78fac96702db82eb093489845e4820
+VarB: 358770cd1301c9227e8c72fdaa5026b8c94572c4
+Merg: b28aae50fc6b0dd48a812831d6ef0c5c98ef8c0f
+-------------------------------------------
+Inst: 23
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/BarChartActivityMultiDataset.java
+Meth: [(Ident "BarChartActivityMultiDataset",Ident "onProgressChanged",[RefType (ClassRefType (ClassType [(Ident "SeekBar",[])])),PrimType IntT,PrimType BooleanT])]
+Orig: 493da1d130db6498bde8d6dd486a9993198c7e45
+VarA: bc7ce8d0bd78fac96702db82eb093489845e4820
+VarB: 358770cd1301c9227e8c72fdaa5026b8c94572c4
+Merg: b28aae50fc6b0dd48a812831d6ef0c5c98ef8c0f
+-------------------------------------------
+Inst: 24
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/BarChartActivity.java
+Meth: [(Ident "BarChartActivity",Ident "setData",[PrimType IntT,PrimType FloatT])]
+Orig: 493da1d130db6498bde8d6dd486a9993198c7e45
+VarA: bc7ce8d0bd78fac96702db82eb093489845e4820
+VarB: 358770cd1301c9227e8c72fdaa5026b8c94572c4
+Merg: b28aae50fc6b0dd48a812831d6ef0c5c98ef8c0f
+-------------------------------------------
+Inst: 25
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/AnotherBarActivity.java
+Meth: [(Ident "AnotherBarActivity",Ident "onProgressChanged",[RefType (ClassRefType (ClassType [(Ident "SeekBar",[])])),PrimType IntT,PrimType BooleanT])]
+Orig: 493da1d130db6498bde8d6dd486a9993198c7e45
+VarA: bc7ce8d0bd78fac96702db82eb093489845e4820
+VarB: 358770cd1301c9227e8c72fdaa5026b8c94572c4
+Merg: b28aae50fc6b0dd48a812831d6ef0c5c98ef8c0f
+-------------------------------------------
+Inst: 26
+File: MPChartLib/src/com/github/mikephil/charting/data/BarDataSet.java
+Meth: [(Ident "BarDataSet",Ident "copy",[])]
+Orig: ccced3cc1f383415bdd6e29d547702d5db3a91ef
+VarA: cf463cad069c9c62e3d6dd6d01f7d7c376c35218
+VarB: 493da1d130db6498bde8d6dd486a9993198c7e45
+Merg: bc7ce8d0bd78fac96702db82eb093489845e4820
+-------------------------------------------
+Inst: 27
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/StackedBarActivity.java
+Meth: [(Ident "StackedBarActivity",Ident "onProgressChanged",[RefType (ClassRefType (ClassType [(Ident "SeekBar",[])])),PrimType IntT,PrimType BooleanT])]
+Orig: ccced3cc1f383415bdd6e29d547702d5db3a91ef
+VarA: cf463cad069c9c62e3d6dd6d01f7d7c376c35218
+VarB: 493da1d130db6498bde8d6dd486a9993198c7e45
+Merg: bc7ce8d0bd78fac96702db82eb093489845e4820
+-------------------------------------------
+Inst: 28
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/HorizontalBarChartActivity.java
+Meth: [(Ident "HorizontalBarChartActivity",Ident "setData",[PrimType IntT,PrimType FloatT])]
+Orig: ccced3cc1f383415bdd6e29d547702d5db3a91ef
+VarA: cf463cad069c9c62e3d6dd6d01f7d7c376c35218
+VarB: 493da1d130db6498bde8d6dd486a9993198c7e45
+Merg: bc7ce8d0bd78fac96702db82eb093489845e4820
+-------------------------------------------
+Inst: 29
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/BarChartActivitySinus.java
+Meth: [(Ident "BarChartActivitySinus",Ident "setData",[PrimType IntT])]
+Orig: ccced3cc1f383415bdd6e29d547702d5db3a91ef
+VarA: cf463cad069c9c62e3d6dd6d01f7d7c376c35218
+VarB: 493da1d130db6498bde8d6dd486a9993198c7e45
+Merg: bc7ce8d0bd78fac96702db82eb093489845e4820
+-------------------------------------------
+Inst: 30
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/BarChartActivityMultiDataset.java
+Meth: [(Ident "BarChartActivityMultiDataset",Ident "onProgressChanged",[RefType (ClassRefType (ClassType [(Ident "SeekBar",[])])),PrimType IntT,PrimType BooleanT])]
+Orig: ccced3cc1f383415bdd6e29d547702d5db3a91ef
+VarA: cf463cad069c9c62e3d6dd6d01f7d7c376c35218
+VarB: 493da1d130db6498bde8d6dd486a9993198c7e45
+Merg: bc7ce8d0bd78fac96702db82eb093489845e4820
+-------------------------------------------
+Inst: 31
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/BarChartActivity.java
+Meth: [(Ident "BarChartActivity",Ident "setData",[PrimType IntT,PrimType FloatT])]
+Orig: ccced3cc1f383415bdd6e29d547702d5db3a91ef
+VarA: cf463cad069c9c62e3d6dd6d01f7d7c376c35218
+VarB: 493da1d130db6498bde8d6dd486a9993198c7e45
+Merg: bc7ce8d0bd78fac96702db82eb093489845e4820
+-------------------------------------------
+Inst: 32
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/AnotherBarActivity.java
+Meth: [(Ident "AnotherBarActivity",Ident "onProgressChanged",[RefType (ClassRefType (ClassType [(Ident "SeekBar",[])])),PrimType IntT,PrimType BooleanT])]
+Orig: ccced3cc1f383415bdd6e29d547702d5db3a91ef
+VarA: cf463cad069c9c62e3d6dd6d01f7d7c376c35218
+VarB: 493da1d130db6498bde8d6dd486a9993198c7e45
+Merg: bc7ce8d0bd78fac96702db82eb093489845e4820
+-------------------------------------------
+Inst: 33
+File: MPChartLib/src/com/github/mikephil/charting/data/LineDataSet.java
+Meth: [(Ident "LineDataSet",Ident "copy",[])]
+Orig: 31f15a941dafef1dae9c132081a36faed606f671
+VarA: d0ce8e7d5a58b9241bf908660ff4240b31af19d7
+VarB: ccced3cc1f383415bdd6e29d547702d5db3a91ef
+Merg: cf463cad069c9c62e3d6dd6d01f7d7c376c35218
+-------------------------------------------
+Inst: 34
+File: MPChartLib/src/com/github/mikephil/charting/data/DataSet.java
+Meth: [(Ident "DataSet",Ident "getEntriesForXIndex",[PrimType IntT]),(Ident "DataSet",Ident "getEntryIndex",[PrimType IntT,RefType (ClassRefType (ClassType [(Ident "Rounding",[])]))]),(Ident "DataSet",Ident "toString",[])]
+Orig: 31f15a941dafef1dae9c132081a36faed606f671
+VarA: d0ce8e7d5a58b9241bf908660ff4240b31af19d7
+VarB: ccced3cc1f383415bdd6e29d547702d5db3a91ef
+Merg: cf463cad069c9c62e3d6dd6d01f7d7c376c35218
+-------------------------------------------
+Inst: 35
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/LineChartActivity2.java
+Meth: [(Ident "LineChartActivity2",Ident "setData",[PrimType IntT,PrimType FloatT])]
+Orig: 31f15a941dafef1dae9c132081a36faed606f671
+VarA: d0ce8e7d5a58b9241bf908660ff4240b31af19d7
+VarB: ccced3cc1f383415bdd6e29d547702d5db3a91ef
+Merg: cf463cad069c9c62e3d6dd6d01f7d7c376c35218
+-------------------------------------------
+Inst: 36
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/LineChartActivity1.java
+Meth: [(Ident "LineChartActivity1",Ident "setData",[PrimType IntT,PrimType FloatT])]
+Orig: 31f15a941dafef1dae9c132081a36faed606f671
+VarA: d0ce8e7d5a58b9241bf908660ff4240b31af19d7
+VarB: ccced3cc1f383415bdd6e29d547702d5db3a91ef
+Merg: cf463cad069c9c62e3d6dd6d01f7d7c376c35218
+-------------------------------------------
+Inst: 37
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/CubicLineChartActivity.java
+Meth: [(Ident "CubicLineChartActivity",Ident "setData",[PrimType IntT,PrimType FloatT])]
+Orig: 31f15a941dafef1dae9c132081a36faed606f671
+VarA: d0ce8e7d5a58b9241bf908660ff4240b31af19d7
+VarB: ccced3cc1f383415bdd6e29d547702d5db3a91ef
+Merg: cf463cad069c9c62e3d6dd6d01f7d7c376c35218
+-------------------------------------------
+Inst: 38
+File: MPChartLib/diff4gen_meth: unusable edit scripts [False,False,True,True]
+src/com/github/mikephil/charting/renderer/PieChartRenderer.java
+Meth: [(Ident "PieChartRenderer",Ident "drawData",[RefType (ClassRefType (ClassType [(Ident "Canvas",[])]))]),(Ident "PieChartRenderer",Ident "drawHighlighted",[RefType (ClassRefType (ClassType [(Ident "Canvas",[])])),RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "Highlight",[])]))))]),(Ident "PieChartRenderer",Ident "drawRoundedSlices",[RefType (ClassRefType (ClassType [(Ident "Canvas",[])]))]),(Ident "PieChartRenderer",Ident "drawValues",[RefType (ClassRefType (ClassType [(Ident "Canvas",[])]))])]
+Orig: f30c1c90a45c2d0e621115bd09c351f902a6b034
+VarA: c6e649903d181121c8f21e77b63dfd0fbfb64338
+VarB: dd9aa1ae691e4891f6275e94de5ee9b8c9a5f214
+Merg: bfcfafe32697b18cf126d56c2bc843c202b630b8
+-------------------------------------------
+Inst: 39
+File: MPChartLib/src/com/github/mikephil/charting/charts/Chart.java
+Meth: [(Ident "Chart",Ident "setData",[RefType (ClassRefType (ClassType [(Ident "T",[])]))])]
+Orig: f30c1c90a45c2d0e621115bd09c351f902a6b034
+VarA: c6e649903d181121c8f21e77b63dfd0fbfb64338
+VarB: dd9aa1ae691e4891f6275e94de5ee9b8c9a5f214
+Merg: bfcfafe32697b18cf126d56c2bc843c202b630b8
+-------------------------------------------
+Inst: 40
+File: MPChartLib/src/com/github/mikephil/charting/charts/Chart.java
+Meth: [(Ident "Chart",Ident "setData",[RefType (ClassRefType (ClassType [(Ident "T",[])]))])]
+Orig: b2f4e26e67997786e145b62cb991685b5504af4f
+VarA: e7201dc42fb87933cf2e1809f361be09e875a70c
+VarB: 7d385a243d210a33fbcb8209690e8224e9806568
+Merg: fdf8a152af5c39f993bc186a657666477b08d36c
+-------------------------------------------
+Inst: 41
+File: MPChartLib/src/com/github/mikephil/charting/charts/Chart.java
+Meth: [(Ident "Chart",Ident "setData",[RefType (ClassRefType (ClassType [(Ident "T",[])]))])]
+Orig: fd3b2a164aa7a0d1936271f75b32393787d8ebc7
+VarA: 600496a3d5e5a1363cc8cb1cc8ed2b18dcd5faa3
+VarB: f71f85f16bef24ccf7b4e9481b674d5d2436845e
+Merg: 3fb8a54771edbd76773b88e8a88905fb87f5d3b7
+-------------------------------------------
+Inst: 42
+File: MPChartLib/src/com/github/mikephil/charting/renderer/LineChartRenderer.java
+Meth: [(Ident "LineChartRenderer",Ident "drawCircles",[RefType (ClassRefType (ClassType [(Ident "Canvas",[])]))]),(Ident "LineChartRenderer",Ident "drawData",[RefType (ClassRefType (ClassType [(Ident "Canvas",[])]))])]
+Orig: 5f5950b4414fc6294f333870deda0341ea0dd9fc
+VarA: f28c5ce67c7660095851753495366a89e464061a
+VarB: fd3b2a164aa7a0d1936271f75b32393787d8ebc7
+Merg: 600496a3d5e5a1363cc8cb1cc8ed2b18dcd5faa3
+-------------------------------------------
+Inst: 43
+File: MPChartLib/src/com/github/mikephil/charting/charts/CombinedChart.java
+Meth: [(Ident "CombinedChart",Ident "calcMinMax",[])]
+Orig: 5f5950b4414fc6294f333870deda0341ea0dd9fc
+VarA: f28c5ce67c7660095851753495366a89e464061a
+VarB: fd3b2a164aa7a0d1936271f75b32393787d8ebc7
+Merg: 600496a3d5e5a1363cc8cb1cc8ed2b18dcd5faa3
+-------------------------------------------
+Inst: 44
+File: MPChartLib/src/com/github/mikephil/charting/charts/Chart.java
+Meth: [(Ident "Chart",Ident "setData",[RefType (ClassRefType (ClassType [(Ident "T",[])]))])]
+Orig: 5f5950b4414fc6294f333870deda0341ea0dd9fc
+VarA: f28c5ce67c7660095851753495366a89e464061a
+VarB: fd3b2a164aa7a0d1936271f75b32393787d8ebc7
+Merg: 600496a3d5e5a1363cc8cb1cc8ed2b18dcd5faa3
+-------------------------------------------
+Inst: 45
+File: MPChartLib/src/com/github/mikephil/charting/charts/PieChart.java
+Meth: [(Ident "PieChart",Ident "needsHighlight",[PrimType IntT,PrimType IntT])]
+Orig: 314a9d810430ac0299d61dfd72c08cc62d6dcc23
+VarA: 0e379d31c1e277f46135f9bdaf907cee0455138a
+VarB: cd04e50cb42e9de748138dafb8c591b3fa8f3219
+Merg: 8c973d3de58074ec2b142f647e50833c0aacf6ba
+-------------------------------------------
+Inst: 46
+File: MPChartLib/src/com/github/mikephil/charting/renderer/RadarChartRenderer.java
+Meth: [(Ident "RadarChartRenderer",Ident "drawData",[RefType (ClassRefType (ClassType [(Ident "Canvas",[])]))]),(Ident "RadarChartRenderer",Ident "drawValues",[RefType (ClassRefType (ClassType [(Ident "Canvas",[])]))])]
+Orig: 19a0e03efa78fd056bda1ede639a4639e56a5148
+VarA: a9cb766310048db828a5d741095e2911c0f9809f
+VarB: 28c9eaf6bbfddb8e52fc825acd7e3f353ff6821b
+Merg: 97a4d44d4a7d1de6820a3cab4255fda334c8c43c
+-------------------------------------------
+Inst: 47
+File: MPChartLib/src/com/github/mikephil/charting/charts/HorizontalBarChart.java
+Meth: [(Ident "HorizontalBarChart",Ident "drawXLabels",[PrimType FloatT])]
+Orig: e1b5fc1aa1bcc39207edb3d7c8eb1dfb752b6342
+VarA: ade2a8f603572cd1de297d6ebb5aa2515571be95
+VarB: 85ed5e001d4a7abcbdc77d07b96f5194514584c0
+Merg: e562aeb3014feefc5ba38b2319905e9ea8661c6d
+-------------------------------------------
+Inst: 48
+File: MPChartLib/src/com/github/mikephil/charting/charts/LineChart.java
+Meth: [(Ident "LineChart",Ident "drawData",[])]
+Orig: 45cdfca994433a0f920bd0d9fe5974f33b506b71
+VarA: e2413a4a9edd4a7588d470fc1acc0d77a9cf222b
+VarB: 0fdf6d57e60bb30bb40e26fd44cb5b118145544d
+Merg: 5fcdda2da1abb879435e98a43df17a8487f668e6
+-------------------------------------------
+Inst: 49
+File: MPChartLib/src/com/github/mikephil/charting/charts/BarLineChartBase.java
+Meth: [(Ident "BarLineChartBase",Ident "drawBorder",[])]
+Orig: 460e896586ba14506018c26c63513316d781d57a
+VarA: 06ac484cfb103999e4d3e7a4627e3a1a04563909
+VarB: 4f151cd6d333b06ebe11b743ad2a86314d896063
+Merg: 81b883f7be152fc24187135d21b16583d8df7a00
+-------------------------------------------
+Inst: 50
+File: MPChartLib/src/com/github/mikephil/charting/charts/BarLineChartBase.java
+Meth: [(Ident "BarLineChartBase",Ident "drawVerticalGrid",[]),(Ident "BarLineChartBase",Ident "drawXLabels",[PrimType FloatT])]
+Orig: fedb2340708a43412f29a503d33904aefeffc157
+VarA: 6a4dc0aca1855b0d75221a0c71c4c8d3688b6645
+VarB: 26413f769177b9518cf5081a3497d0993484df15
+Merg: 878c3e6164372e9681816d69dbc6c1ba7e20992e
+Done

@@ -212,7 +212,7 @@ base	Main.hs	50;"	v
 blockDep	./Analysis/Dependence.hs	200;"	v
 checkDep	./Analysis/Verifier.hs	173;"	v	file:
 checkSAT	./Analysis/Engine.hs	24;"	v
-check_edit_soundness	./Edit.hs	130;"	v
+check_edit_soundness	./Edit.hs	133;"	v
 class_diff	./Analysis/Java/Liff.hs	43;"	v
 collapse	./Edit/Gen.hs	174;"	v
 computeClDefs	./Analysis/Java/Flow.hs	233;"	v
@@ -292,8 +292,8 @@ flatten_switch_block	./Calculus.hs	117;"	v
 fromAnn	./Analysis/Java/AST.hs	82;"	v
 fs_cfg	./Analysis/Dependence.hs	144;"	v
 fs_cl_sum	./Analysis/Dependence.hs	145;"	v
-gen_edit	./Edit.hs	114;"	v
-gen_edit_aux	./Edit.hs	124;"	v
+gen_edit	./Edit.hs	117;"	v
+gen_edit_aux	./Edit.hs	127;"	v
 getAnn	./Analysis/Java/AST.hs	85;"	v
 getCurrent	./Analysis/Java/Flow.hs	119;"	v
 getEntryId	./Analysis/Java/Flow.hs	192;"	v

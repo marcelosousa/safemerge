@@ -1,0 +1,17 @@
+-------------------------------------------
+Inst: 1
+File: butterknife/src/main/java/butterknife/internal/ViewInjector.java
+Meth: [(Ident "ViewInjector",Ident "emitListenerBindings",[RefType (ClassRefType (ClassType [(Ident "StringBuilder",[])])),RefType (ClassRefType (ClassType [(Ident "ViewInjection",[])]))])]
+Orig: 13c6f90856216729792524c80d65c4c63ada7a41
+VarA: 582040deb3dc368c2aeb416a009bf422f46cbcb8
+VarB: d1025dcc8c34d4a6bf510b427f3fb826dc28a4bb
+Merg: 1770c70cd0a42d6aa9cadd766bac85c016addd6b
+-------------------------------------------
+Inst: 2
+File: butterknife/src/main/java/butterknife/internal/ButterKnifeProcessor.java
+Meth: [(Ident "ButterKnifeProcessor",Ident "parseListenerAnnotation",[RefType (ClassRefType (ClassType [(Ident "Class",[Wildcard (Just (ExtendsBound (ClassRefType (ClassType [(Ident "Annotation",[])]))))])])),RefType (ClassRefType (ClassType [(Ident "Element",[])])),RefType (ClassRefType (ClassType [(Ident "Map",[ActualType (ClassRefType (ClassType [(Ident "TypeElement",[])])),ActualType (ClassRefType (ClassType [(Ident "ViewInjector",[])]))])])),RefType (ClassRefType (ClassType [(Ident "Set",[ActualType (ClassRefType (ClassType [(Ident "String",[])]))])]))])]
+Orig: 13c6f90856216729792524c80d65c4c63ada7a41
+VarA: 582040deb3dc368c2aeb416a009bf422f46cbcb8
+VarB: d1025dcc8c34d4a6bf510b427f3fb826dc28a4bb
+Merg: 1770c70cd0a42d6aa9cadd766bac85c016addd6b
+Done

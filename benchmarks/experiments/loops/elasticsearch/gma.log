@@ -1,0 +1,190 @@
+diff4gen_meth: unusable edit scripts [False,False,True,True]
+diff4gen_meth: unusable edit scripts [False,False,True,True]
+diff4gen_meth: unusable edit scripts [False,False,True,True]
+diff4gen_meth: unusable edit scripts [False,False,True,True]
+diff4gen_meth: unusable edit scripts [False,False,True,True]
+-------------------------------------------
+Inst: 1
+File: modules/lang-painless/src/main/java/org/elasticsearch/painless/node/SDeclBlock.java
+Meth: [(Ident "SDeclBlock",Ident "write",[RefType (ClassRefType (ClassType [(Ident "MethodWriter",[])]))])]
+Orig: 7df5fcd4b6d69fcffca0ed8ac1ec04622a63901b
+VarA: 9a0d0d7cffa876639a425f785893fe83388836c1
+VarB: d8056c8213ea7d2fbd26dbe15e23e96acfbd180c
+Merg: 0c9174decc7bf16389f5506c2fb09eb040cc9eba
+-------------------------------------------
+Inst: 2
+File: core/src/main/java/org/elasticsearch/search/sort/ScoreSortBuilder.java
+Meth: [(Ident "ScoreSortBuilder",Ident "fromXContent",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])])),RefType (ClassRefType (ClassType [(Ident "String",[])]))])]
+Orig: 4826782b377475171441bd8bfde24965d1a6f1db
+VarA: 801d178ade45da6e444007235322df5c4b02c0cf
+VarB: 63b754aa22c7a712fe40bd7f8e232b0775a4f203
+Merg: 08d989d9b61a5c4a526b64e9b3d80ad4c4a3cb8d
+-------------------------------------------
+Inst: 3
+File: core/src/main/java/org/elasticsearch/search/sort/FieldSortBuilder.java
+Meth: [(Ident "FieldSortBuilder",Ident "fromXContent",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])])),RefType (ClassRefType (ClassType [(Ident "String",[])]))])]
+Orig: 4826782b377475171441bd8bfde24965d1a6f1db
+VarA: 801d178ade45da6e444007235322df5c4b02c0cf
+VarB: 63b754aa22c7a712fe40bd7f8e232b0775a4f203
+Merg: 08d989d9b61a5c4a526b64e9b3d80ad4c4a3cb8d
+-------------------------------------------
+Inst: 4
+File: core/src/test/java/org/elasticsearch/indices/stats/IndexStatsIT.java
+Meth: [(Ident "IndexStatsIT",Ident "testThrottleStats",[])]
+Orig: d0853e92535250dd5fcb71a64da6ccaa6c04c082
+VarA: ea2a8150d3d42a8e5a8c3a357e774020f3266cba
+VarB: 90c2c304b3c4bb4a7baecef6bdd138f66fead4ca
+Merg: bf7e2c333ac2f8c712fcee6b31907e9d1c18e5f7
+-------------------------------------------
+Inst: 5
+File: core/src/test/java/org/elasticsearch/cluster/ClusterInfoServiceIT.java
+Meth: [(Ident "ClusterInfoServiceIT",Ident "testClusterInfoServiceCollectsInformation",[])]
+Orig: 7b74f0ddc9e97c3b901e0e6633c1a61417e93ec1
+VarA: 672a54b39a40ea3cbddcd5d861aa71316d9df268
+VarB: 3ab39385016377778a50df1023d1a944304cefa1
+Merg: ba68a8df63f45af12642b0874ac64dd4841fc832
+-------------------------------------------
+Inst: 6
+File: core/src/test/java/org/elasticsearch/benchmark/search/child/ChildSearchShortCircuitBenchmark.java
+Meth: [(Ident "ChildSearchShortCircuitBenchmark",Ident "main",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "String",[])]))))])]
+Orig: 73d84e4797441670c259c3916a5e3b42552725b0
+VarA: 8d2a2f8d664c495b2cc69eb7f9a8eaab903f125a
+VarB: c10f116a8421e4e168f8a243aca920b0621c6a47
+Merg: 56b3db6ba3463d244ea777b527b7a786caa5042c
+-------------------------------------------
+Inst: 7
+File: core/src/test/java/org/elasticsearch/benchmark/search/child/ChildSearchBenchmark.java
+Meth: [(Ident "ChildSearchBenchmark",Ident "main",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "String",[])]))))])]
+Orig: 73d84e4797441670c259c3916a5e3b42552725b0
+VarA: 8d2a2f8d664c495b2cc69eb7f9a8eaab903f125a
+VarB: c10f116a8421e4e168f8a243aca920b0621c6a47
+Merg: 56b3db6ba3463d244ea777b527b7a786caa5042c
+-------------------------------------------
+Inst: 8
+File: core/src/main/java/org/elasticsearch/index/query/MultiMatchQueryParser.java
+Meth: [(Ident "MultiMatchQueryParser",Ident "parse",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])]))])]
+Orig: a6c00073256cff58ccf83ec6699166bedd34a6f7
+VarA: 76e9a171534fd8ea681328a3e5494bff03864cef
+VarB: f303a1d4ebaeb3c06565298867edb88d4c806e09
+Merg: dda11e16a717dc1cbeb6a2dce909d66c3df5133d
+-------------------------------------------
+Inst: 9
+File: core/src/main/java/org/elasticsearch/index/query/MatchQueryParser.java
+Meth: [(Ident "MatchQueryParser",Ident "parse",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])]))])]
+Orig: a6c00073256cff58ccf83ec6699166bedd34a6f7
+VarA: 76e9a171534fd8ea681328a3e5494bff03864cef
+VarB: f303a1d4ebaeb3c06565298867edb88d4c806e09
+Merg: dda11e16a717dc1cbeb6a2dce909d66c3df5133d
+-------------------------------------------
+Inst: 10
+File: core/src/main/java/org/elasticsearch/index/query/FuzzyQueryParser.java
+Meth: [(Ident "FuzzyQueryParser",Ident "parse",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])]))])]
+Orig: a6c00073256cff58ccf83ec6699166bedd34a6f7
+VarA: 76e9a171534fd8ea681328a3e5494bff03864cef
+VarB: f303a1d4ebaeb3c06565298867edb88d4c806e09
+Merg: dda11e16a717dc1cbeb6a2dce909d66c3df5133d
+-------------------------------------------
+Inst: 11
+File: core/src/main/java/org/elasticsearch/index/query/GeoBoundingBoxQueryParser.java
+Meth: [(Ident "GeoBoundingBoxQueryParser",Ident "parse",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])]))])]
+Orig: 90f32d4d32cde5ae28fbc6a3e725afafbdf1c58f
+VarA: faa4e98aa5ffc3abe5e8ea2542c6d7273b1a857a
+VarB: 13602a591f3d8b5b2077a56b17780d5af858b52c
+Merg: d225a8f56c4445228d8b1fb7d50e4f9fd5a0f8d1
+-------------------------------------------
+Inst: 12
+File: core/src/main/java/org/elasticsearch/index/query/ScriptQueryParser.java
+Meth: [(Ident "ScriptQueryParser",Ident "parse",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])]))])]
+Orig: 6765635067564840f0696671d60571624e335ffd
+VarA: 88e3d6c4bc27433e793cec349f532b44421cbe16
+VarB: 90f32d4d32cde5ae28fbc6a3e725afafbdf1c58f
+Merg: 63530631f9fe1f63b9677af61019639bd8cb78cf
+-------------------------------------------
+Inst: 13
+File: core/src/main/java/org/elasticsearch/index/query/NestedQueryParser.java
+Meth: [(Ident "NestedQueryParser",Ident "parse",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])]))])]
+Orig: 6765635067564840f0696671d60571624e335ffd
+VarA: 88e3d6c4bc27433e793cec349f532b44421cbe16
+VarB: 90f32d4d32cde5ae28fbc6a3e725afafbdf1c58f
+Merg: 63530631f9fe1f63b9677af61019639bd8cb78cf
+-------------------------------------------
+Inst: 14
+File: core/src/main/java/org/elasticsearch/index/query/HasChildQueryParser.java
+Meth: [(Ident "HasChildQueryParser",Ident "parse",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])]))])]
+Orig: 6765635067564840f0696671d60571624e335ffd
+VarA: 88e3d6c4bc27433e793cec349f532b44421cbe16
+VarB: 90f32d4d32cde5ae28fbc6a3e725afafbdf1c58f
+Merg: 63530631f9fe1f63b9677af61019639bd8cb78cf
+-------------------------------------------
+Inst: 15
+File: core/src/main/java/org/elasticsearch/index/query/FuzzyQueryParser.java
+Meth: [(Ident "FuzzyQueryParser",Ident "parse",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])]))])]
+Orig: 6765635067564840f0696671d60571624e335ffd
+VarA: 88e3d6c4bc27433e793cec349f532b44421cbe16
+VarB: 90f32d4d32cde5ae28fbc6a3e725afafbdf1c58f
+Merg: 63530631f9fe1f63b9677af61019639bd8cb78cf
+-------------------------------------------
+Inst: 16
+File: core/src/main/java/org/elasticsearch/index/query/GeoBoundingBoxQueryParser.java
+Meth: [(Ident "GeoBoundingBoxQueryParser",Ident "parse",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])]))])]
+Orig: bbaf4710cbf056134ec789ed3d6fe7ea2af1a05d
+VarA: 4b071f8d2c2bbca6b7067bce502634079c8fada8
+VarB: 6765635067564840f0696671d60571624e335ffd
+Merg: d7187238a21cdf5aaee75e2820855893a36a7e16
+-------------------------------------------
+Inst: 17
+File: src/main/java/org/elasticsearch/index/query/TermsQueryParser.java
+Meth: [(Ident "TermsQueryParser",Ident "parse",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])]))])]
+Orig: 59d9f7e1579ca70973d14e94da0b8794e60f3b85
+VarA: b1f6d1abd65735f6abee642212bb4b4569fe1aca
+VarB: 39a20c3b5b68578a0c9b93d8bbd62a8c81e227cf
+Merg: 313e9c67697a8c6f0b332e2005a39cf69f68c3df
+-------------------------------------------
+Inst: 18
+File: src/main/java/org/elasticsearch/search/suggest/phrase/PhraseSuggestParser.java
+Meth: [(Ident "PhraseSuggestParser",Ident "parse",[RefType (ClassRefType (ClassType [(Ident "XContentParser",[])])),RefType (ClassRefType (ClassType [(Ident "MapperService",[])])),RefType (ClassRefType (ClassType [(Ident "IndexQueryParserService",[])]))])]
+Orig: 29fbcd225b815bc2e0891ebdfdb54cf82ba84d4d
+VarA: 1f2c42fd0be06e7a7ab9cf2c5e70d82988a11856
+VarB: 59d9f7e1579ca70973d14e94da0b8794e60f3b85
+Merg: b625ddd17f933d81510f32fc4f642da9c6c28e5c
+-------------------------------------------
+Inst: 19
+File: src/test/java/org/elasticsearch/index/engine/InternalEngineSettingsTest.java
+Meth: [(Ident "InternalEngineSettingsTest",Ident "testSettingsUpdate",[])]
+Orig: 4d27d751fb08b9853e996c04070bd356ff8420bd
+VarA: 5aaebb6d8303c1b99d509676f560cd40b078fdb3
+VarB: e97353e84a45c79ba3795ad82b60ab9345831fc1
+Merg: b03d7584b46d6e09a78b8d78e5b08d5e9956526e
+-------------------------------------------
+Inst: 20
+File: src/test/java/org/elasticsearch/cluster/ack/AckTests.java
+Meth: [(Ident "AckTests",Ident "testUpdateSettingsAcknowledgement",[])]
+Orig: 4d27d751fb08b9853e996c04070bd356ff8420bd
+VarA: 5aaebb6d8303c1b99d509676f560cd40b078fdb3
+VarB: e97353e84a45c79ba3795ad82b60ab9345831fc1
+Merg: b03d7584b46d6e09a78b8d78e5b08d5e9956526e
+-------------------------------------------
+Inst: 21
+File: src/main/java/org/elasticsearch/index/query/TermsQueryParser.java
+Meth: [(Ident "TermsQueryParser",Ident "parse",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])]))])]
+Orig: 028ff7e49eeb6d0be97233a6dc915627356d8839
+VarA: ca702971c3a034974ad78c6d48375361fcd1df9e
+VarB: 283fe90e7a5e734be14967f569db1ea21e7d8846
+Merg: 1c60436d1c4f850273d412ff66ddf7f61a659843
+-------------------------------------------
+Inst: 22
+File: src/main/java/org/elasticsearch/index/query/MissingQueryParser.java
+Meth: [(Ident "MissingQueryParser",Ident "newFilter",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])])),RefType (ClassRefType (ClassType [(Ident "String",[])])),PrimType BooleanT,PrimType BooleanT,RefType (ClassRefType (ClassType [(Ident "String",[])]))])]
+Orig: 0105b651607b1587521184ac4508440349db1fe5
+VarA: 5fbb6a714d24cb9f2e3b03c171ab59673da64e51
+VarB: e95097c33cc782a3ca83b7ea6cafedc3d6793fd3
+Merg: 4dd4f48a2f16970480df617a670ee4ee788438fb
+-------------------------------------------
+Inst: 23
+File: src/test/java/org/elasticsearch/indices/memory/breaker/RandomExceptionCircuitBreakerTests.java
+Meth: [(Ident "RandomExceptionCircuitBreakerTests",Ident "testBreakerWithRandomExceptions",[])]
+Orig: 86e1655e4bcf12dd4446d307507409a6ffe5370c
+VarA: e29cf903c8c69ffdf320fb2e74938deb559dc8d8
+VarB: 358bb9bd7585502b269a3cbd4efb60ad7d3d238d
+Merg: 0f405e9710190befbec2ee5194368e9093e742b2
+Done

@@ -94,21 +94,25 @@ diff4gen_meth ident o a b m =
      case gen_edit edit_member_gen nno m eab of
       (fo,[[]]) -> (ident, fo, [], [], [], [])
       (fo, [e_o,e_a,e_b,e_m]) ->
-        let (n_fo,[n_e_o,n_e_a,n_e_b,n_e_m]) = opt_holes fo [e_o,e_a,e_b,e_m] 
+        let -- (n_fo,[n_e_o,n_e_a,n_e_b,n_e_m]) = opt_holes fo [e_o,e_a,e_b,e_m] 
             _o = fst $ apply_edit_member fo e_o
             _a = fst $ apply_edit_member fo e_a
             _b = fst $ apply_edit_member fo e_b
             _m = fst $ apply_edit_member fo e_m
-            res = (ident, fo, e_o, e_a, e_b, e_m)
-            nres = (ident,n_fo, n_e_o, n_e_a, n_e_b, n_e_m)
-        in if o == _o && a == _a && b == _b && m == _m 
+            -- nres = (ident,n_fo, n_e_o, n_e_a, n_e_b, n_e_m)
+            nres = (ident,fo, e_o, e_a, e_b, e_m)
+            checks = [o == _o, a == _a, b == _b, m == _m] 
+        in if all id checks 
            then nres 
            else 
-             let oStr = "Edit Base:\n" ++ printEdit n_e_o ++ "\n"
-                 aStr = "Edit A:\n"    ++ printEdit n_e_a ++ "\n"
-                 bStr = "Edit B:\n"    ++ printEdit n_e_b ++ "\n"
-                 mStr = "Edit M:\n"    ++ printEdit n_e_m ++ "\n"
-             in error $ "diff4gen_meth: bug in the edit script generation\n" -- ++ prettyPrint fo ++ "\n" ++ prettyPrint o ++ oStr ++ aStr ++ bStr ++ mStr
+             let oStr = "Edit Base:\n" ++ printEdit e_o ++ "\n"
+                 aStr = "Edit A:\n"    ++ printEdit e_a ++ "\n"
+                 bStr = "Edit B:\n"    ++ printEdit e_b ++ "\n"
+                 mStr = "Edit M:\n"    ++ printEdit e_m ++ "\n"
+              -- in T.trace  ("diff4gen_meth: bug in the edit script generation\n" ++ prettyPrint fo ++ "\n" ++ prettyPrint o ++ oStr ++ aStr ++ bStr ++ mStr) $ (ident,fo, [],[],[],[])
+              -- in error ("diff4gen_meth: bug in the edit script generation\n" ++ show checks ++ "\n" ++ prettyPrint o ++ "\n" ++ prettyPrint fo ++ "\n" ++ prettyPrint _o ++ "\n" ++ oStr ++ "\n" ++ show o ++ "\n" ++ show _o) 
+              in T.trace ("diff4gen_meth: unusable edit scripts " ++ show checks)  $ (ident,fo, [],[],[],[])
+      (fo, xs) -> T.trace ("diff4: strange result: " ++ show (length xs)) $ (ident,fo, [],[],[],[])
 
 gen_edit :: (a -> a -> (a,Edit,Edit)) -> a -> a -> [Edit] -> (a, [Edit])
 gen_edit f p1 p2 eis =

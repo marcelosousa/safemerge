@@ -128,6 +128,21 @@ apply_edit_stmt e stmt = case stmt of
     in case t1' of
       Just (BlockStmt _t1) -> (Just $ BlockStmt $ While c1 _t1, e') 
       _ -> error $ "apply_edit_stmt: While" ++ show t1'
+  Do t1 c1 ->
+    let (t1',e') = apply_edit_stmt e t1
+    in case t1' of
+      Just (BlockStmt _t1) -> (Just $ BlockStmt $ Do _t1 c1, e') 
+      _ -> error $ "apply_edit_stmt: Do" ++ show t1'
+  BasicFor m1 e1 r1 t1 ->
+    let (t1',e') = apply_edit_stmt e t1
+    in case t1' of
+      Just (BlockStmt _t1) -> (Just $ BlockStmt $ BasicFor m1 e1 r1 _t1, e') 
+      _ -> error $ "apply_edit_stmt: BasicFor" ++ show t1'
+  EnhancedFor m1 t1 i1 e1 b1 ->
+    let (b1',e') = apply_edit_stmt e b1
+    in case b1' of
+      Just (BlockStmt _b1) -> (Just $ BlockStmt $ EnhancedFor m1 t1 i1 e1 _b1, e') 
+      _ -> error $ "apply_edit_stmt: BasicFor" ++ show b1'
   IfThenElse c1 t1 t2 ->
     let (t1',e')  = apply_edit_stmt e t1
         (t2',e'') = apply_edit_stmt e' t2

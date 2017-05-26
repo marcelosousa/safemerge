@@ -102,7 +102,7 @@ edit_member_gen o_mem v_mem =
           (no_mbody,o_edit,v_edit) = edit_method_body_gen o_mbody v_mbody
       in if all id checks
          then (MethodDecl o_mods o_tys o_ty o_id o_fpars o_ex no_mbody, o_edit, v_edit)
-         else error $ "edit_member_gen 2: unsupported differences" ++ show checks
+         else trace ("edit_member_gen 2: unsupported differences" ++ show checks) $ (o_mem,[],[])
     (ConstructorDecl o_mods o_tys o_id o_fpars o_ex o_cbody, ConstructorDecl v_mods v_tys v_id v_fpars v_ex v_cbody) ->
       let checks = [ o_mods == v_mods
                    , o_tys == v_tys
@@ -223,6 +223,24 @@ special_diff_stmt scope s1 s2 = trace ("special_diff_stmt:\nscope" ++ show scope
           in if c1 == c2
              then let (h1, bdy1a, bdy2b) = special_diff_stmt nscope bdy1 bdy2
                   in (While c1 h1, bdy1a, bdy2b) 
+             else (Hole, [(BlockStmt s1,nscope)], [(BlockStmt s2,nscope)]) 
+        (Do bdy1 c1, Do bdy2 c2) ->
+          let nscope = SLoop:scope
+          in if c1 == c2
+             then let (h1, bdy1a, bdy2b) = special_diff_stmt nscope bdy1 bdy2
+                  in (Do h1 c1, bdy1a, bdy2b) 
+             else (Hole, [(BlockStmt s1,nscope)], [(BlockStmt s2,nscope)]) 
+        (BasicFor m1 c1 r1 b1, BasicFor m2 c2 r2 b2) -> 
+          let nscope = SLoop:scope
+          in if m1 == m2 && c1 == c2 && r1 == r2
+             then let (h1, bdy1a, bdy2b) = special_diff_stmt nscope b1 b2
+                  in (BasicFor m1 c1 r1 h1, bdy1a, bdy2b) 
+             else (Hole, [(BlockStmt s1,nscope)], [(BlockStmt s2,nscope)]) 
+        (EnhancedFor m1 t1 i1 e1 b1, EnhancedFor m2 t2 i2 e2 b2) -> 
+          let nscope = SLoop:scope
+          in if m1 == m2 && t1 == t2 && i1 == i2 && e1 == e2
+             then let (h1, bdy1a, bdy2b) = special_diff_stmt nscope b1 b2
+                  in (EnhancedFor m1 t1 i1 e1 h1, bdy1a, bdy2b) 
              else (Hole, [(BlockStmt s1,nscope)], [(BlockStmt s2,nscope)]) 
         (StmtBlock b1, StmtBlock b2) ->
           let (res, ne1, ne2) = edit_block_gen scope b1 b2
