@@ -1,0 +1,89 @@
+Parsing files...
+Merge Instance for method (Ident "ScoreSortBuilder",Ident "fromXContent",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])])),RefType (ClassRefType (ClassType [(Ident "String",[])]))])
+@Override
+ public ScoreSortBuilder fromXContent (QueryParseContext context, String elementName) throws IOException
+{
+  XContentParser parser = context.parser();
+  ParseFieldMatcher matcher = context.parseFieldMatcher();
+  XContentParser.Token token;
+  String currentName = parser.currentName();
+  ScoreSortBuilder result = new ScoreSortBuilder();
+  while (token = parser.nextToken() != XContentParser.Token.END_OBJECT)
+  {
+    if (token == XContentParser.Token.FIELD_NAME)
+    {
+      currentName = parser.currentName();
+    }
+    else
+      if (token.isValue())
+      {
+        <?HOLE?>
+      }
+      else
+      {
+        throw new ParsingException(parser.getTokenLocation(), "[" + NAME + "] unexpected token [" + token + "]");
+      }
+  }
+  return result;
+}
+Edit Base:
+Hole 1:
+[SCond,SCond,SCond,SLoop]: if (matcher.match(currentName, REVERSE_FIELD))
+{
+  if (parser.booleanValue())
+  {
+    result.order(SortOrder.ASC);
+  }
+}
+else
+  if (matcher.match(currentName, ORDER_FIELD))
+  {
+    result.order(SortOrder.fromString(parser.text()));
+  }
+  else
+  {
+    throw new ParsingException(parser.getTokenLocation(), "[" + NAME + "] failed to parse field [" + currentName + "]");
+  }
+
+Edit A:
+Hole 1:
+[SCond,SCond,SCond,SLoop]: if (matcher.match(currentName, ORDER_FIELD))
+{
+  result.order(SortOrder.fromString(parser.text()));
+}
+else
+{
+  throw new ParsingException(parser.getTokenLocation(), "[" + NAME + "] failed to parse field [" + currentName + "]");
+}
+
+Edit B:
+Hole 1:
+[SCond,SCond,SLoop]: if (matcher.match(currentName, REVERSE_FIELD))
+{
+  if (parser.booleanValue())
+  {
+    result.order(SortOrder.ASC);
+  }
+}
+else
+  if (matcher.match(currentName, ORDER_FIELD))
+  {
+    result.order(SortOrder.fromString(parser.text()));
+  }
+  else
+  {
+    throw new ParsingException(parser.getTokenLocation(), "[" + NAME + "] failed to parse field [" + currentName + "]");
+  }
+
+Edit M:
+Hole 1:
+[SCond,SCond,SLoop]: if (matcher.match(currentName, ORDER_FIELD))
+{
+  result.order(SortOrder.fromString(parser.text()));
+}
+else
+{
+  throw new ParsingException(parser.getTokenLocation(), "[" + NAME + "] failed to parse field [" + currentName + "]");
+}
+
+

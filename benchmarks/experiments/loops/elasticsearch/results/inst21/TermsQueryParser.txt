@@ -1,0 +1,223 @@
+Parsing files...
+Merge Instance for method (Ident "TermsQueryParser",Ident "parse",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])]))])
+@Override
+ public Query parse (QueryParseContext parseContext) throws IOException, QueryParsingException
+{
+  XContentParser parser = parseContext.parser();
+  String queryName = null;
+  String currentFieldName = null;
+  String lookupIndex = parseContext.index().name();
+  String lookupType = null;
+  String lookupId = null;
+  String lookupPath = null;
+  String lookupRouting = null;
+  String minShouldMatch = null;
+  XContentParser.Token token;
+  List<Object> terms = Lists.newArrayList();
+  String fieldName = null;
+  float boost = 1.0F;
+  while (token = parser.nextToken() != XContentParser.Token.END_OBJECT)
+  {
+    if (token == XContentParser.Token.FIELD_NAME)
+    {
+      currentFieldName = parser.currentName();
+    }
+    else
+      if (parseContext.isDeprecatedSetting(currentFieldName))
+      {
+      }
+      else
+        if (token == XContentParser.Token.START_ARRAY)
+        {
+          if (fieldName != null)
+          {
+            throw new QueryParsingException(parseContext, "[terms] query does not support multiple fields");
+          }
+          fieldName = currentFieldName;
+          while (token = parser.nextToken() != XContentParser.Token.END_ARRAY)
+          {
+            Object value = parser.objectBytes();
+            if (value == null)
+            {
+              throw new QueryParsingException(parseContext, "No value specified for terms query");
+            }
+            terms.add(value);
+          }
+        }
+        else
+          if (token == XContentParser.Token.START_OBJECT)
+          {
+            fieldName = currentFieldName;
+            while (token = parser.nextToken() != XContentParser.Token.END_OBJECT)
+            {
+              if (token == XContentParser.Token.FIELD_NAME)
+              {
+                currentFieldName = parser.currentName();
+              }
+              else
+                if (token.isValue())
+                {
+                  if ("index".equals(currentFieldName))
+                  {
+                    lookupIndex = parser.text();
+                  }
+                  else
+                    if ("type".equals(currentFieldName))
+                    {
+                      lookupType = parser.text();
+                    }
+                    else
+                      if ("id".equals(currentFieldName))
+                      {
+                        lookupId = parser.text();
+                      }
+                      else
+                        if ("path".equals(currentFieldName))
+                        {
+                          lookupPath = parser.text();
+                        }
+                        else
+                          if ("routing".equals(currentFieldName))
+                          {
+                            lookupRouting = parser.textOrNull();
+                          }
+                          else
+                          {
+                            throw new QueryParsingException(parseContext, "[terms] query does not support [" + currentFieldName + "] within lookup element");
+                          }
+                }
+            }
+            if (lookupType == null)
+            {
+              throw new QueryParsingException(parseContext, "[terms] query lookup element requires specifying the type");
+            }
+            if (lookupId == null)
+            {
+              throw new QueryParsingException(parseContext, "[terms] query lookup element requires specifying the id");
+            }
+            if (lookupPath == null)
+            {
+              throw new QueryParsingException(parseContext, "[terms] query lookup element requires specifying the path");
+            }
+          }
+          else
+            if (token.isValue())
+            {
+              if (EXECUTION_KEY.equals(currentFieldName))
+              {
+              }
+              else
+                if (MIN_SHOULD_MATCH_FIELD.match(currentFieldName))
+                {
+                  if (minShouldMatch != null)
+                  {
+                    <?HOLE?>
+                  }
+                  minShouldMatch = parser.textOrNull();
+                }
+                else
+                  if ("boost".equals(currentFieldName))
+                  {
+                    boost = parser.floatValue();
+                  }
+                  else
+                    if ("_name".equals(currentFieldName))
+                    {
+                      queryName = parser.text();
+                    }
+                    else
+                    {
+                      throw new QueryParsingException(parseContext, "[terms] query does not support [" + currentFieldName + "]");
+                    }
+            }
+  }
+  if (fieldName == null)
+  {
+    throw new QueryParsingException(parseContext, "terms query requires a field name, followed by array of terms");
+  }
+  <?HOLE?>
+  if (fieldMapper != null)
+  {
+    fieldName = fieldMapper.names().indexName();
+  }
+  if (lookupId != null)
+  {
+    final TermsLookup lookup = new TermsLookup(lookupIndex, lookupType, lookupId, lookupRouting, lookupPath, parseContext);
+    GetRequest getRequest = new GetRequest(lookup.getIndex(), lookup.getType(), lookup.getId()).preference("_local").routing(lookup.getRouting());
+    getRequest.copyContextAndHeadersFrom(SearchContext.current());
+    final GetResponse getResponse = client.get(getRequest).actionGet();
+    if (getResponse.isExists())
+    {
+      List<Object> values = XContentMapValues.extractRawValues(lookup.getPath(), getResponse.getSourceAsMap());
+      terms.addAll(values);
+    }
+  }
+  if (terms.isEmpty())
+  {
+    return Queries.newMatchNoDocsQuery();
+  }
+  Query query;
+  if (parseContext.isFilter())
+  {
+    if (fieldMapper != null)
+    {
+      query = fieldMapper.termsQuery(terms, parseContext);
+    }
+    else
+    {
+      BytesRef[] filterValues = new BytesRef[terms.size()];
+      for (int i = 0 ; i < filterValues.length ; i++)
+      {
+        filterValues[i] = BytesRefs.toBytesRef(terms.get(i));
+      }
+      query = new TermsQuery(fieldName, filterValues);
+    }
+  }
+  else
+  {
+    BooleanQuery bq = new BooleanQuery();
+    for (Object term : terms) {
+                                if (fieldMapper != null)
+                                {
+                                  bq.add(fieldMapper.termQuery(term, parseContext), Occur.SHOULD);
+                                }
+                                else
+                                {
+                                  bq.add(new TermQuery(new Term(fieldName, BytesRefs.toBytesRef(term))), Occur.SHOULD);
+                                }
+                              }
+    Queries.applyMinimumShouldMatch(bq, minShouldMatch);
+    query = bq;
+  }
+  query.setBoost(boost);
+  if (queryName != null)
+  {
+    parseContext.addNamedQuery(queryName, query);
+  }
+  return query;
+}
+Edit Base:
+Hole 1:
+[SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SLoop]: throw new IllegalArgumentException("[" + currentFieldName + "] is not allowed in a filter context for the [" + NAME + "] query");
+Hole 2:
+[]: FieldMapper<?> fieldMapper = parseContext.fieldMapper(fieldName);
+
+Edit A:
+Hole 1:
+[SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SLoop]: throw new IllegalArgumentException("[" + currentFieldName + "] is not allowed in a filter context for the [" + NAME + "] query");
+Hole 2:
+[]: FieldMapper fieldMapper = parseContext.fieldMapper(fieldName);
+
+Edit B:
+Hole 1:
+[SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SLoop]: throw new IllegalArgumentException("[" + currentFieldName + "] is not allowed in a filter context for the [" + TermsQueryBuilder.NAME + "] query");
+Hole 2:
+[]: FieldMapper<?> fieldMapper = parseContext.fieldMapper(fieldName);
+
+Edit M:
+Hole 1:
+[SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SLoop]: throw new IllegalArgumentException("[" + currentFieldName + "] is not allowed in a filter context for the [" + TermsQueryBuilder.NAME + "] query");
+Hole 2:
+[]: FieldMapper fieldMapper = parseContext.fieldMapper(fieldName);
+
+
