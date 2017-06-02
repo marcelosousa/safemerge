@@ -88,10 +88,11 @@ verify (mid, mth) classes edits = do
   -- for now, the pre-condition states that the parameters for each version are equal
   --  and the post-condition states the soundness condition for the return variable
   --  which is a special dummy variable res_version
-  pre  <- initial_precond inp  
-  preStr <- astToString pre
-  post <- trace ("verify: " ++ preStr) $ postcond out
-  iSSAMap <- initial_SSAMap params 
+  pre      <- initial_precond inp  
+  preRes   <- checkSAT pre
+  preStr   <- astToString pre
+  post     <- trace ("verify: " ++ show preRes ++ "\n"++preStr) $ postcond out
+  iSSAMap  <- initial_SSAMap params 
   iFuncMap <- initial_FuncMap
   let iEnv = Env iSSAMap M.empty iFuncMap pre post post classes edits True 0 [1,2,3,4] 0
       body = case ann_mth_body mth of
@@ -119,27 +120,36 @@ _triple pre stm post =
 analyser :: ProdProgram -> EnvOp (Result, Maybe Model)
 analyser stmts = do
  env@Env{..} <- get
- if _debug
- then analyser_debug stmts
- else analyse stmts
+ cPhi    <- lift $ checkSAT _pre
+ preStr  <- lift $ astToString _pre
+ if cPhi == Unsat
+ then error ("analyser:\n" ++ preStr ++ "\nanalyser: Unreachable\nanalyser: SSA MAP\n"++show _ssamap) 
+ else do
+   if _debug
+   then analyser_debug stmts
+   else analyse stmts
 
 analyser_debug :: ProdProgram -> EnvOp (Result, Maybe Model)
 analyser_debug stmts = do
  env@Env{..} <- get
+ cPhi    <- lift $ checkSAT _pre
  preStr  <- lift $ astToString _pre
  postStr <- lift $ astToString _post
- case stmts of
-  [] -> do 
-    let k = trace (_triple preStr "end" postStr ++ "\n" ++ printSSAMap _ssamap) $ 
-             unsafePerformIO $ getChar
-    analyse stmts
-    -- k `seq` analyse stmts
-  (bstmt:_) -> do 
-    --let k = trace (_triple preStr (show bstmt ++ "\n" ++ prettyPrint (fromAnn bstmt :: BlockStmt)) postStr ++ "\n" ++ printSSAMap _ssamap ++ 
-    --        "\nKeys in Function Map: " ++ show (M.keys _fnmap)) $ unsafePerformIO $ getChar
-    let k = trace (_triple preStr (show bstmt ++ "\n" ++ prettyPrint (fromAnn bstmt :: BlockStmt)) "") $ unsafePerformIO $ getChar
-    -- k `seq` analyse stmts
-    analyse stmts
+ if cPhi == Unsat
+ then error ("analyser:\n" ++ preStr ++ "\nanalyser: Unreachable\nanalyser: SSA MAP\n"++show _ssamap) 
+ else do
+   case stmts of
+    [] -> do 
+      let k = trace (_triple preStr "end" postStr ++ "\n" ++ printSSAMap _ssamap) $ 
+               unsafePerformIO $ getChar
+      -- analyse stmts
+      k `seq` analyse stmts
+    (bstmt:_) -> do 
+      --let k = trace (_triple preStr (show bstmt ++ "\n" ++ prettyPrint (fromAnn bstmt :: BlockStmt)) postStr ++ "\n" ++ printSSAMap _ssamap ++ 
+      --        "\nKeys in Function Map: " ++ show (M.keys _fnmap)) $ unsafePerformIO $ getChar
+      let k = trace (_triple preStr (show bstmt ++ "\n" ++ prettyPrint (fromAnn bstmt :: BlockStmt)) "") $ unsafePerformIO $ getChar
+      k `seq` analyse stmts
+      -- analyse stmts
 
 -- main verification heavyweight function 
 -- checks if the PID = (ALL) and calls 
@@ -148,13 +158,13 @@ analyser_debug stmts = do
 -- with it.
 -- otherwise, calls the standard analysis 
 analyse :: ProdProgram -> EnvOp (Result,Maybe Model)   
-analyse stmts = do
+analyse stmts = trace ("analyse: begin") $ do
  env@Env{..} <- get
  case stmts of
   [] -> lift $ local $ helper _pre _post
   (bstmt:rest) -> do
-    applyDepCheck <- checkDep  
-    if (every $ getAnn bstmt) && applyDepCheck 
+    applyDepCheck <- return True -- checkDep  
+    if False -- (every $ getAnn bstmt) && applyDepCheck 
     then -- only apply dependence analysis if all variables are equal is all versions
       case next_block stmts of
       (Left b, r) -> trace ("analyser: block encoding") $ do
@@ -290,24 +300,29 @@ analyse_conditional pid cond s1 s2 rest =
  else do
   condSmt <- enc_exp pid cond
   env@Env{..} <- get
-  -- then branch
-  preThen <- lift $ mkAnd (_pre:condSmt)
-  resThen <- trace ("analyse:" ++ show pid ++ "  " ++ prettyPrint cond) $ analyse_branch preThen s1
-  -- else branch
-  put env
-  ncondSmt <- lift $ mapM mkNot condSmt
-  preElse <- lift $ mkAnd (_pre:ncondSmt)
-  resElse <- trace ("analyse:" ++ show pid ++ " Not " ++ prettyPrint cond) $ analyse_branch preElse s2
-  combine resThen resElse
+  cPhi    <- lift $ checkSAT _pre
+  cPhiStr <- lift $ astToString _pre 
+  if cPhi == Unsat
+  then error ("analyse conditional:\n" ++ cPhiStr ++ "\nanalyse conditional: Unreachable") 
+  else do
+    -- then branch
+    preThen <- lift $ mkAnd (_pre:condSmt)
+    resThen <- trace ("analyse:" ++ show pid ++ "  " ++ prettyPrint cond) $ analyse_branch preThen s1
+    -- else branch
+    put env
+    ncondSmt <- lift $ mapM mkNot condSmt
+    preElse <- lift $ mkAnd (_pre:ncondSmt)
+    resElse <- trace ("analyse:" ++ show pid ++ " Not " ++ prettyPrint cond) $ analyse_branch preElse s2
+    combine resThen resElse
  where
    analyse_branch phi branch = do
     env@Env{..} <- get
     updatePre phi
     let r = (AnnBlockStmt branch):rest
-    cPhi <- lift $ checkSAT phi
+    cPhi    <- lift $ checkSAT phi
     cPhiStr <- lift $ astToString phi 
     if cPhi == Unsat
-    then trace ("analyse: " ++ cPhiStr ++ "\nanalyse: Unreachable") $ return _default
+    then trace ("analyse conditional:\n" ++ cPhiStr ++ "\nanalyse conditional: Unreachable") $ return _default
     else trace ("analyse: Reachable") $ analyser r
    combine :: (Result, Maybe Model) -> (Result, Maybe Model) -> EnvOp (Result, Maybe Model)
    combine (Unsat,_) (Unsat,_) = return _default
@@ -319,14 +334,25 @@ analyse_conditional pid cond s1 s2 rest =
 analyse_loop :: [(Pid,Exp)] -> AnnStmt -> ProdProgram -> EnvOp (Result,Maybe Model) 
 analyse_loop conds body rest = do
  env@Env{..} <- get
- -- use equality predicates between variables in the assignment map
- all_preds <- get_predicates _ssamap 
- -- filter out predicates not implied by Pre
- not_preds <- lift $ filterM (\p -> _pre `not_implies` p) all_preds
- let init_preds = all_preds \\ not_preds
- cond_ast <- mapM (\(pid,cond) -> enc_exp [pid] cond >>= lift . mkAnd) conds >>= lift . mkAnd
- houdini init_preds cond_ast body 
- analyser rest
+ cPhi    <- lift $ checkSAT _pre
+ cPhiStr <- lift $ astToString _pre 
+ if cPhi == Unsat
+ then error ("analyse conditional:\n" ++ cPhiStr ++ "\nanalyse conditional: Unreachable") 
+ else do
+   -- use equality predicates between variables in the assignment map
+   all_preds <- get_predicates _ssamap 
+   preds_str <- lift $ mapM astToString all_preds
+   let k = trace ("analyse_loop: all_predicates \n" ++ show preds_str ++ "\n" ) $ 
+              unsafePerformIO $ getChar
+   -- filter out predicates not implied by Pre
+   init_preds <- k `seq` lift $ filterM (\p -> _pre `implies` p) all_preds
+   init_preds_str <- lift $ mapM astToString init_preds
+   let k = trace ("analyse_loop: init_predicates \n" ++ show init_preds_str ++ "\n" ) $ 
+              unsafePerformIO $ getChar
+   -- let init_preds = all_preds \\ not_preds
+   cond_ast <- k `seq` mapM (\(pid,cond) -> enc_exp [pid] cond >>= lift . mkAnd) conds >>= lift . mkAnd
+   houdini init_preds cond_ast body 
+   analyser rest
 
 -- houdini: 
 houdini :: [AST] -> AST -> AnnStmt -> EnvOp ()
@@ -335,18 +361,23 @@ houdini preds cond body = do
   let pre = _pre env 
   inv <- lift $ if null preds then mkTrue else mkAnd preds
   invStr <- lift $ astToString inv
-  let k = trace ("loop invariant: \n" ++ invStr ++ "\n" ) $ 
+  let k = trace ("houdini: \n" ++ invStr ++ "\n" ) $ 
              unsafePerformIO $ getChar
-  -- npre <- k `seq` lift $ mkAnd [inv, cond] 
-  npre <- lift $ mkAnd [inv, cond] 
+  npre <- k `seq` lift $ mkAnd [inv, cond] 
+  -- npre <- lift $ mkAnd [inv, cond] 
   updatePre npre 
   analyser_stmt body []
   nenv <- get
   let post = _pre nenv
+  post_str <- lift $ astToString post 
   -- get the preds that are not implied by the post
-  not_preds <- lift $ filterM (\p -> post `not_implies` p) preds
+  sat_preds <- lift $ filterM (\p -> post `implies` p) preds
+  sat_str <- lift $ mapM astToString sat_preds
+  let not_preds = preds \\ sat_preds
+  let k = trace ("houdini: after loop iteration\n original pre:\n" ++ invStr ++ "\npost after the loop iteration:\n" ++ post_str ++ "\nnot_preds:\n" ++ show sat_str) $ 
+             unsafePerformIO $ getChar
   -- revert to the original environment
-  put env
+  k `seq` put env
   -- fixpoint check 
   if null not_preds
   -- we are done
@@ -363,9 +394,12 @@ houdini preds cond body = do
 
 get_predicates :: SSAMap -> EnvOp [AST]
 get_predicates m = do
-  let pairs = concat $ M.map (\m' -> 
-        let k = map (\(a,b,c) -> a) $ M.elems m'
-        in lin k) m  
+  let pairs = 
+        concat $ M.mapWithKey (\k m' -> 
+          if k == Ident "ret" || k == Ident "null" 
+          then []
+          else let k = map (\(a,b,c) -> a) $ M.elems m'
+               in lin k) m  
   lift $ mapM (\(a,b) -> mkEq a b) pairs
   
 -- Analyse Return

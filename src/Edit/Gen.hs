@@ -191,7 +191,7 @@ special_diff s (e1:r1) (e2:r2) =
   in  (_h:h, _a++a, _b++b) 
 
 special_diff_inner :: [Scope] -> BlockStmt -> BlockStmt -> (BlockStmt, Edit, Edit)
-special_diff_inner s b1 b2 = trace ("special_diff_inner:\n" ++ prettyPrint b1 ++ "\n" ++ prettyPrint b2) $ 
+special_diff_inner s b1 b2 = -- trace ("special_diff_inner:\n" ++ prettyPrint b1 ++ "\n" ++ prettyPrint b2) $ 
   if b1 == b2
   then (hole, [(b1,[])], [(b2,[])])
   else case (b1, b2) of
@@ -201,7 +201,7 @@ special_diff_inner s b1 b2 = trace ("special_diff_inner:\n" ++ prettyPrint b1 ++
          _ -> (hole, [(b1,s)], [(b2,s)]) 
 
 special_diff_stmt :: [Scope] -> Stmt -> Stmt -> (Stmt, Edit, Edit)
-special_diff_stmt scope s1 s2 = trace ("special_diff_stmt:\nscope" ++ show scope ++ "\n" ++ prettyPrint s1 ++ "\n" ++ prettyPrint s2) $ 
+special_diff_stmt scope s1 s2 = -- trace ("special_diff_stmt:\nscope" ++ show scope ++ "\n" ++ prettyPrint s1 ++ "\n" ++ prettyPrint s2) $ 
   if s1 == s2
   then (s1, [], [])
   else case (s1, s2) of 

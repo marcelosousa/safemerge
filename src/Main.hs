@@ -156,5 +156,5 @@ verify ofl afl bfl mfl = do
   -- computes per method, the edit scripts and the method with holes
       diffInst = diffMethods mergeInst
   putStrLn $ printMethInsts $ _merges diffInst
-  --wiz diffInst 
+  wiz diffInst 
 

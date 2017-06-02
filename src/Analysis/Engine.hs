@@ -27,28 +27,29 @@ checkSAT phi = do
   res <- check
   pop 1
   return res
-  
+
+-- |= pre => post 
+-- UNSAT (not (pre => post))  
 helper pre post = do
-  formula <- mkImplies pre post >>= \phi -> mkNot phi 
+  formula <- mkImplies pre post >>= mkNot 
   assert formula
-  (r, m) <- getModel
+  (r, m)  <- getModel
   preStr  <- astToString pre
-  trace ("helper: " ++ preStr) $ return (r,m)
+  -- trace ("helper: " ++ preStr) $ return (r,m)
+  return (r,m)
 
 -- \phi not models \psi
 -- \phi |= \psi 
-not_implies :: AST -> AST -> Z3 Bool
-not_implies phi psi = do 
-  psi' <- mkNot psi
-  formula <- mkImplies phi psi' >>= mkNot 
+implies :: AST -> AST -> Z3 Bool
+implies phi psi = do 
+  formula <- mkImplies phi psi >>= mkNot 
   push 
   assert formula 
   res <- check
   pop 1
   case res of
     Unsat -> return True
-    _ -> return False 
-
+    _     -> return False 
 
 -- z3_gen_inout :: generates the input and output vars
 z3_gen_inout :: ([MemberSig], [MemberSig]) -> Z3 (Params, [[(AST,Sort)]], [[(AST,Sort)]])
@@ -66,7 +67,7 @@ z3_gen_inout (params, fields) = do
   -- encode input parameters 
       inputsSig = map (\(id,tys) -> (toString id,check_types tys)) params 
       inputsId  = map fst inputsSig 
-      inputs    = map (\(s,tys) -> map (\ar -> (s ++ show ar,tys)) [1..arity]) inputsSig 
+      inputs    = map (\(s,tys) -> map (\ar -> (s ++ "_" ++ show ar ++ "_0",tys)) [1..arity]) inputsSig 
   inZ3  <- mapM (mapM enc_var) inputs 
   -- encode return variable with default type int
   intSort <- mkIntSort
@@ -240,7 +241,7 @@ enc_exp pids expr = mapM (\p -> enc_exp_inner p expr) pids
 -- | Encode an expression for a version 
 --   (ast,sort,count)pre-condition: pid != 0 
 enc_exp_inner :: Int -> Exp -> EnvOp AST
-enc_exp_inner p expr = trace ("enc_exp_inner: " ++ show expr) $ do
+enc_exp_inner p expr = do -- trace ("enc_exp_inner: " ++ show expr) $ do
  case expr of
   Lit lit -> lift $ enc_literal lit 
   ExpName name -> enc_name p (toIdent name) []
