@@ -194,7 +194,7 @@ verify (mid, mth) classes edits = do
   post     <- postcond out
   iSSAMap  <- initial_SSAMap params 
   iFuncMap <- initial_FuncMap
-  let iEnv = Env iSSAMap M.empty iFuncMap pre post post classes edits True 0 [1,2,3,4] 0
+  let iEnv = Env iSSAMap iFuncMap pre post post classes edits True 0 [1,2,3,4] 0
       body = case ann_mth_body mth of
                AnnMethodBody Nothing -> []
                AnnMethodBody (Just (AnnBlock b)) -> b 
@@ -366,43 +366,30 @@ analyse_conditional pid cond s1 s2 rest = do
  wiz_print $ "analyse_conditional: conditional " ++ prettyPrint cond 
  if cond == Nondet
  then do
-  env@Env{..} <- get
-  resThen <- analyser [AnnBlockStmt s1]
+  i_env    <- get
+  _        <- analyser [AnnBlockStmt s1]
   env_then <- get 
-  put env
-  resElse <- analyser [AnnBlockStmt s2]
-  combine resThen resElse                
+  put i_env
+  _         <- analyser [AnnBlockStmt s2]
+  env_else <- get
+  join_env env_then env_else
+  analyser rest 
  else do
-  condSmt <- enc_exp pid cond
+  condSmt  <- enc_exp pid cond
   env@Env{..} <- get
-  cPhi    <- lift $ checkSAT _pre
-  cPhiStr <- lift $ astToString _pre 
-  if cPhi == Unsat
-  then error ("analyse conditional:\n" ++ cPhiStr ++ "\nanalyse conditional: Unreachable") 
-  else do
-    -- then branch
-    preThen <- lift $ mkAnd (_pre:condSmt)
-    resThen <- trace ("analyse:" ++ show pid ++ "  " ++ prettyPrint cond) $ analyse_branch preThen s1
-    -- else branch
-    put env
-    ncondSmt <- lift $ mapM mkNot condSmt
-    preElse <- lift $ mkAnd (_pre:ncondSmt)
-    resElse <- trace ("analyse:" ++ show pid ++ " Not " ++ prettyPrint cond) $ analyse_branch preElse s2
-    combine resThen resElse
- where
-   analyse_branch phi branch = do
-    env@Env{..} <- get
-    updatePre phi
-    let r = (AnnBlockStmt branch):rest
-    cPhi    <- lift $ checkSAT phi
-    cPhiStr <- lift $ astToString phi 
-    if cPhi == Unsat
-    then trace ("analyse conditional:\n" ++ cPhiStr ++ "\nanalyse conditional: Unreachable") $ return _default
-    else trace ("analyse: Reachable") $ analyser r
-   combine :: (Result, Maybe Model) -> (Result, Maybe Model) -> EnvOp (Result, Maybe Model)
-   combine (Unsat,_) (Unsat,_) = return _default
-   combine (Unsat,_) res = return res
-   combine res _ = return res
+  -- then branch
+  preThen  <- lift $ mkAnd (_pre:condSmt)
+  updatePre preThen
+  _        <- analyser [AnnBlockStmt s1] 
+  env_then <- get
+  -- else branch
+  put env
+  ncondSmt <- lift $ mapM mkNot condSmt
+  preElse  <- lift $ mkAnd (_pre:ncondSmt)
+  _        <- analyser [AnnBlockStmt s2]
+  env_else <- get
+  join_env env_then env_else
+  analyser rest 
 
 -- Analyse Loops
 --  Houdini style loop invariant generation
@@ -609,7 +596,6 @@ assign_inner pid _exp lhs aOp rhs = do
    pre <- lift $ mkAnd [_pre, ass]
    updatePre pre
    updateSSAMap ssamap
-   incrementAssignMap ident rhs
   FieldLhs (PrimaryFieldAccess This (ident@(Ident str))) -> do
    (plhsAST,sort, i) <- 
      case M.lookup ident _ssamap of
@@ -629,7 +615,6 @@ assign_inner pid _exp lhs aOp rhs = do
    pre <- lift $ mkAnd [_pre, ass]
    updatePre pre
    updateSSAMap ssamap
-   incrementAssignMap ident rhs
   ArrayLhs (ArrayIndex e args) -> do
    let ident@(Ident str) = expToIdent e
    (plhsAST,sort, i) <- trace ("the ident is " ++ show ident) $  
@@ -659,7 +644,6 @@ assign_inner pid _exp lhs aOp rhs = do
    pre <- lift $ mkAnd [_pre, ass]
    updatePre pre
    updateSSAMap ssamap
-   incrementAssignMap ident rhs
   _ -> error $ show _exp ++ " not supported"
  where
   assign_inner' pid ident@(Ident str) = do

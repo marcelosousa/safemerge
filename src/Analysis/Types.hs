@@ -63,7 +63,6 @@ type FunctMap = Map AbsMethodSig (FuncDecl, DepMap)
 data Env = Env
   { 
     _ssamap  :: SSAMap
-  , _assmap  :: AssignMap
   , _fnmap   :: FunctMap  -- function map
   , _pre     :: AST
   , _post    :: AST
@@ -78,8 +77,11 @@ data Env = Env
 
 type EnvOp a = StateT Env Z3 a
 
+-- | Joinable fields are
+--   _ssamap, 
 join_env :: Env -> Env -> EnvOp ()
-join_env = undefined
+join_env e1 e2 = do
+  undefined 
 
 _default = (Unsat, Nothing)
 
@@ -125,17 +127,6 @@ updateSSAMap ssamap = do
   s@Env{..} <- get
   put s{ _ssamap = ssamap}
 
-updateAssignMap :: AssignMap -> EnvOp ()
-updateAssignMap assmap = do
-  s@Env{..} <- get
-  put s{ _assmap = assmap }
-
-incrementAssignMap :: Ident -> Exp -> EnvOp ()
-incrementAssignMap i e = do
-  s@Env{..} <- get
-  let assignMap = M.insert i e _assmap
-  put s{ _assmap = assignMap }
-  
 updateFunctMap :: FunctMap -> EnvOp ()
 updateFunctMap fnmap = do
   s@Env{..} <- get

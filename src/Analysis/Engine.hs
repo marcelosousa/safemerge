@@ -227,8 +227,6 @@ enc_new_var pids sort i (VarDecl varid mvarinit) = do
       expAsts <- enc_exp pids expr
       let id_exp = zip idAsts expAsts
       eqIdExps <- lift $ mapM (\((_,idAst),expAst) -> mkEq idAst expAst) id_exp
-      let nassmap = M.insert ident expr _assmap
-      updateAssignMap nassmap
       npre <- lift $ mkAnd (_pre:eqIdExps)
       updatePre npre 
     Just _ -> error "enc_new_var: not supported"
