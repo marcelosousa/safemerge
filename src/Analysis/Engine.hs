@@ -210,7 +210,6 @@ enc_ident pids str i sort =
 -- encode the first variable definition 
 enc_new_var :: [Int] -> Sort -> Int -> VarDecl -> EnvOp ()
 enc_new_var pids sort i (VarDecl varid mvarinit) = do
-  wiz_print "bla"
   env@Env{..} <- get
   (ident, idAsts) <- lift $ 
     case varid of

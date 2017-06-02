@@ -21,7 +21,7 @@ import Analysis.Util
 import Calculus
 import Control.Monad.IO.Class
 import Control.Monad.ST
-import Control.Monad.State.Strict
+import Control.Monad.State.Strict hiding (join)
 import Data.Map (Map)
 import Data.Maybe
 import Data.List
@@ -214,9 +214,9 @@ verify (mid, mth) classes edits = do
 -- otherwise, calls the standard analysis 
 analyser :: ProdProgram -> EnvOp (Result, Maybe Model)
 analyser stmts = do
- wiz_print "analyzer: press any key to continue..."
- _ <- liftIO $ getChar
- debugger stmts
+ --wiz_print "analyzer: press any key to continue..."
+ --_ <- liftIO $ getChar
+ --debugger stmts
  env@Env{..} <- get
  case stmts of
   [] -> do
@@ -372,7 +372,8 @@ analyse_conditional pid cond s1 s2 rest = do
   put i_env
   _         <- analyser [AnnBlockStmt s2]
   env_else <- get
-  join_env env_then env_else
+  new_env  <- join_env i_env env_then env_else
+  put new_env
   analyser rest 
  else do
   condSmt  <- enc_exp pid cond
@@ -388,7 +389,8 @@ analyse_conditional pid cond s1 s2 rest = do
   preElse  <- lift $ mkAnd (_pre:ncondSmt)
   _        <- analyser [AnnBlockStmt s2]
   env_else <- get
-  join_env env_then env_else
+  new_env  <- join_env env env_then env_else
+  put new_env
   analyser rest 
 
 -- Analyse Loops

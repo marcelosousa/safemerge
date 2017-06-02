@@ -30,22 +30,22 @@ data AnnMemberDecl
                        AnnConstructorBody
   | AnnMemberClassDecl ClassDecl
   | AnnMemberInterfaceDecl InterfaceDecl
-  deriving Show
+  deriving (Show,Eq)
 
 data AnnMethodBody = AnnMethodBody (Maybe AnnBlock)
-  deriving Show
+  deriving (Show,Eq)
 
 data AnnBlock = AnnBlock [AnnBlockStmt]
-  deriving Show
+  deriving (Show,Eq)
 
 data AnnConstructorBody = AnnConstructorBody (Maybe ExplConstrInv) [AnnBlockStmt]
-  deriving Show
+  deriving (Show,Eq)
 
 data AnnBlockStmt =
    AnnBlockStmt AnnStmt
  | AnnLocalClass ClassDecl
  | AnnLocalVars [Int] [Modifier] Type [VarDecl]
-  deriving Show
+  deriving (Show,Eq)
 
 data AnnStmt 
   = AnnStmtBlock    [Int] AnnBlock
@@ -69,13 +69,13 @@ data AnnStmt
   | AnnLabeled      [Int] Ident AnnStmt
   | AnnHole         [Int]
   | AnnSkip         [Int]
-  deriving Show
+  deriving (Show,Eq)
 
 data AnnSwitchBlock = AnnSwitchBlock [Int] SwitchLabel [AnnBlockStmt]
-  deriving Show
+  deriving (Show,Eq)
 
 data AnnCatch = AnnCatch [Int] FormalParam AnnBlock
-  deriving Show
+  deriving (Show,Eq)
 
 class Annotate a b where
   toAnn   :: [Int] -> a -> b

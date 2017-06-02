@@ -1,4 +1,6 @@
 {-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE FlexibleInstances #-}
 -------------------------------------------------------------------------------
 -- Module    :  Analysis.Types
 -- Copyright :  (c) 2016 Marcelo Sousa
@@ -9,8 +11,9 @@ import Analysis.Java.AST
 import Analysis.Java.ClassInfo
 import Analysis.Dependence
 import Control.Monad.ST
-import Control.Monad.State.Strict
+import Control.Monad.State.Strict hiding (join)
 import Data.Map (Map)
+import Data.List
 import Edit.Types
 import Language.Java.Syntax
 import Z3.Monad hiding (Params)
@@ -26,7 +29,8 @@ type Prop = (Params, Res, Fields) -> Z3 (AST, AST)
 
 -- SSA map to build a simple SSA representation on the fly
 -- For each identifier, we need a copy per version
-type SSAMap = Map Ident (Map Int (AST, Sort, Int))
+type SSAVar = Map Int (AST, Sort, Int)
+type SSAMap = Map Ident SSAVar 
 
 printSSAMap ::SSAMap -> String
 printSSAMap = M.foldWithKey (\i m r -> show i ++ " -> " ++ show m ++ "\n" ++ r) "" 
@@ -78,10 +82,82 @@ data Env = Env
 type EnvOp a = StateT Env Z3 a
 
 -- | Joinable fields are
---   _ssamap, 
-join_env :: Env -> Env -> EnvOp ()
-join_env e1 e2 = do
-  undefined 
+--   _ssamap, functmap, pre, edits, numret, anonym
+--   Pseudo code
+--   1. Retrieve the part of the environments which have been modified
+--   2. 
+
+-- This function does the heavylifting in the join of the ssamap
+--   It receives the original environemtn, one identifier that is 
+--   shared in the new 2 environments and checks whether their 
+--   keys is the same in which case it generates Nothing
+--       otherwise it reports which versions need to updated
+ssamap_mod :: SSAMap -> Ident -> SSAVar -> SSAVar -> [(Int,Int,Sort)] 
+ssamap_mod orig m e1 e2 = 
+  case M.lookup m orig of
+    Nothing -> error $ "ssamap_mod: scoping issue for " ++ show m 
+    Just v  -> 
+      if e1 == v && e2 == v
+      then [] 
+      else M.foldWithKey (ssavar_mod e1 e2) [] v 
+
+ssavar_mod :: SSAVar -> SSAVar -> Int -> (AST, Sort, Int) -> [(Int,Int,Sort)] -> [(Int,Int,Sort)]
+ssavar_mod e1 e2 v (_,t,n) rest = 
+  case (M.lookup v e1, M.lookup v e2) of
+    (Just (_,_,n1), Just (_,_,n2)) ->
+      if n1 == n && n2 == n
+      then rest
+      else (v,maximum [n,n1,n2] + 1,t):rest 
+    _ -> error $ "ssavar_mod: version " ++ show v
+
+enc_ident_single :: Int -> String -> Int -> Sort -> Z3 AST
+enc_ident_single j str i sort = do 
+  let nstr = str ++ "_" ++ show j ++ "_" ++ show i
+  sym <- mkStringSymbol nstr
+  ast <- mkVar sym sort
+  return ast
+
+to_ssavar :: SSAMap -> (Ident,[(Int,Int,Sort)]) -> EnvOp SSAMap 
+to_ssavar r (Ident str,[]) = return r
+to_ssavar r (Ident str,xs) = do
+  el <- lift $ foldM (\var (v,i,ty) -> do
+           ast <- enc_ident_single v str i ty
+           return $ M.insert v (ast,ty,i) var) M.empty xs 
+  return $ M.insert (Ident str) el r
+   
+partial_ssamap :: Map Ident [(Int,Int,Sort)] -> EnvOp SSAMap   
+partial_ssamap m = do 
+  let m' = M.toList m 
+  foldM to_ssavar M.empty m'
+
+join_pre :: SSAMap -> SSAMap -> SSAMap -> AST -> AST -> EnvOp AST
+join_pre nmap m1 m2 pre1 pre2 = do
+  let nm1  = M.intersectionWith (M.intersectionWith (\(a1,_,_) (a2,_,_) -> (a1,a2))) nmap m1 
+      eqs1 = concatMap M.elems $  M.elems nm1
+  r1 <- lift $ mapM (\(a,b) -> mkEq a b) eqs1
+  fpre1 <- lift $ mkAnd (pre1:r1)  
+  let nm2  = M.intersectionWith (M.intersectionWith (\(a1,_,_) (a2,_,_) -> (a1,a2))) nmap m2 
+      eqs2 = concatMap M.elems $  M.elems nm2
+  r2 <- lift $ mapM (\(a,b) -> mkEq a b) eqs2
+  fpre2 <- lift $ mkAnd (pre2:r2)  
+  lift $ mkOr [fpre1,fpre2] 
+
+join_env :: Env -> Env -> Env -> EnvOp Env
+join_env orig e1 e2 = do
+  let vs = M.intersectionWithKey (ssamap_mod (_ssamap orig)) (_ssamap e1) (_ssamap e2) 
+  new_ssa <- partial_ssamap vs 
+  pre     <- join_pre new_ssa (_ssamap e1) (_ssamap e2) (_pre e1) (_pre e2)
+  let ssa     = M.unionsWith M.union [new_ssa,_ssamap e1,_ssamap e2] 
+      fnm     = _fnmap  e1 `M.union` _fnmap  e2
+      post    = _post    e1
+      invpost = _invpost e1
+      classes = _classes e1
+      eds     = _edits  e1 `intersect` _edits  e2
+      debug   = _debug   e1
+      numret  = if _numret e1 /= _numret e2 then error "join: numret" else _numret e1
+      pid     = _pid     e1
+      anonym  = _anonym e1 `max` _anonym e2
+  return $ Env ssa fnm pre post invpost classes eds debug numret pid anonym 
 
 _default = (Unsat, Nothing)
 
