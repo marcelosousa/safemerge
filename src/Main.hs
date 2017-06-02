@@ -157,4 +157,3 @@ verify ofl afl bfl mfl = do
       diffInst = diffMethods mergeInst
   putStrLn $ printMethInsts $ _merges diffInst
   wiz diffInst 
-

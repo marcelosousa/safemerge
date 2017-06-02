@@ -37,7 +37,7 @@ import qualified Data.Map as M
 
 debugger :: ProdProgram -> EnvOp ()
 debugger prog = do
-  liftIO $ clearScreen
+  -- liftIO $ clearScreen
   liftIO $ putStrLn menuText
   liftIO $ putStrLn prompt 
   debug
@@ -47,7 +47,9 @@ debugger prog = do
     env@Env{..} <- get
     c <- liftIO $ getLine
     liftIO $ clearLine
-    case head c of
+    if null c 
+    then debugger prog
+    else case head c of
       '1' -> printProg True  prog >> debug 
       '2' -> printEdits           >> debug 
       '3' -> printProg False prog >> debug 
@@ -101,8 +103,11 @@ printPre = do
   env@Env{..} <- get
   cPhi    <- lift $ checkSAT _pre
   cPhiStr <- lift $ astToString _pre 
+  solverStr <- lift $ solverToString
   liftIO $ putStrLn $ "Pre-condition (" ++ show cPhi ++ ")"
   liftIO $ putStrLn cPhiStr
+  liftIO $ putStrLn $ show _pre 
+  liftIO $ putStrLn solverStr 
 
 printSSAElem :: Map Int (AST, Sort, Int) -> Z3 String
 printSSAElem m = do 
@@ -209,13 +214,13 @@ verify (mid, mth) classes edits = do
 -- otherwise, calls the standard analysis 
 analyser :: ProdProgram -> EnvOp (Result, Maybe Model)
 analyser stmts = do
- liftIO $ putStrLn "Press any key to continue..."
+ wiz_print "analyzer: press any key to continue..."
  _ <- liftIO $ getChar
  debugger stmts
  env@Env{..} <- get
  case stmts of
   [] -> do
-    liftIO $ putStrLn "analyser: end of program" 
+    wiz_print "analyser: end of program" 
     lift $ local $ helper _pre _post
   (bstmt:rest) -> do
     applyDepCheck <- checkDep  
@@ -223,10 +228,10 @@ analyser stmts = do
     then -- only apply dependence analysis if all variables are equal is all versions
       case next_block stmts of
       (Left b, r) -> do
-        liftIO $ putStrLn "analyser: computing common block" 
+        wiz_print "analyser: computing common block" 
         case b of
           [b'] -> do 
-            liftIO $ putStrLn "analyser: block is a single statement"
+            wiz_print "analyser: block is a single statement"
             analyser_bstmt bstmt r
           _ -> do
             analyser_block $ map fromAnn b 
@@ -241,7 +246,7 @@ checkDep = do
   env@Env{..} <- get
   preds       <- get_predicates _ssamap 
   tmp_post    <- lift $ if null preds then mkTrue else mkAnd preds 
-  (r,_)       <- lift $ helper _pre tmp_post
+  (r,_)       <- lift $ local $ helper _pre tmp_post
   return (r == Unsat) 
 
 -- optimised a block that is shared by all variants
@@ -287,8 +292,7 @@ analyser_block_dep (out,inp) = trace ("analyser_block_dep: out = " ++ show out +
          else mapM (\(pid,args) -> enc_meth_special pid id sort args) $ zip [1..4] inp 
   mapM_ (\(pid,ast) -> assign_special pid lhs ast) $ zip [1..4] rhs
 
--- pre-condition: pid == 0 && bstmt has a hole 
---             or pid != 0 
+-- | analyse a block statment which can be a statement or initialization of local variables
 analyser_bstmt :: AnnBlockStmt -> ProdProgram -> EnvOp (Result, Maybe Model)
 analyser_bstmt bstmt rest = do 
  printStat bstmt
@@ -300,6 +304,7 @@ analyser_bstmt bstmt rest = do
     mapM_ (enc_new_var pids sort 0) vars 
     analyser rest
 
+-- | analyse a statement
 analyser_stmt :: AnnStmt -> ProdProgram -> EnvOp (Result, Maybe Model)
 analyser_stmt stmt rest = 
  case stmt of
@@ -356,7 +361,9 @@ analyse_exp pids _exp rest =
 --  4. Conditional within a loop where one of the branches breaks
 --  5. Conditional within a loop where one of the branches returns 
 analyse_conditional :: [Pid] -> Exp -> AnnStmt -> AnnStmt -> ProdProgram -> EnvOp (Result,Maybe Model)
-analyse_conditional pid cond s1 s2 rest = 
+analyse_conditional pid cond s1 s2 rest = do
+ wiz_print $ "analyse_conditional: versions " ++ show pid 
+ wiz_print $ "analyse_conditional: conditional " ++ prettyPrint cond 
  if cond == Nondet
  then do
   env@Env{..} <- get

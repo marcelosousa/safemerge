@@ -18,6 +18,7 @@ Executable wiz
                     , uu-parsinglib 
                     , language-java 
                     , transformers 
+                    , ansi-terminal 
                     , z3 == 4.1.0
     Hs-Source-Dirs:   src/
     ghc-options:      -O3 -rtsopts

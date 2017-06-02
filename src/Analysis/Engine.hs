@@ -20,13 +20,11 @@ import Util
 import Z3.Monad hiding (Params)
 import qualified Data.Map as M
 
+wiz_print :: String -> EnvOp ()
+wiz_print = liftIO . putStrLn 
+
 -- Performs a SAT-query.
-checkSAT phi = do
-  push 
-  assert phi
-  res <- check
-  pop 1
-  return res
+checkSAT phi = local (assert phi >> check) 
 
 -- |= pre => post 
 -- UNSAT (not (pre => post))  
@@ -212,6 +210,7 @@ enc_ident pids str i sort =
 -- encode the first variable definition 
 enc_new_var :: [Int] -> Sort -> Int -> VarDecl -> EnvOp ()
 enc_new_var pids sort i (VarDecl varid mvarinit) = do
+  wiz_print "bla"
   env@Env{..} <- get
   (ident, idAsts) <- lift $ 
     case varid of
