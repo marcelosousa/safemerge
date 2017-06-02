@@ -78,6 +78,9 @@ data Env = Env
 
 type EnvOp a = StateT Env Z3 a
 
+join_env :: Env -> Env -> EnvOp ()
+join_env = undefined
+
 _default = (Unsat, Nothing)
 
 popEdits :: EnvOp [AnnBlockStmt]

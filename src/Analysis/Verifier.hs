@@ -1,4 +1,5 @@
 {-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE FlexibleContexts #-}
 -------------------------------------------------------------------------------
 -- Module    :  Analysis.Verifier
 -- Copyright :  (c) 2016/17 Marcelo Sousa
@@ -7,6 +8,7 @@ module Analysis.Verifier (wiz) where
 
 -- import Analysis.Invariant
 import Analysis.Dependence
+import Analysis.Debug
 import Analysis.Engine
 import Analysis.Java.AST
 import Analysis.Java.ClassInfo
@@ -27,10 +29,105 @@ import Edit
 import Edit.Types
 import Language.Java.Pretty
 import Language.Java.Syntax
+import System.Console.ANSI
 import System.IO.Unsafe
 import Util
 import Z3.Monad
 import qualified Data.Map as M
+
+debugger :: ProdProgram -> EnvOp ()
+debugger prog = do
+  liftIO $ clearScreen
+  liftIO $ putStrLn menuText
+  liftIO $ putStrLn prompt 
+  debug
+ where
+  debug :: EnvOp ()
+  debug = do
+    env@Env{..} <- get
+    c <- liftIO $ getLine
+    liftIO $ clearLine
+    case head c of
+      '1' -> printProg True  prog >> debug 
+      '2' -> printEdits           >> debug 
+      '3' -> printProg False prog >> debug 
+      '4' -> printPre             >> debug
+      '5' -> printSSA             >> debug
+      '6' -> printEnv             >> debug
+      'c' -> return ()
+      'q' -> error "Exiting..."
+      _   -> debugger prog 
+
+printStat :: AnnBlockStmt -> EnvOp ()
+printStat bstmt = do
+  let str = prettyPrint (fromAnn bstmt :: BlockStmt)
+      scope = getAnn bstmt  
+  liftIO $ putStrLn $ "Statement of versions " ++ show scope
+  liftIO $ putStrLn str
+
+printProg :: Bool -> ProdProgram -> EnvOp ()
+printProg b stmts = do
+ env@Env{..} <- get
+ case stmts of
+  [] -> liftIO $ putStrLn "End of Program" 
+  (bstmt:_) ->
+    if b 
+    then printStat bstmt 
+    else do 
+      let str = unlines $ map (\s -> prettyPrint (fromAnn s :: BlockStmt)) stmts
+      liftIO $ putStrLn "Program:"
+      liftIO $ putStrLn str
+
+printEdits :: EnvOp ()
+printEdits = do
+  env@Env{..} <- get
+  let holes       = transpose _edits
+      h_holes     = zip holes [1..]
+      edits     h = zip h     [1..]
+      h_edit    1 = "Edit Base:      "
+      h_edit    2 = "Edit Variant A: "
+      h_edit    3 = "Edit Variant B: "
+      h_edit    4 = "Edit Merge:     "
+      h_hole    h = "Hole " ++ show h ++ ":"
+      printEdit (s,i) = h_edit i ++  prettyPrint (fromAnn s :: BlockStmt)
+      printCode h = map printEdit $ edits h 
+      printHole (h,i) = unlines ((h_hole i):(printCode h))
+      str = unlines $ map printHole h_holes
+  liftIO $ putStrLn $ "Edits:"
+  liftIO $ putStrLn str 
+
+printPre :: EnvOp ()
+printPre = do
+  env@Env{..} <- get
+  cPhi    <- lift $ checkSAT _pre
+  cPhiStr <- lift $ astToString _pre 
+  liftIO $ putStrLn $ "Pre-condition (" ++ show cPhi ++ ")"
+  liftIO $ putStrLn cPhiStr
+
+printSSAElem :: Map Int (AST, Sort, Int) -> Z3 String
+printSSAElem m = do 
+  strs <- mapM (\(i,(ast,ty,k)) -> do
+            ast_str <- astToString ast
+            ty_str  <- sortToString ty
+            return $ "\t" ++ show i ++ "_" ++ show k ++ " ~> (" ++ ast_str ++ ","++ty_str++")"
+          ) $ M.toList m
+  return $ unlines strs
+
+printSSA :: EnvOp ()
+printSSA = do 
+  env@Env{..} <- get
+  strs <- mapM (\(k,m) -> do 
+    inner <- lift $ printSSAElem m
+    let h = show k ++ " ->\n"
+    return $ h ++ inner) $ M.toList _ssamap 
+  let str = unlines strs
+  liftIO $ putStrLn $ "SSA map:"
+  liftIO $ putStrLn str 
+
+printEnv :: EnvOp ()
+printEnv = do
+  env@Env{..} <- get
+  error "printEnv: not implemented" 
 
 wiz :: DiffInst -> IO () 
 wiz diff@MInst{..} = mapM_ (wiz_meth diff) _merges 
@@ -54,11 +151,11 @@ wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = do
       f_e_a = map (toAnn [2]) _e_a
       f_e_b = map (toAnn [3]) _e_b
       f_e_m = map (toAnn [4]) _e_m
-  putStrLn $ "wiz_meth:\n" ++ prettyPrint _mth 
-  putStrLn $ "edit o:\n" ++ (unlines $ map (prettyPrint . fst) _e_o) 
-  putStrLn $ "edit a:\n" ++ (unlines $ map (prettyPrint . fst) _e_a) 
-  putStrLn $ "edit b:\n" ++ (unlines $ map (prettyPrint . fst) _e_b) 
-  putStrLn $ "edit m:\n" ++ (unlines $ map (prettyPrint . fst) _e_m) 
+  -- putStrLn $ "wiz_meth:\n" ++ prettyPrint _mth 
+  -- putStrLn $ "edit o:\n" ++ (unlines $ map (prettyPrint . fst) _e_o) 
+  -- putStrLn $ "edit a:\n" ++ (unlines $ map (prettyPrint . fst) _e_a) 
+  -- putStrLn $ "edit b:\n" ++ (unlines $ map (prettyPrint . fst) _e_b) 
+  -- putStrLn $ "edit m:\n" ++ (unlines $ map (prettyPrint . fst) _e_m) 
   let o_class = findClass mth_id _o_info 
       a_class = findClass mth_id _a_info 
       b_class = findClass mth_id _b_info 
@@ -72,7 +169,7 @@ wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = do
   else do
     putStrLn "Semantic conflict found:"
     case mstr of
-      Nothing -> error "wiz_meth: counterexample missing"
+      Nothing  -> error "wiz_meth: counterexample missing"
       Just str -> putStrLn str    
 
 -- The main verification function
@@ -85,13 +182,11 @@ verify (mid, mth) classes edits = do
       inputs = (toMemberSig mth, concatMap toMemberSig fields) 
   (params, inp, out) <- z3_gen_inout inputs 
   -- compute the pre and the post condition
-  -- for now, the pre-condition states that the parameters for each version are equal
-  --  and the post-condition states the soundness condition for the return variable
+  -- the pre-condition states that the parameters for each version are equal
+  -- the post-condition states the soundness condition for the return variable
   --  which is a special dummy variable res_version
   pre      <- initial_precond inp  
-  preRes   <- checkSAT pre
-  preStr   <- astToString pre
-  post     <- trace ("verify: " ++ show preRes ++ "\n"++preStr) $ postcond out
+  post     <- postcond out
   iSSAMap  <- initial_SSAMap params 
   iFuncMap <- initial_FuncMap
   let iEnv = Env iSSAMap M.empty iFuncMap pre post post classes edits True 0 [1,2,3,4] 0
@@ -105,71 +200,33 @@ verify (mid, mth) classes edits = do
     str <- showModel $ fromJust model
     return (Sat, Just str)
 
--- strongest post condition
-_triple :: String -> String -> String -> String
-_triple pre stm post =
- unlines
-  ["-----------------"
-  ,"Analyser State"
-  ,pre
-  ,stm
-  ,post
-  ,"-----------------"]
-
 -- @ Analyser main function
-analyser :: ProdProgram -> EnvOp (Result, Maybe Model)
-analyser stmts = do
- env@Env{..} <- get
- cPhi    <- lift $ checkSAT _pre
- preStr  <- lift $ astToString _pre
- if cPhi == Unsat
- then error ("analyser:\n" ++ preStr ++ "\nanalyser: Unreachable\nanalyser: SSA MAP\n"++show _ssamap) 
- else do
-   if _debug
-   then analyser_debug stmts
-   else analyse stmts
-
-analyser_debug :: ProdProgram -> EnvOp (Result, Maybe Model)
-analyser_debug stmts = do
- env@Env{..} <- get
- cPhi    <- lift $ checkSAT _pre
- preStr  <- lift $ astToString _pre
- postStr <- lift $ astToString _post
- if cPhi == Unsat
- then error ("analyser:\n" ++ preStr ++ "\nanalyser: Unreachable\nanalyser: SSA MAP\n"++show _ssamap) 
- else do
-   case stmts of
-    [] -> do 
-      let k = trace (_triple preStr "end" postStr ++ "\n" ++ printSSAMap _ssamap) $ 
-               unsafePerformIO $ getChar
-      -- analyse stmts
-      k `seq` analyse stmts
-    (bstmt:_) -> do 
-      --let k = trace (_triple preStr (show bstmt ++ "\n" ++ prettyPrint (fromAnn bstmt :: BlockStmt)) postStr ++ "\n" ++ printSSAMap _ssamap ++ 
-      --        "\nKeys in Function Map: " ++ show (M.keys _fnmap)) $ unsafePerformIO $ getChar
-      let k = trace (_triple preStr (show bstmt ++ "\n" ++ prettyPrint (fromAnn bstmt :: BlockStmt)) "") $ unsafePerformIO $ getChar
-      k `seq` analyse stmts
-      -- analyse stmts
-
 -- main verification heavyweight function 
 -- checks if the PID = (ALL) and calls 
 -- the optimiser to obtain the block and 
 -- call the dependence analysis to deal 
 -- with it.
 -- otherwise, calls the standard analysis 
-analyse :: ProdProgram -> EnvOp (Result,Maybe Model)   
-analyse stmts = trace ("analyse: begin") $ do
+analyser :: ProdProgram -> EnvOp (Result, Maybe Model)
+analyser stmts = do
+ liftIO $ putStrLn "Press any key to continue..."
+ _ <- liftIO $ getChar
+ debugger stmts
  env@Env{..} <- get
  case stmts of
-  [] -> lift $ local $ helper _pre _post
+  [] -> do
+    liftIO $ putStrLn "analyser: end of program" 
+    lift $ local $ helper _pre _post
   (bstmt:rest) -> do
-    applyDepCheck <- return True -- checkDep  
+    applyDepCheck <- checkDep  
     if False -- (every $ getAnn bstmt) && applyDepCheck 
     then -- only apply dependence analysis if all variables are equal is all versions
       case next_block stmts of
-      (Left b, r) -> trace ("analyser: block encoding") $ do
+      (Left b, r) -> do
+        liftIO $ putStrLn "analyser: computing common block" 
         case b of
-          [b'] -> 
+          [b'] -> do 
+            liftIO $ putStrLn "analyser: block is a single statement"
             analyser_bstmt bstmt r
           _ -> do
             analyser_block $ map fromAnn b 
@@ -182,9 +239,9 @@ analyse stmts = trace ("analyse: begin") $ do
 checkDep :: EnvOp Bool
 checkDep = do
   env@Env{..} <- get
-  preds <- get_predicates _ssamap 
-  tmp_post <- lift $ mkAnd preds 
-  (r,_) <- lift $ helper _pre tmp_post
+  preds       <- get_predicates _ssamap 
+  tmp_post    <- lift $ if null preds then mkTrue else mkAnd preds 
+  (r,_)       <- lift $ helper _pre tmp_post
   return (r == Unsat) 
 
 -- optimised a block that is shared by all variants
@@ -233,8 +290,10 @@ analyser_block_dep (out,inp) = trace ("analyser_block_dep: out = " ++ show out +
 -- pre-condition: pid == 0 && bstmt has a hole 
 --             or pid != 0 
 analyser_bstmt :: AnnBlockStmt -> ProdProgram -> EnvOp (Result, Maybe Model)
-analyser_bstmt bstmt rest = case bstmt of
-  AnnBlockStmt stmt -> analyser_stmt stmt rest
+analyser_bstmt bstmt rest = do 
+ printStat bstmt
+ case bstmt of
+  AnnBlockStmt stmt              -> analyser_stmt stmt rest
   AnnLocalVars pids mods ty vars -> do
     env@Env{..} <- get
     sort <- lift $ processType ty    
@@ -288,14 +347,23 @@ analyse_exp pids _exp rest =
    analyser rest
 
 -- Analyse If Then Else
+-- Call the analyser over both branches to obtain the VCs 
+-- Need to create additional assignments to uniformize the SSA construction
+-- Test cases
+--  1. Conditional with multiple assignments to make sure the SSA Map is correct
+--  2. Conditional with return statements in one of the branches
+--  3. Conditional within a loop
+--  4. Conditional within a loop where one of the branches breaks
+--  5. Conditional within a loop where one of the branches returns 
 analyse_conditional :: [Pid] -> Exp -> AnnStmt -> AnnStmt -> ProdProgram -> EnvOp (Result,Maybe Model)
 analyse_conditional pid cond s1 s2 rest = 
  if cond == Nondet
  then do
   env@Env{..} <- get
-  resThen <- analyser $ (AnnBlockStmt s1):rest
+  resThen <- analyser [AnnBlockStmt s1]
+  env_then <- get 
   put env
-  resElse <- analyser $ (AnnBlockStmt s2):rest
+  resElse <- analyser [AnnBlockStmt s2]
   combine resThen resElse                
  else do
   condSmt <- enc_exp pid cond
