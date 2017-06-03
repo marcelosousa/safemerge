@@ -1,0 +1,6 @@
+Unit tests for conditionals
+--------------------------
+
+test1: Edit script generation correctly identifies the changes in the branches
+test2: Negate the condition and invert the branches (no conflict)
+test3: 

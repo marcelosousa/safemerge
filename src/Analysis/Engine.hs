@@ -20,8 +20,6 @@ import Util
 import Z3.Monad hiding (Params)
 import qualified Data.Map as M
 
-wiz_print :: String -> EnvOp ()
-wiz_print = liftIO . putStrLn 
 
 -- Performs a SAT-query.
 checkSAT phi = local (assert phi >> check) 

@@ -3,10 +3,13 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Date;
 
+// Unit test for conditionals 
+
 public class Cond 
 {
  private int x;
- public int test(int y)
+
+ public int test1(int y)
  {
    int i = 1;
 

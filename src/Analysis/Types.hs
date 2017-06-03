@@ -20,6 +20,28 @@ import Z3.Monad hiding (Params)
 import qualified Data.Map as M
 import qualified Debug.Trace as T
 
+wiz_print :: String -> EnvOp ()
+wiz_print = liftIO . putStrLn 
+
+printSSAElem :: Map Int (AST, Sort, Int) -> Z3 String
+printSSAElem m = do 
+  strs <- mapM (\(i,(ast,ty,k)) -> do
+            ast_str <- astToString ast
+            ty_str  <- sortToString ty
+            return $ "\t" ++ show i ++ "_" ++ show k ++ " ~> (" ++ ast_str ++ ","++ty_str++")"
+          ) $ M.toList m
+  return $ unlines strs
+
+printSSA :: SSAMap -> EnvOp ()
+printSSA ssa = do 
+  strs <- mapM (\(k,m) -> do 
+    inner <- lift $ printSSAElem m
+    let h = show k ++ " ->\n"
+    return $ h ++ inner) $ M.toList ssa 
+  let str = unlines strs
+  liftIO $ putStrLn $ "SSA map:"
+  liftIO $ putStrLn str 
+
 -- receives the parameters and returns to specify the pre and post-condition
 -- need to use maps for the parameters, returns, fields
 type Params = Map Ident [(AST,Sort)]
@@ -144,19 +166,30 @@ join_pre nmap m1 m2 pre1 pre2 = do
 
 join_env :: Env -> Env -> Env -> EnvOp Env
 join_env orig e1 e2 = do
-  let vs = M.intersectionWithKey (ssamap_mod (_ssamap orig)) (_ssamap e1) (_ssamap e2) 
+  let ssa_orig = _ssamap orig
+      ssa_e1   = _ssamap e1
+      ssa_e2   = _ssamap e2
+      vs = M.intersectionWithKey (ssamap_mod ssa_orig) ssa_e1 ssa_e2 
   new_ssa <- partial_ssamap vs 
-  pre     <- join_pre new_ssa (_ssamap e1) (_ssamap e2) (_pre e1) (_pre e2)
-  let ssa     = M.unionsWith M.union [new_ssa,_ssamap e1,_ssamap e2] 
-      fnm     = _fnmap  e1 `M.union` _fnmap  e2
-      post    = _post    e1
-      invpost = _invpost e1
-      classes = _classes e1
-      eds     = _edits  e1 `intersect` _edits  e2
-      debug   = _debug   e1
+  pre     <- join_pre new_ssa ssa_e1 ssa_e2 (_pre e1) (_pre e2)
+  let ssa     = M.unionsWith M.union [new_ssa,ssa_e1,ssa_e2] 
+      fnm     = _fnmap   e1 `M.union` _fnmap  e2
+      post    = _post    e2
+      invpost = _invpost e2
+      classes = _classes e2
+      eds     = _edits   e2 
+      debug   = _debug   e2
       numret  = if _numret e1 /= _numret e2 then error "join: numret" else _numret e1
-      pid     = _pid     e1
-      anonym  = _anonym e1 `max` _anonym e2
+      pid     = _pid     e2
+      anonym  = _anonym  e1 `max` _anonym e2
+  wiz_print "join_env: original " 
+  printSSA ssa_orig
+  wiz_print "join_env: then branch" 
+  printSSA ssa_e1 
+  wiz_print "join_env: else branch" 
+  printSSA ssa_e2 
+  wiz_print "join_env: result"
+  printSSA ssa
   return $ Env ssa fnm pre post invpost classes eds debug numret pid anonym 
 
 _default = (Unsat, Nothing)
@@ -185,6 +218,12 @@ updatePost :: AST -> EnvOp ()
 updatePost post = do
   s@Env{..} <- get
   put s{ _post = post}
+
+-- @ update the edits 
+updateEdits :: [AnnEdit] -> EnvOp ()
+updateEdits edits = do
+  s@Env{..} <- get
+  put s{ _edits = edits }
 
 updateInvPost :: AST -> EnvOp ()
 updateInvPost invpost = do

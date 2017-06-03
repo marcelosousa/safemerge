@@ -54,7 +54,7 @@ debugger prog = do
       '2' -> printEdits           >> debug 
       '3' -> printProg False prog >> debug 
       '4' -> printPre             >> debug
-      '5' -> printSSA             >> debug
+      '5' -> printSSA _ssamap     >> debug
       '6' -> printEnv             >> debug
       'c' -> return ()
       'q' -> error "Exiting..."
@@ -108,26 +108,6 @@ printPre = do
   liftIO $ putStrLn cPhiStr
   liftIO $ putStrLn $ show _pre 
   liftIO $ putStrLn solverStr 
-
-printSSAElem :: Map Int (AST, Sort, Int) -> Z3 String
-printSSAElem m = do 
-  strs <- mapM (\(i,(ast,ty,k)) -> do
-            ast_str <- astToString ast
-            ty_str  <- sortToString ty
-            return $ "\t" ++ show i ++ "_" ++ show k ++ " ~> (" ++ ast_str ++ ","++ty_str++")"
-          ) $ M.toList m
-  return $ unlines strs
-
-printSSA :: EnvOp ()
-printSSA = do 
-  env@Env{..} <- get
-  strs <- mapM (\(k,m) -> do 
-    inner <- lift $ printSSAElem m
-    let h = show k ++ " ->\n"
-    return $ h ++ inner) $ M.toList _ssamap 
-  let str = unlines strs
-  liftIO $ putStrLn $ "SSA map:"
-  liftIO $ putStrLn str 
 
 printEnv :: EnvOp ()
 printEnv = do
@@ -377,16 +357,18 @@ analyse_conditional pid cond s1 s2 rest = do
   analyser rest 
  else do
   condSmt  <- enc_exp pid cond
-  env@Env{..} <- get
+  env      <- get
   -- then branch
-  preThen  <- lift $ mkAnd (_pre:condSmt)
+  preThen  <- lift $ mkAnd ((_pre env):condSmt)
   updatePre preThen
   _        <- analyser [AnnBlockStmt s1] 
   env_then <- get
   -- else branch
   put env
+  updateEdits (_edits env_then)
   ncondSmt <- lift $ mapM mkNot condSmt
-  preElse  <- lift $ mkAnd (_pre:ncondSmt)
+  preElse  <- lift $ mkAnd ((_pre env):ncondSmt)
+  updatePre preElse
   _        <- analyser [AnnBlockStmt s2]
   env_else <- get
   new_env  <- join_env env env_then env_else
