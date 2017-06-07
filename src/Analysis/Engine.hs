@@ -143,6 +143,11 @@ initial_precond inputs =  do
   then mkTrue
   else mkAnd _eqs
 
+-- computes a triangle of equalities
+comb :: [a] -> [(a,a)]
+comb [] = []
+comb (x:xs) = [(x,y) | y <- xs] ++ comb xs
+
 lin :: [a] -> [(a,a)]
 lin [] = []
 lin (x:xs) = lin' x xs 

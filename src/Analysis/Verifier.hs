@@ -380,63 +380,59 @@ analyse_conditional pid cond s1 s2 rest = do
 analyse_loop :: [(Pid,Exp)] -> AnnStmt -> ProdProgram -> EnvOp (Result,Maybe Model) 
 analyse_loop conds body rest = do
  env@Env{..} <- get
- cPhi    <- lift $ checkSAT _pre
- cPhiStr <- lift $ astToString _pre 
- if cPhi == Unsat
- then error ("analyse conditional:\n" ++ cPhiStr ++ "\nanalyse conditional: Unreachable") 
- else do
-   -- use equality predicates between variables in the assignment map
-   all_preds <- get_predicates _ssamap 
-   preds_str <- lift $ mapM astToString all_preds
-   let k = trace ("analyse_loop: all_predicates \n" ++ show preds_str ++ "\n" ) $ 
-              unsafePerformIO $ getChar
-   -- filter out predicates not implied by Pre
-   init_preds <- k `seq` lift $ filterM (\p -> _pre `implies` p) all_preds
-   init_preds_str <- lift $ mapM astToString init_preds
-   let k = trace ("analyse_loop: init_predicates \n" ++ show init_preds_str ++ "\n" ) $ 
-              unsafePerformIO $ getChar
-   -- let init_preds = all_preds \\ not_preds
-   cond_ast <- k `seq` mapM (\(pid,cond) -> enc_exp [pid] cond >>= lift . mkAnd) conds >>= lift . mkAnd
-   houdini init_preds cond_ast body 
-   analyser rest
+ -- use equality predicates between variables in the assignment map
+ all_preds   <- get_predicates _ssamap 
+ -- only consider filters consistent with the pre-condition 
+ init_preds  <- lift $ filterM (\p -> _pre `implies` p) all_preds
+ -- encode the condition of the loop
+ cond_ast    <- mapM (\(pid,cond) -> enc_exp_inner pid cond) conds >>= lift . mkAnd
+ -- going to call houdini
+ cond_str    <- lift $ astToString cond_ast
+ preds_str   <- lift $ mapM astToString init_preds 
+ wiz_print $ "analyse_loop: calling houdini with following inputs\npredicate set: " 
+          ++ show preds_str ++ "\nloop condition:\n" ++ cond_str 
+ wiz_break
+ houdini init_preds cond_ast body 
+ analyser rest
 
--- houdini: 
+-- houdini: fixpoint over set of predicates to compute inductive invariant
 houdini :: [AST] -> AST -> AnnStmt -> EnvOp ()
 houdini preds cond body = do 
-  env <- get
-  let pre = _pre env 
-  inv <- lift $ if null preds then mkTrue else mkAnd preds
+  i_env  <- get
+  let pre = _pre i_env 
+  -- candidate invariant is simply the conjunction of the current set of predicates
+  inv    <- lift $ if null preds then mkTrue else mkAnd preds
   invStr <- lift $ astToString inv
-  let k = trace ("houdini: \n" ++ invStr ++ "\n" ) $ 
-             unsafePerformIO $ getChar
-  npre <- k `seq` lift $ mkAnd [inv, cond] 
-  -- npre <- lift $ mkAnd [inv, cond] 
+  wiz_print $ "houdini: candidate invariant:\n" ++ invStr 
+  wiz_break
+  npre   <- lift $ mkAnd [inv, cond] 
   updatePre npre 
+  -- compute the relational post condition 
   analyser_stmt body []
-  nenv <- get
+  nenv   <- get
   let post = _pre nenv
   post_str <- lift $ astToString post 
-  -- get the preds that are not implied by the post
+  -- get the preds that are implied by the post
   sat_preds <- lift $ filterM (\p -> post `implies` p) preds
-  sat_str <- lift $ mapM astToString sat_preds
+  -- the predicates not implied by the post is computed with set difference
   let not_preds = preds \\ sat_preds
-  let k = trace ("houdini: after loop iteration\n original pre:\n" ++ invStr ++ "\npost after the loop iteration:\n" ++ post_str ++ "\nnot_preds:\n" ++ show sat_str) $ 
-             unsafePerformIO $ getChar
+  unsat_str <- lift $ mapM astToString not_preds
+  wiz_print $ "houdini: candidate invariant:\n" ++ invStr ++ "\nrelational post:\n" ++ post_str
+           ++ "\npredicates not satisfied by relational post:\n" ++ show unsat_str 
+  wiz_break
   -- revert to the original environment
-  k `seq` put env
+  put i_env
   -- fixpoint check 
   if null not_preds
   -- we are done
   then do
     neg_cond <- lift $ mkNot cond
-    new_pre <- lift $ mkAnd [inv, neg_cond]
+    new_pre  <- lift $ mkAnd [inv, neg_cond]
     updatePre new_pre 
   -- we are not done unless preds == [] where we just default to True
-  else if null preds
+  else if null preds 
        then error $ "houdini: unable to compute inductive fixpoint" 
-       else do
-         put env
-         houdini (preds \\ not_preds) cond body
+       else houdini sat_preds cond body
 
 get_predicates :: SSAMap -> EnvOp [AST]
 get_predicates m = do
@@ -444,8 +440,7 @@ get_predicates m = do
         concat $ M.mapWithKey (\k m' -> 
           if k == Ident "ret" || k == Ident "null" 
           then []
-          else let k = map (\(a,b,c) -> a) $ M.elems m'
-               in lin k) m  
+          else comb $ map (\(a,b,c) -> a) $ M.elems m') m  
   lift $ mapM (\(a,b) -> mkEq a b) pairs
   
 -- Analyse Return

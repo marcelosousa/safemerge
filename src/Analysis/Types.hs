@@ -23,6 +23,11 @@ import qualified Debug.Trace as T
 wiz_print :: String -> EnvOp ()
 wiz_print = liftIO . putStrLn 
 
+wiz_break :: EnvOp ()
+wiz_break = do
+ _ <- liftIO $ getChar
+ return ()
+
 printSSAElem :: Map Int (AST, Sort, Int) -> Z3 String
 printSSAElem m = do 
   strs <- mapM (\(i,(ast,ty,k)) -> do
