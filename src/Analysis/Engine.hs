@@ -43,6 +43,10 @@ implies phi psi = do
   assert formula 
   res <- check
   pop 1
+  -- phi_str <- astToString phi
+  -- psi_str <- astToString psi
+  -- liftIO $ putStrLn $ "implies:\n" ++ phi_str ++ "\n" ++ psi_str ++ "\nresult: = " ++ (show $ res == Unsat)
+  -- _ <- liftIO $ getChar
   case res of
     Unsat -> return True
     _     -> return False 
@@ -144,9 +148,9 @@ initial_precond inputs =  do
   else mkAnd _eqs
 
 -- computes a triangle of equalities
-comb :: [a] -> [(a,a)]
+comb :: [(i,n,a)] -> [(i,n,n,a,a)]
 comb [] = []
-comb (x:xs) = [(x,y) | y <- xs] ++ comb xs
+comb ((i,n,x):xs) = [(i,n,m,x,y) | (_,m,y) <- xs] ++ comb xs
 
 lin :: [a] -> [(a,a)]
 lin [] = []

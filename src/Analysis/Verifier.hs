@@ -204,7 +204,7 @@ analyser stmts = do
     lift $ local $ helper _pre _post
   (bstmt:rest) -> do
     applyDepCheck <- checkDep  
-    if False -- (every $ getAnn bstmt) && applyDepCheck 
+    if (every $ getAnn bstmt) && applyDepCheck 
     then -- only apply dependence analysis if all variables are equal is all versions
       case next_block stmts of
       (Left b, r) -> do
@@ -222,12 +222,13 @@ analyser stmts = do
     else analyser_bstmt bstmt rest 
 
 checkDep :: EnvOp Bool
-checkDep = do
-  env@Env{..} <- get
-  preds       <- get_predicates _ssamap 
-  tmp_post    <- lift $ if null preds then mkTrue else mkAnd preds 
-  (r,_)       <- lift $ local $ helper _pre tmp_post
-  return (r == Unsat) 
+checkDep = return False 
+-- do
+--  env@Env{..} <- get
+--  preds       <- get_predicates _ssamap 
+--  tmp_post    <- lift $ if null preds then mkTrue else mkAnd preds 
+--  (r,_)       <- lift $ local $ helper _pre tmp_post
+--  return (r == Unsat) 
 
 -- optimised a block that is shared by all variants
 --  i. generate the CFG for the block b
@@ -383,12 +384,12 @@ analyse_loop conds body rest = do
  -- use equality predicates between variables in the assignment map
  all_preds   <- get_predicates _ssamap 
  -- only consider filters consistent with the pre-condition 
- init_preds  <- lift $ filterM (\p -> _pre `implies` p) all_preds
+ init_preds  <- lift $ filterM (\(i,m,n,p) -> _pre `implies` p) all_preds
  -- encode the condition of the loop
  cond_ast    <- mapM (\(pid,cond) -> enc_exp_inner pid cond) conds >>= lift . mkAnd
  -- going to call houdini
  cond_str    <- lift $ astToString cond_ast
- preds_str   <- lift $ mapM astToString init_preds 
+ preds_str   <- lift $ mapM (\(i,m,n,e) -> astToString e >>= \estr -> return $ show (i,m,n,estr)) init_preds 
  wiz_print $ "analyse_loop: calling houdini with following inputs\npredicate set: " 
           ++ show preds_str ++ "\nloop condition:\n" ++ cond_str 
  wiz_break
@@ -396,10 +397,11 @@ analyse_loop conds body rest = do
  analyser rest
 
 -- houdini: fixpoint over set of predicates to compute inductive invariant
-houdini :: [AST] -> AST -> AnnStmt -> EnvOp ()
-houdini preds cond body = do 
+houdini :: [(Ident,Int,Int,AST)] -> AST -> AnnStmt -> EnvOp ()
+houdini ann_preds cond body = do 
   i_env  <- get
-  let pre = _pre i_env 
+  let pre   = _pre i_env 
+      preds = map (\(a,b,c,d) -> d) ann_preds 
   -- candidate invariant is simply the conjunction of the current set of predicates
   inv    <- lift $ if null preds then mkTrue else mkAnd preds
   invStr <- lift $ astToString inv
@@ -413,10 +415,13 @@ houdini preds cond body = do
   let post = _pre nenv
   post_str <- lift $ astToString post 
   -- get the preds that are implied by the post
-  sat_preds <- lift $ filterM (\p -> post `implies` p) preds
-  -- the predicates not implied by the post is computed with set difference
-  let not_preds = preds \\ sat_preds
-  unsat_str <- lift $ mapM astToString not_preds
+  -- 1. gather the updated predicates of the assignments
+  new_preds <- mapM update_predicate ann_preds 
+  sat_preds <- lift $ filterM (\(i,m,n,p) -> post `implies` p) new_preds
+  -- the "original" predicates not implied by the post
+  let old_sat_preds = map (to_old_predicate ann_preds) sat_preds 
+      not_preds = ann_preds \\ old_sat_preds
+  unsat_str <- lift $ mapM (\(i,m,n,e) -> astToString e >>= \estr -> return $ show (i,m,n,estr)) not_preds 
   wiz_print $ "houdini: candidate invariant:\n" ++ invStr ++ "\nrelational post:\n" ++ post_str
            ++ "\npredicates not satisfied by relational post:\n" ++ show unsat_str 
   wiz_break
@@ -432,16 +437,30 @@ houdini preds cond body = do
   -- we are not done unless preds == [] where we just default to True
   else if null preds 
        then error $ "houdini: unable to compute inductive fixpoint" 
-       else houdini sat_preds cond body
+       else houdini old_sat_preds cond body
 
-get_predicates :: SSAMap -> EnvOp [AST]
+to_old_predicate :: [(Ident,Int,Int,AST)] -> (Ident,Int,Int,AST) -> (Ident,Int,Int,AST)
+to_old_predicate preds inp@(i,m,n,a) =
+  case find (\(i',m',n',a') -> (i,m,n) == (i',m',n')) preds of
+    Nothing -> error $ "to_old_predicate: cant find element " ++ show (i,m,n)
+    Just (i',m',n',a') -> (i',m',n',a')
+
+update_predicate :: (Ident,Int,Int,AST) -> EnvOp (Ident,Int,Int,AST)
+update_predicate (ident,m,n,_) = do
+  env@Env{..} <- get
+  let a_m = get_ast "update_predicates" m ident _ssamap
+      a_n = get_ast "update_predicates" n ident _ssamap
+  eq <- lift $ mkEq a_m a_n
+  return (ident,m,n,eq)
+ 
+get_predicates :: SSAMap -> EnvOp [(Ident,Int,Int,AST)]
 get_predicates m = do
   let pairs = 
         concat $ M.mapWithKey (\k m' -> 
           if k == Ident "ret" || k == Ident "null" 
           then []
-          else comb $ map (\(a,b,c) -> a) $ M.elems m') m  
-  lift $ mapM (\(a,b) -> mkEq a b) pairs
+          else comb $ map (\(n,(a,b,c)) -> (k,n,a)) $ M.toList m') m  
+  lift $ mapM (\(i,m,n,a,b) -> mkEq a b >>= \eq -> return (i,m,n,eq)) pairs
   
 -- Analyse Return
 analyse_ret :: [Pid] -> Maybe Exp -> ProdProgram -> EnvOp (Result, Maybe Model)
@@ -449,7 +468,12 @@ analyse_ret pids _exp pro = do
   mapM_ (\p -> ret_inner p _exp) pids
   env@Env{..} <- get
   if _numret == 4
-  then lift $ local $ helper _pre _post
+  then do
+    preast <- lift $ astToString _pre
+    posast <- lift $ astToString _post
+    wiz_print $ "return:\npre-condition:\n" ++ preast ++ "\npost-condition:\n" ++ posast
+    wiz_break
+    lift $ local $ helper _pre _post
   else analyser pro 
 
 ret_inner :: Pid -> Maybe Exp -> EnvOp ()
