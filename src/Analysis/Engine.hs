@@ -5,6 +5,7 @@
 -------------------------------------------------------------------------------
 module Analysis.Engine where
 
+import Analysis.API
 import Analysis.Java.ClassInfo
 import Analysis.Java.Flow
 import Analysis.Dependence
@@ -19,10 +20,6 @@ import System.IO.Unsafe
 import Util
 import Z3.Monad hiding (Params)
 import qualified Data.Map as M
-
-
--- Performs a SAT-query.
-checkSAT phi = local (assert phi >> check) 
 
 -- |= pre => post 
 -- UNSAT (not (pre => post))  
@@ -51,15 +48,32 @@ implies phi psi = do
     Unsat -> return True
     _     -> return False 
 
--- z3_gen_inout :: generates the input and output vars
-z3_gen_inout :: ([MemberSig], [MemberSig]) -> Z3 (Params, [[(AST,Sort)]], [[(AST,Sort)]])
-z3_gen_inout (params, fields) = do
+-- encodeInputs :: generates the initial SSA map, pre-condition and the post-condition 
+encodeInputs :: [MemberSig] -> Z3 (SSAMap,AST)
+encodeInputs inp = 
+ (ssa,eqs) <- foldM encodeInput (M.empty,[]) inp 
+ pre <- if null eqs then mkTrue else mkAnd eqs
+ return (ssa,pre)
+
+encodeInput :: (SSAMap,[AST]) -> MemberSig -> Z3 (SSAMap,AST)
+encodeInput (ssa,pre) (id,tys) = do 
+ let arity = 4
+     sigs  = map (\(id,tys) -> (toString id,check_types tys)) inp 
+     ids   = map fst sigs 
+insertSSAVar
+ (ssa,pre) <- encodeInputs $ params ++ fields
+ encodeFields fields 
+
+
+{-
+encodeInputs :: ([MemberSig],[MemberSig]) -> Z3 (Params,[[(AST,Sort)]],[[(AST,Sort)]])
+encodeInputs (params,fields) = do
   -- encode fields
   let arity = 4
       fieldsSig = map (\(id,tys) -> (toString id,check_types tys)) fields
       fieldsId  = map fst fieldsSig
       inFields  = map (\(s,tys) -> map (\ar -> (s ++ "_" ++ show ar,tys)) [1..arity]) fieldsSig
-      outFields = map (\(s,tys) -> map (\ar -> ("ret_"++s++show ar,tys))  [1..arity]) fieldsSig
+      outFields = map (\(s,tys) -> map (\ar -> ("ret_"++s++ show ar,tys)) [1..arity]) fieldsSig
   inFieldsZ3  <- mapM (mapM enc_var) inFields 
   outFieldsZ3 <- mapM (mapM enc_var) outFields 
   let pFieldsIn = foldl (\r (k,v) -> M.insert (Ident k) v r) M.empty $ zip fieldsId inFieldsZ3
@@ -79,10 +93,10 @@ z3_gen_inout (params, fields) = do
   return (pInOut, inFieldsZ3 ++ inZ3, outZ3:outFieldsZ3)
  where
    check_types :: [Type] -> Type
-   check_types [] = error "z3_gen_inout: no type for the variable"
+   check_types [] = error "encodeInputs: no type for the variable"
    check_types [t] = t
    check_types _  = error "z3_gen:inout: more than one type for the variable" 
-
+-}
 -- encode a variable
 enc_var :: (String, Type) -> Z3 (AST,Sort)
 enc_var (id,ty) = do
@@ -129,6 +143,8 @@ initial_FuncMap = do
 -- Generates the initial SSA Map for the fields and the parameters
 initial_SSAMap :: Params -> Z3 SSAMap
 initial_SSAMap params = do
+  undefined
+{-
   iSort <- mkIntSort
   fn <- mkFreshFuncDecl "null" [] iSort
   ast <- mkApp fn []
@@ -136,6 +152,7 @@ initial_SSAMap params = do
       fn l = zip [1..4] $ map (\(e,s) -> (e,s,0)) l 
       ps = M.map (\a -> M.fromList $ fn a) params
   return $ M.union i ps
+-}
 
 -- Verification pre-condition
 initial_precond :: [[(AST,Sort)]] -> Z3 AST 
@@ -146,19 +163,6 @@ initial_precond inputs =  do
   if null _eqs
   then mkTrue
   else mkAnd _eqs
-
--- computes a triangle of equalities
-comb :: [(i,n,a)] -> [(i,n,n,a,a)]
-comb [] = []
-comb ((i,n,x):xs) = [(i,n,m,x,y) | (_,m,y) <- xs] ++ comb xs
-
-lin :: [a] -> [(a,a)]
-lin [] = []
-lin (x:xs) = lin' x xs 
- where
-  lin' :: a -> [a] -> [(a,a)]
-  lin' l [] = []
-  lin' l (x:xs) = (l,x):lin' x xs
 
 postcond :: [[(AST,Sort)]] -> Z3 AST
 postcond outs = do
@@ -217,6 +221,8 @@ enc_ident pids str i sort =
 -- encode the first variable definition 
 enc_new_var :: [Int] -> Sort -> Int -> VarDecl -> EnvOp ()
 enc_new_var pids sort i (VarDecl varid mvarinit) = do
+  undefined
+{-
   env@Env{..} <- get
   (ident, idAsts) <- lift $ 
     case varid of
@@ -236,36 +242,43 @@ enc_new_var pids sort i (VarDecl varid mvarinit) = do
       npre <- lift $ mkAnd (_pre:eqIdExps)
       updatePre npre 
     Just _ -> error "enc_new_var: not supported"
+-}
 
 -- enc_exp: encodes an expression for a version 
-enc_exp :: [Int] -> Exp -> EnvOp [AST]
-enc_exp pids expr = mapM (\p -> enc_exp_inner p expr) pids
+encodeExp :: [Int] -> Exp -> EnvOp [AST]
+encodeExp pids expr = mapM (\p -> enc_exp_inner p expr) pids
 
 -- | Encode an expression for a version 
 --   (ast,sort,count)pre-condition: pid != 0 
-enc_exp_inner :: Int -> Exp -> EnvOp AST
-enc_exp_inner p expr = do -- trace ("enc_exp_inner: " ++ show expr) $ do
+enc_exp_inner :: VId -> Exp -> EnvOp AST
+enc_exp_inner vId expr = do 
+ env@Env{..} <- get
  case expr of
   Lit lit -> lift $ enc_literal lit 
-  ExpName name -> enc_name p (toIdent name) []
+  ExpName name -> do
+    let ident = toIdent name
+        asts  = getASTSSAMap "enc_exp_inner" vId ident _e_ssamap
+    return $ head asts
   BinOp lhsE op rhsE -> do
-    lhs <- enc_exp_inner p lhsE
-    rhs <- enc_exp_inner p rhsE
+    lhs <- enc_exp_inner vId lhsE
+    rhs <- enc_exp_inner vId rhsE
     lift $ enc_binop op lhs rhs
   PreMinus nexpr -> do 
-    nexprEnc <- enc_exp_inner p nexpr
+    nexprEnc <- enc_exp_inner vId nexpr
     lift $ mkUnaryMinus nexprEnc
   Cond cond _then _else -> do
-    condEnc <- enc_exp_inner p cond
-    _thenEnc <- enc_exp_inner p _then
-    _elseEnc <- enc_exp_inner p _else
+    condEnc  <- enc_exp_inner vId cond
+    _thenEnc <- enc_exp_inner vId _then
+    _elseEnc <- enc_exp_inner vId _else
     lift $ mkIte condEnc _thenEnc _elseEnc        
   PreNot nexpr -> do
-    nexprEnc <- enc_exp_inner p nexpr
+    nexprEnc <- enc_exp_inner vId nexpr
     lift $ mkNot nexprEnc
-  ArrayAccess ai -> enc_array_access p ai
-  FieldAccess fa -> enc_field_access p fa
-  MethodInv m -> enc_meth_inv p m
+  ArrayAccess ai -> enc_array_access vId ai
+  FieldAccess fa -> do
+    asts <- enc_field_access vId fa
+    return $ head asts
+  MethodInv m -> enc_meth_inv vId m
   _ -> error $  "enc_exp_inner: " ++ show expr
 
 enc_meth_inv :: Int -> MethodInvocation -> EnvOp AST
@@ -294,16 +307,12 @@ enc_array_access p exp@(ArrayIndex e args) = do
       lift $ mkSelect b j
     _ -> error $ "enc_array_access: " ++ show exp
 
-enc_field_access :: Int -> FieldAccess -> EnvOp AST
-enc_field_access p exp = do
+enc_field_access :: VId -> FieldAccess -> EnvOp [AST]
+enc_field_access vId exp = do
   case exp of
     PrimaryFieldAccess This (ident@(Ident str)) -> do
       env@Env{..} <- get
-      case M.lookup ident _ssamap of
-        Nothing -> error $ "enc_field_access: " ++ show exp 
-        Just l -> case M.lookup p l of
-          Nothing -> error $ "enc_field_access: " ++ show exp 
-          Just (ast,_,_) -> return ast 
+      return $ getASTSSAMap "encFieldAccess" vId ident _e_ssamap
     _ -> error $ "enc_field_access: " ++ show exp
     
 enc_literal :: Literal -> Z3 AST
@@ -317,34 +326,23 @@ enc_literal lit =
 --    Just (ast, _, _) -> return ast
     _ -> error "processLit: not supported"
 
--- can the pid be 0?
-enc_name :: Int -> Ident -> [AST] -> EnvOp AST
-enc_name 0 _ _ = error $ "enc_name: pid = 0? debug"
-enc_name pid id@(Ident ident) [] = do
-  env@Env{..} <- get
-  case M.lookup id _ssamap of
-    Nothing -> error $ "enc_name: id not in scope " ++ ident ++ " " ++ show (M.keys _ssamap) 
-    Just l -> case M.lookup pid l of
-        Nothing -> error "enc_name: can this happen?" 
-        Just (ast,_,_) -> return ast
-enc_name pid ident args = error "enc_name: not supported yet"
 
 -- | Hooks the dependence analysis 
 enc_meth :: Int -> Ident -> [AST] -> EnvOp AST
 enc_meth pid id@(Ident ident) args = do
   env@Env{..} <- get
   let arity = length args
-      class_sum = _classes !! (pid - 1) 
+      class_sum = _e_classes !! (pid - 1) 
       meths = findMethodGen id arity class_sum
       cfgs = map computeGraphMember meths
       deps = foldr (\cfg res -> M.union res $ blockDep class_sum cfg) M.empty cfgs
-  case M.lookup (id,arity) _fnmap of
+  case M.lookup (id,arity) _e_fnmap of
     Nothing -> do
       sorts <- lift $ mapM getSort args 
       iSort <- lift $ mkIntSort
       fn <- lift $ mkFreshFuncDecl ident sorts iSort
       ast <- lift $ mkApp fn args
-      let fnmap = M.insert (id,arity) (fn,deps) _fnmap 
+      let fnmap = M.insert (id,arity) (fn,deps) _e_fnmap 
       updateFunctMap fnmap 
       return ast 
     Just (ast,dep) -> lift $ mkApp ast args 
@@ -356,7 +354,7 @@ enc_meth_special pid id@(Ident ident) sort args = do
   sorts <- lift $ mapM getSort args 
   fn <- lift $ mkFreshFuncDecl ident sorts sort 
   ast <- lift $ mkApp fn args
-  let fnmap = M.insert (id,arity) (fn,M.empty) _fnmap 
+  let fnmap = M.insert (id,arity) (fn,M.empty) _e_fnmap 
   updateFunctMap fnmap 
   return ast 
 
@@ -442,3 +440,28 @@ replaceVariable a fnB ast = do
     Z3_FUNC_DECL_AST  -> return ast
     Z3_UNKNOWN_AST    -> return ast
 
+-- Analyse Post De/Increment
+-- @NOTE: April'17: These expressions were optimised?
+post_op :: [VId] -> Exp -> Exp -> Op -> String -> EnvOp ()
+post_op vIds _exp lhs op str = mapM_ (\p -> post_op_inner p _exp lhs op str) vIds
+ where
+  post_op_inner :: VId -> Exp -> Exp -> Op -> String -> EnvOp ()
+  post_op_inner vId _exp lhs op str = do
+   rhsAst <- enc_exp_inner vId (BinOp lhs op (Lit $ Int 1))
+   env@Env{..} <- get
+   case lhs of
+    ExpName (Name [ident@(Ident str)]) -> do
+     let var@SSAVar{..} = getVarSSAMap "post_op_inner" vId ident _e_ssamap
+         cstr = str ++ "_" ++ show vId ++ "_" ++ show _v_cnt
+         ni   = _v_cnt+1
+         nstr = str ++ "_" ++ show vId ++ "_" ++ show ni
+     sym <- lift $ mkStringSymbol nstr
+     var <- lift $ mkFreshFuncDecl nstr [] _v_typ
+     astVar <- lift $ mkApp var []
+     let nvar   = SSAVar astVar _v_typ ni _v_mod 
+         ssamap = insertSSAVar vId ident nvar _e_ssamap
+     ass <- lift $ processAssign astVar EqualA rhsAst _v_ast 
+     pre <- lift $ mkAnd [_e_pre, ass]
+     updatePre pre
+     updateSSAMap ssamap
+    _ -> error $ str ++ show _exp ++ " not supported"

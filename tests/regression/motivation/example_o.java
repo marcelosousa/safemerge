@@ -25,7 +25,7 @@ class Example {
        time = 2;
      }
    }
-
+ 
    return time;
  }
 }

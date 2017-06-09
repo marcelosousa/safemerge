@@ -7,84 +7,47 @@
 -------------------------------------------------------------------------------
 module Analysis.Types where
 
-import Analysis.Java.AST
 import Analysis.Java.ClassInfo
 import Analysis.Dependence
-import Control.Monad.ST
 import Control.Monad.State.Strict hiding (join)
 import Data.Map (Map)
-import Data.List
 import Edit.Types
 import Language.Java.Syntax
 import Z3.Monad hiding (Params)
-import qualified Data.Map as M
-import qualified Debug.Trace as T
-
-wiz_print :: String -> EnvOp ()
-wiz_print = liftIO . putStrLn 
-
-wiz_break :: EnvOp ()
-wiz_break = do
- _ <- liftIO $ getChar
- return ()
-
-printSSAElem :: Map Int (AST, Sort, Int) -> Z3 String
-printSSAElem m = do 
-  strs <- mapM (\(i,(ast,ty,k)) -> do
-            ast_str <- astToString ast
-            ty_str  <- sortToString ty
-            return $ "\t" ++ show i ++ "_" ++ show k ++ " ~> (" ++ ast_str ++ ","++ty_str++")"
-          ) $ M.toList m
-  return $ unlines strs
-
-printSSA :: SSAMap -> EnvOp ()
-printSSA ssa = do 
-  strs <- mapM (\(k,m) -> do 
-    inner <- lift $ printSSAElem m
-    let h = show k ++ " ->\n"
-    return $ h ++ inner) $ M.toList ssa 
-  let str = unlines strs
-  liftIO $ putStrLn $ "SSA map:"
-  liftIO $ putStrLn str 
 
 -- receives the parameters and returns to specify the pre and post-condition
 -- need to use maps for the parameters, returns, fields
 type Params = Map Ident [(AST,Sort)]
-type Res  = [AST]
+type Res    = [AST]
 type Fields = Map Ident FuncDecl
-type Prop = (Params, Res, Fields) -> Z3 (AST, AST)
+type Prop   = (Params, Res, Fields) -> Z3 (AST, AST)
+-- VId - Version Identifier
+type VId    = Int 
 
 -- SSA map to build a simple SSA representation on the fly
--- For each identifier, we need a copy per version
-type SSAVar = Map Int (AST, Sort, Int)
-type SSAMap = Map Ident SSAVar 
+-- | Model of a SSA Variable
+type SSAVarModel = Map String (AST,Sort,Int) 
 
-printSSAMap ::SSAMap -> String
-printSSAMap = M.foldWithKey (\i m r -> show i ++ " -> " ++ show m ++ "\n" ++ r) "" 
+-- | The SSA Variable type
+data SSAVar = SSAVar 
+  {
+    _v_ast :: AST
+  , _v_typ :: Sort
+  , _v_cnt :: Int
+  -- modelling variables
+  , _v_mod :: SSAVarModel 
+  }
+  deriving (Eq,Ord,Show)
 
-update_ssamap :: Int -> Ident -> (AST, Sort, Int) -> SSAMap -> SSAMap
-update_ssamap pid ident el ssamap =
-  case M.lookup ident ssamap of
-    Nothing -> M.insert ident (M.singleton pid el) ssamap
-    Just l  -> let l' = M.insert pid el l
-               in M.insert ident l' ssamap
+-- | The copy per version is just a map from version_id to variable 
+type SSAVer = Map VId   SSAVar 
 
-get_ast :: String -> Int -> Ident -> SSAMap -> AST
-get_ast err pid ident ssamap = 
-  case M.lookup ident ssamap of
-    Nothing -> error $ "get_ast: " ++ err
-    Just l  -> case M.lookup pid l of
-      Nothing -> error $ "get_ast pid: " ++ err
-      Just (a,b,c) -> a
-
-replace :: Int -> a -> [a] -> [a]
-replace 0 a [] = [a] 
-replace 0 a l  = a:(tail l)
-replace i a [] = error "replace ..."
-replace i a (h:hs) = h:(replace (i-1) a hs)
+-- | Finally,for each identifier, we need a copy per version
+type SSAMap = Map Ident SSAVer 
 
 -- We need the assign map to understand the value of the loop counter
-type AssignMap = Map Ident Exp
+-- This is not used at the moment
+-- type AssignMap = Map Ident Exp
 
 -- Function Map: Maps an abstract method signature (ident, arity) 
 -- to the AST representation (shared by all versions) and the 
@@ -93,168 +56,15 @@ type FunctMap = Map AbsMethodSig (FuncDecl, DepMap)
 
 data Env = Env
   { 
-    _ssamap  :: SSAMap
-  , _fnmap   :: FunctMap  -- function map
-  , _pre     :: AST
-  , _post    :: AST
-  , _invpost :: AST
-  , _classes :: [ClassSum]
-  , _edits   :: [AnnEdit]
-  , _debug   :: Bool
-  , _numret  :: Int
-  , _pid     :: [Int] 
-  , _anonym  :: Int       -- The number of anonymous functions
+    _e_ssamap  :: SSAMap
+  , _e_fnmap   :: FunctMap  -- function map
+  , _e_pre     :: AST
+  , _e_classes :: [ClassSum]
+  , _e_edits   :: [AnnEdit]
+  , _e_debug   :: Bool
+  , _e_numret  :: Int
+  , _e_vids    :: [VId] 
+  , _e_anonym  :: Int       -- The number of anonymous functions
   }
 
 type EnvOp a = StateT Env Z3 a
-
--- | Joinable fields are
---   _ssamap, functmap, pre, edits, numret, anonym
---   Pseudo code
---   1. Retrieve the part of the environments which have been modified
---   2. 
-
--- This function does the heavylifting in the join of the ssamap
---   It receives the original environemtn, one identifier that is 
---   shared in the new 2 environments and checks whether their 
---   keys is the same in which case it generates Nothing
---       otherwise it reports which versions need to updated
-ssamap_mod :: SSAMap -> Ident -> SSAVar -> SSAVar -> [(Int,Int,Sort)] 
-ssamap_mod orig m e1 e2 = 
-  case M.lookup m orig of
-    Nothing -> error $ "ssamap_mod: scoping issue for " ++ show m 
-    Just v  -> 
-      if e1 == v && e2 == v
-      then [] 
-      else M.foldWithKey (ssavar_mod e1 e2) [] v 
-
-ssavar_mod :: SSAVar -> SSAVar -> Int -> (AST, Sort, Int) -> [(Int,Int,Sort)] -> [(Int,Int,Sort)]
-ssavar_mod e1 e2 v (_,t,n) rest = 
-  case (M.lookup v e1, M.lookup v e2) of
-    (Just (_,_,n1), Just (_,_,n2)) ->
-      if n1 == n && n2 == n
-      then rest
-      else (v,maximum [n,n1,n2] + 1,t):rest 
-    _ -> error $ "ssavar_mod: version " ++ show v
-
-enc_ident_single :: Int -> String -> Int -> Sort -> Z3 AST
-enc_ident_single j str i sort = do 
-  let nstr = str ++ "_" ++ show j ++ "_" ++ show i
-  sym <- mkStringSymbol nstr
-  ast <- mkVar sym sort
-  return ast
-
-to_ssavar :: SSAMap -> (Ident,[(Int,Int,Sort)]) -> EnvOp SSAMap 
-to_ssavar r (Ident str,[]) = return r
-to_ssavar r (Ident str,xs) = do
-  el <- lift $ foldM (\var (v,i,ty) -> do
-           ast <- enc_ident_single v str i ty
-           return $ M.insert v (ast,ty,i) var) M.empty xs 
-  return $ M.insert (Ident str) el r
-   
-partial_ssamap :: Map Ident [(Int,Int,Sort)] -> EnvOp SSAMap   
-partial_ssamap m = do 
-  let m' = M.toList m 
-  foldM to_ssavar M.empty m'
-
-join_pre :: SSAMap -> SSAMap -> SSAMap -> AST -> AST -> EnvOp AST
-join_pre nmap m1 m2 pre1 pre2 = do
-  let nm1  = M.intersectionWith (M.intersectionWith (\(a1,_,_) (a2,_,_) -> (a1,a2))) nmap m1 
-      eqs1 = concatMap M.elems $  M.elems nm1
-  r1 <- lift $ mapM (\(a,b) -> mkEq a b) eqs1
-  fpre1 <- lift $ mkAnd (pre1:r1)  
-  let nm2  = M.intersectionWith (M.intersectionWith (\(a1,_,_) (a2,_,_) -> (a1,a2))) nmap m2 
-      eqs2 = concatMap M.elems $  M.elems nm2
-  r2 <- lift $ mapM (\(a,b) -> mkEq a b) eqs2
-  fpre2 <- lift $ mkAnd (pre2:r2)  
-  lift $ mkOr [fpre1,fpre2] 
-
-join_env :: Env -> Env -> Env -> EnvOp Env
-join_env orig e1 e2 = do
-  let ssa_orig = _ssamap orig
-      ssa_e1   = _ssamap e1
-      ssa_e2   = _ssamap e2
-      vs = M.intersectionWithKey (ssamap_mod ssa_orig) ssa_e1 ssa_e2 
-  new_ssa <- partial_ssamap vs 
-  pre     <- join_pre new_ssa ssa_e1 ssa_e2 (_pre e1) (_pre e2)
-  let ssa     = M.unionsWith M.union [new_ssa,ssa_e1,ssa_e2] 
-      fnm     = _fnmap   e1 `M.union` _fnmap  e2
-      post    = _post    e2
-      invpost = _invpost e2
-      classes = _classes e2
-      eds     = _edits   e2 
-      debug   = _debug   e2
-      numret  = if _numret e1 /= _numret e2 then error "join: numret" else _numret e1
-      pid     = _pid     e2
-      anonym  = _anonym  e1 `max` _anonym e2
-  wiz_print "join_env: original " 
-  printSSA ssa_orig
-  wiz_print "join_env: then branch" 
-  printSSA ssa_e1 
-  wiz_print "join_env: else branch" 
-  printSSA ssa_e2 
-  wiz_print "join_env: result"
-  printSSA ssa
-  return $ Env ssa fnm pre post invpost classes eds debug numret pid anonym 
-
-_default = (Unsat, Nothing)
-
-popEdits :: EnvOp [AnnBlockStmt]
-popEdits = do
-  s@Env{..} <- get
-  let (res,edits) = unzip $ map (\e -> (head e, tail e)) _edits 
-  put s { _edits = edits }
-  return res 
-
--- @ update the pid
-updatePid :: [Int] -> EnvOp ()
-updatePid pid = do
-  s@Env{..} <- get
-  put s{ _pid = pid }
-
--- @ update the pre-condition
-updatePre :: AST -> EnvOp ()
-updatePre pre = do
-  s@Env{..} <- get
-  put s{ _pre = pre }
-
--- @ update the pre-condition
-updatePost :: AST -> EnvOp ()
-updatePost post = do
-  s@Env{..} <- get
-  put s{ _post = post}
-
--- @ update the edits 
-updateEdits :: [AnnEdit] -> EnvOp ()
-updateEdits edits = do
-  s@Env{..} <- get
-  put s{ _edits = edits }
-
-updateInvPost :: AST -> EnvOp ()
-updateInvPost invpost = do
-  s@Env{..} <- get
-  put s{ _invpost = invpost }
-
-updateNumRet :: EnvOp ()
-updateNumRet = do
-  s@Env{..} <- get
-  let numret = _numret + 1
-  put s{ _numret = numret }
-  
--- @ update the ssa map
-updateSSAMap :: SSAMap -> EnvOp ()
-updateSSAMap ssamap = do
-  s@Env{..} <- get
-  put s{ _ssamap = ssamap}
-
-updateFunctMap :: FunctMap -> EnvOp ()
-updateFunctMap fnmap = do
-  s@Env{..} <- get
-  put s{ _fnmap = fnmap }
-
-incAnonym :: EnvOp Int
-incAnonym = do
-  s@Env{..} <- get
-  let anonym = _anonym 
-  put s{ _anonym =  anonym + 1}
-  return anonym

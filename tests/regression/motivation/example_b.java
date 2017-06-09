@@ -22,7 +22,7 @@ class Example {
        time = 1;
        brk  = 1;
      } else {
-       time = 2;
+       time = 3;
      }
    }
 
