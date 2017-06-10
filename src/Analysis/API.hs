@@ -199,13 +199,16 @@ updateSSAMap ssamap = do
 --   Since there might be several auxiliary variables related
 --   to an identifier/variable, we need to return a list 
 --   where at the head we have the AST of the main variable
+getASTSSAVar :: SSAVar -> [AST]
+getASTSSAVar v = (_v_ast v):(map fst3 $ M.elems $ _v_mod v)
+
 getASTSSAMap :: String -> VId -> Ident -> SSAMap -> [AST]
 getASTSSAMap err vid ident ssamap = 
   case M.lookup ident ssamap of
     Nothing -> error $ "getASTSSAMap: " ++ err
     Just l  -> case M.lookup vid l of
       Nothing -> error $ "getASTSSAMap vid: " ++ err
-      Just v  -> (_v_ast v):(map fst3 $ M.elems $ _v_mod v)
+      Just v  -> getASTSSAVar v
 
 getVarSSAMap :: String -> VId -> Ident -> SSAMap -> SSAVar
 getVarSSAMap err vid ident ssamap = 

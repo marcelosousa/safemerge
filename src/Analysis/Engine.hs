@@ -12,6 +12,7 @@ import Analysis.Dependence
 import Analysis.Types
 import Analysis.Util
 import Control.Monad.State.Strict
+import Data.List
 import Data.Map (Map)
 import Data.Maybe
 import Language.Java.Pretty
@@ -48,55 +49,128 @@ implies phi psi = do
     Unsat -> return True
     _     -> return False 
 
--- encodeInputs :: generates the initial SSA map, pre-condition and the post-condition 
+-- encodeInputs :: generates the initial SSA map and pre-condition 
 encodeInputs :: [MemberSig] -> Z3 (SSAMap,AST)
-encodeInputs inp = 
+encodeInputs inp = do 
  (ssa,eqs) <- foldM encodeInput (M.empty,[]) inp 
- pre <- if null eqs then mkTrue else mkAnd eqs
+ pre       <- if null eqs then mkTrue else mkAnd eqs
  return (ssa,pre)
 
-encodeInput :: (SSAMap,[AST]) -> MemberSig -> Z3 (SSAMap,AST)
-encodeInput (ssa,pre) (id,tys) = do 
- let arity = 4
-     sigs  = map (\(id,tys) -> (toString id,check_types tys)) inp 
-     ids   = map fst sigs 
-insertSSAVar
- (ssa,pre) <- encodeInputs $ params ++ fields
- encodeFields fields 
+encodeInput :: (SSAMap,[AST]) -> MemberSig -> Z3 (SSAMap,[AST])
+encodeInput (ssa,pre) sig = do 
+ (nssa,matrix) <- foldM (encodeIVar sig) (ssa,[]) [1..4] 
+ let tmatrix = transpose matrix
+ pres <- foldM (\k row -> mapM (uncurry mkEq) (lin row) >>= \eqs -> return (k ++ eqs)) [] tmatrix
+ return (nssa,pre++pres)
 
+encodeIVar :: MemberSig -> (SSAMap,[[AST]]) -> VId -> Z3 (SSAMap,[[AST]])
+encodeIVar sig@(ident,tys) (ssa,matrix) vId = do 
+ var <- encodeVariable vId sig 
+ let row     = getASTSSAVar var
+     nssa    = insertSSAVar vId ident var ssa 
+     nmatrix = row:matrix
+ return (nssa,nmatrix)
 
-{-
-encodeInputs :: ([MemberSig],[MemberSig]) -> Z3 (Params,[[(AST,Sort)]],[[(AST,Sort)]])
-encodeInputs (params,fields) = do
-  -- encode fields
-  let arity = 4
-      fieldsSig = map (\(id,tys) -> (toString id,check_types tys)) fields
-      fieldsId  = map fst fieldsSig
-      inFields  = map (\(s,tys) -> map (\ar -> (s ++ "_" ++ show ar,tys)) [1..arity]) fieldsSig
-      outFields = map (\(s,tys) -> map (\ar -> ("ret_"++s++ show ar,tys)) [1..arity]) fieldsSig
-  inFieldsZ3  <- mapM (mapM enc_var) inFields 
-  outFieldsZ3 <- mapM (mapM enc_var) outFields 
-  let pFieldsIn = foldl (\r (k,v) -> M.insert (Ident k) v r) M.empty $ zip fieldsId inFieldsZ3
-      pFields   = foldl (\r (k,v) -> M.insert (Ident $ "ret_" ++ k) v r) pFieldsIn $ zip fieldsId outFieldsZ3 
-  -- encode input parameters 
-      inputsSig = map (\(id,tys) -> (toString id,check_types tys)) params 
-      inputsId  = map fst inputsSig 
-      inputs    = map (\(s,tys) -> map (\ar -> (s ++ "_" ++ show ar ++ "_0",tys)) [1..arity]) inputsSig 
-  inZ3  <- mapM (mapM enc_var) inputs 
-  -- encode return variable with default type int
-  intSort <- mkIntSort
-  let returns = map (\ar -> "ret" ++ show ar) [1..arity] 
-  outZ3 <- mapM (\out -> mkFreshConst out intSort >>= \ast -> return (ast, intSort)) returns 
-  -- tie up 
-  let pInput = foldl (\r (k,v) -> M.insert (Ident k) v r) pFields $ zip inputsId inZ3
-      pInOut = M.insert (Ident "ret") outZ3 pInput
-  return (pInOut, inFieldsZ3 ++ inZ3, outZ3:outFieldsZ3)
- where
-   check_types :: [Type] -> Type
-   check_types [] = error "encodeInputs: no type for the variable"
-   check_types [t] = t
-   check_types _  = error "z3_gen:inout: more than one type for the variable" 
--}
+encodeVariable :: VId -> MemberSig -> Z3 SSAVar
+encodeVariable vId (Ident id,[ty]) = do 
+ let name = id ++ "_" ++ show vId ++ "_0"
+ (sort,model) <- encodeType vId id ty
+ ast <- mkFreshConst name sort
+ let var = SSAVar ast sort 0 model
+ return var
+encodeVariable vId inv = error $ "encodeVariable: invalid input " ++ show inv
+
+-- encode post-condition
+encodePost :: SSAMap -> [MemberSig] -> Z3 (SSAMap, AST)
+encodePost ssa fields = do 
+ (nssa,conds) <- foldM encodePostVar (ssa,[]) fields 
+ post <- mkAnd conds
+ return (nssa,post)
+
+-- | encode the post-condition per variable
+encodePostVar :: (SSAMap,[AST]) -> MemberSig -> Z3 (SSAMap,[AST])
+encodePostVar (ssa,post) sig@(Ident id,tys) = do 
+ let res_id  = if id == "" then "ret" else "ret_"++id
+     res_sig = (Ident res_id,tys)
+ vars <- mapM (\vId -> encodeVariable vId res_sig) [1..4] 
+ let ver  = M.fromList $ zip [1..4] vars 
+     nssa = M.insert (Ident res_id) ver ssa
+     [r_o,r_a,r_b,r_m] = map getASTSSAVar vars 
+ -- Comparison between original and A
+ _oa <- mapM (uncurry mkEq) $ zip r_o r_a
+ oa  <- mkAnd _oa
+ noa <- mkNot oa
+ -- Comparison between original and B
+ _ob <- mapM (uncurry mkEq) $ zip r_o r_b
+ ob  <- mkAnd _ob
+ nob <- mkNot ob
+ -- Comparison between original and M
+ _om <- mapM (uncurry mkEq) $ zip r_o r_m
+ om  <- mkAnd _om
+ -- Comparison between M and A
+ _ma <- mapM (uncurry mkEq) $ zip r_m r_a
+ ma  <- mkAnd _ma
+ -- Comparison between M and B
+ _mb <- mapM (uncurry mkEq) $ zip r_m r_b
+ mb  <- mkAnd _mb
+ -- Remains the same
+ c1 <- mkImplies noa ma
+ c2 <- mkImplies nob mb
+ c3 <- mkAnd [ma,mb,om]
+ c4 <- mkAnd [c1,c2]
+ p <- mkOr [c3,c4]    
+ return (nssa,p:post)
+
+encodeType :: VId -> String -> Type -> Z3 (Sort,SSAVarModel)
+encodeType vId ident ty = case ty of 
+ PrimType pty -> do
+  sort <- case pty of
+   BooleanT -> mkBoolSort
+   ByteT    -> mkBvSort 8
+   ShortT   -> mkIntSort
+   IntT     -> mkIntSort
+   LongT    -> mkRealSort
+   CharT    -> error "enc_ty: CharT"
+   FloatT   -> mkRealSort
+   DoubleT  -> mkRealSort
+  return (sort,M.empty)
+ RefType rty -> case rty of
+   ClassRefType cty@(ClassType l) -> 
+     case l of 
+       [(Ident "List",_)] -> do 
+         intSort <- mkIntSort
+         sort    <- mkArraySort intSort intSort
+         return (sort,M.empty)
+       [(Ident "ArrayList",_)] -> do 
+         intSort <- mkIntSort
+         sort    <- mkArraySort intSort intSort
+         return (sort,M.empty)
+       [(Ident "Queue",_)] -> do
+         intSort <- mkIntSort
+         sort    <- mkArraySort intSort intSort
+         model   <- queueModel vId ident
+         return (sort,model) 
+       [(Ident l,_)] -> do
+         sym  <- mkStringSymbol l
+         sort <- mkUninterpretedSort sym
+         return (sort,M.empty)
+       _ -> error $ "enc_type: " ++ show cty 
+   ArrayType    aty -> do
+     (at,_)  <- encodeType vId ident aty
+     intSort <- mkIntSort
+     sort    <- mkArraySort intSort at 
+     return (sort,M.empty)
+
+queueModel :: VId -> String -> Z3 SSAVarModel
+queueModel vId name = do 
+ intSort <- mkIntSort
+ let idx_start = name ++ "_idx_start_" ++  show vId ++ "_0"
+ ast_start <- mkFreshConst idx_start intSort 
+ let idx_end = name ++ "_idx_end_" ++  show vId ++ "_0"
+ ast_end <- mkFreshConst idx_end intSort 
+ return $ M.fromList [("idx_start",(ast_start,intSort,0))
+                     ,("idx_end"  ,(ast_end  ,intSort,0))]
+
 -- encode a variable
 enc_var :: (String, Type) -> Z3 (AST,Sort)
 enc_var (id,ty) = do
@@ -139,52 +213,6 @@ initial_FuncMap = do
   iArray <- mkArraySort iSort iSort
   fn <- mkFreshFuncDecl "size" [iArray] iSort
   return $ M.singleton (Ident "size",1) (fn, M.empty)
-
--- Generates the initial SSA Map for the fields and the parameters
-initial_SSAMap :: Params -> Z3 SSAMap
-initial_SSAMap params = do
-  undefined
-{-
-  iSort <- mkIntSort
-  fn <- mkFreshFuncDecl "null" [] iSort
-  ast <- mkApp fn []
-  let i = M.singleton (Ident "null") (M.fromList $ zip [1..4] (replicate 4 (ast, iSort, 0)))
-      fn l = zip [1..4] $ map (\(e,s) -> (e,s,0)) l 
-      ps = M.map (\a -> M.fromList $ fn a) params
-  return $ M.union i ps
--}
-
--- Verification pre-condition
-initial_precond :: [[(AST,Sort)]] -> Z3 AST 
-initial_precond inputs =  do 
-  let l = map lin inputs
-  eqs <- mapM (\inp -> mapM (\((a,_),(b,_)) -> mkEq a b) $ lin inp) inputs
-  let _eqs = concat eqs
-  if null _eqs
-  then mkTrue
-  else mkAnd _eqs
-
-postcond :: [[(AST,Sort)]] -> Z3 AST
-postcond outs = do
-  cond <- mapM postcond' outs 
-  mkAnd cond 
-
-postcond' :: [(AST,Sort)] -> Z3 AST
-postcond' res = case map fst res of
-  [r_o, r_a, r_b, r_m] -> do 
-    oa <- mkEq r_o r_a
-    noa <- mkNot oa
-    ob <- mkEq r_o r_b
-    nob <- mkNot ob
-    om <- mkEq r_o r_m
-    ma <- mkEq r_m r_a
-    mb <- mkEq r_m r_b
-    c1 <- mkImplies noa ma
-    c2 <- mkImplies nob mb
-    c3 <- mkAnd [ma,mb,om]
-    c4 <- mkAnd [c1,c2]
-    mkOr [c3,c4]    
-  _ -> error "postcond: invalid input" 
 
 -- Encoding functions 
 processParam :: FormalParam -> Z3 Sort
@@ -245,8 +273,19 @@ enc_new_var pids sort i (VarDecl varid mvarinit) = do
 -}
 
 -- enc_exp: encodes an expression for a version 
-encodeExp :: [Int] -> Exp -> EnvOp [AST]
-encodeExp pids expr = mapM (\p -> enc_exp_inner p expr) pids
+encodeExp :: [VId] -> Exp -> EnvOp [AST]
+encodeExp vIds expr = mapM (\p -> enc_exp_inner p expr) vIds
+
+getASTExp :: VId -> Exp -> EnvOp [AST]
+getASTExp vId expr = do 
+ env@Env{..} <- get
+ case expr of
+  ExpName name -> do
+    let ident = toIdent name
+    return $ getASTSSAMap "enc_exp_inner" vId ident _e_ssamap
+  _ -> do
+    ast <- enc_exp_inner vId expr
+    return [ast]
 
 -- | Encode an expression for a version 
 --   (ast,sort,count)pre-condition: pid != 0 

@@ -35,8 +35,6 @@ import Util
 import Z3.Monad
 import qualified Data.Map as M
 
--- _default = (Unsat, Nothing)
-
 wiz :: DiffInst -> IO () 
 wiz diff@MInst{..} = mapM_ (wiz_meth diff) _merges 
 
@@ -90,9 +88,10 @@ verify (mid,mth) classes edits = do
  -- the pre-condition states that the parameters for each version are equal
  -- the post-condition states the soundness condition for the return variable
  --  which is a special dummy variable res_version
- (ssa,pre) <- encodeInputs $ params ++ fields  
- post      <- encodeOutput (Ident "res",PrimType IntT):fields 
- iFuncMap  <- initial_FuncMap
+ (_ssa,pre) <- encodeInputs $ params ++ fields  
+ -- @TODO: Assume that the return type is int which is not correct in general!
+ (ssa,post) <- encodePost _ssa $ (Ident "",[PrimType IntT]):fields 
+ iFuncMap   <- initial_FuncMap
  let iEnv = Env ssa iFuncMap pre classes edits True 0 [1,2,3,4] 0
      body = case ann_mth_body mth of
               AnnMethodBody Nothing -> []
@@ -116,9 +115,9 @@ verify (mid,mth) classes edits = do
 -- otherwise, calls the standard analysis 
 analyse :: ProdProgram -> EnvOp () 
 analyse prog = do
- -- wizPrint "analyzer: press any key to continue..."
- -- wizBreak 
- -- debugger stmts
+ wizPrint "analyzer: press any key to continue..."
+ wizBreak 
+ debugger prog 
  env@Env{..} <- get
  case prog of
   [] -> wizPrint "analyse: end of program" 
@@ -407,28 +406,30 @@ analyseRet vIds _exp cont = do
  where
    ret_inner :: VId -> Maybe Exp -> EnvOp ()
    ret_inner vId mexpr = do
-    undefined
-{-
     exp_ast <- 
       case mexpr of
         Nothing   -> error "ret: return Nothing"
-        Just expr -> enc_exp_inner vId expr
+        Just expr -> getASTExp vId expr
     env@Env{..} <- get
     -- encode the return value
     let res_str = Ident "ret"
         res_ast = getASTSSAMap "ret_inner ret" vId res_str _e_ssamap
-    ret <- lift $ mkEq res_ast exp_ast 
+    ret <- lift $ mapM (uncurry mkEq) $ zip res_ast exp_ast 
     -- encode the fields which are part of the global state
-    let class_vId@ClassSum{..} = _classes !! (vId-1)
-        fls = M.keys _cl_fields
-        fls_last = map (\i -> getASTSSAMap "ret_inner field" vId i _e_ssamap) fls
-        ret_fls = map (\(Ident str) -> Ident $ "ret_"++str) fls 
-        ret_fls_last = map (\i -> getASTSSAMap "ret_inner last field" vId i _e_ssamap) ret_fls
-    r' <- lift $ mapM (\(a,b) -> mkEq a b) $ zip ret_fls_last fls_last
-    pre <- lift $ mkAnd $ [_e_pre,ret] ++ r'
+    let class_vId@ClassSum{..} = _e_classes !! (vId-1)
+        -- get the names of the fields
+        fls      = M.keys _cl_fields
+        -- get the ASTs per field
+        fls_last = concatMap (\i -> getASTSSAMap "ret_inner field" vId i _e_ssamap) fls
+        -- computes the return names of the fields
+        ret_fls  = map (\(Ident str) -> Ident $ "ret_"++str) fls 
+        -- get those ASTs 
+        ret_fls_last = concatMap (\i -> getASTSSAMap "ret_inner last field" vId i _e_ssamap) ret_fls
+    ret_fields <- lift $ mapM (uncurry mkEq) $ zip ret_fls_last fls_last
+    pre <- lift $ mkAnd $ _e_pre:(ret ++ ret_fields)
     updatePre pre
     updateNumRet
--}
+
 {-
 -- Analyse Assign
 assign :: [VId] -> Exp -> Lhs -> AssignOp -> Exp -> EnvOp ()
