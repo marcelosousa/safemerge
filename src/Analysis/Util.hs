@@ -1,5 +1,6 @@
 module Analysis.Util  where
 
+import Analysis.Java.ClassInfo
 import Data.Map (Map)
 import Edit.Types
 import Language.Java.Syntax
@@ -24,6 +25,12 @@ get_method (CompilationUnit _ _ [ty]) =
         _ -> error "get_method"
     _ -> error "get_method" 
 get_method _ = error "get_method"
+
+expToIdent :: Exp -> Ident
+expToIdent exp = case exp of
+  FieldAccess (PrimaryFieldAccess _ i) -> i
+  ArrayAccess (ArrayIndex e _)         -> expToIdent e
+  ExpName n                            -> toIdent n
 
 getParIdents :: [FormalParam] -> [String]
 getParIdents pars = map getParIdent pars

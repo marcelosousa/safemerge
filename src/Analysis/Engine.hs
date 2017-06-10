@@ -80,6 +80,9 @@ encodeVariable vId (Ident id,[ty]) = do
  return var
 encodeVariable vId inv = error $ "encodeVariable: invalid input " ++ show inv
 
+updateVariable :: VId -> Ident -> SSAVar -> Z3 SSAVar
+updateVariable = undefined
+
 -- encode post-condition
 encodePost :: SSAMap -> [MemberSig] -> Z3 (SSAMap, AST)
 encodePost ssa fields = do 
@@ -229,14 +232,79 @@ processType (RefType (ClassRefType (ClassType [(Ident name,[])]))) = mkIntSort
 --    mkUninterpretedSort sym
 processType ty@(RefType _) = error $ "processType: not supported " ++ show ty
 
-processAssign :: AST -> AssignOp -> AST -> AST -> Z3 AST
-processAssign lhs op rhs plhs =
-  case op of 
-    EqualA -> mkEq lhs rhs
-    AddA -> do
-      rhs' <- mkAdd [plhs, rhs]
-      mkEq lhs rhs'
-    _ -> error $ "processAssign: " ++ show op ++ " not supported"
+-- Analyse Assign
+assign :: [VId] -> Exp -> Lhs -> AssignOp -> Exp -> EnvOp ()
+assign vIds _exp lhs aOp rhs = mapM_ assignVId vIds
+ where
+  assignVId vId = do
+   rhsAst      <- enc_exp_inner vId rhs
+   env@Env{..} <- get
+   case lhs of
+    NameLhs (Name [ident]) -> do
+     let lhsVar = getVarSSAMap "assign" vId ident _e_ssamap 
+     nLhsVar <- lift $ updateVariable vId ident lhsVar
+     let ssamap = insertSSAVar vId ident nLhsVar _e_ssamap
+     ass <- lift $ processAssign lhsVar nLhsVar aOp rhsAst 
+     pre <- lift $ mkAnd [_e_pre,ass]
+     updatePre pre
+     updateSSAMap ssamap
+{-
+    FieldLhs (PrimaryFieldAccess This (ident@(Ident str))) -> do
+     (plhsAST,sort, i) <- 
+       case M.lookup ident _ssamap of
+         -- new variable
+         Nothing -> assign_inner' vId ident
+         Just l -> case M.lookup vId l of
+           Nothing -> assign_inner' vId ident
+           Just r  -> return r 
+     let cstr = str ++ "_" ++ show vId ++ "_" ++ show i
+         ni = i+1
+         nstr = str ++ "_" ++ show vId ++ "_" ++ show ni
+     sym <- lift $ mkStringSymbol nstr
+     var <- lift $ mkFreshFuncDecl nstr [] sort
+     astVar <- lift $ mkApp var []
+     let ssamap = updateSSAMap vId ident (astVar, sort, ni) _ssamap
+     ass <- lift $ processAssign astVar aOp rhsAst plhsAST
+     pre <- lift $ mkAnd [_pre, ass]
+     updatePre pre
+     updateSSAMap ssamap
+    ArrayLhs (ArrayIndex e args) -> do
+     let ident@(Ident str) = expToIdent e
+     (plhsAST,sort, i) <- trace ("the ident is " ++ show ident) $  
+       case M.lookup ident _ssamap of
+         -- new variable
+         Nothing -> assign_inner' vId ident
+         Just l -> case M.lookup vId l of
+           Nothing -> assign_inner' vId ident
+           Just r  -> return r 
+     let cstr = str ++ "_" ++ show vId ++ "_" ++ show i
+         ni = i+1
+         nstr = str ++ "_" ++ show vId ++ "_" ++ show ni
+     sym <- lift $ mkStringSymbol nstr
+     astVar <- lift $ mkVar sym sort
+     let ssamap = updateSSAMap vId ident (astVar, sort, ni) _ssamap
+     a <- enc_exp_inner vId e
+     i <- case args of
+            [x] -> enc_exp_inner vId x
+            _ -> error $ "assign: ArrayLhs " ++ show lhs 
+     _rhsAst <- lift $ mkStore a i rhsAst
+     ass <- lift $ mkEq _rhsAst astVar
+     pre <- lift $ mkAnd [_pre, ass]
+     updatePre pre
+     updateSSAMap ssamap
+ -}
+    _ -> error $ show _exp ++ " not supported"
+
+processAssign :: SSAVar -> SSAVar -> AssignOp -> AST -> Z3 AST
+processAssign plhs lhs op rhs =
+ let lhs_ast  = _v_ast lhs
+     plhs_ast = _v_ast plhs
+ in case op of 
+   EqualA -> mkEq lhs_ast rhs
+   AddA -> do
+     rhs' <- mkAdd [plhs_ast, rhs]
+     mkEq lhs_ast rhs'
+   _ -> error $ "processAssign: " ++ show op ++ " not supported"
 
 enc_ident :: [Int] -> String -> Int -> Sort -> Z3 [(Int, AST)]
 enc_ident pids str i sort = 
@@ -489,17 +557,11 @@ post_op vIds _exp lhs op str = mapM_ (\p -> post_op_inner p _exp lhs op str) vId
    rhsAst <- enc_exp_inner vId (BinOp lhs op (Lit $ Int 1))
    env@Env{..} <- get
    case lhs of
-    ExpName (Name [ident@(Ident str)]) -> do
-     let var@SSAVar{..} = getVarSSAMap "post_op_inner" vId ident _e_ssamap
-         cstr = str ++ "_" ++ show vId ++ "_" ++ show _v_cnt
-         ni   = _v_cnt+1
-         nstr = str ++ "_" ++ show vId ++ "_" ++ show ni
-     sym <- lift $ mkStringSymbol nstr
-     var <- lift $ mkFreshFuncDecl nstr [] _v_typ
-     astVar <- lift $ mkApp var []
-     let nvar   = SSAVar astVar _v_typ ni _v_mod 
-         ssamap = insertSSAVar vId ident nvar _e_ssamap
-     ass <- lift $ processAssign astVar EqualA rhsAst _v_ast 
+    ExpName (Name [ident]) -> do
+     let lhsVar = getVarSSAMap "post_op_inner" vId ident _e_ssamap
+     nLhsVar <- lift $ updateVariable vId ident lhsVar
+     let ssamap = insertSSAVar vId ident nLhsVar _e_ssamap
+     ass <- lift $ processAssign lhsVar nLhsVar EqualA rhsAst 
      pre <- lift $ mkAnd [_e_pre, ass]
      updatePre pre
      updateSSAMap ssamap
