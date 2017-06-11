@@ -126,12 +126,12 @@ analyse prog = do
     applyDepCheck <- checkDep 
     if (every $ getAnn bstmt) && applyDepCheck 
     then case next_block prog of
-          (Left [b], cont) -> analyseBStmt b cont
-          (Left bck, cont) -> do
+          (Left [b],cont) -> analyseBStmt b cont
+          (Left bck,cont) -> do
              wizPrint "analyse: abstracting common block" 
              analyseBlock $ map fromAnn bck 
              analyse cont
-          (Right b, cont) ->
+          (Right b,cont)  ->
             -- we know that bstmt is a high level hole
             analyseBStmt b cont 
     else analyseBStmt bstmt cont 
@@ -143,11 +143,10 @@ analyseBStmt :: AnnBlockStmt -> ProdProgram -> EnvOp ()
 analyseBStmt bstmt cont = do 
  printStat bstmt
  case bstmt of
-  AnnBlockStmt stmt              -> analyseStmt stmt cont 
-  AnnLocalVars vIds mods ty vars -> do
-    sort <- lift $ processType ty    
-    mapM_ (enc_new_var vIds sort 0) vars 
-    analyse cont 
+  AnnBlockStmt stmt           -> analyseStmt stmt cont 
+  AnnLocalVars vIds _ ty vars -> do
+   mapM_ (encodeNewVariable vIds ty) vars 
+   analyse cont 
 
 -- | analyse a statement
 analyseStmt :: AnnStmt -> ProdProgram -> EnvOp () 
@@ -166,12 +165,13 @@ analyseStmt stmt cont =
   AnnEmpty vId                  -> analyse cont
   _                             -> error $ "analyseStmt: " ++ show stmt
 
--- Analyse Expressions
+-- | Analyse Expressions
+--   This function only takes care of assigments and method invocations
 analyseExp :: [VId] -> Exp -> ProdProgram -> EnvOp () 
 analyseExp vIds _exp rest =
  case _exp of
   MethodInv minv -> do
-   mapM_ (\vId -> enc_meth_inv vId minv) vIds 
+   mapM_ (encodeCall minv) vIds 
    analyse rest
   Assign lhs aOp rhs -> do
    assign vIds _exp lhs aOp rhs
@@ -188,13 +188,13 @@ analyseExp vIds _exp rest =
 --   @NOTE: April'17: it should support nested holes
 analyseHole :: [VId] -> ProdProgram -> EnvOp () 
 analyseHole vId rest =
-  if every vId 
-  then do
-    -- Get the edit statements for this hole.
-    edits <- popEdits
-    let prod_prog = miniproduct edits
-    analyse $ prod_prog ++ rest
-  else error $ "analyse_hole: vIds = " ++ show vId
+ if every vId 
+ then do
+  -- Get the edit statements for this hole.
+  edits <- popEdits
+  let prod_prog = miniproduct edits
+  analyse $ prod_prog ++ rest
+ else error $ "analyse_hole: vIds = " ++ show vId
 
 -- Analyse If Then Else
 -- Call the analyse over both branches to obtain the VCs 
@@ -221,7 +221,7 @@ analyseIf vId cond s1 s2 cont = do
   put new_env
   analyse cont
  else do
-  condSmt  <- encodeExp vId cond
+  condSmt  <- mapM (\v -> encodeExp v cond) vId 
   env      <- get
   -- then branch
   preThen  <- lift $ mkAnd ((_e_pre env):condSmt)
@@ -246,11 +246,11 @@ analyseLoop :: [(VId,Exp)] -> AnnStmt -> ProdProgram -> EnvOp ()
 analyseLoop conds body rest = do
  env@Env{..} <- get
  -- use equality predicates between variables in the assignment map
- all_preds   <- get_predicates _e_ssamap 
+ all_preds   <- getPredicates _e_ssamap 
  -- only consider filters consistent with the pre-condition 
- init_preds  <- lift $ filterM (\(i,m,n,p) -> _pre `implies` p) all_preds
+ init_preds  <- lift $ filterM (\(i,m,n,p) -> _e_pre `implies` p) all_preds
  -- encode the condition of the loop
- cond_ast    <- mapM (\(vId,cond) -> enc_exp_inner vId cond) conds >>= lift . mkAnd
+ cond_ast    <- mapM (uncurry encodeExp) conds >>= lift . mkAnd
  -- going to call houdini
  cond_str    <- lift $ astToString cond_ast
  preds_str   <- lift $ mapM (\(i,m,n,e) -> astToString e >>= \estr -> return $ show (i,m,n,estr)) init_preds 
@@ -261,71 +261,71 @@ analyseLoop conds body rest = do
  analyse rest
 
 -- houdini: fixpoint over set of predicates to compute inductive invariant
-houdini :: [(Ident,Int,Int,AST)] -> AST -> AnnStmt -> EnvOp ()
+houdini :: [(Ident,VId,VId,AST)] -> AST -> AnnStmt -> EnvOp ()
 houdini ann_preds cond body = do 
-  i_env  <- get
-  let pre   = _pre i_env 
-      preds = map (\(a,b,c,d) -> d) ann_preds 
-  -- candidate invariant is simply the conjunction of the current set of predicates
-  inv    <- lift $ if null preds then mkTrue else mkAnd preds
-  invStr <- lift $ astToString inv
-  wizPrint $ "houdini: candidate invariant:\n" ++ invStr 
-  wizBreak
-  npre   <- lift $ mkAnd [inv, cond] 
-  updatePre npre 
-  -- compute the relational post condition 
-  analyseStmt body []
-  nenv   <- get
-  let post = _pre nenv
-  post_str <- lift $ astToString post 
-  -- get the preds that are implied by the post
-  -- 1. gather the updated predicates of the assignments
-  new_preds <- mapM update_predicate ann_preds 
-  sat_preds <- lift $ filterM (\(i,m,n,p) -> post `implies` p) new_preds
-  -- the "original" predicates not implied by the post
-  let old_sat_preds = map (to_old_predicate ann_preds) sat_preds 
-      not_preds = ann_preds \\ old_sat_preds
-  unsat_str <- lift $ mapM (\(i,m,n,e) -> astToString e >>= \estr -> return $ show (i,m,n,estr)) not_preds 
-  wizPrint $ "houdini: candidate invariant:\n" ++ invStr ++ "\nrelational post:\n" ++ post_str
-           ++ "\npredicates not satisfied by relational post:\n" ++ show unsat_str 
-  wizBreak
-  -- revert to the original environment
-  put i_env
-  -- fixpoint check 
-  if null not_preds
-  -- we are done
-  then do
-    neg_cond <- lift $ mkNot cond
-    new_pre  <- lift $ mkAnd [inv, neg_cond]
-    updatePre new_pre 
-  -- we are not done unless preds == [] where we just default to True
-  else if null preds 
-       then error $ "houdini: unable to compute inductive fixpoint" 
-       else houdini old_sat_preds cond body
+ i_env  <- get
+ let pre   = _e_pre i_env 
+     preds = map (\(a,b,c,d) -> d) ann_preds 
+ -- candidate invariant is simply the conjunction of the current set of predicates
+ inv    <- lift $ if null preds then mkTrue else mkAnd preds
+ invStr <- lift $ astToString inv
+ wizPrint $ "houdini: candidate invariant:\n" ++ invStr 
+ wizBreak
+ npre   <- lift $ mkAnd [inv,cond] 
+ updatePre npre 
+ -- compute the relational post condition 
+ analyseStmt body []
+ nenv   <- get
+ let post = _e_pre nenv
+ post_str <- lift $ astToString post 
+ -- get the preds that are implied by the post
+ -- 1. gather the updated predicates of the assignments
+ new_preds <- mapM updatePredicate ann_preds 
+ sat_preds <- lift $ filterM (\(i,m,n,p) -> post `implies` p) new_preds
+ -- the "original" predicates not implied by the post
+ let old_sat_preds = map (toOldPredicate ann_preds) sat_preds 
+     not_preds = ann_preds \\ old_sat_preds
+ unsat_str <- lift $ mapM (\(i,m,n,e) -> astToString e >>= \estr -> return $ show (i,m,n,estr)) not_preds 
+ wizPrint $ "houdini: candidate invariant:\n" ++ invStr ++ "\nrelational post:\n" ++ post_str
+          ++ "\npredicates not satisfied by relational post:\n" ++ show unsat_str 
+ wizBreak
+ -- revert to the original environment
+ put i_env
+ -- fixpoint check 
+ if null not_preds
+ -- we are done
+ then do
+  neg_cond <- lift $ mkNot cond
+  new_pre  <- lift $ mkAnd [inv,neg_cond]
+  updatePre new_pre 
+ -- we are not done unless preds == [] where we just default to True
+ else if null preds 
+      then error $ "houdini: unable to compute inductive fixpoint" 
+      else houdini old_sat_preds cond body
 
-to_old_predicate :: [(Ident,Int,Int,AST)] -> (Ident,Int,Int,AST) -> (Ident,Int,Int,AST)
-to_old_predicate preds inp@(i,m,n,a) =
-  case find (\(i',m',n',a') -> (i,m,n) == (i',m',n')) preds of
-    Nothing -> error $ "to_old_predicate: cant find element " ++ show (i,m,n)
-    Just (i',m',n',a') -> (i',m',n',a')
+toOldPredicate :: [(Ident,VId,VId,AST)] -> (Ident,VId,VId,AST) -> (Ident,VId,VId,AST)
+toOldPredicate preds inp@(i,m,n,a) =
+ case find (\(i',m',n',a') -> (i,m,n) == (i',m',n')) preds of
+   Nothing -> error $ "to_old_predicate: cant find element " ++ show (i,m,n)
+   Just (i',m',n',a') -> (i',m',n',a')
 
-update_predicate :: (Ident,Int,Int,AST) -> EnvOp (Ident,Int,Int,AST)
-update_predicate (ident,m,n,_) = do
-  env@Env{..} <- get
-  let a_m = getASTSSAMap "update_predicates" m ident _e_ssamap
-      a_n = getASTSSAMap "update_predicates" n ident _e_ssamap
-  eq <- lift $ mkEq a_m a_n
-  return (ident,m,n,eq)
+updatePredicate :: (Ident,Int,Int,AST) -> EnvOp (Ident,Int,Int,AST)
+updatePredicate (ident,m,n,_) = do
+ env@Env{..} <- get
+ let a_m = getASTSSAMap "update_predicates" m ident _e_ssamap
+     a_n = getASTSSAMap "update_predicates" n ident _e_ssamap
+ eqs <- lift $ mapM (uncurry mkEq) $ zip a_m a_n 
+ eq  <- lift $ mkAnd eqs
+ return (ident,m,n,eq)
  
-get_predicates :: SSAMap -> EnvOp [(Ident,Int,Int,AST)]
-get_predicates m = do
-  let pairs = 
-        concat $ M.mapWithKey (\k m' -> 
-          if k == Ident "ret" || k == Ident "null" 
-          then []
-          else comb $ map (\(n,(a,b,c)) -> (k,n,a)) $ M.toList m') m  
-  lift $ mapM (\(i,m,n,a,b) -> mkEq a b >>= \eq -> return (i,m,n,eq)) pairs
- 
+getPredicates :: SSAMap -> EnvOp [(Ident,VId,VId,AST)]
+getPredicates m = do
+ let pairs = concat $ M.mapWithKey (\k@(Ident name) m' -> 
+       if take 3 name == "ret" || name == "null" 
+       then []
+       else comb $ map (\(n,v) -> (k,n,v)) $ M.toList m') m  
+ lift $ mapM (\(i,m,n,a,b) -> equalVariable a b >>= \eq -> return (i,m,n,eq)) pairs
+
 -- Analyse Return
 -- @TODO: Review what happens when there is more than one return statement
 analyseRet :: [VId] -> Maybe Exp -> ProdProgram -> EnvOp () 
@@ -421,6 +421,17 @@ analyseBlock b = do
             else mapM (\(vId,args) -> enc_meth_special vId id sort args) $ zip [1..4] inp 
      mapM_ (\(vId,ast) -> assign_special vId lhs ast) $ zip [1..4] rhs
 
+enc_meth_special :: Int -> Ident -> Sort -> [AST] -> EnvOp AST
+enc_meth_special pid id@(Ident ident) sort args = do
+  env@Env{..} <- get
+  let arity = length args
+  sorts <- lift $ mapM getSort args 
+  fn <- lift $ mkFreshFuncDecl ident sorts sort 
+  ast <- lift $ mkApp fn args
+  let fnmap = M.insert (id,arity) (fn,M.empty) _e_fnmap 
+  updateFunctMap fnmap 
+  return ast 
+
 enc_lhs :: VId -> Lhs -> EnvOp (Ident,(AST,Sort,Int))
 enc_lhs vId lhs = do 
  env@Env{..} <- get
@@ -451,6 +462,13 @@ enc_lhs_inner vId ident@(Ident str) = do
   updateSSAMap nssamap
   return (ident,res)
 
+enc_ident :: [Int] -> String -> Int -> Sort -> Z3 [(Int, AST)]
+enc_ident pids str i sort = 
+  mapM (\j -> do
+    let nstr = str ++ "_" ++ show j ++ "_" ++ show i
+    sym <- mkStringSymbol nstr
+    ast <- mkVar sym sort
+    return (j,ast)) pids
 assign_special :: VId -> Lhs -> AST -> EnvOp ()
 assign_special vId lhs rhsAst = trace ("assign_special: " ++ show vId ++ " " ++ show lhs) $ do
  env@Env{..} <- get
