@@ -1,4 +1,5 @@
 {-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE FlexibleInstances #-}
 -------------------------------------------------------------------------------
@@ -13,6 +14,7 @@ import Control.Monad.State.Strict hiding (join)
 import Data.Map (Map)
 import Edit.Types
 import Language.Java.Syntax
+import System.Console.CmdArgs 
 import Z3.Monad hiding (Params)
 
 -- receives the parameters and returns to specify the pre and post-condition
@@ -69,6 +71,13 @@ data Env = Env
   , _e_numret  :: Int
   , _e_vids    :: [VId] 
   , _e_anonym  :: Int       -- The number of anonymous functions
+  , _e_mode    :: WMode
   }
 
+data WMode = Dep | Model | Prod
+ deriving (Show,Eq,Ord,Data,Typeable)
+
+instance Default WMode where
+  def = Dep
+ 
 type EnvOp a = StateT Env Z3 a

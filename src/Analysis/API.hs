@@ -152,6 +152,7 @@ joinEnv orig e1 e2 = do
                  else _e_numret e1
       vids     = _e_vids    e2
       anonym   = _e_anonym  e1 `max` _e_anonym e2
+      mode     = _e_mode    e2
   wizPrint "join_env: original " 
   printSSA ssa_orig
   wizPrint "join_env: then branch" 
@@ -160,7 +161,7 @@ joinEnv orig e1 e2 = do
   printSSA ssa_e2 
   wizPrint "join_env: result"
   printSSA ssa
-  return $ Env ssa fnm pre classes eds debug numret vids anonym 
+  return $ Env ssa fnm pre classes eds debug numret vids anonym mode 
 
 -- | Replace Version Identifiers 
 updatePid :: [VId] -> EnvOp ()

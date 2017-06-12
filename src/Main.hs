@@ -11,6 +11,7 @@ import Analysis.Java.ClassInfo
 import Analysis.Java.Flow
 import Analysis.Java.Liff
 import Analysis.Optimiser
+import Analysis.Types
 import Analysis.Verifier
 import Edit
 import Edit.Types
@@ -22,7 +23,7 @@ import Language.Java.Parser hiding (opt)
 import Language.Java.Pretty hiding (opt)
 import Language.Java.Syntax
 import Prelude hiding (product)
-import System.Console.CmdArgs
+import System.Console.CmdArgs 
 import System.FilePath.Posix
 import qualified Data.Map as M
 
@@ -43,25 +44,26 @@ data InvGen = Houdini | Horn
 
 instance Default InvGen where
   def = Houdini 
+
  
 data Option = Parse   { prog :: FilePath }
             | Diff2   { prog :: FilePath, a :: FilePath }
             | Diff4   { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath }
-            | Verify  { base :: FilePath } 
+            | Verify  { base :: FilePath, m :: WMode } 
             | Product { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath }
             | Merge   { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath, output :: FilePath }
   deriving (Show, Data, Typeable, Eq)
 
 parseMode, productMode, mergeMode :: Option
-parseMode = Parse { prog = def } &= help _helpParse
+parseMode   = Parse { prog = def } &= help _helpParse
 productMode = Product { prog = def, a = def
                       , b = def, merge = def } &= help _helpProduct
-diffMode = Diff4 { prog = def, a = def, b = def
-                , merge = def } &= help _helpDiff
-verifyMode = Verify { base = def } &= help _helpVerify 
-diff2Mode = Diff2 { prog = def, a = def } &= help _helpDiff2
-mergeMode = Merge { prog = def, a = def, b = def
-                  , merge = def, output = def } &= help _helpMerge
+diffMode    = Diff4 { prog = def, a = def, b = def
+                    , merge = def } &= help _helpDiff
+verifyMode  = Verify { base = def, m = def } &= help _helpVerify 
+diff2Mode   = Diff2 { prog = def, a = def } &= help _helpDiff2
+mergeMode   = Merge { prog = def, a = def, b = def
+                    , merge = def, output = def } &= help _helpMerge
 
 progModes :: Mode (CmdArgs Option)
 progModes = cmdArgsMode $ modes [parseMode, productMode, mergeMode
@@ -88,12 +90,12 @@ runOption opt = case opt of
     putStrLn $ printDepInfo depInfo
   Diff2 o a -> diff2 o a
   Diff4 o a b m -> diff4 o a b m
-  Verify f -> do
+  Verify f mode -> do
     let o = f ++ "_o.java"
         a = f ++ "_a.java"
         b = f ++ "_b.java"
         m = f ++ "_m.java"
-    verify o a b m
+    verify mode o a b m
   _ -> error $ "wiz: option currently not supported"
 
 -- | Some utility functions
@@ -147,8 +149,8 @@ diff4 ofl afl bfl mfl = do
 -- Main function 
 -- | Given 4 Java files generate a merge instance
 --   with edit scripts and a program with holes.
-verify :: FilePath -> FilePath -> FilePath -> FilePath -> IO () 
-verify ofl afl bfl mfl = do
+verify :: WMode -> FilePath -> FilePath -> FilePath -> FilePath -> IO () 
+verify mode ofl afl bfl mfl = do
   -- parses the files
   (oast,aast,bast,mast) <- parse4 ofl afl bfl mfl
   -- converts to class info and finds which methods contain changes
@@ -156,4 +158,4 @@ verify ofl afl bfl mfl = do
   -- computes per method, the edit scripts and the method with holes
       diffInst = diffMethods mergeInst
   putStrLn $ printMethInsts $ _merges diffInst
-  wiz diffInst 
+  wiz mode diffInst 

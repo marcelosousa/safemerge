@@ -28,6 +28,7 @@ import Data.Map (Map)
 import Data.Maybe
 import Data.List
 import Edit
+import Edit.Apply
 import Edit.Types
 import Language.Java.Pretty
 import Language.Java.Syntax
@@ -35,12 +36,12 @@ import Util
 import Z3.Monad
 import qualified Data.Map as M
 
-wiz :: DiffInst -> IO () 
-wiz diff@MInst{..} = mapM_ (wiz_meth diff) _merges 
+wiz :: WMode -> DiffInst -> IO () 
+wiz mode diff@MInst{..} = mapM_ (wiz_meth mode diff) _merges 
 
 -- Assume the parameters names are the same in all 4 versions of the method 
-wiz_meth :: DiffInst -> MethInst -> IO ()
-wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = do 
+wiz_meth :: WMode -> DiffInst -> MethInst -> IO ()
+wiz_meth mode diff@MInst{..} (mth_id,mth,e_o,e_a,e_b,e_m) = do 
 --  putStrLn $ "wiz_meth: " ++ show mth_id
 --  putStrLn $ "original wiz_meth:\n" ++ prettyPrint mth 
 --  putStrLn $ "original edit o:\n" ++ (unlines $ map prettyPrint e_o) 
@@ -52,11 +53,34 @@ wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = do
       _e_a = simplifyEdit e_a
       _e_b = simplifyEdit e_b
       _e_m = simplifyEdit e_m
-      f_mth = toAnn [1,2,3,4] _mth
-      f_e_o = map (toAnn [1]) _e_o
-      f_e_a = map (toAnn [2]) _e_a
-      f_e_b = map (toAnn [3]) _e_b
-      f_e_m = map (toAnn [4]) _e_m
+      (f_mth,f_edits) = case mode of
+        Prod -> 
+         let _o = toAnn [1] $ fst $ apply_edit_member _mth _e_o
+             _a = toAnn [2] $ fst $ apply_edit_member _mth _e_a
+             _b = toAnn [3] $ fst $ apply_edit_member _mth _e_b
+             _m = toAnn [4] $ fst $ apply_edit_member _mth _e_m
+             AnnMethodDecl _1 _2 _3 _4 _5 _6 b = _o
+             body = case b of
+              AnnMethodBody Nothing -> error "" 
+              AnnMethodBody (Just (AnnBlock o)) -> 
+                case ann_mth_body _a of
+                  AnnMethodBody Nothing -> error "" 
+                  AnnMethodBody (Just (AnnBlock a)) -> 
+                    case ann_mth_body _b of
+                      AnnMethodBody Nothing -> error "" 
+                      AnnMethodBody (Just (AnnBlock b)) -> 
+                       case ann_mth_body _m of
+                         AnnMethodBody Nothing -> error "" 
+                         AnnMethodBody (Just (AnnBlock m)) -> o++a++b++m 
+             n_o = AnnMethodDecl _1 _2 _3 _4 _5 _6 (AnnMethodBody (Just (AnnBlock body)))
+         in (n_o,[])
+        _ -> 
+         let f_mth = toAnn [1,2,3,4] _mth
+             f_e_o = map (toAnn [1]) _e_o
+             f_e_a = map (toAnn [2]) _e_a
+             f_e_b = map (toAnn [3]) _e_b
+             f_e_m = map (toAnn [4]) _e_m
+         in (f_mth,[f_e_o,f_e_a,f_e_b,f_e_m])
   -- putStrLn $ "wiz_meth:\n" ++ prettyPrint _mth 
   -- putStrLn $ "edit o:\n" ++ (unlines $ map (prettyPrint . fst) _e_o) 
   -- putStrLn $ "edit a:\n" ++ (unlines $ map (prettyPrint . fst) _e_a) 
@@ -69,7 +93,7 @@ wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = do
       classes = [o_class, a_class, b_class, m_class]
   putStrLn $ "wiz_meth: Fields" 
   putStrLn $ show $ concatMap (\l -> map fst $ toMemberSig l) $ M.elems $ M.unions $ map _cl_fields classes 
-  res <- evalZ3 $ verify (mth_id, f_mth) classes [f_e_o,f_e_a,f_e_b,f_e_m] 
+  res <- evalZ3 $ verify mode (mth_id,f_mth) classes f_edits 
   case res of
     Nothing  -> putStrLn "No semantic conflict found"
     Just str -> do
@@ -77,8 +101,8 @@ wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = do
       putStrLn str    
 
 -- The main verification function
-verify :: (MIdent,AnnMemberDecl) -> [ClassSum]-> [AnnEdit] -> Z3 (Maybe String)
-verify (mid@(_,_,(rty:_)),mth) classes edits = do 
+verify :: WMode -> (MIdent,AnnMemberDecl) -> [ClassSum]-> [AnnEdit] -> Z3 (Maybe String)
+verify mode (mid@(_,_,(rty:_)),mth) classes edits = do 
  -- compute the set of inputs 
  -- i. union the fields of all classes
  let class_fields    = nub $ M.elems $ M.unions $ map _cl_fields classes 
@@ -91,15 +115,15 @@ verify (mid@(_,_,(rty:_)),mth) classes edits = do
  (_ssa,pre) <- encodePre $ params ++ fields  
  -- Compute the post-condition 
  (ssa,post) <- encodePost _ssa $ (Ident "",[rty]):fields 
- postStr <- astToString post
+ postStr    <- astToString post
  iFuncMap   <- initial_FuncMap
- let iEnv = Env ssa iFuncMap pre classes edits True 0 [1..4] 0
+ let iEnv = Env ssa iFuncMap pre classes edits True 0 [1..4] 0 mode
      body = case ann_mth_body mth of
               AnnMethodBody Nothing -> []
               AnnMethodBody (Just (AnnBlock b)) -> b 
  -- This should simply produce the relational post
  -- that should be checked against the post-condition
- ((), fEnv)  <- runStateT (analyse body) iEnv
+ ((),fEnv)   <- runStateT (analyse body) iEnv
  (res,model) <- local $ helper (_e_pre fEnv) post 
  liftIO $ putStrLn postStr
  case res of 

@@ -197,7 +197,7 @@ encodeClassType vId ident (ClassType l) = case l of
    return (sort,model,Queue) 
  [(Ident l,_)] -> do
    sym  <- mkStringSymbol l
-   sort <- mkUninterpretedSort sym
+   sort <- mkIntSort -- mkUninterpretedSort sym
    return (sort,M.empty,Object)
  _ -> error $ "encodeClassType: " ++ show l 
 
@@ -273,6 +273,7 @@ encodeCall m vId = do
   _ -> error $ "encodeCall: " ++ show m
  where
   encCall name args = do
+   wizPrint $ "encCall: " ++ show name
    env@Env{..} <- get
    case name of 
     [id@(Ident ident)] -> do 
@@ -284,7 +285,10 @@ encodeCall m vId = do
      case M.lookup (id,arity) _e_fnmap of
        Nothing -> do
          sorts <- lift $ mapM getSort args 
-         iSort <- lift $ mkIntSort
+         -- FIX THIS!! Need to receive a sort as input!
+         iSort <- case ident of 
+           "isEmpty" -> lift $ mkBoolSort
+           _         -> lift $ mkIntSort 
          fn    <- lift $ mkFreshFuncDecl ident sorts iSort
          ast   <- lift $ mkApp fn args
          let fnmap = M.insert (id,arity) (fn,deps) _e_fnmap 
@@ -293,11 +297,14 @@ encodeCall m vId = do
        Just (ast,dep) -> lift $ mkApp ast args 
     [obj,meth] -> do
      let objVar = getVarSSAMap "call" vId obj _e_ssamap
-     case _v_mty objVar of
-      Queue -> do 
-       wizPrint $ "encCall: Queue"
-       queueModel obj objVar meth vId 
-      t -> error $ "encCall: unsupported calls to " ++ show t
+     case _e_mode of
+      Model -> 
+       case  _v_mty objVar of
+        Queue -> do 
+         wizPrint $ "encCall: Queue"
+         queueModel obj objVar meth vId 
+        t -> error $ "encCall: unsupported calls to " ++ show t
+      Dep -> encCall [meth] ((_v_ast objVar):args)
     _ -> error $ "encCall: " ++ show name
 
 -- Analyse Assign

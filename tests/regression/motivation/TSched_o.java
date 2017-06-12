@@ -4,6 +4,7 @@ public class TestScheduler extends Scheduler {
     // Storing time in nanoseconds internally.
     private int time;
 
+    private int value;
     private int triggerActions(int targetTimeInNanos) {
       int brk = 0;
       while (!queue.isEmpty() && (brk == 0)) {
@@ -14,7 +15,7 @@ public class TestScheduler extends Scheduler {
         } else {
           time = getTime(current);
           queue.remove();
-          call(current);
+          value = call(current);
         }
       }
       return 0;
