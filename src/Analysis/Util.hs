@@ -2,13 +2,44 @@ module Analysis.Util  where
 
 import Analysis.Java.ClassInfo
 import Data.Map (Map)
-import Edit.Types
+import Edit.Types hiding (push)
 import Language.Java.Syntax
 import qualified Data.Map as M
 import Z3.Monad hiding (Params)
 
+-- | Z3 QUERIES
 -- Performs a SAT-query.
 checkSAT phi = local (assert phi >> check) 
+
+-- |= pre => post 
+-- UNSAT (not (pre => post))  
+helper pre post = do
+  formula <- mkImplies pre post >>= mkNot 
+  assert formula
+  (r, m)  <- getModel
+  preStr  <- astToString pre
+  -- trace ("helper: " ++ preStr) $ return (r,m)
+  return (r,m)
+
+-- \phi not models \psi
+-- \phi |= \psi 
+implies :: AST -> AST -> Z3 Bool
+implies phi psi = do 
+  formula <- mkImplies phi psi >>= mkNot 
+  push 
+  assert formula 
+  res <- check
+  pop 1
+  -- phi_str <- astToString phi
+  -- psi_str <- astToString psi
+  -- liftIO $ putStrLn $ "implies:\n" ++ phi_str ++ "\n" ++ psi_str ++ "\nresult: = " ++ (show $ res == Unsat)
+  -- _ <- liftIO $ getChar
+  case res of
+    Unsat -> return True
+    _     -> return False 
+
+-- | END OF Z3 QUERIES
+
 
 get_method :: Program -> Method
 get_method (CompilationUnit _ _ [ty]) = 

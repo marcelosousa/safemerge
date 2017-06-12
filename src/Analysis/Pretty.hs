@@ -21,13 +21,12 @@ printSSAVarModel m =
             return (show k ++ ":(" ++ ast_str ++","++typ_str++"), " ++ str) 
         ) "" $ M.elems m 
 
-
 printSSAVar :: SSAVar -> Z3 String
-printSSAVar (SSAVar ast typ cnt mod) = do 
+printSSAVar (SSAVar ast typ cnt mod mty) = do 
   ast_str <- astToString ast
   typ_str <- sortToString typ
   mod_str <- printSSAVarModel mod
-  return $ show cnt ++ " ~> (" ++ ast_str ++ ","++typ_str++", model = " ++ mod_str ++ ")"
+  return $ show cnt ++ " ~> (" ++ ast_str ++ ","++show mty++","++typ_str++", model = " ++ mod_str ++ ")"
 
 printSSAVer :: SSAVer -> Z3 String
 printSSAVer m = do 

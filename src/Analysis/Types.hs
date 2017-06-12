@@ -36,7 +36,11 @@ data SSAVar = SSAVar
   , _v_cnt :: Int
   -- modelling variables
   , _v_mod :: SSAVarModel 
+  , _v_mty :: VarType
   }
+  deriving (Eq,Ord,Show)
+
+data VarType = Primitive | Array | Queue | Object
   deriving (Eq,Ord,Show)
 
 -- | The copy per version is just a map from version_id to variable 

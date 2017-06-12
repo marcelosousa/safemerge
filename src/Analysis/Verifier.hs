@@ -88,7 +88,7 @@ verify (mid,mth) classes edits = do
  -- the pre-condition states that the parameters for each version are equal
  -- the post-condition states the soundness condition for the return variable
  --  which is a special dummy variable res_version
- (_ssa,pre) <- encodeInputs $ params ++ fields  
+ (_ssa,pre) <- encodePre $ params ++ fields  
  -- @TODO: Assume that the return type is int which is not correct in general!
  (ssa,post) <- encodePost _ssa $ (Ident "",[PrimType IntT]):fields 
  iFuncMap   <- initial_FuncMap
@@ -145,7 +145,7 @@ analyseBStmt bstmt cont = do
  case bstmt of
   AnnBlockStmt stmt           -> analyseStmt stmt cont 
   AnnLocalVars vIds _ ty vars -> do
-   mapM_ (encodeNewVariable vIds ty) vars 
+   mapM_ (encodeVarDecl vIds ty) vars 
    analyse cont 
 
 -- | analyse a statement

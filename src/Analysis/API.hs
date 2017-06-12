@@ -23,12 +23,20 @@ import Language.Java.Syntax
 import Z3.Monad hiding (Params)
 import qualified Data.Map as M
 
+-- | Initial Function Map
+initial_FuncMap :: Z3 FunctMap
+initial_FuncMap = do
+  iSort  <- mkIntSort
+  iArray <- mkArraySort iSort iSort
+  fn     <- mkFreshFuncDecl "size" [iArray] iSort
+  return $ M.singleton (Ident "size",1) (fn, M.empty)
+
 -- This function does the heavylifting in the join of the ssamap
 --   It receives the original environemtn, one identifier that is 
 --   shared in the new 2 environments and checks whether their 
 --   keys is the same in which case it generates Nothing
 --       otherwise it reports which versions need to updated
-type DiffSSA = [(VId,Int,Sort,[(String,Int,Sort)])]
+type DiffSSA = [(VId,Int,Sort,VarType,[(String,Int,Sort)])]
 
 diffSSAMap :: SSAMap -> Ident -> SSAVer -> SSAVer -> DiffSSA 
 diffSSAMap orig m e1 e2 = 
@@ -49,7 +57,7 @@ diffSSAMap orig m e1 e2 =
             k_2 = _v_cnt v2
         in if k_o == k_1 && k_o == k_2 && null mod 
            then rest
-           else (vId,maximum [k_1,k_2] + 1,_v_typ v_o,mod):rest 
+           else (vId,maximum [k_1,k_2] + 1,_v_typ v_o,_v_mty v_o,mod):rest 
       _ -> error $ "diffSSAVarModel: version " ++ show vId
   
   diffSSAVarModel :: SSAVarModel -> SSAVarModel -> String -> (AST,Sort,Int) -> [(String,Int,Sort)] -> [(String,Int,Sort)]
@@ -73,11 +81,11 @@ toSSAMap m = do
      el <- foldM (toSSAVar str) M.empty xs
      return $ M.insert (Ident str) el r
 
-   toSSAVar::String -> SSAVer -> (VId,Int,Sort,[(String,Int,Sort)]) -> EnvOp SSAVer
-   toSSAVar ident ver (vid,k,ty,mod) = do 
+   toSSAVar::String -> SSAVer -> (VId,Int,Sort,VarType,[(String,Int,Sort)]) -> EnvOp SSAVer
+   toSSAVar ident ver (vid,k,ty,mty,mod) = do 
      ast <- lift $ encIdentWithVId vid ident k ty
      mod <- foldM (toSSAModel vid) M.empty mod 
-     let var = SSAVar ast ty k mod
+     let var = SSAVar ast ty k mod mty
      return $ M.insert vid var ver
    
    toSSAModel :: VId -> SSAVarModel -> (String,Int,Sort) -> EnvOp SSAVarModel

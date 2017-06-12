@@ -10,6 +10,7 @@ import Analysis.Debug
 import Analysis.Java.ClassInfo
 import Analysis.Java.Flow
 import Analysis.Dependence
+import Analysis.Model.Queue
 import Analysis.Types
 import Analysis.Util
 import Control.Monad.State.Strict
@@ -18,59 +19,102 @@ import Data.Map (Map)
 import Data.Maybe
 import Language.Java.Pretty
 import Language.Java.Syntax
-import System.IO.Unsafe
 import Util
 import Z3.Monad hiding (Params)
 import qualified Data.Map as M
 
--- |= pre => post 
--- UNSAT (not (pre => post))  
-helper pre post = do
-  formula <- mkImplies pre post >>= mkNot 
-  assert formula
-  (r, m)  <- getModel
-  preStr  <- astToString pre
-  -- trace ("helper: " ++ preStr) $ return (r,m)
-  return (r,m)
+-- encodePre :: generates the initial SSA map and pre-condition 
+encodePre :: [MemberSig] -> Z3 (SSAMap,AST)
+encodePre inp = do 
+  (ssa,eqs) <- foldM encodeInput (M.empty,[]) inp 
+  pre       <- if null eqs then mkTrue else mkAnd eqs
+  return (ssa,pre)
+ where
+  -- | Auxiliary Function that encodes one Variable
+  encodeInput :: (SSAMap,[AST]) -> MemberSig -> Z3 (SSAMap,[AST])
+  encodeInput (ssa,pre) sig = do 
+   (nssa,matrix) <- foldM (encodeIVar sig) (ssa,[]) [1..4] 
+   let tmatrix = transpose matrix
+   pres <- foldM (\k row -> mapM (uncurry mkEq) (lin row) >>= \eqs -> return (k ++ eqs)) [] tmatrix
+   return (nssa,pre++pres)
+  -- | Auxiliary Function 
+  encodeIVar :: MemberSig -> (SSAMap,[[AST]]) -> VId -> Z3 (SSAMap,[[AST]])
+  encodeIVar sig@(ident,tys) (ssa,matrix) vId = do 
+   var <- encodeVariable vId sig 
+   let row     = getASTSSAVar var
+       nssa    = insertSSAVar vId ident var ssa 
+       nmatrix = row:matrix
+   return (nssa,nmatrix)
 
--- \phi not models \psi
--- \phi |= \psi 
-implies :: AST -> AST -> Z3 Bool
-implies phi psi = do 
-  formula <- mkImplies phi psi >>= mkNot 
-  push 
-  assert formula 
-  res <- check
-  pop 1
-  -- phi_str <- astToString phi
-  -- psi_str <- astToString psi
-  -- liftIO $ putStrLn $ "implies:\n" ++ phi_str ++ "\n" ++ psi_str ++ "\nresult: = " ++ (show $ res == Unsat)
-  -- _ <- liftIO $ getChar
-  case res of
-    Unsat -> return True
-    _     -> return False 
+-- encode post-condition
+encodePost :: SSAMap -> [MemberSig] -> Z3 (SSAMap, AST)
+encodePost ssa fields = do 
+  (nssa,conds) <- foldM encodePostVar (ssa,[]) fields 
+  post <- mkAnd conds
+  return (nssa,post)
+ where
+   -- | encode the post-condition per variable
+   encodePostVar :: (SSAMap,[AST]) -> MemberSig -> Z3 (SSAMap,[AST])
+   encodePostVar (ssa,post) sig@(Ident id,tys) = do 
+    let res_id  = if id == "" then "ret" else "ret_"++id
+        res_sig = (Ident res_id,tys)
+    vars <- mapM (\vId -> encodeVariable vId res_sig) [1..4] 
+    let ver  = M.fromList $ zip [1..4] vars 
+        nssa = M.insert (Ident res_id) ver ssa
+        [r_o,r_a,r_b,r_m] = map getASTSSAVar vars 
+    -- Comparison between original and A
+    _oa <- mapM (uncurry mkEq) $ zip r_o r_a
+    oa  <- mkAnd _oa
+    noa <- mkNot oa
+    -- Comparison between original and B
+    _ob <- mapM (uncurry mkEq) $ zip r_o r_b
+    ob  <- mkAnd _ob
+    nob <- mkNot ob
+    -- Comparison between original and M
+    _om <- mapM (uncurry mkEq) $ zip r_o r_m
+    om  <- mkAnd _om
+    -- Comparison between M and A
+    _ma <- mapM (uncurry mkEq) $ zip r_m r_a
+    ma  <- mkAnd _ma
+    -- Comparison between M and B
+    _mb <- mapM (uncurry mkEq) $ zip r_m r_b
+    mb  <- mkAnd _mb
+    -- Remains the same
+    c1 <- mkImplies noa ma
+    c2 <- mkImplies nob mb
+    c3 <- mkAnd [ma,mb,om]
+    c4 <- mkAnd [c1,c2]
+    p <- mkOr [c3,c4]    
+    return (nssa,p:post)
 
--- encodeInputs :: generates the initial SSA map and pre-condition 
-encodeInputs :: [MemberSig] -> Z3 (SSAMap,AST)
-encodeInputs inp = do 
- (ssa,eqs) <- foldM encodeInput (M.empty,[]) inp 
- pre       <- if null eqs then mkTrue else mkAnd eqs
- return (ssa,pre)
+-- @ Encodings related to SSA Variables
+-- | Encode Variable Declaration 
+encodeVarDecl :: [VId] -> Type -> VarDecl -> EnvOp ()
+encodeVarDecl vIds ty (VarDecl varid mvarinit) = do
+ env@Env{..} <- get
+ let ident = case varid of
+       VarId id -> id
+       _ -> error $ "encodeVarDecl: not supported " ++ show varid
+     sig = (ident,[ty])
+ vars <- lift $ mapM (\vId -> encodeVariable vId sig) vIds
+ let ann = zip vIds vars
+     ssa = foldl (\m (vId,var) -> insertSSAVar vId ident var m) _e_ssamap ann 
+     lhs = NameLhs $ Name [ident]
+ updateSSAMap ssa 
+ case mvarinit of
+   Nothing -> return ()
+   Just (InitExp exp) -> assign vIds exp lhs EqualA exp
+   Just _ -> error "encodeVarDecl: not supported"
 
-encodeInput :: (SSAMap,[AST]) -> MemberSig -> Z3 (SSAMap,[AST])
-encodeInput (ssa,pre) sig = do 
- (nssa,matrix) <- foldM (encodeIVar sig) (ssa,[]) [1..4] 
- let tmatrix = transpose matrix
- pres <- foldM (\k row -> mapM (uncurry mkEq) (lin row) >>= \eqs -> return (k ++ eqs)) [] tmatrix
- return (nssa,pre++pres)
-
-encodeIVar :: MemberSig -> (SSAMap,[[AST]]) -> VId -> Z3 (SSAMap,[[AST]])
-encodeIVar sig@(ident,tys) (ssa,matrix) vId = do 
- var <- encodeVariable vId sig 
- let row     = getASTSSAVar var
-     nssa    = insertSSAVar vId ident var ssa 
-     nmatrix = row:matrix
- return (nssa,nmatrix)
+-- | Encode New Variable
+encodeVariable :: VId -> MemberSig -> Z3 SSAVar
+encodeVariable vId (Ident id,[ty]) = do 
+ let name = id ++ "_" ++ show vId ++ "_0"
+ (sort,model,mty) <- encodeType vId id ty
+ ast              <- mkFreshConst name sort
+ let var = SSAVar ast sort 0 model mty
+ return var
+encodeVariable vId inv = error $ "encodeVariable: invalid input " ++ show inv
 
 equalVariable :: SSAVar -> SSAVar -> Z3 AST
 equalVariable v1 v2 = do
@@ -83,66 +127,17 @@ equalModel m1 m2 = do
  eqs <- mapM (\(e1,e2) -> mkEq (fst3 e1) (fst3 e2)) $ zip (M.elems m1) (M.elems m2)
  mkAnd eqs
 
-encodeVariable :: VId -> MemberSig -> Z3 SSAVar
-encodeVariable vId (Ident id,[ty]) = do 
- let name = id ++ "_" ++ show vId ++ "_0"
- (sort,model) <- encodeType vId id ty
- ast          <- mkFreshConst name sort
- let var = SSAVar ast sort 0 model
- return var
-encodeVariable vId inv = error $ "encodeVariable: invalid input " ++ show inv
-
--- encode post-condition
-encodePost :: SSAMap -> [MemberSig] -> Z3 (SSAMap, AST)
-encodePost ssa fields = do 
- (nssa,conds) <- foldM encodePostVar (ssa,[]) fields 
- post <- mkAnd conds
- return (nssa,post)
-
--- | encode the post-condition per variable
-encodePostVar :: (SSAMap,[AST]) -> MemberSig -> Z3 (SSAMap,[AST])
-encodePostVar (ssa,post) sig@(Ident id,tys) = do 
- let res_id  = if id == "" then "ret" else "ret_"++id
-     res_sig = (Ident res_id,tys)
- vars <- mapM (\vId -> encodeVariable vId res_sig) [1..4] 
- let ver  = M.fromList $ zip [1..4] vars 
-     nssa = M.insert (Ident res_id) ver ssa
-     [r_o,r_a,r_b,r_m] = map getASTSSAVar vars 
- -- Comparison between original and A
- _oa <- mapM (uncurry mkEq) $ zip r_o r_a
- oa  <- mkAnd _oa
- noa <- mkNot oa
- -- Comparison between original and B
- _ob <- mapM (uncurry mkEq) $ zip r_o r_b
- ob  <- mkAnd _ob
- nob <- mkNot ob
- -- Comparison between original and M
- _om <- mapM (uncurry mkEq) $ zip r_o r_m
- om  <- mkAnd _om
- -- Comparison between M and A
- _ma <- mapM (uncurry mkEq) $ zip r_m r_a
- ma  <- mkAnd _ma
- -- Comparison between M and B
- _mb <- mapM (uncurry mkEq) $ zip r_m r_b
- mb  <- mkAnd _mb
- -- Remains the same
- c1 <- mkImplies noa ma
- c2 <- mkImplies nob mb
- c3 <- mkAnd [ma,mb,om]
- c4 <- mkAnd [c1,c2]
- p <- mkOr [c3,c4]    
- return (nssa,p:post)
-
 -- | Generate a new AST and increment the counter
 updateVariable :: VId -> Ident -> SSAVar -> Z3 SSAVar
 updateVariable vId (Ident id) v@SSAVar{..} = do 
  let cnt  = _v_cnt + 1
      name = id ++ "_" ++ show vId ++ "_" ++ show cnt 
  ast <- mkFreshConst name _v_typ
- let var = SSAVar ast _v_typ cnt _v_mod 
+ let var = SSAVar ast _v_typ cnt _v_mod _v_mty 
  return var
 
-encodeType :: VId -> String -> Type -> Z3 (Sort,SSAVarModel)
+-- | Encode Type 
+encodeType :: VId -> String -> Type -> Z3 (Sort,SSAVarModel,VarType)
 encodeType vId ident ty = do 
  liftIO $ print $ "encodType: " ++ show ty
  case ty of 
@@ -156,105 +151,52 @@ encodeType vId ident ty = do
     CharT    -> error "enc_ty: CharT"
     FloatT   -> mkRealSort
     DoubleT  -> mkRealSort
-   return (sort,M.empty)
-  RefType rty -> case rty of
-    ClassRefType cty@(ClassType l) -> 
-      case l of 
-        [(Ident "List",_)] -> do 
-          intSort <- mkIntSort
-          sort    <- mkArraySort intSort intSort
-          return (sort,M.empty)
-        [(Ident "ArrayList",_)] -> do 
-          intSort <- mkIntSort
-          sort    <- mkArraySort intSort intSort
-          return (sort,M.empty)
-        [(Ident "Queue",_)] -> do
-          intSort <- mkIntSort
-          sort    <- mkArraySort intSort intSort
-          model   <- queueModel vId ident
-          return (sort,model) 
-        [(Ident l,_)] -> do
-          sym  <- mkStringSymbol l
-          sort <- mkUninterpretedSort sym
-          return (sort,M.empty)
-        _ -> error $ "enc_type: " ++ show cty 
-    ArrayType    aty -> do
-      (at,_)  <- encodeType vId ident aty
-      intSort <- mkIntSort
-      sort    <- mkArraySort intSort at 
-      return (sort,M.empty)
+   return (sort,M.empty,Primitive)
+  RefType rty -> encodeRefType vId ident rty
 
-queueModel :: VId -> String -> Z3 SSAVarModel
-queueModel vId name = do 
- intSort <- mkIntSort
- let idx_start = name ++ "_idx_start_" ++  show vId ++ "_0"
- ast_start <- mkFreshConst idx_start intSort 
- let idx_end = name ++ "_idx_end_" ++  show vId ++ "_0"
- ast_end <- mkFreshConst idx_end intSort 
- return $ M.fromList [("idx_start",(ast_start,intSort,0))
-                     ,("idx_end"  ,(ast_end  ,intSort,0))]
+encodeRefType :: VId -> String -> RefType -> Z3 (Sort,SSAVarModel,VarType)
+encodeRefType vId ident rty = case rty of
+ ClassRefType cty -> encodeClassType vId ident cty
+ ArrayType    aty -> do
+  (at,_,_)<- encodeType vId ident aty
+  intSort <- mkIntSort
+  sort    <- mkArraySort intSort at 
+  return (sort,M.empty,Array)
 
--- encode a variable
-enc_var :: (String, Type) -> Z3 (AST,Sort)
-enc_var (id,ty) = do
-  tySort <- enc_type ty
-  ast <- mkFreshConst id tySort
-  return (ast,tySort)
+encodeClassType :: VId -> String -> ClassType -> Z3 (Sort,SSAVarModel,VarType) 
+encodeClassType vId ident (ClassType l) = case l of 
+ [(Ident "List",[ta])] -> do 
+   intSort <- mkIntSort
+   taSort  <- encodeTypeArg vId ident ta
+   sort    <- mkArraySort intSort taSort 
+   return (sort,M.empty,Array)
+ [(Ident "ArrayList",[ta])] -> do 
+   intSort <- mkIntSort
+   taSort  <- encodeTypeArg vId ident ta
+   sort    <- mkArraySort intSort taSort 
+   return (sort,M.empty,Array)
+ [(Ident "Queue",[ta])] -> do
+   intSort <- mkIntSort
+   taSort  <- encodeTypeArg vId ident ta
+   sort    <- mkArraySort intSort taSort 
+   model   <- queueInit vId ident
+   return (sort,model,Queue) 
+ [(Ident l,_)] -> do
+   sym  <- mkStringSymbol l
+   sort <- mkUninterpretedSort sym
+   return (sort,M.empty,Object)
+ _ -> error $ "encodeClassType: " ++ show l 
 
-enc_type :: Type -> Z3 Sort
-enc_type ty = case ty of
-  PrimType pty -> case pty of
-    BooleanT -> mkBoolSort
-    ByteT    -> mkBvSort 8
-    ShortT   -> mkIntSort
-    IntT     -> mkIntSort
-    LongT    -> mkRealSort
-    CharT    -> error "enc_ty: CharT"
-    FloatT   -> mkRealSort
-    DoubleT  -> mkRealSort
-  RefType rty -> case rty of
-    ClassRefType cty@(ClassType l) -> 
-      case l of 
-        [(Ident "List",_)] -> do 
-          intSort <- mkIntSort
-          mkArraySort intSort intSort
-        [(Ident "ArrayList",_)] -> do 
-          intSort <- mkIntSort
-          mkArraySort intSort intSort
-        [(Ident l,_)] -> do
-          sym <- mkStringSymbol l
-          mkUninterpretedSort sym
-        _ -> error $ "enc_type: " ++ show cty 
-    ArrayType    aty -> do
-      at <- enc_type aty
-      intSort <- mkIntSort
-      mkArraySort intSort at
+encodeTypeArg :: VId -> String -> TypeArgument -> Z3 Sort
+encodeTypeArg vId ident ta = case ta of
+ Wildcard _     -> mkIntSort
+ ActualType rty -> do
+  r <- encodeRefType vId ident rty
+  return $ fst3 r  
 
-initial_FuncMap :: Z3 FunctMap
-initial_FuncMap = do
-  iSort <- mkIntSort
-  iArray <- mkArraySort iSort iSort
-  fn <- mkFreshFuncDecl "size" [iArray] iSort
-  return $ M.singleton (Ident "size",1) (fn, M.empty)
-
--- encode the first variable definition 
-encodeNewVariable :: [VId] -> Type -> VarDecl -> EnvOp ()
-encodeNewVariable vIds ty (VarDecl varid mvarinit) = do
- env@Env{..} <- get
- let ident = case varid of
-       VarId id -> id
-       _ -> error $ "encodeNewVariable: not supported " ++ show varid
-     sig = (ident,[ty])
- vars <- lift $ mapM (\vId -> encodeVariable vId sig) vIds
- let ann = zip vIds vars
-     ssa = foldl (\m (vId,var) -> insertSSAVar vId ident var m) _e_ssamap ann 
-     lhs = NameLhs $ Name [ident]
- updateSSAMap ssa 
- case mvarinit of
-   Nothing -> return ()
-   Just (InitExp exp) -> assign vIds exp lhs EqualA exp
-   Just _ -> error "encodeNewVariable: not supported"
-
+-- @ Encoding for Expressions
+-- | Get the ASTs of an Expression
+--   Currently, only used in analyseRet
 getASTExp :: VId -> Exp -> EnvOp [AST]
 getASTExp vId expr = do 
  env@Env{..} <- get
@@ -266,9 +208,10 @@ getASTExp vId expr = do
     ast <- encodeExp vId expr
     return [ast]
 
--- | Encoding for Expressions
 -- | Encode an expression for a version 
-encodeExp :: VId -> Exp -> EnvOp AST
+--   This function potentially needs to receive a Sort 
+--   in the case where it calls some method.
+encodeExp :: VId -> Exp ->  EnvOp AST
 encodeExp vId expr = do 
  wizPrint $ "encodeExp: " ++ show expr
  env@Env{..} <- get
@@ -305,9 +248,9 @@ encodeCall :: MethodInvocation -> VId -> EnvOp AST
 encodeCall m vId = do
  wizPrint $ "encodeCall: " ++ show m
  case m of  
-  MethodCall name args -> do
+  MethodCall (Name name) args -> do
     argsAST <- mapM (encodeExp vId) args
-    encCall vId (toIdent name) argsAST
+    encCall name argsAST
   PrimaryMethodCall e tys mName args ->
     case mName of
       -- convert get into an array access
@@ -315,23 +258,33 @@ encodeCall m vId = do
       _ -> error $ "encodeCall: " ++ show m
   _ -> error $ "encodeCall: " ++ show m
  where
-  encCall vId id@(Ident ident) args = do
+  encCall name args = do
    env@Env{..} <- get
-   let arity     = length args
-       class_sum = _e_classes !! (vId - 1) 
-       meths     = findMethodGen id arity class_sum
-       cfgs      = map computeGraphMember meths
-       deps   = foldr (\cfg res -> M.union res $ blockDep class_sum cfg) M.empty cfgs
-   case M.lookup (id,arity) _e_fnmap of
-     Nothing -> do
-       sorts <- lift $ mapM getSort args 
-       iSort <- lift $ mkIntSort
-       fn    <- lift $ mkFreshFuncDecl ident sorts iSort
-       ast   <- lift $ mkApp fn args
-       let fnmap = M.insert (id,arity) (fn,deps) _e_fnmap 
-       updateFunctMap fnmap 
-       return ast 
-     Just (ast,dep) -> lift $ mkApp ast args 
+   case name of 
+    [id@(Ident ident)] -> do 
+     let arity     = length args
+         class_sum = _e_classes !! (vId - 1) 
+         meths     = findMethodGen id arity class_sum
+         cfgs      = map computeGraphMember meths
+         deps  = foldr (\cfg res -> M.union res $ blockDep class_sum cfg) M.empty cfgs
+     case M.lookup (id,arity) _e_fnmap of
+       Nothing -> do
+         sorts <- lift $ mapM getSort args 
+         iSort <- lift $ mkIntSort
+         fn    <- lift $ mkFreshFuncDecl ident sorts iSort
+         ast   <- lift $ mkApp fn args
+         let fnmap = M.insert (id,arity) (fn,deps) _e_fnmap 
+         updateFunctMap fnmap 
+         return ast 
+       Just (ast,dep) -> lift $ mkApp ast args 
+    [obj,meth] -> do
+     let objVar = getVarSSAMap "call" vId obj _e_ssamap
+     case _v_mty objVar of
+      Queue -> do 
+       wizPrint $ "encCall: Queue"
+       queueModel obj objVar meth vId 
+      t -> error $ "encCall: unsupported calls to " ++ show t
+    _ -> error $ "encCall: " ++ show name
 
 -- Analyse Assign
 assign :: [VId] -> Exp -> Lhs -> AssignOp -> Exp -> EnvOp ()
@@ -384,7 +337,6 @@ processAssign plhs lhs op rhs =
      mkEq lhs_ast rhs'
    _ -> error $ "processAssign: " ++ show op ++ " not supported"
 
-
 enc_array_access :: Int -> ArrayIndex -> EnvOp AST
 enc_array_access p exp@(ArrayIndex e args) = do
   a <- encodeExp p e 
@@ -414,7 +366,6 @@ encodeLiteral lit = case lit of
  Int i         -> mkIntNum i
  Null          -> mkIntNum 0 
  _ -> error "processLit: not supported"
-
 
 enc_binop :: Op -> AST -> AST -> Z3 AST
 enc_binop op lhs rhs = do 
