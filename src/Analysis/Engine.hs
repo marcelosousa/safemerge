@@ -33,19 +33,29 @@ encodePre inp = do
   -- | Auxiliary Function that encodes one Variable
   encodeInput :: (SSAMap,[AST]) -> MemberSig -> Z3 (SSAMap,[AST])
   encodeInput (ssa,pre) sig = do 
-   (nssa,matrix) <- foldM (encodeIVar sig) (ssa,[]) [1..4] 
+   (nssa,vars,matrix) <- foldM (encodeIVar sig) (ssa,[],[]) [1..4] 
    let tmatrix = transpose matrix
+   axs  <- foldM encodeAxioms [] vars
    pres <- foldM (\k row -> mapM (uncurry mkEq) (lin row) >>= \eqs -> return (k ++ eqs)) [] tmatrix
-   return (nssa,pre++pres)
+   return (nssa,pre++pres++axs)
   -- | Auxiliary Function 
-  encodeIVar :: MemberSig -> (SSAMap,[[AST]]) -> VId -> Z3 (SSAMap,[[AST]])
-  encodeIVar sig@(ident,tys) (ssa,matrix) vId = do 
+  encodeIVar :: MemberSig -> (SSAMap,[SSAVar],[[AST]]) -> VId -> Z3 (SSAMap,[SSAVar],[[AST]])
+  encodeIVar sig@(ident,tys) (ssa,vars,matrix) vId = do 
    var <- encodeVariable vId sig 
    let row     = getASTSSAVar var
        nssa    = insertSSAVar vId ident var ssa 
        nmatrix = row:matrix
-   return (nssa,nmatrix)
+   return (nssa,var:vars,nmatrix)
 
+-- | Encode the axioms of the variables
+encodeAxioms :: [AST] -> SSAVar -> Z3 [AST]
+encodeAxioms axs v@SSAVar{..} =
+ case _v_mty of
+  Queue -> do
+   ax <- queueAxioms v
+   return (ax:axs)
+  _ -> return axs
+ 
 -- encode post-condition
 encodePost :: SSAMap -> [MemberSig] -> Z3 (SSAMap, AST)
 encodePost ssa fields = do 
@@ -97,6 +107,9 @@ encodeVarDecl vIds ty (VarDecl varid mvarinit) = do
        _ -> error $ "encodeVarDecl: not supported " ++ show varid
      sig = (ident,[ty])
  vars <- lift $ mapM (\vId -> encodeVariable vId sig) vIds
+ pres <- lift $ foldM encodeAxioms [] vars
+ npre <- lift $ mkAnd (_e_pre:pres)
+ updatePre npre
  let ann = zip vIds vars
      ssa = foldl (\m (vId,var) -> insertSSAVar vId ident var m) _e_ssamap ann 
      lhs = NameLhs $ Name [ident]

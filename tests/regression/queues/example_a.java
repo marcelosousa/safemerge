@@ -7,7 +7,12 @@ public class TestScheduler extends Scheduler {
     private void triggerActions(int targetTimeInNanos) {
       int x = 1;
       TimedAction<?> current = queue.peek();
-      targetTimeInNanos = foo(current,x); 
+      if (queue.isEmpty())
+      {
+        targetTimeInNanos = foo(current,x); 
+      } else {
+        queue.remove();
+      }
       return targetTimeInNanos;
     }
 }

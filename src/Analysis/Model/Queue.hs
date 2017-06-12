@@ -7,7 +7,7 @@
 --   1. queueInit: that defines the SSAVarModel
 --   2. queueModel: for the API 
 -------------------------------------------------------------------------------
-module Analysis.Model.Queue (queueInit,queueModel) where
+module Analysis.Model.Queue (queueInit,queueModel,queueAxioms) where
 
 import Analysis.API
 import Analysis.Types
@@ -60,6 +60,10 @@ queueModel id@(Ident var) objVar@SSAVar{..} (Ident m) vId =
     return res
   _ -> error $ "queueModel: not supported " ++ m 
 
-
+queueAxioms :: SSAVar -> Z3 AST
+queueAxioms v@SSAVar{..} = do 
+ let (i,_,_) = safeLookup "queue.isEmpty start" "idx_start" _v_mod  
+     (j,_,_) = safeLookup "queue.isEmpty end"   "idx_end"   _v_mod  
+ mkLe i j
 
 
