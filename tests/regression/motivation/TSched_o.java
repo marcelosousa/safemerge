@@ -2,9 +2,9 @@ public class TestScheduler extends Scheduler {
     private final Queue<TimedAction<?>> queue = new PriorityQueue<TimedAction<?>>(11, new CompareActionsByTime());
 
     // Storing time in nanoseconds internally.
-    private long time;
+    private int time;
 
-    private void triggerActions(long targetTimeInNanos) {
+    private int triggerActions(int targetTimeInNanos) {
       int brk = 0;
       while (!queue.isEmpty() && (brk == 0)) {
         TimedAction<?> current = queue.peek();
@@ -17,5 +17,6 @@ public class TestScheduler extends Scheduler {
           call(current);
         }
       }
+      return 0;
     }
 }

@@ -133,12 +133,13 @@ equalVariable :: SSAVar -> SSAVar -> Z3 AST
 equalVariable v1 v2 = do
  eqV <- mkEq (_v_ast v1) (_v_ast v2) 
  eqM <- equalModel (_v_mod v1) (_v_mod v2)
- mkAnd [eqV,eqM]
+ if null eqM 
+ then return eqV
+ else mkAnd (eqV:eqM)
 
-equalModel :: SSAVarModel -> SSAVarModel -> Z3 AST
-equalModel m1 m2 = do 
- eqs <- mapM (\(e1,e2) -> mkEq (fst3 e1) (fst3 e2)) $ zip (M.elems m1) (M.elems m2)
- mkAnd eqs
+equalModel :: SSAVarModel -> SSAVarModel -> Z3 [AST]
+equalModel m1 m2 = 
+ mapM (\(e1,e2) -> mkEq (fst3 e1) (fst3 e2)) $ zip (M.elems m1) (M.elems m2)
 
 -- | Generate a new AST and increment the counter
 updateVariable :: VId -> Ident -> SSAVar -> Z3 SSAVar
@@ -152,7 +153,7 @@ updateVariable vId (Ident id) v@SSAVar{..} = do
 -- | Encode Type 
 encodeType :: VId -> String -> Type -> Z3 (Sort,SSAVarModel,VarType)
 encodeType vId ident ty = do 
- liftIO $ print $ "encodType: " ++ show ty
+ -- liftIO $ putStrLn $ "encodType: " ++ show ty
  case ty of 
   PrimType pty -> do
    sort <- case pty of

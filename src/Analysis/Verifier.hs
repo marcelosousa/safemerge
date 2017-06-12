@@ -78,7 +78,7 @@ wiz_meth diff@MInst{..} (mth_id, mth, e_o, e_a, e_b, e_m) = do
 
 -- The main verification function
 verify :: (MIdent,AnnMemberDecl) -> [ClassSum]-> [AnnEdit] -> Z3 (Maybe String)
-verify (mid,mth) classes edits = do 
+verify (mid@(_,_,(rty:_)),mth) classes edits = do 
  -- compute the set of inputs 
  -- i. union the fields of all classes
  let class_fields    = nub $ M.elems $ M.unions $ map _cl_fields classes 
@@ -89,10 +89,11 @@ verify (mid,mth) classes edits = do
  -- the post-condition states the soundness condition for the return variable
  --  which is a special dummy variable res_version
  (_ssa,pre) <- encodePre $ params ++ fields  
- -- @TODO: Assume that the return type is int which is not correct in general!
- (ssa,post) <- encodePost _ssa $ (Ident "",[PrimType IntT]):fields 
+ -- Compute the post-condition 
+ (ssa,post) <- encodePost _ssa $ (Ident "",[rty]):fields 
+ postStr <- astToString post
  iFuncMap   <- initial_FuncMap
- let iEnv = Env ssa iFuncMap pre classes edits True 0 [1,2,3,4] 0
+ let iEnv = Env ssa iFuncMap pre classes edits True 0 [1..4] 0
      body = case ann_mth_body mth of
               AnnMethodBody Nothing -> []
               AnnMethodBody (Just (AnnBlock b)) -> b 
@@ -100,6 +101,7 @@ verify (mid,mth) classes edits = do
  -- that should be checked against the post-condition
  ((), fEnv)  <- runStateT (analyse body) iEnv
  (res,model) <- local $ helper (_e_pre fEnv) post 
+ liftIO $ putStrLn postStr
  case res of 
   Unsat -> return Nothing
   Sat -> do
@@ -115,9 +117,9 @@ verify (mid,mth) classes edits = do
 -- otherwise, calls the standard analysis 
 analyse :: ProdProgram -> EnvOp () 
 analyse prog = do
- wizPrint "analyzer: press any key to continue..."
- wizBreak 
- debugger prog 
+-- wizPrint "analyzer: press any key to continue..."
+-- wizBreak 
+-- debugger prog 
  env@Env{..} <- get
  case prog of
   [] -> wizPrint "analyse: end of program" 
@@ -244,6 +246,7 @@ analyseIf vId cond s1 s2 cont = do
 --  Houdini style loop invariant generation
 analyseLoop :: [(VId,Exp)] -> AnnStmt -> ProdProgram -> EnvOp () 
 analyseLoop conds body rest = do
+ wizPrint "analyseLoop"
  env@Env{..} <- get
  -- use equality predicates between variables in the assignment map
  all_preds   <- getPredicates _e_ssamap 
