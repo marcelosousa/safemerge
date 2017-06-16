@@ -17,6 +17,7 @@ import System.FilePath.Posix
 import Util
 import qualified Data.List as L 
 import qualified Data.Map as M
+import qualified Debug.Trace as T
 
 -- | Liff: Checks the AST differences between 4 sets of classes
 --         based on the methods that were present in the original version
@@ -48,7 +49,7 @@ class_diff cls_name (cl_o:cls) r =
      case (M.lookup mth_sig mi_a, M.lookup mth_sig mi_b, M.lookup mth_sig mi_m) of
        (Just m_a, Just m_b, Just m_m) -> 
          let (_,_,e_o,e_a,e_b,e_m) = diff4gen_meth (cls,mi,mty) m_o m_a m_b m_m 
-         in if m_o /= m_a && m_o /= m_b && m_a /= m_b && m_a /= m_m && m_b /= m_m && loop_scope e_o 
+         in if True -- m_o /= m_a && m_o /= m_b && m_a /= m_b && m_a /= m_m && m_b /= m_m && loop_scope e_o 
             then (cls,fst mth_sig, snd mth_sig):r
             else r
        _ -> r

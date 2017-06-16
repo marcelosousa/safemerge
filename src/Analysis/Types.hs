@@ -42,7 +42,7 @@ data SSAVar = SSAVar
   }
   deriving (Eq,Ord,Show)
 
-data VarType = Primitive | Array | Queue | Object
+data VarType = Primitive | ArrayList | Array | Queue | Object
   deriving (Eq,Ord,Show)
 
 -- | The copy per version is just a map from version_id to variable 
@@ -72,6 +72,7 @@ data Env = Env
   , _e_vids    :: [VId] 
   , _e_anonym  :: Int       -- The number of anonymous functions
   , _e_mode    :: WMode
+  , _e_rety    :: Maybe Type
   }
 
 data WMode = Dep | Model | Prod

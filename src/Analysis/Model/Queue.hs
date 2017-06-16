@@ -27,8 +27,8 @@ queueInit vId name = do
  return $ M.fromList [("idx_start",(ast_start,intSort,0))
                      ,("idx_end"  ,(ast_end  ,intSort,0))]
 
-queueModel :: Ident -> SSAVar -> Ident -> VId -> EnvOp AST
-queueModel id@(Ident var) objVar@SSAVar{..} (Ident m) vId =
+queueModel :: Ident -> SSAVar -> [Ident] -> VId -> EnvOp AST
+queueModel id@(Ident var) objVar@SSAVar{..} [Ident m] vId =
  case m of 
   "peek"    -> do 
    let (i,_,_) = safeLookup "queue.peek" "idx_start" _v_mod  
@@ -40,7 +40,7 @@ queueModel id@(Ident var) objVar@SSAVar{..} (Ident m) vId =
   "remove"  -> do
     env@Env{..} <- get
     -- retrieve the head of the list
-    res <- queueModel id objVar (Ident "peek") vId
+    res <- queueModel id objVar [Ident "peek"] vId
     -- increment the idx_start 
     let (idx,idxSort,idxCnt) = safeLookup "queue.remove" "idx_start" _v_mod  
         nidxCnt = idxCnt + 1

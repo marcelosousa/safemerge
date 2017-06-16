@@ -122,5 +122,5 @@ printPre = do
 printEnv :: EnvOp ()
 printEnv = do
   env@Env{..} <- get
-  error "printEnv: not implemented" 
+  wizPrint $ show _e_fnmap 
 

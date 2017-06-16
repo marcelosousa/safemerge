@@ -1,5 +1,6 @@
 module Analysis.Util  where
 
+import Analysis.Java.AST
 import Analysis.Java.ClassInfo
 import Data.Map (Map)
 import Edit.Types hiding (push)
@@ -63,6 +64,11 @@ expToIdent exp = case exp of
   ArrayAccess (ArrayIndex e _)         -> expToIdent e
   ExpName n                            -> toIdent n
 
+getReturnType :: AnnMemberDecl -> Maybe Type
+getReturnType m = case m of
+  AnnMethodDecl _ _ rTy _ _ _ _ -> rTy 
+  _ -> error "getReturnType: is not a method"
+
 getParIdents :: [FormalParam] -> [String]
 getParIdents pars = map getParIdent pars
  where
@@ -109,3 +115,8 @@ zip4 [[]] = []
 zip4 [(a1:r1),(a2:r2),(a3:r3),(a4:r4)] = 
   (a1,a2,a3,a4):(zip4 [r1,r2,r3,r4])
 
+concatIdent :: [Ident] -> Ident
+concatIdent [x] = x
+concatIdent ((Ident x):xs) = 
+  let Ident y = concatIdent xs
+  in Ident (x ++ "." ++ y)

@@ -48,7 +48,7 @@ instance Default InvGen where
  
 data Option = Parse   { prog :: FilePath }
             | Diff2   { prog :: FilePath, a :: FilePath }
-            | Diff4   { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath }
+            | Diff4   { base :: FilePath }
             | Verify  { base :: FilePath, m :: WMode } 
             | Product { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath }
             | Merge   { prog :: FilePath, a :: FilePath, b :: FilePath, merge :: FilePath, output :: FilePath }
@@ -58,8 +58,7 @@ parseMode, productMode, mergeMode :: Option
 parseMode   = Parse { prog = def } &= help _helpParse
 productMode = Product { prog = def, a = def
                       , b = def, merge = def } &= help _helpProduct
-diffMode    = Diff4 { prog = def, a = def, b = def
-                    , merge = def } &= help _helpDiff
+diffMode    = Diff4 { base = def } &= help _helpDiff
 verifyMode  = Verify { base = def, m = def } &= help _helpVerify 
 diff2Mode   = Diff2 { prog = def, a = def } &= help _helpDiff2
 mergeMode   = Merge { prog = def, a = def, b = def
@@ -89,7 +88,12 @@ runOption opt = case opt of
     putStrLn $ pp_dot_graphs graphs
     putStrLn $ printDepInfo depInfo
   Diff2 o a -> diff2 o a
-  Diff4 o a b m -> diff4 o a b m
+  Diff4 f -> do 
+    let o = f ++ "_o.java"
+        a = f ++ "_a.java"
+        b = f ++ "_b.java"
+        m = f ++ "_m.java"
+    diff4 o a b m
   Verify f mode -> do
     let o = f ++ "_o.java"
         a = f ++ "_a.java"
@@ -131,20 +135,13 @@ diff2 orig var = do
 -- Main function that gets the edit scripts
 diff4 :: FilePath -> FilePath -> FilePath -> FilePath -> IO ()
 diff4 ofl afl bfl mfl = do
-  (o,a,b,m) <- parse4 ofl afl bfl mfl
-  let (fo,e_o,e_a,e_b,e_m) = diff4gen o a b m 
-      pairs = [(o,fo,e_o),(a,fo,e_a),(b,fo,e_b),(m,fo,e_m)]
-      es = [e_o,e_a,e_b,e_m]
-  putStrLn "Program with holes:"
-  putStrLn $ prettyPrint fo 
-  putStrLn ""
-  mapM_ print_edit $ zip es [0..]
-  let res = map check_edit_soundness pairs
-  if all id res 
-  then putStrLn "Edits are sound"
-  else do
-    putStrLn "Some edit when applied does not yield the original program"
-    putStrLn $ show res
+  -- parses the files
+  (oast,aast,bast,mast) <- parse4 ofl afl bfl mfl
+  -- converts to class info and finds which methods contain changes
+  let mergeInst = liff oast aast bast mast
+  -- computes per method, the edit scripts and the method with holes
+      diffInst = diffMethods mergeInst
+  putStrLn $ printMethInsts $ _merges diffInst
 
 -- Main function 
 -- | Given 4 Java files generate a merge instance

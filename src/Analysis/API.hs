@@ -29,7 +29,7 @@ initial_FuncMap = do
   iSort  <- mkIntSort
   iArray <- mkArraySort iSort iSort
   fn     <- mkFreshFuncDecl "size" [iArray] iSort
-  return $ M.singleton (Ident "size",1) (fn, M.empty)
+  return $ M.singleton (Ident "size",0) (fn, M.empty)
 
 -- This function does the heavylifting in the join of the ssamap
 --   It receives the original environemtn, one identifier that is 
@@ -153,6 +153,7 @@ joinEnv orig e1 e2 = do
       vids     = _e_vids    e2
       anonym   = _e_anonym  e1 `max` _e_anonym e2
       mode     = _e_mode    e2
+      rety     = _e_rety    e1
   wizPrint "join_env: original " 
   printSSA ssa_orig
   wizPrint "join_env: then branch" 
@@ -161,7 +162,7 @@ joinEnv orig e1 e2 = do
   printSSA ssa_e2 
   wizPrint "join_env: result"
   printSSA ssa
-  return $ Env ssa fnm pre classes eds debug numret vids anonym mode 
+  return $ Env ssa fnm pre classes eds debug numret vids anonym mode rety 
 
 -- | Replace Version Identifiers 
 updatePid :: [VId] -> EnvOp ()
@@ -226,6 +227,15 @@ getVarSSAMap err vid ident ssamap =
     Just l  -> case M.lookup vid l of
       Nothing -> error $ "getASTSSAMap vid: " ++ err
       Just v  -> v
+
+-- | Generate a new AST and increment the counter
+updateVariable :: VId -> Ident -> SSAVar -> Z3 SSAVar
+updateVariable vId (Ident id) v@SSAVar{..} = do 
+ let cnt  = _v_cnt + 1
+     name = id ++ "_" ++ show vId ++ "_" ++ show cnt 
+ ast <- mkFreshConst name _v_typ
+ let var = SSAVar ast _v_typ cnt _v_mod _v_mty 
+ return var
 
 -- | Insert SSAVar to SSAMap 
 insertSSAVar :: VId -> Ident -> SSAVar -> SSAMap -> SSAMap

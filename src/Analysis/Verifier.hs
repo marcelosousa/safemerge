@@ -42,7 +42,7 @@ wiz mode diff@MInst{..} = mapM_ (wiz_meth mode diff) _merges
 -- Assume the parameters names are the same in all 4 versions of the method 
 wiz_meth :: WMode -> DiffInst -> MethInst -> IO ()
 wiz_meth mode diff@MInst{..} (mth_id,mth,e_o,e_a,e_b,e_m) = do 
---  putStrLn $ "wiz_meth: " ++ show mth_id
+  putStrLn $ "wiz_meth: " ++ show mth_id
 --  putStrLn $ "original wiz_meth:\n" ++ prettyPrint mth 
 --  putStrLn $ "original edit o:\n" ++ (unlines $ map prettyPrint e_o) 
 --  putStrLn $ "original edit a:\n" ++ (unlines $ map prettyPrint e_a) 
@@ -102,22 +102,27 @@ wiz_meth mode diff@MInst{..} (mth_id,mth,e_o,e_a,e_b,e_m) = do
 
 -- The main verification function
 verify :: WMode -> (MIdent,AnnMemberDecl) -> [ClassSum]-> [AnnEdit] -> Z3 (Maybe String)
-verify mode (mid@(_,_,(rty:_)),mth) classes edits = do 
+verify mode (mid,mth) classes edits = do 
  -- compute the set of inputs 
  -- i. union the fields of all classes
  let class_fields    = nub $ M.elems $ M.unions $ map _cl_fields classes 
  -- ii. get the member signatures for the method (parameters) and the fields
      (params,fields) = (toMemberSig mth,concatMap toMemberSig class_fields) 
+ -- iii. get the return type
+     rty = getReturnType mth
  -- compute the pre and the post condition
  -- the pre-condition states that the parameters for each version are equal
  -- the post-condition states the soundness condition for the return variable
  --  which is a special dummy variable res_version
  (_ssa,pre) <- encodePre $ params ++ fields  
  -- Compute the post-condition 
- (ssa,post) <- encodePost _ssa $ (Ident "",[rty]):fields 
+ liftIO $ print $ "verify: " ++ show mid 
+ (ssa,post) <- case rty of 
+                 Nothing -> encodePost _ssa fields  
+                 Just ty -> encodePost _ssa $ (Ident "",[ty]):fields 
  postStr    <- astToString post
  iFuncMap   <- initial_FuncMap
- let iEnv = Env ssa iFuncMap pre classes edits True 0 [1..4] 0 mode
+ let iEnv = Env ssa iFuncMap pre classes edits True 0 [1..4] 0 mode rty
      body = case ann_mth_body mth of
               AnnMethodBody Nothing -> []
               AnnMethodBody (Just (AnnBlock b)) -> b 
@@ -197,7 +202,7 @@ analyseExp :: [VId] -> Exp -> ProdProgram -> EnvOp ()
 analyseExp vIds _exp rest =
  case _exp of
   MethodInv minv -> do
-   mapM_ (encodeCall minv) vIds 
+   mapM_ (encodeCall minv Nothing) vIds 
    analyse rest
   Assign lhs aOp rhs -> do
    assign vIds _exp lhs aOp rhs
@@ -235,6 +240,7 @@ analyseIf :: [VId] -> Exp -> AnnStmt -> AnnStmt -> ProdProgram -> EnvOp ()
 analyseIf vId cond s1 s2 cont = do
  wizPrint $ "analyseIf: versions " ++ show vId 
  wizPrint $ "analyseIf: condition " ++ prettyPrint cond 
+ bSort <- lift $ mkBoolSort >>= return . Just
  if cond == Nondet
  then do
   i_env    <- get
@@ -247,7 +253,7 @@ analyseIf vId cond s1 s2 cont = do
   put new_env
   analyse cont
  else do
-  condSmt  <- mapM (\v -> encodeExp v cond) vId 
+  condSmt  <- mapM (\v -> encodeExp bSort v cond) vId 
   env      <- get
   -- then branch
   preThen  <- lift $ mkAnd ((_e_pre env):condSmt)
@@ -270,14 +276,17 @@ analyseIf vId cond s1 s2 cont = do
 --  Houdini style loop invariant generation
 analyseLoop :: [(VId,Exp)] -> AnnStmt -> ProdProgram -> EnvOp () 
 analyseLoop conds body rest = do
- wizPrint "analyseLoop"
+ wizPrint "analyseLoop: press any key to continue..."
+ wizBreak 
+ debugger rest 
+ bSort <- lift $ mkBoolSort >>= return . Just
  env@Env{..} <- get
  -- use equality predicates between variables in the assignment map
  all_preds   <- getPredicates _e_ssamap 
  -- only consider filters consistent with the pre-condition 
  init_preds  <- lift $ filterM (\(i,m,n,p) -> _e_pre `implies` p) all_preds
  -- encode the condition of the loop
- cond_ast    <- mapM (uncurry encodeExp) conds >>= lift . mkAnd
+ cond_ast    <- mapM (uncurry (encodeExp bSort)) conds >>= lift . mkAnd
  -- going to call houdini
  cond_str    <- lift $ astToString cond_ast
  preds_str   <- lift $ mapM (\(i,m,n,e) -> astToString e >>= \estr -> return $ show (i,m,n,estr)) init_preds 
@@ -325,6 +334,7 @@ houdini ann_preds cond body = do
   neg_cond <- lift $ mkNot cond
   new_pre  <- lift $ mkAnd [inv,neg_cond]
   updatePre new_pre 
+  updateEdits (_e_edits nenv)
  -- we are not done unless preds == [] where we just default to True
  else if null preds 
       then error $ "houdini: unable to compute inductive fixpoint" 
