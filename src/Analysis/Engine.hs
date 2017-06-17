@@ -238,6 +238,29 @@ getASTExp vId expr = do
      ast <- encodeExp (Just sort) vId expr
      return [ast]
 
+encodeExpName :: VId -> Name -> EnvOp AST
+encodeExpName vId (Name [])  = error "encodeExpName: Name []"
+encodeExpName vId name       = do
+ env@Env{..} <- get
+ let ident@(Ident i) = toIdent name
+ case M.lookup ident _e_ssamap of
+  Nothing -> encodeConstant i 
+  Just l  -> case M.lookup vId l of
+    Nothing -> encodeConstant i 
+    Just v  -> return $ _v_ast v 
+
+encodeConstant :: String -> EnvOp AST
+encodeConstant s = do 
+ env@Env{..} <- get
+ let k = String s
+ case M.lookup k _e_consts of
+   Nothing  -> do
+    iSort <- lift $ mkIntSort
+    ast <- lift $ mkFreshConst s iSort
+    insertConst k ast 
+    return ast
+   Just ast -> return ast
+
 -- | Encode an expression for a version 
 --   This function potentially needs to receive a Sort 
 --   in the case where it calls some method.
@@ -248,11 +271,8 @@ encodeExp mSort vId expr = do
  bSort <- lift $ mkBoolSort >>= return . Just
  iSort <- lift $ mkIntSort  >>= return . Just
  case expr of
-  Lit lit -> lift $ encodeLiteral lit 
-  ExpName name -> do
-    let ident = toIdent name
-        asts  = getASTSSAMap "encodeExp" vId ident _e_ssamap
-    return $ head asts
+  Lit lit -> encodeLiteral lit 
+  ExpName name -> encodeExpName vId name
   BinOp lhsE op rhsE -> do
   -- This likely needs to change
     lhs <- encodeExp mSort vId lhsE
@@ -275,6 +295,9 @@ encodeExp mSort vId expr = do
     return $ head asts
   MethodInv m -> encodeCall m mSort vId 
   InstanceCreation tyArgs cTy args cBdy -> encodeNew mSort vId cTy args
+  Cast typ exp -> do
+    wizPrint $ "encodeExp: Ignoring Cast"
+    encodeExp mSort vId exp
   _ -> error $  "encodeExp: " ++ show expr
 
 -- | Encode New Instance via a call to an uninterpreted function
@@ -295,15 +318,21 @@ encodeCall m mSort vId = do
   MethodCall (Name name) args -> do
     argsAST <- mapM (encodeExp mSort vId) args
     encCall mSort name argsAST
-  PrimaryMethodCall e tys mName args ->
+  -- PrimaryMethodCall: fields?
+  PrimaryMethodCall e tys name args -> do
+    argsAST <- mapM (encodeExp mSort vId) args
+    arg <- encodeExp mSort vId e
+    encCall mSort [name] (arg:argsAST)
+{-
     case mName of
       -- convert get into an array access
       Ident "get" -> enc_array_access vId $ ArrayIndex e args 
       _ -> error $ "encodeCall: " ++ show m
+-}
   _ -> error $ "encodeCall: " ++ show m
  where
   encCall nSort name args = do
-   wizPrint $ "encCall: " ++ show name ++ " " ++ show nSort
+   wizPrint $ "encCall: " ++ show name 
    env@Env{..} <- get
    case name of 
     [] -> error $ "encCall: name = []"
@@ -438,12 +467,23 @@ enc_field_access vId exp = do
       return $ getASTSSAMap "encFieldAccess" vId ident _e_ssamap
     _ -> error $ "enc_field_access: " ++ show exp
     
-encodeLiteral :: Literal -> Z3 AST
+encodeLiteral :: Literal -> EnvOp AST
 encodeLiteral lit = case lit of
- Boolean True  -> mkTrue
- Boolean False -> mkFalse
- Int i         -> mkIntNum i
- Null          -> mkIntNum 0 
+ Boolean True  -> lift $ mkTrue
+ Boolean False -> lift $ mkFalse
+ Int i         -> lift $ mkIntNum i
+ Null          -> lift $ mkIntNum 0 
+ String s      -> do
+  env@Env{..} <- get
+  case M.lookup lit _e_consts of
+   Nothing -> do
+    iSort <- lift $ mkIntSort
+    let n = "_STR_CONST_" ++ s
+    ast <- lift $ mkFreshConst n iSort
+    insertConst lit ast 
+    return ast
+   Just ast -> return ast
+ Float f -> lift $ mkRealNum f 
  _ -> error "processLit: not supported"
 
 enc_binop :: Op -> AST -> AST -> Z3 AST
@@ -454,6 +494,7 @@ enc_binop op lhs rhs = do
     Add    -> mkAdd [lhs,rhs]
     Mult   -> mkMul [lhs,rhs]
     Sub    -> mkSub [lhs,rhs]
+    Div    -> mkDiv lhs rhs 
     LThan  -> mkLt lhs rhs
     LThanE -> mkLe lhs rhs
     GThan  -> mkGt lhs rhs
@@ -461,7 +502,7 @@ enc_binop op lhs rhs = do
     Equal  -> mkEq lhs rhs
     COr    -> mkOr [lhs, rhs]
     CAnd   -> mkAnd [lhs, rhs]
-    _ -> error $ "processBinOp: not supported " ++ show op
+    _ -> error $ "enc_binop: not supported " ++ show op
 
 -- Analyse Post De/Increment
 -- @NOTE: April'17: These expressions were optimised?

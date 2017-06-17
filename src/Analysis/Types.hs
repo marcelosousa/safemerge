@@ -60,6 +60,10 @@ type SSAMap = Map Ident SSAVer
 -- dependence graph of each version (currently abstracted to the join)
 type FunctMap = Map AbsMethodSig (FuncDecl, DepMap) 
 
+-- Constant Map: Maps a literal to an AST
+--  This is important to handle constant strings accross multiple progs 
+type ConstMap = Map Literal AST
+
 data Env = Env
   { 
     _e_ssamap  :: SSAMap
@@ -73,6 +77,7 @@ data Env = Env
   , _e_anonym  :: Int       -- The number of anonymous functions
   , _e_mode    :: WMode
   , _e_rety    :: Maybe Type
+  , _e_consts  :: ConstMap 
   }
 
 data WMode = Dep | Model | Prod

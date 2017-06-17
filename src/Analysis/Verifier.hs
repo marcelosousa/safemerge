@@ -122,7 +122,7 @@ verify mode (mid,mth) classes edits = do
                  Just ty -> encodePost _ssa $ (Ident "",[ty]):fields 
  postStr    <- astToString post
  iFuncMap   <- initial_FuncMap
- let iEnv = Env ssa iFuncMap pre classes edits True 0 [1..4] 0 mode rty
+ let iEnv = Env ssa iFuncMap pre classes edits True 0 [1..4] 0 mode rty M.empty
      body = case ann_mth_body mth of
               AnnMethodBody Nothing -> []
               AnnMethodBody (Just (AnnBlock b)) -> b 
@@ -131,6 +131,7 @@ verify mode (mid,mth) classes edits = do
  ((),fEnv)   <- runStateT (analyse body) iEnv
  (res,model) <- local $ helper (_e_pre fEnv) post 
  liftIO $ putStrLn postStr
+ liftIO $ putStrLn $ "result: " ++ show res 
  case res of 
   Unsat -> return Nothing
   Sat -> do
@@ -146,9 +147,9 @@ verify mode (mid,mth) classes edits = do
 -- otherwise, calls the standard analysis 
 analyse :: ProdProgram -> EnvOp () 
 analyse prog = do
--- wizPrint "analyzer: press any key to continue..."
--- wizBreak 
--- debugger prog 
+ --wizPrint "analyzer: press any key to continue..."
+ --wizBreak 
+ --debugger prog 
  env@Env{..} <- get
  case prog of
   [] -> wizPrint "analyse: end of program" 
@@ -240,7 +241,8 @@ analyseIf :: [VId] -> Exp -> AnnStmt -> AnnStmt -> ProdProgram -> EnvOp ()
 analyseIf vId cond s1 s2 cont = do
  wizPrint $ "analyseIf: versions " ++ show vId 
  wizPrint $ "analyseIf: condition " ++ prettyPrint cond 
- bSort <- lift $ mkBoolSort >>= return . Just
+ -- bSort <- lift $ mkBoolSort >>= return . Just
+ let bSort = Nothing
  if cond == Nondet
  then do
   i_env    <- get
@@ -263,6 +265,7 @@ analyseIf vId cond s1 s2 cont = do
   -- else branch
   put env
   updateEdits (_e_edits env_then)
+  updateConsts (_e_consts env_then)
   ncondSmt <- lift $ mapM mkNot condSmt
   preElse  <- lift $ mkAnd ((_e_pre env):ncondSmt)
   updatePre preElse

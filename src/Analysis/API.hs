@@ -154,6 +154,7 @@ joinEnv orig e1 e2 = do
       anonym   = _e_anonym  e1 `max` _e_anonym e2
       mode     = _e_mode    e2
       rety     = _e_rety    e1
+      consts   = _e_consts  e2
   wizPrint "join_env: original " 
   printSSA ssa_orig
   wizPrint "join_env: then branch" 
@@ -162,7 +163,7 @@ joinEnv orig e1 e2 = do
   printSSA ssa_e2 
   wizPrint "join_env: result"
   printSSA ssa
-  return $ Env ssa fnm pre classes eds debug numret vids anonym mode rety 
+  return $ Env ssa fnm pre classes eds debug numret vids anonym mode rety consts 
 
 -- | Replace Version Identifiers 
 updatePid :: [VId] -> EnvOp ()
@@ -258,3 +259,16 @@ incAnonym = do
   let anonym = _e_anonym 
   put s{ _e_anonym =  anonym + 1}
   return anonym
+
+-- | Insert constant
+insertConst :: Literal -> AST -> EnvOp ()
+insertConst l a = do
+  s@Env{..} <- get
+  let c = M.insert l a _e_consts
+  put s{ _e_consts = c }
+
+-- | Update Constants
+updateConsts :: ConstMap -> EnvOp ()
+updateConsts c = do
+  s@Env{..} <- get
+  put s{ _e_consts = c }

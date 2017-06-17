@@ -159,4 +159,4 @@ mth_body m = error $ "mth_body: fatal " ++ show m
 toIdent :: Name -> Ident
 toIdent (Name []) = error $ "nameToIdent: Name []"
 toIdent (Name [x]) = x
-toIdent (Name l) = foldr (\(Ident a) (Ident b) -> Ident (a ++ "." ++ b)) (Ident "") l 
+toIdent (Name (x:xs)) = foldr (\(Ident a) (Ident b) -> Ident (a ++ "." ++ b)) x xs

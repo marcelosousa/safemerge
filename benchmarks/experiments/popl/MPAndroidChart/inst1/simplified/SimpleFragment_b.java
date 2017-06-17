@@ -18,7 +18,7 @@ public abstract class SimpleFragment extends Fragment {
               entries.add(new Entry(range, j));
             }
             
-            ScatterDataSet ds = new ScatterDataSet(entries, getLabel(i));
+            ScatterDataSet ds = new ScatterDataSet(entries, getLabel(i),shapes);
        //     ds.setScatterShapeSize(12f);
        //     ds.setScatterShape(shapes[i % shapes.length]);
        //     ds.setColors(ColorTemplate.COLORFUL_COLORS);
