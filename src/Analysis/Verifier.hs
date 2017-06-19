@@ -195,6 +195,7 @@ analyseStmt stmt cont =
   AnnHole  vId                  -> analyseHole vId cont 
   AnnSkip  vId                  -> analyse cont 
   AnnEmpty vId                  -> analyse cont
+  AnnThrow vId expr             -> analyse cont -- ignoring throw statements 
   _                             -> error $ "analyseStmt: " ++ show stmt
 
 -- | Analyse Expressions
@@ -262,6 +263,14 @@ analyseIf vId cond s1 s2 cont = do
   updatePre preThen
   _        <- analyse [AnnBlockStmt s1] 
   env_then <- get
+  --env_then <- do
+  --  rThen <- lift $ checkSAT preThen
+  --  case rThen of 
+  --    Unsat -> return env
+  --    Sat   -> do
+  --     updatePre preThen
+  --     _        <- analyse [AnnBlockStmt s1] 
+  --     get
   -- else branch
   put env
   updateEdits (_e_edits env_then)
@@ -271,6 +280,14 @@ analyseIf vId cond s1 s2 cont = do
   updatePre preElse
   _        <- analyse [AnnBlockStmt s2]
   env_else <- get
+  --env_else <- do
+  --  rElse <- lift $ checkSAT preElse 
+  --  case rElse of 
+  --    Unsat -> get 
+  --    Sat   -> do
+  --     updatePre preElse
+  --     _        <- analyse [AnnBlockStmt s2]
+  --     get
   new_env  <- joinEnv env env_then env_else
   put new_env
   analyse cont

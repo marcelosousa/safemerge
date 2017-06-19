@@ -320,9 +320,14 @@ encodeCall m mSort vId = do
     encCall mSort name argsAST
   -- PrimaryMethodCall: fields?
   PrimaryMethodCall e tys name args -> do
-    argsAST <- mapM (encodeExp mSort vId) args
-    arg <- encodeExp mSort vId e
-    encCall mSort [name] (arg:argsAST)
+   case e of
+     MethodInv (MethodCall (Name i) args') -> 
+      encodeCall (MethodCall (Name (i++[name])) (args'++args)) mSort vId
+     _ -> do
+      wizPrint "encodeCall: warning!"
+      argsAST <- mapM (encodeExp mSort vId) args
+      arg <- encodeExp mSort vId e
+      encCall mSort [name] (arg:argsAST)
 {-
     case mName of
       -- convert get into an array access
@@ -397,7 +402,7 @@ assign vIds _exp lhs aOp rhs = mapM_ assignVId vIds
    -- First retrieve the LHS variable
    e <- get
    let ident = case lhs of
-        NameLhs  (Name [ident])                  -> ident 
+        NameLhs  name                            -> toIdent name 
         FieldLhs (PrimaryFieldAccess This ident) -> ident 
         ArrayLhs (ArrayIndex e args)             -> expToIdent e
        lhsVar = getVarSSAMap "assign" vId ident (_e_ssamap e) 
@@ -494,6 +499,7 @@ enc_binop op lhs rhs = do
     Add    -> mkAdd [lhs,rhs]
     Mult   -> mkMul [lhs,rhs]
     Sub    -> mkSub [lhs,rhs]
+    Rem    -> mkRem lhs rhs
     Div    -> mkDiv lhs rhs 
     LThan  -> mkLt lhs rhs
     LThanE -> mkLe lhs rhs
