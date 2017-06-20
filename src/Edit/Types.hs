@@ -37,6 +37,11 @@ if_scope e =
       c2 = loop_scope e
   in c1 && (not c2) 
 
+simple_scope :: Edit -> Bool
+simple_scope e = 
+  let c1 = any (\(_,sc) -> any (\s -> (s==SCond || s ==SLoop)) sc) e
+  in not c1
+
 -- add each x to the ei
 push :: Edit -> [Edit] -> [Edit]
 push xs [] = map (:[]) xs

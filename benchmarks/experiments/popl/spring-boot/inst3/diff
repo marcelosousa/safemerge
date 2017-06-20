@@ -1,0 +1,63 @@
+Parsing files...
+Merge Instance for method (Ident "LogbackLoggingSystem",Ident "loadConfiguration",[RefType (ClassRefType (ClassType [(Ident "LoggingInitializationContext",[])])),RefType (ClassRefType (ClassType [(Ident "String",[])])),RefType (ClassRefType (ClassType [(Ident "LogFile",[])]))])
+@Override
+ protected void loadConfiguration (LoggingInitializationContext initializationContext, String location, LogFile logFile)
+{
+  <?HOLE?>
+  LoggerContext loggerContext = getLoggerContext();
+  stopAndReset(loggerContext);
+  try
+  {
+    configureByResourceUrl(initializationContext, loggerContext, ResourceUtils.getURL(location));
+  }
+  catch (Exception ex)
+  {
+    throw new IllegalStateException("Could not initialize Logback logging from " + location, ex);
+  }
+  List<Status> statuses = loggerContext.getStatusManager().getCopyOfStatusList();
+  StringBuilder errors = new StringBuilder();
+  for (Status status : statuses) {
+                                   if (status.getLevel() == Status.ERROR)
+                                   {
+                                     <?HOLE?>
+                                     errors.append(status.toString());
+                                   }
+                                 }
+  if (errors.length() > 0)
+  {
+    <?HOLE?>
+  }
+}
+Edit Base:
+Hole 1:
+[]: Assert.notNull(location, "Location must not be null");
+Hole 2:
+[SCond,SLoop]: errors.append((errors.length() > 0 ? "\n" : ""));
+Hole 3:
+[SCond]: throw new IllegalStateException("Logback configuration error " + "detected: \n" + errors);
+
+Edit A:
+Hole 1:
+[]: Assert.notNull(location, "Location must not be null");
+Hole 2:
+[SCond,SLoop]: errors.append((errors.length() > 0 ? String.format("%n") : ""));
+Hole 3:
+[SCond]: throw new IllegalStateException(String.format("Logback configuration error detected: %n%s", errors));
+
+Edit B:
+Hole 1:
+[]: super.loadConfiguration(initializationContext, location, logFile);
+Hole 2:
+[SCond,SLoop]: errors.append((errors.length() > 0 ? "\n" : ""));
+Hole 3:
+[SCond]: throw new IllegalStateException("Logback configuration error " + "detected: \n" + errors);
+
+Edit M:
+Hole 1:
+[]: super.loadConfiguration(initializationContext, location, logFile);
+Hole 2:
+[SCond,SLoop]: errors.append((errors.length() > 0 ? String.format("%n") : ""));
+Hole 3:
+[SCond]: throw new IllegalStateException(String.format("Logback configuration error detected: %n%s", errors));
+
+

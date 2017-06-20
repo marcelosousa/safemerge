@@ -1,0 +1,119 @@
+Parsing files...
+Merge Instance for method (Ident "PreloaderBundleGenerator",Ident "generate",[RefType (ClassRefType (ClassType [(Ident "TreeLogger",[])])),RefType (ClassRefType (ClassType [(Ident "GeneratorContext",[])])),RefType (ClassRefType (ClassType [(Ident "String",[])]))])
+@Override
+ public String generate (TreeLogger logger, GeneratorContext context, String typeName) throws UnableToCompleteException
+{
+  String assetPath = getAssetPath(context);
+  <?HOLE?>
+  <?HOLE?>
+  AssetFilter assetFilter = getAssetFilter(context);
+  FileWrapper source = new FileWrapper(assetPath);
+  if (!source.exists())
+  {
+    source = new FileWrapper("../" + assetPath);
+    if (!source.exists())
+      throw new RuntimeException("assets path '" + assetPath + "' does not exist. Check your gdx.assetpath property in your GWT project's module gwt.xml file");
+  }
+  if (!source.isDirectory())
+    throw new RuntimeException("assets path '" + assetPath + "' is not a directory. Check your gdx.assetpath property in your GWT project's module gwt.xml file");
+  <?HOLE?>
+  System.out.println(source.file.getAbsolutePath());
+  FileWrapper target = new FileWrapper("assets/");
+  System.out.println(target.file.getAbsolutePath());
+  <?HOLE?>
+  if (target.exists())
+  {
+    if (!target.deleteDirectory())
+      throw new RuntimeException("Couldn't clean target path '" + target + "'");
+  }
+  <?HOLE?>
+  copyDirectory(source, target, assetFilter, assets);
+  StringBuffer buffer = new StringBuffer();
+  for (Asset asset : assets) {
+                               <?HOLE?>
+                               if (path.startsWith("/"))
+                                 path = path.substring(1);
+                               buffer.append(asset.type.code);
+                               buffer.append(":");
+                               buffer.append(path);
+                               buffer.append("\n");
+                             }
+  target.child("assets.txt").writeString(buffer.toString(), false);
+  System.out.println(buffer.toString());
+  return createDummyClass(logger, context);
+}
+Edit Base:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: System.out.println(("Copying resources from " + assetPath + " to war/"));
+Hole 4:
+[SCond]: if (!target.file.getAbsolutePath().replace("\\", "/").endsWith("war/assets"))
+{
+  target = new FileWrapper("war/assets/");
+}
+Hole 5:
+[]: Array<Asset> assets = new Array<Asset>();
+Hole 6:
+[SLoop]: String path = asset.file.path().replace('\\', '/').replace("war/assets/", "").replaceFirst("assets", "");
+
+Edit A:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: System.out.println(("Copying resources from " + assetPath + " to war/"));
+Hole 4:
+[SCond]: if (!target.file.getAbsolutePath().replace("\\", "/").endsWith("war/assets"))
+{
+  target = new FileWrapper("war/assets/");
+}
+Hole 5:
+[]: ArrayList<Asset> assets = new ArrayList<Asset>();
+Hole 6:
+[SLoop]: String path = asset.file.path().replace('\\', '/').replace("war/assets/", "").replaceFirst("assets", "");
+
+Edit B:
+Hole 1:
+[]: String assetOutputPath = getAssetOutputPath(context);
+Hole 2:
+[]: if (assetOutputPath == null)
+{
+  assetOutputPath = "war/";
+}
+Hole 3:
+[]: System.out.println(("Copying resources from " + assetPath + " to " + assetOutputPath));
+Hole 4:
+[SCond]: if (!target.file.getAbsolutePath().replace("\\", "/").endsWith((assetOutputPath + "assets")))
+{
+  target = new FileWrapper(assetOutputPath + "assets/");
+}
+Hole 5:
+[]: Array<Asset> assets = new Array<Asset>();
+Hole 6:
+[SLoop]: String path = asset.file.path().replace('\\', '/').replace((assetOutputPath + "assets/"), "").replaceFirst("assets", "");
+
+Edit M:
+Hole 1:
+[]: String assetOutputPath = getAssetOutputPath(context);
+Hole 2:
+[]: if (assetOutputPath == null)
+{
+  assetOutputPath = "war/";
+}
+Hole 3:
+[]: System.out.println(("Copying resources from " + assetPath + " to " + assetOutputPath));
+Hole 4:
+[]: if (!target.file.getAbsolutePath().replace("\\", "/").endsWith((assetOutputPath + "assets")))
+{
+  target = new FileWrapper(assetOutputPath + "assets/");
+}
+Hole 5:
+[]: ArrayList<Asset> assets = new ArrayList<Asset>();
+Hole 6:
+[SLoop]: String path = asset.file.path().replace('\\', '/').replace((assetOutputPath + "assets/"), "").replaceFirst("assets", "");
+
+

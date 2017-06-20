@@ -1,0 +1,9 @@
+-------------------------------------------
+Inst: 1
+File: android/src/main/java/com/google/samples/apps/iosched/explore/ExploreSessionsActivity.java
+Meth: [(Ident "ExploreSessionsActivity",Ident "setHeader",[])]
+Orig: 511310709ac7f42d5896e4d1e454034cab3d3fd7
+VarA: b380864f137ab58c1c5ec923c6c5211750cef792
+VarB: 0b7ee89f2dcbc351d4477f571fb2cf43633de815
+Merg: f29c9923493de26c2070ce93f6a84fcd00f44506
+Done

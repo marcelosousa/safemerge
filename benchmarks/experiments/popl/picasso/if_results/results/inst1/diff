@@ -1,0 +1,137 @@
+Parsing files...
+Merge Instance for method (Ident "NetworkBitmapHunter",Ident "decodeStream",[RefType (ClassRefType (ClassType [(Ident "InputStream",[])])),RefType (ClassRefType (ClassType [(Ident "Request",[])]))])
+private Bitmap decodeStream (InputStream stream, Request data) throws IOException
+{
+  <?HOLE?>
+  MarkableInputStream markStream = new MarkableInputStream(stream);
+  stream = markStream;
+  long mark = markStream.savePosition(MARKER);
+  <?HOLE?>
+  <?HOLE?>
+  boolean isWebPFile = Utils.isWebPFile(stream);
+  markStream.reset(mark);
+  if (isWebPFile)
+  {
+    byte[] bytes = Utils.toByteArray(stream);
+    <?HOLE?>
+    <?HOLE?>
+    return BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+  }
+  else
+  {
+    <?HOLE?>
+    <?HOLE?>
+    return BitmapFactory.decodeStream(stream, null, options);
+  }
+}
+Edit Base:
+Hole 1:
+[]: if (stream == null)
+{
+  return null;
+}
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[SCond]: BitmapFactory.Options options = createBitmapOptions(data);
+Hole 5:
+[SCond]: if (data.hasSize())
+{
+  options.inJustDecodeBounds = true;
+  BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+  calculateInSampleSize(data.targetWidth, data.targetHeight, options);
+}
+Hole 6:
+[SCond]: BitmapFactory.Options options = createBitmapOptions(data);
+Hole 7:
+[SCond]: if (data.hasSize())
+{
+  options.inJustDecodeBounds = true;
+  BitmapFactory.decodeStream(stream, null, options);
+  calculateInSampleSize(data.targetWidth, data.targetHeight, options);
+  markStream.reset(mark);
+}
+
+Edit A:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[SCond]: BitmapFactory.Options options = createBitmapOptions(data);
+Hole 5:
+[SCond]: if (data.hasSize())
+{
+  options.inJustDecodeBounds = true;
+  BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+  calculateInSampleSize(data.targetWidth, data.targetHeight, options);
+}
+Hole 6:
+[SCond]: BitmapFactory.Options options = createBitmapOptions(data);
+Hole 7:
+[SCond]: if (data.hasSize())
+{
+  options.inJustDecodeBounds = true;
+  BitmapFactory.decodeStream(stream, null, options);
+  calculateInSampleSize(data.targetWidth, data.targetHeight, options);
+  markStream.reset(mark);
+}
+
+Edit B:
+Hole 1:
+[]: if (stream == null)
+{
+  return null;
+}
+Hole 2:
+[]: final BitmapFactory.Options options = createBitmapOptions(data);
+Hole 3:
+[]: final boolean calculateSize = requiresInSampleSize(options);
+Hole 4:
+[SCond]: if (calculateSize)
+{
+  BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+  calculateInSampleSize(data.targetWidth, data.targetHeight, options);
+}
+Hole 5:
+[SCond]: <SKIP>
+Hole 6:
+[SCond]: if (calculateSize)
+{
+  BitmapFactory.decodeStream(stream, null, options);
+  calculateInSampleSize(data.targetWidth, data.targetHeight, options);
+  markStream.reset(mark);
+}
+Hole 7:
+[SCond]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: final BitmapFactory.Options options = createBitmapOptions(data);
+Hole 3:
+[]: final boolean calculateSize = requiresInSampleSize(options);
+Hole 4:
+[SCond]: if (calculateSize)
+{
+  BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+  calculateInSampleSize(data.targetWidth, data.targetHeight, options);
+}
+Hole 5:
+[SCond]: <SKIP>
+Hole 6:
+[SCond]: if (calculateSize)
+{
+  BitmapFactory.decodeStream(stream, null, options);
+  calculateInSampleSize(data.targetWidth, data.targetHeight, options);
+  markStream.reset(mark);
+}
+Hole 7:
+[SCond]: <SKIP>
+
+

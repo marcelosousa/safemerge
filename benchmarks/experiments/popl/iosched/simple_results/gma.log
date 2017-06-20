@@ -1,0 +1,17 @@
+-------------------------------------------
+Inst: 1
+File: android/src/main/java/com/google/samples/apps/iosched/provider/ScheduleDatabase.java
+Meth: [(Ident "ScheduleDatabase",Ident "onCreate",[RefType (ClassRefType (ClassType [(Ident "SQLiteDatabase",[])]))])]
+Orig: 6d726e7b014f892ce214105eca8e7a2857cc41df
+VarA: d5cbce20bf62663594c007e7992dfb1a3b2f4f50
+VarB: 736897276655e106aa6cf1bb86ca5655efb472ca
+Merg: c2cbb3810b5b260c28af774ea1b4f106b373b713
+-------------------------------------------
+Inst: 2
+File: android/src/main/java/com/google/samples/apps/iosched/AppApplication.java
+Meth: [(Ident "AppApplication",Ident "onCreate",[])]
+Orig: 6d726e7b014f892ce214105eca8e7a2857cc41df
+VarA: 11784d13befe8a2d047443ca5f3dff8899dd9fe5
+VarB: cc8b859dc30b68679e89a711e7046178e2221579
+Merg: 30af51cac7b728d1ad099452ceac10b6aee3402a
+Done

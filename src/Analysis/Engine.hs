@@ -328,12 +328,6 @@ encodeCall m mSort vId = do
       argsAST <- mapM (encodeExp mSort vId) args
       arg <- encodeExp mSort vId e
       encCall mSort [name] (arg:argsAST)
-{-
-    case mName of
-      -- convert get into an array access
-      Ident "get" -> enc_array_access vId $ ArrayIndex e args 
-      _ -> error $ "encodeCall: " ++ show m
--}
   _ -> error $ "encodeCall: " ++ show m
  where
   encCall nSort name args = do
@@ -369,7 +363,7 @@ encodeCall m mSort vId = do
      if isUpper $ head ident
      then encCall nSort [foldr (\(Ident a) (Ident b) -> Ident (a ++ "." ++ b)) oc meth] args  
      else do
-      let objVar = getVarSSAMap "call" vId oc _e_ssamap
+      let objVar = getVarSSAMap ("call: " ++ show oc) vId oc _e_ssamap
       case _e_mode of
        Model -> 
         case  _v_mty objVar of

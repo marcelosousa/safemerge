@@ -1,0 +1,73 @@
+Parsing files...
+Merge Instance for method (Ident "SimpleAdapterTest",Ident "verifyViewHolderViews",[])
+@Test
+ public void verifyViewHolderViews ()
+{
+  <?HOLE?>
+  <?HOLE?>
+  ViewHolder holder = new ViewHolder(root);
+  assertThat(holder.word).hasId(R.id.word);
+  assertThat(holder.length).hasId(R.id.length);
+  assertThat(holder.position).hasId(R.id.position);
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: SimpleActivity activity = new SimpleActivity();
+Hole 2:
+[]: View root = LayoutInflater.from(activity).inflate(R.layout.simple_list_item, null);
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: Context context = Robolectric.application;
+Hole 2:
+[]: View root = LayoutInflater.from(context).inflate(R.layout.simple_list_item, null);
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: SimpleActivity activity = new SimpleActivity();
+Hole 2:
+[]: View root = LayoutInflater.from(activity).inflate(R.layout.simple_list_item, null);
+Hole 3:
+[]: Views.reset(holder);
+Hole 4:
+[]: assertThat(holder.word).isNull();
+Hole 5:
+[]: assertThat(holder.length).isNull();
+Hole 6:
+[]: assertThat(holder.position).isNull();
+
+Edit M:
+Hole 1:
+[]: Context context = Robolectric.application;
+Hole 2:
+[]: View root = LayoutInflater.from(context).inflate(R.layout.simple_list_item, null);
+Hole 3:
+[]: Views.reset(holder);
+Hole 4:
+[]: assertThat(holder.word).isNull();
+Hole 5:
+[]: assertThat(holder.length).isNull();
+Hole 6:
+[]: assertThat(holder.position).isNull();
+
+

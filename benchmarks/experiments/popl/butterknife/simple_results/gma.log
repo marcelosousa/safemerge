@@ -1,0 +1,17 @@
+-------------------------------------------
+Inst: 1
+File: butterknife-sample/src/test/java/com/example/butterknife/SimpleAdapterTest.java
+Meth: [(Ident "SimpleAdapterTest",Ident "verifyViewHolderViews",[])]
+Orig: a280e5f68441752f650be251c8279611a626aa31
+VarA: c02017156ed09a70557a072774e882095ff3dc65
+VarB: 7795c1cd016acb02b0aa12addee27f856ae73847
+Merg: c6fa7a191b8f2f3c7765eb7d97c0d1f9afb54dbe
+-------------------------------------------
+Inst: 2
+File: butterknife-sample/src/test/java/com/example/butterknife/SimpleActivityTest.java
+Meth: [(Ident "SimpleActivityTest",Ident "verifyContentViewInjection",[])]
+Orig: a280e5f68441752f650be251c8279611a626aa31
+VarA: c02017156ed09a70557a072774e882095ff3dc65
+VarB: 7795c1cd016acb02b0aa12addee27f856ae73847
+Merg: c6fa7a191b8f2f3c7765eb7d97c0d1f9afb54dbe
+Done

@@ -1,0 +1,65 @@
+Parsing files...
+Merge Instance for method (Ident "AppApplication",Ident "onCreate",[])
+@Override
+ public void onCreate ()
+{
+  super.onCreate();
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  AnalyticsHelper.prepareAnalytics(getApplicationContext());
+  SettingsUtils.markDeclinedWifiSetup(getApplicationContext(), false);
+  try
+  {
+    ProviderInstaller.installIfNeededAsync(getApplicationContext(), new ProviderInstaller.ProviderInstallListener()
+                                                                    {
+                                                                      @Override
+                                                                      public void onProviderInstalled ()
+                                                                      {
+                                                                        LOGW(TAG, "New security provider installed.");
+                                                                      }
+                                                                      @Override
+                                                                      public void onProviderInstallFailed (int errorCode, Intent intent)
+                                                                      {
+                                                                        LOGE(TAG, "New security provider install failed.");
+                                                                      }
+                                                                    });
+  }
+  catch (Exception ignorable)
+  {
+    LOGE(TAG, "Unknown issue trying to install a new security provider.", ignorable);
+  }
+}
+Edit Base:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: TimeUtils.setAppStartTime(getApplicationContext(), System.currentTimeMillis());
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: MultiDex.install(this);
+Hole 2:
+[]: Firebase.setAndroidContext(this);
+Hole 3:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: TimeUtils.setAppStartTime(getApplicationContext(), System.currentTimeMillis());
+Hole 2:
+[]: MultiDex.install(this);
+Hole 3:
+[]: Firebase.setAndroidContext(this);
+
+

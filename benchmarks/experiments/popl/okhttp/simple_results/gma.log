@@ -1,0 +1,25 @@
+-------------------------------------------
+Inst: 1
+File: okhttp-tests/src/test/java/com/squareup/okhttp/ConnectionPoolTest.java
+Meth: [(Ident "ConnectionPoolTest",Ident "connectionCleanup",[]),(Ident "ConnectionPoolTest",Ident "maxConnections",[])]
+Orig: 24aa4e897053e7625694fea79e82280ba8acc303
+VarA: 9f5951b3112d3f84e84d597af6871081a0b90b43
+VarB: a8327d121b9eeb3b61ae63f06095d423936a5da2
+Merg: 0d8704e252b4a4d43caa63d0d14d9e31bc91ce56
+-------------------------------------------
+Inst: 2
+File: okhttp-tests/src/test/java/com/squareup/okhttp/internal/http/URLConnectionTest.java
+Meth: [(Ident "URLConnectionTest",Ident "authenticateCallsTrackedAsRedirects",[]),(Ident "URLConnectionTest",Ident "redirectWithProxySelector",[])]
+Orig: 8ee5584a1c6ff170fbac8222d0bda95b82acee78
+VarA: af08d4a3f3790c375ce86b54ad80d9d1af9cf970
+VarB: 271cc7b632ace0ce5770725d38abb2413af5410e
+Merg: 85a3e9bfc58040c9ffb2ee906b39702bb26a84a5
+-------------------------------------------
+Inst: 3
+File: okhttp/src/main/java/com/squareup/okhttp/OkHttpClient.java
+Meth: [(Ident "OkHttpClient",Ident "copyWithDefaults",[])]
+Orig: 46ea47b8f959249d7d79791385696a9b0294b950
+VarA: 60e5bc087187e53947bcdc6518de814c96d101f2
+VarB: 870ae218c705eedc90a1e6e5e8b3ec83c67a6320
+Merg: 35166168529bd27281685e56a0a122eff44460e9
+Done

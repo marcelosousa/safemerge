@@ -1,0 +1,49 @@
+-------------------------------------------
+Inst: 1
+File: MPChartLib/src/com/github/mikephil/charting/charts/PieRadarChartBase.java
+Meth: [(Ident "PieRadarChartBase",Ident "calculateOffsets",[])]
+Orig: 16685844fff86ccf6e551eb28aae1441199130ec
+VarA: 3e4ff0be58692142055ad40d5ba32c879cc666ae
+VarB: 1ee9fa7978de06b4e0465b3f51ed3897585e8d7a
+Merg: ea80c0bf81a115a1d70d4d958869a811a317edde
+-------------------------------------------
+Inst: 2
+File: MPChartLib/src/com/github/mikephil/charting/charts/HorizontalBarChart.java
+Meth: [(Ident "HorizontalBarChart",Ident "calculateOffsets",[])]
+Orig: 16685844fff86ccf6e551eb28aae1441199130ec
+VarA: 3e4ff0be58692142055ad40d5ba32c879cc666ae
+VarB: 1ee9fa7978de06b4e0465b3f51ed3897585e8d7a
+Merg: ea80c0bf81a115a1d70d4d958869a811a317edde
+-------------------------------------------
+Inst: 3
+File: MPChartLib/src/com/github/mikephil/charting/charts/BarLineChartBase.java
+Meth: [(Ident "BarLineChartBase",Ident "calculateOffsets",[])]
+Orig: 16685844fff86ccf6e551eb28aae1441199130ec
+VarA: 3e4ff0be58692142055ad40d5ba32c879cc666ae
+VarB: 1ee9fa7978de06b4e0465b3f51ed3897585e8d7a
+Merg: ea80c0bf81a115a1d70d4d958869a811a317edde
+-------------------------------------------
+Inst: 4
+File: MPChartLib/src/com/github/mikephil/charting/renderer/PieChartRenderer.java
+Meth: [(Ident "PieChartRenderer",Ident "drawData",[RefType (ClassRefType (ClassType [(Ident "Canvas",[])]))])]
+Orig: a0347bb782810992ad015e0dc1b90e1b71658ea2
+VarA: 1b351934e282827afbdf87e11022d852b07163a0
+VarB: aa7cbce0330de983dac26bf0cda3a23b46b4df1d
+Merg: 9531ba69895cd64fce48038ffd8df2543eeea1d2
+-------------------------------------------
+Inst: 5
+File: MPChartLib/src/com/github/mikephil/charting/renderer/LineChartRenderer.java
+Meth: [(Ident "LineChartRenderer",Ident "drawData",[RefType (ClassRefType (ClassType [(Ident "Canvas",[])]))])]
+Orig: a0347bb782810992ad015e0dc1b90e1b71658ea2
+VarA: 1b351934e282827afbdf87e11022d852b07163a0
+VarB: aa7cbce0330de983dac26bf0cda3a23b46b4df1d
+Merg: 9531ba69895cd64fce48038ffd8df2543eeea1d2
+-------------------------------------------
+Inst: 6
+File: MPChartLib/src/com/github/mikephil/charting/charts/BarLineChartBase.java
+Meth: [(Ident "BarLineChartBase",Ident "getHighlightByTouchPoint",[PrimType FloatT,PrimType FloatT])]
+Orig: 460e896586ba14506018c26c63513316d781d57a
+VarA: 06ac484cfb103999e4d3e7a4627e3a1a04563909
+VarB: 4f151cd6d333b06ebe11b743ad2a86314d896063
+Merg: 81b883f7be152fc24187135d21b16583d8df7a00
+Done

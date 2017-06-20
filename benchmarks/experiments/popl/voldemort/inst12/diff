@@ -1,0 +1,143 @@
+Parsing files...
+Merge Instance for method (Ident "RedirectingStoreTest",Ident "testProxyGet",[])
+@Test
+ public void testProxyGet ()
+{
+  HashMap<ByteArray, byte[]> entryMap = ServerTestUtils.createRandomKeyValuePairs(TEST_VALUES_SIZE);
+  <?HOLE?>
+  for (Entry<ByteArray, byte[]> entry : entryMap.entrySet()) {
+                                                               <?HOLE?>
+                                                             }
+  server0.getMetadataStore().put(MetadataStore.CLUSTER_KEY, targetCluster);
+  server1.getMetadataStore().put(MetadataStore.CLUSTER_KEY, targetCluster);
+  incrementVersionAndPut(server0.getMetadataStore(), MetadataStore.SERVER_STATE_KEY, MetadataStore.VoldemortState.REBALANCING_MASTER_SERVER);
+  <?HOLE?>
+  checkGetEntries(entryMap, server0, getRedirectingStore(server0.getMetadataStore(), testStoreName), Arrays.asList(1));
+}
+Edit Base:
+Hole 1:
+[]: Store<ByteArray, byte[]> store = server1.getStoreRepository().getStorageEngine(testStoreName);
+Hole 2:
+[SLoop]: store.put(entry.getKey(), Versioned.value(entry.getValue(), new VectorClock().incremented(0, System.currentTimeMillis())));
+Hole 3:
+[]: incrementVersionAndPut(server0.getMetadataStore(), MetadataStore.REBALANCING_STEAL_INFO, new RebalancerState(Arrays.asList(new RebalancePartitionsInfo(0, 1, Arrays.asList(1), new ArrayList<Integer>(0), Arrays.asList(testStoreName), 0))));
+
+Edit A:
+Hole 1:
+[]: Store<ByteArray, byte[], byte[]> store = server1.getStoreRepository().getStorageEngine(testStoreName);
+Hole 2:
+[SLoop]: store.put(entry.getKey(), Versioned.value(entry.getValue(), new VectorClock().incremented(0, System.currentTimeMillis())), null);
+Hole 3:
+[]: incrementVersionAndPut(server0.getMetadataStore(), MetadataStore.REBALANCING_STEAL_INFO, new RebalancerState(Arrays.asList(new RebalancePartitionsInfo(0, 1, Arrays.asList(1), new ArrayList<Integer>(0), Arrays.asList(testStoreName), 0))));
+
+Edit B:
+Hole 1:
+[]: Store<ByteArray, byte[]> store = server1.getStoreRepository().getStorageEngine(testStoreName);
+Hole 2:
+[SLoop]: store.put(entry.getKey(), Versioned.value(entry.getValue(), new VectorClock().incremented(0, System.currentTimeMillis())));
+Hole 3:
+[]: incrementVersionAndPut(server0.getMetadataStore(), MetadataStore.REBALANCING_STEAL_INFO, new RebalancerState(Arrays.asList(new RebalancePartitionsInfo(0, 1, Arrays.asList(1), new ArrayList<Integer>(0), new ArrayList<Integer>(0), Arrays.asList(testStoreName), new HashMap<String, String>(), new HashMap<String, String>(), 0))));
+
+Edit M:
+Hole 1:
+[]: Store<ByteArray, byte[], byte[]> store = server1.getStoreRepository().getStorageEngine(testStoreName);
+Hole 2:
+[SLoop]: store.put(entry.getKey(), Versioned.value(entry.getValue(), new VectorClock().incremented(0, System.currentTimeMillis())), null);
+Hole 3:
+[]: incrementVersionAndPut(server0.getMetadataStore(), MetadataStore.REBALANCING_STEAL_INFO, new RebalancerState(Arrays.asList(new RebalancePartitionsInfo(0, 1, Arrays.asList(1), new ArrayList<Integer>(0), new ArrayList<Integer>(0), Arrays.asList(testStoreName), new HashMap<String, String>(), new HashMap<String, String>(), 0))));
+
+Merge Instance for method (Ident "RedirectingStoreTest",Ident "testProxyGetAll",[])
+@Test
+ public void testProxyGetAll ()
+{
+  Map<ByteArray, byte[]> entryMap = ServerTestUtils.createRandomKeyValuePairs(TEST_VALUES_SIZE);
+  <?HOLE?>
+  for (Entry<ByteArray, byte[]> entry : entryMap.entrySet()) {
+                                                               <?HOLE?>
+                                                             }
+  server0.getMetadataStore().put(MetadataStore.CLUSTER_KEY, targetCluster);
+  server1.getMetadataStore().put(MetadataStore.CLUSTER_KEY, targetCluster);
+  incrementVersionAndPut(server0.getMetadataStore(), MetadataStore.SERVER_STATE_KEY, MetadataStore.VoldemortState.REBALANCING_MASTER_SERVER);
+  <?HOLE?>
+  checkGetAllEntries(entryMap, server0, getRedirectingStore(server0.getMetadataStore(), testStoreName), Arrays.asList(1));
+}
+Edit Base:
+Hole 1:
+[]: Store<ByteArray, byte[]> store = server1.getStoreRepository().getStorageEngine(testStoreName);
+Hole 2:
+[SLoop]: store.put(entry.getKey(), Versioned.value(entry.getValue(), new VectorClock().incremented(0, System.currentTimeMillis())));
+Hole 3:
+[]: incrementVersionAndPut(server0.getMetadataStore(), MetadataStore.REBALANCING_STEAL_INFO, new RebalancerState(Arrays.asList(new RebalancePartitionsInfo(0, 1, Arrays.asList(1), new ArrayList<Integer>(0), Arrays.asList(testStoreName), 0))));
+
+Edit A:
+Hole 1:
+[]: Store<ByteArray, byte[], byte[]> store = server1.getStoreRepository().getStorageEngine(testStoreName);
+Hole 2:
+[SLoop]: store.put(entry.getKey(), Versioned.value(entry.getValue(), new VectorClock().incremented(0, System.currentTimeMillis())), null);
+Hole 3:
+[]: incrementVersionAndPut(server0.getMetadataStore(), MetadataStore.REBALANCING_STEAL_INFO, new RebalancerState(Arrays.asList(new RebalancePartitionsInfo(0, 1, Arrays.asList(1), new ArrayList<Integer>(0), Arrays.asList(testStoreName), 0))));
+
+Edit B:
+Hole 1:
+[]: Store<ByteArray, byte[]> store = server1.getStoreRepository().getStorageEngine(testStoreName);
+Hole 2:
+[SLoop]: store.put(entry.getKey(), Versioned.value(entry.getValue(), new VectorClock().incremented(0, System.currentTimeMillis())));
+Hole 3:
+[]: incrementVersionAndPut(server0.getMetadataStore(), MetadataStore.REBALANCING_STEAL_INFO, new RebalancerState(Arrays.asList(new RebalancePartitionsInfo(0, 1, Arrays.asList(1), new ArrayList<Integer>(0), new ArrayList<Integer>(0), Arrays.asList(testStoreName), new HashMap<String, String>(), new HashMap<String, String>(), 0))));
+
+Edit M:
+Hole 1:
+[]: Store<ByteArray, byte[], byte[]> store = server1.getStoreRepository().getStorageEngine(testStoreName);
+Hole 2:
+[SLoop]: store.put(entry.getKey(), Versioned.value(entry.getValue(), new VectorClock().incremented(0, System.currentTimeMillis())), null);
+Hole 3:
+[]: incrementVersionAndPut(server0.getMetadataStore(), MetadataStore.REBALANCING_STEAL_INFO, new RebalancerState(Arrays.asList(new RebalancePartitionsInfo(0, 1, Arrays.asList(1), new ArrayList<Integer>(0), new ArrayList<Integer>(0), Arrays.asList(testStoreName), new HashMap<String, String>(), new HashMap<String, String>(), 0))));
+
+Merge Instance for method (Ident "RedirectingStoreTest",Ident "testProxyPut",[])
+@Test
+ public void testProxyPut ()
+{
+  HashMap<ByteArray, byte[]> entryMap = ServerTestUtils.createRandomKeyValuePairs(TEST_VALUES_SIZE);
+  <?HOLE?>
+  for (Entry<ByteArray, byte[]> entry : entryMap.entrySet()) {
+                                                               <?HOLE?>
+                                                             }
+  server0.getMetadataStore().put(MetadataStore.CLUSTER_KEY, targetCluster);
+  server1.getMetadataStore().put(MetadataStore.CLUSTER_KEY, targetCluster);
+  incrementVersionAndPut(server0.getMetadataStore(), MetadataStore.SERVER_STATE_KEY, MetadataStore.VoldemortState.REBALANCING_MASTER_SERVER);
+  <?HOLE?>
+  checkPutEntries(entryMap, server0, testStoreName, Arrays.asList(1));
+}
+Edit Base:
+Hole 1:
+[]: Store<ByteArray, byte[]> store = server1.getStoreRepository().getStorageEngine(testStoreName);
+Hole 2:
+[SLoop]: store.put(entry.getKey(), Versioned.value(entry.getValue(), new VectorClock().incremented(0, System.currentTimeMillis())));
+Hole 3:
+[]: incrementVersionAndPut(server0.getMetadataStore(), MetadataStore.REBALANCING_STEAL_INFO, new RebalancerState(Arrays.asList(new RebalancePartitionsInfo(0, 1, Arrays.asList(1), new ArrayList<Integer>(0), Arrays.asList(testStoreName), 0))));
+
+Edit A:
+Hole 1:
+[]: Store<ByteArray, byte[], byte[]> store = server1.getStoreRepository().getStorageEngine(testStoreName);
+Hole 2:
+[SLoop]: store.put(entry.getKey(), Versioned.value(entry.getValue(), new VectorClock().incremented(0, System.currentTimeMillis())), null);
+Hole 3:
+[]: incrementVersionAndPut(server0.getMetadataStore(), MetadataStore.REBALANCING_STEAL_INFO, new RebalancerState(Arrays.asList(new RebalancePartitionsInfo(0, 1, Arrays.asList(1), new ArrayList<Integer>(0), Arrays.asList(testStoreName), 0))));
+
+Edit B:
+Hole 1:
+[]: Store<ByteArray, byte[]> store = server1.getStoreRepository().getStorageEngine(testStoreName);
+Hole 2:
+[SLoop]: store.put(entry.getKey(), Versioned.value(entry.getValue(), new VectorClock().incremented(0, System.currentTimeMillis())));
+Hole 3:
+[]: incrementVersionAndPut(server0.getMetadataStore(), MetadataStore.REBALANCING_STEAL_INFO, new RebalancerState(Arrays.asList(new RebalancePartitionsInfo(0, 1, Arrays.asList(1), new ArrayList<Integer>(0), new ArrayList<Integer>(0), Arrays.asList(testStoreName), new HashMap<String, String>(), new HashMap<String, String>(), 0))));
+
+Edit M:
+Hole 1:
+[]: Store<ByteArray, byte[], byte[]> store = server1.getStoreRepository().getStorageEngine(testStoreName);
+Hole 2:
+[SLoop]: store.put(entry.getKey(), Versioned.value(entry.getValue(), new VectorClock().incremented(0, System.currentTimeMillis())), null);
+Hole 3:
+[]: incrementVersionAndPut(server0.getMetadataStore(), MetadataStore.REBALANCING_STEAL_INFO, new RebalancerState(Arrays.asList(new RebalancePartitionsInfo(0, 1, Arrays.asList(1), new ArrayList<Integer>(0), new ArrayList<Integer>(0), Arrays.asList(testStoreName), new HashMap<String, String>(), new HashMap<String, String>(), 0))));
+
+

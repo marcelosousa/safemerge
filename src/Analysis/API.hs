@@ -224,9 +224,9 @@ getASTSSAMap err vid ident ssamap =
 getVarSSAMap :: String -> VId -> Ident -> SSAMap -> SSAVar
 getVarSSAMap err vid ident ssamap = 
   case M.lookup ident ssamap of
-    Nothing -> error $ "getASTSSAMap: " ++ err
+    Nothing -> error $ "getVarSSAMap: " ++ err
     Just l  -> case M.lookup vid l of
-      Nothing -> error $ "getASTSSAMap vid: " ++ err
+      Nothing -> error $ "getVarSSAMap vid: " ++ err
       Just v  -> v
 
 -- | Generate a new AST and increment the counter
