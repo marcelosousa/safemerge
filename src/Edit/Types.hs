@@ -26,8 +26,16 @@ type AnnEdit = [AnnBlockStmt]
 type AnnAnnEdits = [(AnnEdit,AnnEdit,AnnEdit,AnnEdit)]
 type Method = ([FormalParam],Block) 
 
+-- First filter: Get loop changes
 loop_scope :: Edit -> Bool
 loop_scope = any (\(_,sc) -> any (==SLoop) sc) 
+
+-- Second filter: Get changes in conditionals
+if_scope :: Edit -> Bool
+if_scope e = 
+  let c1 = any (\(_,sc) -> any (==SCond) sc) e
+      c2 = loop_scope e
+  in c1 && (not c2) 
 
 -- add each x to the ei
 push :: Edit -> [Edit] -> [Edit]
