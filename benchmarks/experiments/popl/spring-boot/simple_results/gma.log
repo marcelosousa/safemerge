@@ -1,0 +1,433 @@
+-------------------------------------------
+Inst: 1
+File: spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/validation/ValidationAutoConfiguration.java
+Meth: [(Ident "ValidationAutoConfiguration",Ident "methodValidationPostProcessor",[RefType (ClassRefType (ClassType [(Ident "Environment",[])])),RefType (ClassRefType (ClassType [(Ident "Validator",[])]))])]
+Orig: 4d8584eba88f33874bd747e7b19aae347f89ec2d
+VarA: b8fe06c1037a9f77badb7071c14e1c00c8aba706
+VarB: 1de2316a0b4c2d5896c34b954208a4c550466f22
+Merg: 7c4a1a221debcc7b1d6e5d8fae3bb3ab58225bce
+-------------------------------------------
+Inst: 2
+File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/security/oauth2/resource/ResourceServerTokenServicesConfigurationTests.java
+Meth: [(Ident "ResourceServerTokenServicesConfigurationTests",Ident "jwtAccessTokenConverterIsConfiguredWhenKeyUriIsProvided",[])]
+Orig: 6c14420221083ff0cd382e792d9e69ae4ea60476
+VarA: 56c68ca6cf45b5166b51617e8d72952f160f595f
+VarB: 393c17b68b751ec44fe6fbf7d7c4d2cdc2bb5ece
+Merg: 94209e28835521685c9ba6969546c70f304ec2fe
+-------------------------------------------
+Inst: 3
+File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/data/neo4j/Neo4jDataAutoConfigurationTests.java
+Meth: [(Ident "Neo4jDataAutoConfigurationTests",Ident "load",[RefType (ClassRefType (ClassType [(Ident "Class",[Wildcard Nothing])])),RefType (ClassRefType (ClassType [(Ident "String",[])]))])]
+Orig: 751cd6e0b29f3fa150b814749ceba2982adf1112
+VarA: 13e5d985603e455669c0dfa04ea143ecd684344a
+VarB: 0163731043a71b7ca5c78c56a85b7270beca99f4
+Merg: 4c32d6a7ded0696e3ce24e2b8e781943339b71fb
+-------------------------------------------
+Inst: 4
+File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/cache/CacheAutoConfigurationTests.java
+Meth: [(Ident "CacheAutoConfigurationTests",Ident "hazelcastCacheExplicit",[]),(Ident "CacheAutoConfigurationTests",Ident "hazelcastCacheWithMainHazelcastAutoConfigurationAndSeparateCacheConfig",[])]
+Orig: d32c3a7f43e02c36ea79e9e824c49dbaa182f16e
+VarA: 50c0204f2d72802b8dfd0278673cb5308404c246
+VarB: 07c56c60ba1b5f98064ab9ce5df11b82ec56187d
+Merg: 207ab3ecb4f6b4f1364f399018cfe11c2011e2ae
+-------------------------------------------
+Inst: 5
+File: spring-boot/src/main/java/org/springframework/boot/context/embedded/tomcat/TomcatEmbeddedServletContainer.java
+Meth: [(Ident "TomcatEmbeddedServletContainer",Ident "initialize",[]),(Ident "TomcatEmbeddedServletContainer",Ident "stop",[])]
+Orig: 031c9bf191cfcc1ec1d460e2c1d6414c7845832e
+VarA: 94a14dbcd83e9e18e10ec7cbf927628827a254db
+VarB: 3ee7dae09b31648cebc1ed8042a63ecf6e5f1355
+Merg: 58ac67eb278bffb8698f8c832d66dae2062c1944
+-------------------------------------------
+Inst: 6
+File: spring-boot/src/main/java/org/springframework/boot/context/embedded/jetty/JettyEmbeddedServletContainer.java
+Meth: [(Ident "JettyEmbeddedServletContainer",Ident "stop",[])]
+Orig: 031c9bf191cfcc1ec1d460e2c1d6414c7845832e
+VarA: 94a14dbcd83e9e18e10ec7cbf927628827a254db
+VarB: 3ee7dae09b31648cebc1ed8042a63ecf6e5f1355
+Merg: 58ac67eb278bffb8698f8c832d66dae2062c1944
+-------------------------------------------
+Inst: 7
+File: spring-boot/src/main/java/org/springframework/boot/context/embedded/tomcat/TomcatEmbeddedServletContainerFactory.java
+Meth: [(Ident "TomcatEmbeddedServletContainerFactory",Ident "prepareContext",[RefType (ClassRefType (ClassType [(Ident "Host",[])])),RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "ServletContextInitializer",[])]))))])]
+Orig: 21ca1af6777b6335c69344c298c077df6f6e082a
+VarA: e36a60dcadf2a0bb7040644eafbc3aa0ae3c274e
+VarB: b443b745fb21203d127caf88426547141e3ab724
+Merg: 68af8310593f3cc1a82c4bc9884bd9e343a3f948
+-------------------------------------------
+Inst: 8
+File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/security/oauth2/resource/ResourceServerTokenServicesConfigurationTests.java
+Meth: [(Ident "ResourceServerTokenServicesConfigurationTests",Ident "switchToJwt",[])]
+Orig: 01729cc1d2d5101b9b3c48c545c5f97b2727e8ad
+VarA: 04a87ee4c195f1ffe429da18788a788f8254a429
+VarB: f57ddff478eff45706550b01485315ed4f913a98
+Merg: 4304cdb91a81244e5693c0c7ffef2508a088e709
+-------------------------------------------
+Inst: 9
+File: spring-boot/src/main/java/org/springframework/boot/context/embedded/tomcat/TomcatEmbeddedServletContainer.java
+Meth: [(Ident "TomcatEmbeddedServletContainer",Ident "start",[])]
+Orig: cd5124005b9531d1c2da1621d32cf4afdaef2d06
+VarA: a7f148091eb9acab2270fa6d510027d7a5510d88
+VarB: 6f195380283d4e298779875aaf78c3729ee170eb
+Merg: 17451c5e7ad3df7aad9b2bf61dabb8a54c4f7cb7
+-------------------------------------------
+Inst: 10
+File: spring-boot/src/test/java/org/springframework/boot/logging/LoggingApplicationListenerTests.java
+Meth: [(Ident "LoggingApplicationListenerTests",Ident "applicationFailedEventCleansUpLoggingSystem",[]),(Ident "LoggingApplicationListenerTests",Ident "closingChildContextDoesNotCleanUpLoggingSystem",[]),(Ident "LoggingApplicationListenerTests",Ident "closingContextCleansUpLoggingSystem",[]),(Ident "LoggingApplicationListenerTests",Ident "init",[]),(Ident "LoggingApplicationListenerTests",Ident "parseArgsDoesntReplace",[]),(Ident "LoggingApplicationListenerTests",Ident "shutdownHookCanBeRegistered",[]),(Ident "LoggingApplicationListenerTests",Ident "shutdownHookIsNotRegisteredByDefault",[])]
+Orig: 2cf93f89f5c53ea67ca6669a775e1868d14af84d
+VarA: 3d619da553a4bd9b4da59f11bb3d48dbffcec484
+VarB: ae910f3169d2f2728e687c652a9bdcafe90b91bb
+Merg: f3db8c90c747f1f73b4f19551592ad2bedd9ee59
+-------------------------------------------
+Inst: 11
+File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/web/ServerPropertiesTests.java
+Meth: [(Ident "ServerPropertiesTests",Ident "testTomcatBinding",[])]
+Orig: 5dea4c5a035c13a0bfaa8ecc91a0072c91303c98
+VarA: cd3f951d35107d49b3a67a1c78ddbb22ba628671
+VarB: 0072a9391542cf45764559b47fb528bd9aa66676
+Merg: 2ba3b279546185453ca8e533cbea8734e033a12e
+-------------------------------------------
+Inst: 12
+File: spring-boot-devtools/src/main/java/org/springframework/boot/devtools/restart/Restarter.java
+Meth: [(Ident "Restarter",Ident "prepare",[RefType (ClassRefType (ClassType [(Ident "ConfigurableApplicationContext",[])]))])]
+Orig: b3e0a371970f9585a7e7ba7136e475692c98eeb8
+VarA: 7b742fd7925dccb4d58fedb9bef7dc4178d2c2e4
+VarB: 918e122ddccae7cb1bf245269e49b40822114c42
+Merg: eff0fc0221264a7b7d3d4242f03385f0e3233fee
+-------------------------------------------
+Inst: 13
+File: spring-boot/src/main/java/org/springframework/boot/logging/logback/DefaultLogbackConfiguration.java
+Meth: [(Ident "DefaultLogbackConfiguration",Ident "base",[RefType (ClassRefType (ClassType [(Ident "LogbackConfigurator",[])]))])]
+Orig: 6eedfe40e58d47d8d83f1c4dd903f94e602f7cea
+VarA: 3de98bc29de4c4e5b1f2cb033155800cc8264a23
+VarB: 4a6b49ef00537347fc60f619bdaf9ac6fe63e5d3
+Merg: d8b7d6dfdc35d64942baf415305c4f2ba5a64171
+-------------------------------------------
+Inst: 14
+File: spring-boot-tools/spring-boot-configuration-processor/src/main/java/org/springframework/boot/configurationprocessor/ConfigurationMetadataAnnotationProcessor.java
+Meth: [(Ident "ConfigurationMetadataAnnotationProcessor",Ident "processAnnotatedTypeElement",[RefType (ClassRefType (ClassType [(Ident "String",[])])),RefType (ClassRefType (ClassType [(Ident "TypeElement",[])]))])]
+Orig: 6a68c8f7e06a455efd8e3dde19d47fb3f813e7b2
+VarA: e97b703a207bb9517f4215313d28cfe999481446
+VarB: 7f8849c62be829cdef5e5124097bd5c985135e14
+Merg: f6959ccbcd9692cda861e6f105456b8159d9a7b7
+-------------------------------------------
+Inst: 15
+File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/condition/AnyNestedConditionTests.java
+Meth: [(Ident "AnyNestedConditionTests",Ident "neither",[])]
+Orig: faab9047d6c306bd4c1504b7a4fae336c183431d
+VarA: 49f28b7941cf55d1df0470cc853ac5fc9795d2da
+VarB: 3b52909fc2b1f0dc8a0c9e0c32612229433aa662
+Merg: 825dd0a26c9f58b4c0b308900e8343abaa04deba
+-------------------------------------------
+Inst: 16
+File: spring-boot-actuator/src/test/java/org/springframework/boot/actuate/health/JmsHealthIndicatorTests.java
+Meth: [(Ident "JmsHealthIndicatorTests",Ident "jmsBrokerUsesFailover",[])]
+Orig: b88cb35ea231fffa807a9f1d97b6b38e412bb34b
+VarA: d87d60f746fb25dcc48a03c7a6402dbefebbcad2
+VarB: 6eb0449aa9566a4952c8c187af35d543f2694752
+Merg: c66298662821d0330413ae688a2c3545446ae97c
+-------------------------------------------
+Inst: 17
+File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/liquibase/LiquibaseAutoConfigurationTests.java
+Meth: [(Ident "LiquibaseAutoConfigurationTests",Ident "testLogger",[])]
+Orig: 9300c6d4226741841d0a82868c21a99291622b36
+VarA: c9a3880f278c95b59267c711942fa6e2fee95b00
+VarB: ba51dc5c4a6822ee74af522546527d4326509343
+Merg: d4c9a2b27121e9751ea9506b4ebd7596b61fcb8c
+-------------------------------------------
+Inst: 18
+File: spring-boot/src/main/java/org/springframework/boot/context/embedded/undertow/UndertowEmbeddedServletContainerFactory.java
+Meth: [(Ident "UndertowEmbeddedServletContainerFactory",Ident "getKeyManagers",[])]
+Orig: b1dd92881d50f0210cb989ee511273e87f7e9341
+VarA: 041da3b6cd82d2e0d02734aa4e847e024c2636aa
+VarB: af426d08568b7eb8c24bf07a76a62f3ae394da91
+Merg: 9fdef15d50e3eebcf1fde17ddbe8863598d2e031
+-------------------------------------------
+Inst: 19
+File: spring-boot-devtools/src/test/java/org/springframework/boot/devtools/remote/client/ClassPathChangeUploaderTests.java
+Meth: [(Ident "ClassPathChangeUploaderTests",Ident "sendsClassLoaderFiles",[])]
+Orig: 68fb5789ca652d3b6c9e7cc9a0edb6423e2549ac
+VarA: b8ad9537a6cd6c60e6224b712f2b1316e6521d10
+VarB: b1dd92881d50f0210cb989ee511273e87f7e9341
+Merg: bf618d505c503b9f1410ba5cd6f4cc6209370e28
+-------------------------------------------
+Inst: 20
+File: spring-boot-devtools/src/main/java/org/springframework/boot/devtools/tunnel/client/TunnelClient.java
+Meth: [(Ident "TunnelClient",Ident "stop",[])]
+Orig: e53d3167ab839dd809cf5980104907fc889f2c72
+VarA: eb995cc07a9af73bda9bca915b6203520e3d34e4
+VarB: 4963cfd67b2758966ce4def6e243eb2fb5bd1d0e
+Merg: 8e669e2eef3b2ff8aea64a20dff51dc12a013107
+-------------------------------------------
+Inst: 21
+File: spring-boot-actuator/src/test/java/org/springframework/boot/actuate/endpoint/ShutdownEndpointTests.java
+Meth: [(Ident "ShutdownEndpointTests",Ident "invoke",[])]
+Orig: 26a233a8701d53cc208751cdc75f4b6b1f852b1b
+VarA: 277da462ced93d169b811e0ff37ed9ece0db756f
+VarB: 5f751fe356ae0ca1e3328b73d7a3b4d572348cbf
+Merg: c974de0119d13138a27d674db93a74b7a47bfa76
+-------------------------------------------
+Inst: 22
+File: spring-boot/src/test/java/org/springframework/boot/SpringApplicationTests.java
+Meth: [(Ident "SpringApplicationTests",Ident "customBeanNameGenerator",[]),(Ident "SpringApplicationTests",Ident "customBeanNameGeneratorWithNonWebApplication",[])]
+Orig: 9d194c2d437533249f46de983c1f74178216b50e
+VarA: 0c1cf7315a8bfff9887583cf78fe66e346ab7f23
+VarB: 5b97981c87e35876177ee5513fbaedd16b9db9bf
+Merg: c136054e69a1121e9cdaa3c50a621f5274ff2da6
+-------------------------------------------
+Inst: 23
+File: spring-boot-tools/spring-boot-maven-plugin/src/main/java/org/springframework/boot/maven/RunMojo.java
+Meth: [(Ident "RunMojo",Ident "runWithForkedJvm",[RefType (ClassRefType (ClassType [(Ident "List",[ActualType (ClassRefType (ClassType [(Ident "String",[])]))])]))])]
+Orig: 159ef8f1890c403232ea4776bfcd9ad6def60950
+VarA: bc663771692831706fbfe55366363049c413d681
+VarB: ec7d6381aa63513479e3e3b689da5c326dbb9077
+Merg: 7a5880c900a8a05cc4a8020edfe65c2c72bce038
+-------------------------------------------
+Inst: 24
+File: spring-boot-tools/spring-boot-loader/src/test/java/org/springframework/boot/loader/archive/ExplodedArchiveTests.java
+Meth: [(Ident "ExplodedArchiveTests",Ident "getUrl",[])]
+Orig: c808de0021578b4b9ba0881a33c9ed20db2465a5
+VarA: fc78a8de90f3d0745b292c9707addc5faa9ceeec
+VarB: 159ef8f1890c403232ea4776bfcd9ad6def60950
+Merg: af20dc6cc45c032573413c401f9f73aa75371744
+-------------------------------------------
+Inst: 25
+File: spring-boot-tools/spring-boot-loader/src/main/java/org/springframework/boot/loader/archive/ExplodedArchive.java
+Meth: [(Ident "ExplodedArchive",Ident "getUrl",[])]
+Orig: c808de0021578b4b9ba0881a33c9ed20db2465a5
+VarA: fc78a8de90f3d0745b292c9707addc5faa9ceeec
+VarB: 159ef8f1890c403232ea4776bfcd9ad6def60950
+Merg: af20dc6cc45c032573413c401f9f73aa75371744
+-------------------------------------------
+Inst: 26
+File: spring-boot-tools/spring-boot-loader/src/test/java/org/springframework/boot/loader/jar/JarFileTests.java
+Meth: [(Ident "JarFileTests",Ident "createEntryUrl",[]),(Ident "JarFileTests",Ident "getNestedJarFile",[])]
+Orig: 28bd6d60c8874d08dcf7c23be490776bb44fe0ea
+VarA: ac5696e13c654599fa34b35d7d29736b740a4a4a
+VarB: 3772d9f937a2097bba75a227db0ac86611da5ef5
+Merg: 436b58acbf88f3b32a0a780753abdea677685f94
+-------------------------------------------
+Inst: 27
+File: spring-boot-devtools/src/test/java/org/springframework/boot/devtools/filewatch/FileSystemWatcherTests.java
+Meth: [(Ident "FileSystemWatcherTests",Ident "waitsForPollingInterval",[])]
+Orig: a98d1a41a4638c3b24cfafe76256d397ce30cbbd
+VarA: ac5afb142c55c031cbe651af9e6e889bd252ec3a
+VarB: 9f425343ae6c19e30673b4a696a7db93783de577
+Merg: bda2e766ace2457aaf48f646af4fd2e345633cea
+-------------------------------------------
+Inst: 28
+File: spring-boot-samples/spring-boot-sample-data-elasticsearch/src/test/java/sample/data/elasticsearch/SampleElasticsearchApplicationTests.java
+Meth: [(Ident "SampleElasticsearchApplicationTests",Ident "testDefaultSettings",[])]
+Orig: ae89cb0355c72b803e27635d39126d1708fbc69f
+VarA: 6ed63a6eff7c35a2b90211c618bc242a3cfd9b0e
+VarB: 275651e89a94529cba5c3f9f897125168dadee24
+Merg: ccd19ce2c32b596ed9d537f97a67b693b7d5ee67
+-------------------------------------------
+Inst: 29
+File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/web/WebMvcAutoConfigurationTests.java
+Meth: [(Ident "WebMvcAutoConfigurationTests",Ident "faviconMapping",[])]
+Orig: 247685e9923093a22d53d03730cd365c7d9994ab
+VarA: 1ef3327441c22c124b60e994097057cf43684edb
+VarB: ac8e87d79f329fe2ca834198854a648c49ee52f8
+Merg: ad5674cbb0f79575f3f11f344f66a56cc56b376f
+-------------------------------------------
+Inst: 30
+File: spring-boot-devtools/src/test/java/org/springframework/boot/devtools/restart/ChangeableUrlsTests.java
+Meth: [(Ident "ChangeableUrlsTests",Ident "urlsFromJarClassPathAreConsidered",[])]
+Orig: a2f482b7f35cf8fdc89bb6dae399aef6099320a2
+VarA: 06c1dd87c933ae35890d6ca9ac14b9d9e54d245a
+VarB: b554894bb4346a4aac196f6cec1fe3229de96ef7
+Merg: 43256ee7c9956f66601769400ed9d07137dc9bdc
+-------------------------------------------
+Inst: 31
+File: spring-boot-devtools/src/main/java/org/springframework/boot/devtools/restart/ChangeableUrls.java
+Meth: [(Ident "ChangeableUrls",Ident "getUrlsFromClassPathAttribute",[RefType (ClassRefType (ClassType [(Ident "URL",[])])),RefType (ClassRefType (ClassType [(Ident "Manifest",[])]))])]
+Orig: a2f482b7f35cf8fdc89bb6dae399aef6099320a2
+VarA: 06c1dd87c933ae35890d6ca9ac14b9d9e54d245a
+VarB: b554894bb4346a4aac196f6cec1fe3229de96ef7
+Merg: 43256ee7c9956f66601769400ed9d07137dc9bdc
+-------------------------------------------
+Inst: 32
+File: spring-boot-devtools/src/test/java/org/springframework/boot/devtools/restart/ChangeableUrlsTests.java
+Meth: [(Ident "ChangeableUrlsTests",Ident "urlsFromJarClassPathAreConsidered",[])]
+Orig: af2483816bf4978930b78677df250b22d9eadbe8
+VarA: a192970fb34c38f34bf533b6413ad35df182965c
+VarB: 1412eaa0e0eebf767047564fc476d27fcec2d05e
+Merg: 43d30cc5bc31560cc00e54ae064a0442ddb72af5
+-------------------------------------------
+Inst: 33
+File: spring-boot-actuator/src/test/java/org/springframework/boot/actuate/autoconfigure/MetricExportAutoConfigurationTests.java
+Meth: [(Ident "MetricExportAutoConfigurationTests",Ident "defaultExporterWhenMessageChannelAvailable",[])]
+Orig: 5e0ba6ea2e235da76798a9b6dd55833b7951e66e
+VarA: 725ae2c834518266ecc92d986159d9cbcfb4d789
+VarB: a1284bce61e6391b8c6dcb4e5e4d97612a32ded1
+Merg: ae249f7568dd25445df34d02b16393ec65ac2d1d
+-------------------------------------------
+Inst: 34
+File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/integration/IntegrationAutoConfigurationTests.java
+Meth: [(Ident "IntegrationAutoConfigurationTests",Ident "integrationIsAvailable",[]),(Ident "IntegrationAutoConfigurationTests",Ident "parentContext",[])]
+Orig: 33634157122393e81743024ad8b837f0aee89b50
+VarA: 87b963b3966ac73e5bb81ef46eeb2a3b3af40fb5
+VarB: ae095b2c1bdb24f6f67ce357653184f0ef1300d1
+Merg: abd86e50e0aee17d12d1f4505995402829a2aae4
+-------------------------------------------
+Inst: 35
+File: spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/cache/RedisCacheConfiguration.java
+Meth: [(Ident "RedisCacheConfiguration",Ident "cacheManager",[RefType (ClassRefType (ClassType [(Ident "RedisTemplate",[ActualType (ClassRefType (ClassType [(Ident "Object",[])])),ActualType (ClassRefType (ClassType [(Ident "Object",[])]))])]))])]
+Orig: 7ba16e37e812e714425593ea11c66fab3899df92
+VarA: 8b587a87ef76d3a72ddeab14841b1d981fa6565e
+VarB: 4fd778fed8ffba9015803d395a85f9a2ac4615e9
+Merg: c93ea54ea3e08eaa2a17640d5d2b3e60264c1a9c
+-------------------------------------------
+Inst: 36
+File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/cache/CacheAutoConfigurationTests.java
+Meth: [(Ident "CacheAutoConfigurationTests",Ident "testCustomizers",[RefType (ClassRefType (ClassType [(Ident "Class",[Wildcard Nothing])])),RefType (ClassRefType (ClassType [(Ident "String",[])])),RefType (ClassRefType (ClassType [(Ident "String",[])]))])]
+Orig: 1c715ab28229cea3f180d62645ff9943dd6c4646
+VarA: 6bb9eb421f11565ae4216f9b17bbcd5f7eceb693
+VarB: 6075682e64ae2cb3b30db04f717358038556d9a3
+Merg: b6c509bd75eddd456ed3f4d6e4cbe32af2606733
+-------------------------------------------
+Inst: 37
+File: spring-boot-actuator/src/test/java/org/springframework/boot/actuate/autoconfigure/CrshAutoConfigurationTests.java
+Meth: [(Ident "CrshAutoConfigurationTests",Ident "testDisabledPlugins",[])]
+Orig: aa175996757dc8c6bfbcff6504937fa04f611e28
+VarA: 36cdc81ef41de227a5b32d7c4eee890a099f797f
+VarB: 72aae34b67ef99cf851b7f26a2b7d78261e033f8
+Merg: 852ba5461357d3c03c5cb74ac55ed21134efe01b
+-------------------------------------------
+Inst: 38
+File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/cache/CacheAutoConfigurationTests.java
+Meth: [(Ident "CacheAutoConfigurationTests",Ident "hazelcastCacheExplicit",[]),(Ident "CacheAutoConfigurationTests",Ident "hazelcastCacheWithConfig",[]),(Ident "CacheAutoConfigurationTests",Ident "hazelcastCacheWithExistingHazelcastInstance",[]),(Ident "CacheAutoConfigurationTests",Ident "hazelcastCacheWithMainHazelcastAutoConfiguration",[])]
+Orig: 14a5feaceac8119da0c0690892af38dec1de6623
+VarA: ca79ba82910b28a724c79efe2cf4e262162cbbc5
+VarB: 094f7aa20e4fb5c752fbdddb47f8cb70bb721f53
+Merg: 7df05c7d6db0db7a70677a3f462130b09cb4bd5a
+-------------------------------------------
+Inst: 39
+File: spring-boot-actuator/src/test/java/org/springframework/boot/actuate/trace/WebRequestTraceFilterTests.java
+Meth: [(Ident "WebRequestTraceFilterTests",Ident "filterAddsTraceWithDefaultIncludes",[])]
+Orig: 815da8b845faf12b7699b6853f981efc7e2d4d28
+VarA: 0641d9af4f4d3516e38328938c836c2227746284
+VarB: 607dba97f8e3d69517924431678179b003d3d4a5
+Merg: 11c9068d53a97e79172c7dd790a8c38a2ad2de14
+-------------------------------------------
+Inst: 40
+File: spring-boot/src/test/java/org/springframework/boot/logging/LoggingApplicationListenerTests.java
+Meth: [(Ident "LoggingApplicationListenerTests",Ident "systemPropertiesAreSetForLoggingConfiguration",[])]
+Orig: 7787321db4b3347404ba104f16ef18a715332511
+VarA: 2be90eca98523c2ef063b6ae76f933fff338feac
+VarB: 295dc65b789b71ce520d4689379d2c32bbb30e7a
+Merg: 2cee11620e30ce9218bd86c35395475fdafa0d4b
+-------------------------------------------
+Inst: 41
+File: spring-boot/src/test/java/org/springframework/boot/builder/SpringApplicationBuilderTests.java
+Meth: [(Ident "SpringApplicationBuilderTests",Ident "parentContextCreationThatIsBuiltThenRun",[]),(Ident "SpringApplicationBuilderTests",Ident "parentContextCreationThatIsRunDirectly",[])]
+Orig: c0a2c88da10822cebdbc5e28ff48df1dc4b04295
+VarA: b896de404ea4d4107879734acff31ab36c6b9eb8
+VarB: 29c7b936406a2cc2cab0064d41f01b49619bcaaa
+Merg: f12bb26649b38d629e1b70aa362f0e7727fea586
+-------------------------------------------
+Inst: 42
+File: spring-boot/src/test/java/org/springframework/boot/logging/LoggingApplicationListenerTests.java
+Meth: [(Ident "LoggingApplicationListenerTests",Ident "clear",[])]
+Orig: d6bd120b2c4230acb101c424a0e5ba8aa4b40b82
+VarA: 03d29fd68d8f29176d510acc51e01296c3046da5
+VarB: 00b668b2c52b8e121ed0cbb4d7956b340f3bd1ea
+Merg: e9aa7ca9a237f238206a1bb34e28f123c368576d
+-------------------------------------------
+Inst: 43
+File: spring-boot/src/main/java/org/springframework/boot/context/embedded/undertow/UndertowEmbeddedServletContainerFactory.java
+Meth: [(Ident "UndertowEmbeddedServletContainerFactory",Ident "createDeploymentManager",[RefType (ClassRefType (ClassType [(Ident "ServletContextInitializer",[])]))])]
+Orig: 604ca524912c7a4e105746138bafc1eeedec3b50
+VarA: dd4b9b1788862933e714700aa4caa425e3fc154c
+VarB: 2fe08194950356f247107a256da91a3560b80fa3
+Merg: ea8107b6a53fa60b5f23b33e1b6d2e88bb60133c
+-------------------------------------------
+Inst: 44
+File: spring-boot-actuator/src/test/java/org/springframework/boot/actuate/autoconfigure/EndpointWebMvcAutoConfigurationTests.java
+Meth: [(Ident "EndpointWebMvcAutoConfigurationTests",Ident "onDifferentPort",[])]
+Orig: 9218d5ad117852eaf948c99635b4eb61150d6e8d
+VarA: 01b23c886f22b83861beb4c8b7a4853cb9a09345
+VarB: e4895f8fdeca321769b52e0d4359f246b80475c1
+Merg: 17fde264e219ded7b73d39308f37ce13779f98a9
+-------------------------------------------
+Inst: 45
+File: spring-boot/src/main/java/org/springframework/boot/bind/RelaxedDataBinder.java
+Meth: [(Ident "RelaxedDataBinder",Ident "getPropertyValuesForNamePrefix",[RefType (ClassRefType (ClassType [(Ident "MutablePropertyValues",[])]))])]
+Orig: 31705982a05ac5ff7b0bb8d08426ba90ef35223c
+VarA: 69d57f9a3521b4267f82b9b2aabd27d2465abdee
+VarB: b0d9a8322e11529e3ea5b6997e3610e434b303e8
+Merg: 9681df0e9f8790b0d30f032a6460a957289ea05b
+-------------------------------------------
+Inst: 46
+File: spring-boot/src/main/java/org/springframework/boot/context/web/SpringBootServletInitializer.java
+Meth: [(Ident "SpringBootServletInitializer",Ident "createRootApplicationContext",[RefType (ClassRefType (ClassType [(Ident "ServletContext",[])]))])]
+Orig: 86d5c1925916043ca69da3e3443baf5b1ae4f8ad
+VarA: 93700d00de8135ba1c5d2d95d91e69e21f3f8ed9
+VarB: 11d59df3fd71a656a7869ace4303a8d72e6f777c
+Merg: 3444ebbc05b99a164474c14d6a6784f749514428
+-------------------------------------------
+Inst: 47
+File: spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/template/AbstractTemplateViewResolverProperties.java
+Meth: [(Ident "AbstractTemplateViewResolverProperties",Ident "applyToViewResolver",[RefType (ClassRefType (ClassType [(Ident "Object",[])]))])]
+Orig: f9a775518fab8181844f9fffe94339ac9441d8b2
+VarA: c164065a38498892427ab849ca4b3f214c0a14ce
+VarB: a2f4c1cc4a90ab19c535a3f508d9296ab250cff6
+Merg: 2ae8a021f90b9ef77ca63f59d9c23137b1d65340
+-------------------------------------------
+Inst: 48
+File: spring-boot/src/main/java/org/springframework/boot/context/embedded/tomcat/TomcatEmbeddedServletContainerFactory.java
+Meth: [(Ident "TomcatEmbeddedServletContainerFactory",Ident "createTempDir",[RefType (ClassRefType (ClassType [(Ident "String",[])]))])]
+Orig: 982b81c675319d1a5d2fb859a28db06449e2f1a0
+VarA: af1afeaf48e80831fb21c7360b357cd5de47a9e8
+VarB: f8fdcc1312f2e74bd94282dcae1c29acf257d42b
+Merg: 9aa445bf4601fdcf1bd3827351b4154f2cfc1d64
+-------------------------------------------
+Inst: 49
+File: spring-boot/src/main/java/org/springframework/boot/context/web/SpringBootServletInitializer.java
+Meth: [(Ident "SpringBootServletInitializer",Ident "createRootApplicationContext",[RefType (ClassRefType (ClassType [(Ident "ServletContext",[])]))])]
+Orig: 01ba0f75718c0342276cfd7b3c269f9effe5ef56
+VarA: d30dd1fa98f2ab84926ac1c40f6a4a44c39e2f55
+VarB: cd62596e8282b7a91490a7efe527f6deed7e3baa
+Merg: 074771ec125dd407af0282b92960e9e9e3377e84
+-------------------------------------------
+Inst: 50
+File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/web/ServerPropertiesTests.java
+Meth: [(Ident "ServerPropertiesTests",Ident "defaultTomcatRemoteIpValve",[])]
+Orig: 5f2ffdb9e282f94a183f1c10f5a7b23726b36a29
+VarA: 7d845391b04a24deddedb786526348ac2bdd0c07
+VarB: 01ba0f75718c0342276cfd7b3c269f9effe5ef56
+Merg: d30dd1fa98f2ab84926ac1c40f6a4a44c39e2f55
+-------------------------------------------
+Inst: 51
+File: spring-boot-actuator/src/test/java/org/springframework/boot/actuate/autoconfigure/ManagementSecurityAutoConfigurationTests.java
+Meth: [(Ident "ManagementSecurityAutoConfigurationTests",Ident "testWebConfiguration",[])]
+Orig: 6aaa5ee933e9035eee6e9447ced98a9db3a5e135
+VarA: a4b4b850d515095e7ec7c1cc7dea029f9c861628
+VarB: d7ae0f3b067012774cd0dd8ee8b23d6a201492fe
+Merg: a8726c4ae13d740f6f7bbb534c70992e36f17fcc
+-------------------------------------------
+Inst: 52
+File: spring-boot/src/main/java/org/springframework/boot/logging/LoggingApplicationListener.java
+Meth: [(Ident "LoggingApplicationListener",Ident "initializeSystem",[RefType (ClassRefType (ClassType [(Ident "ConfigurableEnvironment",[])])),RefType (ClassRefType (ClassType [(Ident "LoggingSystem",[])]))])]
+Orig: 3b78aa9493eca33301191401add548645c6f003f
+VarA: 78c22813d35f1e715ffccc7a65bae75301d61e3f
+VarB: c9a3919af9f9c9c7f0f192daf8682cfc445dd0f6
+Merg: af643e2f54da6153a067941b4390cd15976eadd5
+-------------------------------------------
+Inst: 53
+File: spring-boot/src/main/java/org/springframework/boot/logging/logback/LogbackLoggingSystem.java
+Meth: [(Ident "LogbackLoggingSystem",Ident "beforeInitialize",[])]
+Orig: 9059c7574b62e9820e2836e7c0b140984a0422df
+VarA: f75b266d647e5bd48ec9563acaa8cf63b38babd6
+VarB: 59ebc3b3203c6fe84e7442acec401af206775e33
+Merg: d0f43d2e2b2defe5dd7357271d8f9a63ed435baa
+-------------------------------------------
+Inst: 54
+File: spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/jdbc/DataSourceAutoConfiguration.java
+Meth: [(Ident "DataSourceAutoConfiguration",Ident "initialize",[])]
+Orig: 08a6efff464774d1c2000ecf6a21b9fa8d7ea352
+VarA: 0b4e2b3667a03a18632da20d9fe9d6b2801d821c
+VarB: fa7da5925bd7a194c44391ae9ada99f50da4a287
+Merg: 938609fdc04b50960a1a61efa5601b723fc06e6a
+Done

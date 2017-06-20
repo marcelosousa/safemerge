@@ -1,0 +1,41 @@
+-------------------------------------------
+Inst: 1
+File: spring-boot-actuator/src/main/java/org/springframework/boot/actuate/endpoint/ConfigurationPropertiesReportEndpoint.java
+Meth: [(Ident "ConfigurationPropertiesReportEndpoint",Ident "sanitize",[RefType (ClassRefType (ClassType [(Ident "String",[])])),RefType (ClassRefType (ClassType [(Ident "Map",[ActualType (ClassRefType (ClassType [(Ident "String",[])])),ActualType (ClassRefType (ClassType [(Ident "Object",[])]))])]))])]
+Orig: 05dbc15a9d14964a24a7d81a6175aa5f60cbe255
+VarA: 7d247a71e4ed07dcfc9d4d0323d2f25eb0a85676
+VarB: f27bb39af9d4fb5bbef07ef0e70f39281ceee758
+Merg: d02a9c10588788e5b865c2efbdf4b3c88393cc3b
+-------------------------------------------
+Inst: 2
+File: spring-boot-test/src/main/java/org/springframework/boot/test/context/SpringBootContextLoader.java
+Meth: [(Ident "SpringBootContextLoader",Ident "getInitializers",[RefType (ClassRefType (ClassType [(Ident "MergedContextConfiguration",[])])),RefType (ClassRefType (ClassType [(Ident "SpringApplication",[])]))])]
+Orig: 0ad4e0e70f228371a0594ecc9ebbf215c488d13d
+VarA: eb4329fb39f16303bead192ab18a72633a3f6f5f
+VarB: b71baf2c3811f7f613ca7ac6ff3da536ee1b0265
+Merg: fd677af868c9b9663eb1be850a0965d0cc6e5dc3
+-------------------------------------------
+Inst: 3
+File: spring-boot/src/main/java/org/springframework/boot/logging/logback/LogbackLoggingSystem.java
+Meth: [(Ident "LogbackLoggingSystem",Ident "loadConfiguration",[RefType (ClassRefType (ClassType [(Ident "LoggingInitializationContext",[])])),RefType (ClassRefType (ClassType [(Ident "String",[])])),RefType (ClassRefType (ClassType [(Ident "LogFile",[])]))])]
+Orig: 422f3d12a3ea647651e4da143e83b105b527dbaf
+VarA: d66ff0e42bc50a7d023853d6a5199e7196f26624
+VarB: 0a7a283f4595536bd1a56aa2d977ae570cc0b2b6
+Merg: 07313d1245eac7a028068b4e05658c8539bebd78
+-------------------------------------------
+Inst: 4
+File: spring-boot/src/main/java/org/springframework/boot/logging/logback/LogbackLoggingSystem.java
+Meth: [(Ident "LogbackLoggingSystem",Ident "loadConfiguration",[RefType (ClassRefType (ClassType [(Ident "LoggingInitializationContext",[])])),RefType (ClassRefType (ClassType [(Ident "String",[])])),RefType (ClassRefType (ClassType [(Ident "LogFile",[])]))])]
+Orig: 4cbbd48f18e8e13f3c709aab56f62f60c87230e9
+VarA: f3c622ad89ab2eebbbf2e1b39260ae1197590022
+VarB: ddfadce94d02ff7cc5484fde7acd3478ace6dea2
+Merg: 72928de5182c86a381e349e11df63f3ea6a3168d
+-------------------------------------------
+Inst: 5
+File: spring-boot-actuator/src/main/java/org/springframework/boot/actuate/autoconfigure/ManagementSecurityAutoConfiguration.java
+Meth: [(Ident "ManagementSecurityAutoConfiguration",Ident "getEndpointPaths",[RefType (ClassRefType (ClassType [(Ident "EndpointHandlerMapping",[])])),PrimType BooleanT])]
+Orig: 6aaa5ee933e9035eee6e9447ced98a9db3a5e135
+VarA: a4b4b850d515095e7ec7c1cc7dea029f9c861628
+VarB: d7ae0f3b067012774cd0dd8ee8b23d6a201492fe
+Merg: a8726c4ae13d740f6f7bbb534c70992e36f17fcc
+Done

@@ -1,0 +1,465 @@
+-------------------------------------------
+Inst: 1
+File: src/java/voldemort/store/routed/PipelineRoutedStore.java
+Meth: [(Ident "PipelineRoutedStore",Ident "get",[RefType (ClassRefType (ClassType [(Ident "ByteArray",[])])),RefType (ArrayType (PrimType ByteT))]),(Ident "PipelineRoutedStore",Ident "put",[RefType (ClassRefType (ClassType [(Ident "ByteArray",[])])),RefType (ClassRefType (ClassType [(Ident "Versioned",[ActualType (ArrayType (PrimType ByteT))])])),RefType (ArrayType (PrimType ByteT))])]
+Orig: ea0c80bc8005d92bab5a72a794d99cff57d9d995
+VarA: 78ae5d5c916f30724cf5262e7561e5de9079f9c2
+VarB: c54100d5f18c28caf8e5e753a448bd31a128292b
+Merg: be12a285a740b92c9b1f0e60aafc225e2f4b7076
+-------------------------------------------
+Inst: 2
+File: src/java/voldemort/store/StoreDefinition.java
+Meth: [(Ident "StoreDefinition",Ident "checkParameterLegality",[])]
+Orig: ea0c80bc8005d92bab5a72a794d99cff57d9d995
+VarA: 78ae5d5c916f30724cf5262e7561e5de9079f9c2
+VarB: c54100d5f18c28caf8e5e753a448bd31a128292b
+Merg: be12a285a740b92c9b1f0e60aafc225e2f4b7076
+-------------------------------------------
+Inst: 3
+File: src/java/voldemort/client/AbstractStoreClientFactory.java
+Meth: [(Ident "AbstractStoreClientFactory",Ident "getFailureDetector",[])]
+Orig: ea0c80bc8005d92bab5a72a794d99cff57d9d995
+VarA: 78ae5d5c916f30724cf5262e7561e5de9079f9c2
+VarB: c54100d5f18c28caf8e5e753a448bd31a128292b
+Merg: be12a285a740b92c9b1f0e60aafc225e2f4b7076
+-------------------------------------------
+Inst: 4
+File: test/unit/voldemort/client/ClientRegistryTest.java
+Meth: [(Ident "ClientRegistryTest",Ident "testHappyPath",[]),(Ident "ClientRegistryTest",Ident "testTwoClients",[]),(Ident "ClientRegistryTest",Ident "testTwoFactories",[]),(Ident "ClientRegistryTest",Ident "testTwoStores",[])]
+Orig: e90fa82d25decdbee1f102302e7746e06a2e4ba2
+VarA: fcffeb5f06684dd65bc7612506ab589d422703fa
+VarB: e77ee0f003449ad232e1a54dcf3fb30645bab0ad
+Merg: a86a9e5a05cb8afbe94bbd0eb23999e39508b8a8
+-------------------------------------------
+Inst: 5
+File: src/java/voldemort/client/scheduler/ClientRegistryRefresher.java
+Meth: [(Ident "ClientRegistryRefresher",Ident "run",[])]
+Orig: e90fa82d25decdbee1f102302e7746e06a2e4ba2
+VarA: fcffeb5f06684dd65bc7612506ab589d422703fa
+VarB: e77ee0f003449ad232e1a54dcf3fb30645bab0ad
+Merg: a86a9e5a05cb8afbe94bbd0eb23999e39508b8a8
+-------------------------------------------
+Inst: 6
+File: src/java/voldemort/client/AbstractStoreClientFactory.java
+Meth: [(Ident "AbstractStoreClientFactory",Ident "getStoreClient",[RefType (ClassRefType (ClassType [(Ident "String",[])])),RefType (ClassRefType (ClassType [(Ident "InconsistencyResolver",[ActualType (ClassRefType (ClassType [(Ident "Versioned",[ActualType (ClassRefType (ClassType [(Ident "V",[])]))])]))])]))])]
+Orig: e90fa82d25decdbee1f102302e7746e06a2e4ba2
+VarA: fcffeb5f06684dd65bc7612506ab589d422703fa
+VarB: e77ee0f003449ad232e1a54dcf3fb30645bab0ad
+Merg: a86a9e5a05cb8afbe94bbd0eb23999e39508b8a8
+-------------------------------------------
+Inst: 7
+File: src/java/voldemort/server/protocol/admin/AdminServiceRequestHandler.java
+Meth: [(Ident "AdminServiceRequestHandler",Ident "handleRequest",[RefType (ClassRefType (ClassType [(Ident "DataInputStream",[])])),RefType (ClassRefType (ClassType [(Ident "DataOutputStream",[])]))])]
+Orig: 74e0d94476799fc4b2f34317dfa4b00a051469e0
+VarA: aee112d9ef0ed960c7bc9955d7e85e6ed6ac91a0
+VarB: fd5dbeb5113ffed51cf1836ac78b129a4bea4cb6
+Merg: 491863359fac1b2c67fe6c1a719ef4c1f569c22d
+-------------------------------------------
+Inst: 8
+File: src/java/voldemort/server/protocol/admin/AdminServiceRequestHandler.java
+Meth: [(Ident "AdminServiceRequestHandler",Ident "handleRequest",[RefType (ClassRefType (ClassType [(Ident "DataInputStream",[])])),RefType (ClassRefType (ClassType [(Ident "DataOutputStream",[])]))])]
+Orig: 57121fadb3ee0be0c874828327d716e60128af90
+VarA: c94ab058fca9c7c8da53b048728296c23b930586
+VarB: e491023028019ccf987c37592a44c8869a0db65c
+Merg: f3cd4f9fef530b4f10cbad1b4c884be2b551ee9b
+-------------------------------------------
+Inst: 9
+File: src/java/voldemort/client/rebalance/RebalanceCLI.java
+Meth: [(Ident "RebalanceCLI",Ident "main",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "String",[])]))))])]
+Orig: de9ffd0eef44488673f732a9c69f7a45525fd434
+VarA: 02420ab2e76d0d1aeda60a762ee3256ebf51bcfd
+VarB: 2ac361e5caf6843fecd1fcc2aac42affb40f8886
+Merg: c3cda506b04af213b7b5e4066d006ae3df3ea207
+-------------------------------------------
+Inst: 10
+File: src/java/voldemort/client/rebalance/RebalanceCLI.java
+Meth: [(Ident "RebalanceCLI",Ident "main",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "String",[])]))))])]
+Orig: de9ffd0eef44488673f732a9c69f7a45525fd434
+VarA: 351e72963efb4f9ea03eb50e58ddb42fb6ce1373
+VarB: 2ac361e5caf6843fecd1fcc2aac42affb40f8886
+Merg: a69271a3883991282937eaed70486986fc2ed5b8
+-------------------------------------------
+Inst: 11
+File: src/java/voldemort/client/rebalance/RebalanceCLI.java
+Meth: [(Ident "RebalanceCLI",Ident "main",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "String",[])]))))])]
+Orig: 0893ed2fac79af7e984a11052def016c11724be2
+VarA: 50c3abbc5b9b39c75bffce62dff30d45bd77f70e
+VarB: de9ffd0eef44488673f732a9c69f7a45525fd434
+Merg: c3b8777e5efb1bd7c52964903d20fd8076fc0de7
+-------------------------------------------
+Inst: 12
+File: src/java/voldemort/VoldemortAdminTool.java
+Meth: [(Ident "VoldemortAdminTool",Ident "executeGetMetadata",[RefType (ClassRefType (ClassType [(Ident "Integer",[])])),RefType (ClassRefType (ClassType [(Ident "AdminClient",[])])),RefType (ClassRefType (ClassType [(Ident "String",[])])),RefType (ClassRefType (ClassType [(Ident "String",[])]))])]
+Orig: 0893ed2fac79af7e984a11052def016c11724be2
+VarA: 50c3abbc5b9b39c75bffce62dff30d45bd77f70e
+VarB: de9ffd0eef44488673f732a9c69f7a45525fd434
+Merg: c3b8777e5efb1bd7c52964903d20fd8076fc0de7
+-------------------------------------------
+Inst: 13
+File: src/java/voldemort/client/rebalance/RebalanceCLI.java
+Meth: [(Ident "RebalanceCLI",Ident "main",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "String",[])]))))])]
+Orig: 0893ed2fac79af7e984a11052def016c11724be2
+VarA: 7376cc64c82b51e1a9dc2bc4556ddd595f5dbe6a
+VarB: cca94e74806012b9c83ca600e9848972a8fe6c49
+Merg: 69ae69e896350d636770dedc404f76f9a433c238
+-------------------------------------------
+Inst: 14
+File: src/java/voldemort/client/rebalance/RebalanceCLI.java
+Meth: [(Ident "RebalanceCLI",Ident "main",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "String",[])]))))])]
+Orig: 549ba97acd800ee6ab639b11a35c48aaee376ee3
+VarA: b8d8a0d85fb1dfea96ada3c3f0fbdb85f201ba98
+VarB: 0893ed2fac79af7e984a11052def016c11724be2
+Merg: 5f7757a13757f0f2e65479667d9e7d013f8d9990
+-------------------------------------------
+Inst: 15
+File: src/java/voldemort/VoldemortAdminTool.java
+Meth: [(Ident "VoldemortAdminTool",Ident "main",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "String",[])]))))])]
+Orig: 549ba97acd800ee6ab639b11a35c48aaee376ee3
+VarA: b8d8a0d85fb1dfea96ada3c3f0fbdb85f201ba98
+VarB: 0893ed2fac79af7e984a11052def016c11724be2
+Merg: 5f7757a13757f0f2e65479667d9e7d013f8d9990
+-------------------------------------------
+Inst: 16
+File: src/java/voldemort/VoldemortAdminTool.java
+Meth: [(Ident "VoldemortAdminTool",Ident "main",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "String",[])]))))])]
+Orig: 7cb86243b5e9f1705714ecf8a2206882966919f3
+VarA: 6140f785a5bc39f9bd5f325a5924be7e223d0a7f
+VarB: ea2f292134244ea1bed2b3b5775b3fb0d0a1f62b
+Merg: 5608a20056e5aa1ef050219d0372724e7c57f6f0
+-------------------------------------------
+Inst: 17
+File: src/java/voldemort/store/readonly/ReadOnlyStorageEngine.java
+Meth: [(Ident "ReadOnlyStorageEngine",Ident "open",[RefType (ClassRefType (ClassType [(Ident "File",[])]))])]
+Orig: 8fea16871b3e2a8ac0342128dacc0c3a6b0aec36
+VarA: ad0a6b220460ef3d2806d2e631588598a0b268a5
+VarB: 475b823172ca907cced8e851a9bb50c4faf0c5a5
+Merg: 1860e5b1dcd4eac62de452f4cb484f1a1d231cbf
+-------------------------------------------
+Inst: 18
+File: src/java/voldemort/store/readonly/ReadOnlyStorageEngine.java
+Meth: [(Ident "ReadOnlyStorageEngine",Ident "rollback",[RefType (ClassRefType (ClassType [(Ident "File",[])]))]),(Ident "ReadOnlyStorageEngine",Ident "swapFiles",[RefType (ClassRefType (ClassType [(Ident "String",[])]))])]
+Orig: b01a8b2e5fa444da6733b3ac457e04908871ae3c
+VarA: 02513d5536743a46864de0d5b2c9e6a2469fd7cc
+VarB: 7d5e323f6caefb78976d387a264eb0f2dbce01a4
+Merg: 52c3fa138c1c852cf15fb054b0aeef0edfb1f680
+-------------------------------------------
+Inst: 19
+File: src/java/voldemort/client/rebalance/MigratePartitions.java
+Meth: [(Ident "MigratePartitions",Ident "migrate",[])]
+Orig: 97e03a769c35a102189b762b7d058d477a25387e
+VarA: 23e600eea6c09ab73ffdc23b6be6068835f8524b
+VarB: b01a8b2e5fa444da6733b3ac457e04908871ae3c
+Merg: 983dbd031b100b8a9bf5ccbff1901a666da34026
+-------------------------------------------
+Inst: 20
+File: test/integration/voldemort/store/grandfather/GrandfatherTest.java
+Meth: [(Ident "GrandfatherTest",Ident "test",[RefType (ClassRefType (ClassType [(Ident "Cluster",[])])),RefType (ClassRefType (ClassType [(Ident "Cluster",[])])),RefType (ClassRefType (ClassType [(Ident "List",[ActualType (ClassRefType (ClassType [(Ident "StoreDefinition",[])]))])])),RefType (ClassRefType (ClassType [(Ident "List",[ActualType (ClassRefType (ClassType [(Ident "StoreDefinition",[])]))])]))])]
+Orig: 70fd0af4ba7932690ad34240b92774024a97b1a4
+VarA: 17d5b4222334155d967b8b37e4f1fcb5a3a30fe5
+VarB: b01a8b2e5fa444da6733b3ac457e04908871ae3c
+Merg: 02513d5536743a46864de0d5b2c9e6a2469fd7cc
+-------------------------------------------
+Inst: 21
+File: test/integration/voldemort/store/grandfather/GrandfatherTest.java
+Meth: [(Ident "GrandfatherTest",Ident "test",[RefType (ClassRefType (ClassType [(Ident "Cluster",[])])),RefType (ClassRefType (ClassType [(Ident "Cluster",[])])),RefType (ClassRefType (ClassType [(Ident "List",[ActualType (ClassRefType (ClassType [(Ident "StoreDefinition",[])]))])])),RefType (ClassRefType (ClassType [(Ident "List",[ActualType (ClassRefType (ClassType [(Ident "StoreDefinition",[])]))])]))])]
+Orig: 8bd8f043583ad2f09c1b12b9e7d119b7e19f6341
+VarA: 979f52a51883fcb387c3c95498b560aaeda8ff38
+VarB: cecc55e68e00b9e770a331c934167608c5eb86d2
+Merg: 97e03a769c35a102189b762b7d058d477a25387e
+-------------------------------------------
+Inst: 22
+File: test/unit/voldemort/scheduled/SlopPusherTest.java
+Meth: [(Ident "SlopPusherTest",Ident "setUp",[])]
+Orig: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+VarA: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+VarB: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merg: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+-------------------------------------------
+Inst: 23
+File: test/integration/voldemort/performance/benchmark/Benchmark.java
+Meth: [(Ident "Benchmark",Ident "initializeStore",[RefType (ClassRefType (ClassType [(Ident "Props",[])]))])]
+Orig: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+VarA: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+VarB: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merg: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+-------------------------------------------
+Inst: 24
+File: src/java/voldemort/store/routed/action/PerformParallelGetAllRequests.java
+Meth: [(Ident "PerformParallelGetAllRequests",Ident "execute",[RefType (ClassRefType (ClassType [(Ident "Pipeline",[])]))])]
+Orig: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+VarA: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+VarB: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merg: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+-------------------------------------------
+Inst: 25
+File: src/java/voldemort/store/StoreDefinitionBuilder.java
+Meth: [(Ident "StoreDefinitionBuilder",Ident "build",[])]
+Orig: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+VarA: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+VarB: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merg: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+-------------------------------------------
+Inst: 26
+File: src/java/voldemort/store/StoreDefinition.java
+Meth: [(Ident "StoreDefinition",Ident "equals",[RefType (ClassRefType (ClassType [(Ident "Object",[])]))]),(Ident "StoreDefinition",Ident "hashCode",[]),(Ident "StoreDefinition",Ident "toString",[])]
+Orig: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+VarA: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+VarB: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merg: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+-------------------------------------------
+Inst: 27
+File: src/java/voldemort/server/storage/StorageService.java
+Meth: [(Ident "StorageService",Ident "registerNodeStores",[RefType (ClassRefType (ClassType [(Ident "StoreDefinition",[])])),RefType (ClassRefType (ClassType [(Ident "Cluster",[])])),PrimType IntT])]
+Orig: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+VarA: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+VarB: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merg: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+-------------------------------------------
+Inst: 28
+File: src/java/voldemort/server/scheduler/SlopPusherJob.java
+Meth: [(Ident "SlopPusherJob",Ident "run",[])]
+Orig: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+VarA: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+VarB: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merg: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+-------------------------------------------
+Inst: 29
+File: src/java/voldemort/client/AbstractStoreClientFactory.java
+Meth: [(Ident "AbstractStoreClientFactory",Ident "getRawStore",[RefType (ClassRefType (ClassType [(Ident "String",[])])),RefType (ClassRefType (ClassType [(Ident "InconsistencyResolver",[ActualType (ClassRefType (ClassType [(Ident "Versioned",[ActualType (ClassRefType (ClassType [(Ident "V",[])]))])]))])]))])]
+Orig: a24eb465fc69b9a57f8f1bc876695c0b94d350f0
+VarA: d55c7713de1f833e1a73e33aa86a5ff3e7d32141
+VarB: 6efd96c5657b3795cb753c0459175040a340fcb1
+Merg: 1f0db5f73a2b0cd4bcedc5e9077f201f038abfe3
+-------------------------------------------
+Inst: 30
+File: test/unit/voldemort/store/readonly/ReadOnlyStorageEngineTestInstance.java
+Meth: [(Ident "ReadOnlyStorageEngineTestInstance",Ident "create",[RefType (ClassRefType (ClassType [(Ident "SearchStrategy",[])])),RefType (ClassRefType (ClassType [(Ident "File",[])])),PrimType IntT,PrimType IntT,PrimType IntT,RefType (ClassRefType (ClassType [(Ident "SerializerDefinition",[])])),RefType (ClassRefType (ClassType [(Ident "SerializerDefinition",[])]))])]
+Orig: 042da34a6940d1a2fa20db59331a347da16d4a9e
+VarA: 566b4bc712f6f3945a1a74bf1293f070c615868b
+VarB: 01fad80c857610cedc5b146c6f6d3c405509ac79
+Merg: 9702607f6213cf072715080ff7e08eccb4fad3cc
+-------------------------------------------
+Inst: 31
+File: test/unit/voldemort/client/rebalance/AbstractRebalanceTest.java
+Meth: [(Ident "AbstractRebalanceTest",Ident "testProxyGetDuringRebalancing",[]),(Ident "AbstractRebalanceTest",Ident "testProxyGetWithMultipleDonors",[]),(Ident "AbstractRebalanceTest",Ident "testServerSideRouting",[])]
+Orig: 042da34a6940d1a2fa20db59331a347da16d4a9e
+VarA: 566b4bc712f6f3945a1a74bf1293f070c615868b
+VarB: 01fad80c857610cedc5b146c6f6d3c405509ac79
+Merg: 9702607f6213cf072715080ff7e08eccb4fad3cc
+-------------------------------------------
+Inst: 32
+File: test/integration/voldemort/performance/benchmark/VoldemortWrapper.java
+Meth: [(Ident "VoldemortWrapper",Ident "mixed",[RefType (ClassRefType (ClassType [(Ident "Object",[])])),RefType (ClassRefType (ClassType [(Ident "Object",[])]))]),(Ident "VoldemortWrapper",Ident "write",[RefType (ClassRefType (ClassType [(Ident "Object",[])])),RefType (ClassRefType (ClassType [(Ident "Object",[])]))])]
+Orig: 042da34a6940d1a2fa20db59331a347da16d4a9e
+VarA: 566b4bc712f6f3945a1a74bf1293f070c615868b
+VarB: 01fad80c857610cedc5b146c6f6d3c405509ac79
+Merg: 9702607f6213cf072715080ff7e08eccb4fad3cc
+-------------------------------------------
+Inst: 33
+File: test/integration/voldemort/performance/ReadOnlyStorePerformanceTest.java
+Meth: [(Ident "ReadOnlyStorePerformanceTest",Ident "main",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "String",[])]))))])]
+Orig: 042da34a6940d1a2fa20db59331a347da16d4a9e
+VarA: 566b4bc712f6f3945a1a74bf1293f070c615868b
+VarB: 01fad80c857610cedc5b146c6f6d3c405509ac79
+Merg: 9702607f6213cf072715080ff7e08eccb4fad3cc
+-------------------------------------------
+Inst: 34
+File: src/java/voldemort/store/readonly/ReadOnlyStorageConfiguration.java
+Meth: [(Ident "ReadOnlyStorageConfiguration",Ident "getStore",[RefType (ClassRefType (ClassType [(Ident "String",[])]))])]
+Orig: 042da34a6940d1a2fa20db59331a347da16d4a9e
+VarA: 566b4bc712f6f3945a1a74bf1293f070c615868b
+VarB: 01fad80c857610cedc5b146c6f6d3c405509ac79
+Merg: 9702607f6213cf072715080ff7e08eccb4fad3cc
+-------------------------------------------
+Inst: 35
+File: src/java/voldemort/server/storage/StorageService.java
+Meth: [(Ident "StorageService",Ident "openStore",[RefType (ClassRefType (ClassType [(Ident "StoreDefinition",[])]))])]
+Orig: 042da34a6940d1a2fa20db59331a347da16d4a9e
+VarA: 566b4bc712f6f3945a1a74bf1293f070c615868b
+VarB: 01fad80c857610cedc5b146c6f6d3c405509ac79
+Merg: 9702607f6213cf072715080ff7e08eccb4fad3cc
+-------------------------------------------
+Inst: 36
+File: src/java/voldemort/server/protocol/admin/AdminServiceRequestHandler.java
+Meth: [(Ident "AdminServiceRequestHandler",Ident "handleFetchAndUpdate",[RefType (ClassRefType (ClassType [(Ident "VAdminProto",[]),(Ident "InitiateFetchAndUpdateRequest",[])]))])]
+Orig: 042da34a6940d1a2fa20db59331a347da16d4a9e
+VarA: 566b4bc712f6f3945a1a74bf1293f070c615868b
+VarB: 01fad80c857610cedc5b146c6f6d3c405509ac79
+Merg: 9702607f6213cf072715080ff7e08eccb4fad3cc
+-------------------------------------------
+Inst: 37
+File: src/java/voldemort/store/readonly/ReadOnlyStorageEngine.java
+Meth: [(Ident "ReadOnlyStorageEngine",Ident "get",[RefType (ClassRefType (ClassType [(Ident "ByteArray",[])]))])]
+Orig: e12fd4986f233c04f70ea84d6cb5ae08e42600b4
+VarA: 61f4d167b2675fbf5aad29d0e8d6f94871c2986b
+VarB: 1f21e507ffd56dd419fd70e38c09fc23179131cb
+Merg: bcf4b413b41005416449852f5610f9185a260bfc
+-------------------------------------------
+Inst: 38
+File: src/java/voldemort/client/AbstractStoreClientFactory.java
+Meth: [(Ident "AbstractStoreClientFactory",Ident "getRawStore",[RefType (ClassRefType (ClassType [(Ident "String",[])])),RefType (ClassRefType (ClassType [(Ident "InconsistencyResolver",[ActualType (ClassRefType (ClassType [(Ident "Versioned",[ActualType (ClassRefType (ClassType [(Ident "V",[])]))])]))])]))])]
+Orig: 8ada0e308aab572ed9976628628cfaa9dc12084b
+VarA: 83bfb9ce140a66a6ff3543e28bdc7989ba8e291b
+VarB: f9687d62fe65eb5a97d8aba71597daa43c8962ce
+Merg: 1065da5249c965ad7e523ebba8fce04900194b4e
+-------------------------------------------
+Inst: 39
+File: test/unit/voldemort/store/routed/RoutedStoreTest.java
+Meth: [(Ident "RoutedStoreTest",Ident "testGetVersions2",[])]
+Orig: 92b1a1b6d840bbdc2653c38b094eda3007584fd3
+VarA: d9d1165755e89e1fe1c2bb0f04febc3ef949f3e7
+VarB: 8462031d2d8b676b27f533f8f7de5631c8eb70dd
+Merg: 04b8fb4ab87050093ea5b017010e736b028bd7c2
+-------------------------------------------
+Inst: 40
+File: test/unit/voldemort/store/AbstractStoreTest.java
+Meth: [(Ident "AbstractStoreTest",Ident "testCloseIsIdempotent",[]),(Ident "AbstractStoreTest",Ident "testDelete",[]),(Ident "AbstractStoreTest",Ident "testFetchedEqualsPut",[]),(Ident "AbstractStoreTest",Ident "testGetAll",[]),(Ident "AbstractStoreTest",Ident "testGetAllWithAbsentKeys",[]),(Ident "AbstractStoreTest",Ident "testGetAndDeleteNonExistentKey",[]),(Ident "AbstractStoreTest",Ident "testGetVersions",[]),(Ident "AbstractStoreTest",Ident "testVersionedPut",[])]
+Orig: 92b1a1b6d840bbdc2653c38b094eda3007584fd3
+VarA: d9d1165755e89e1fe1c2bb0f04febc3ef949f3e7
+VarB: 8462031d2d8b676b27f533f8f7de5631c8eb70dd
+Merg: 04b8fb4ab87050093ea5b017010e736b028bd7c2
+-------------------------------------------
+Inst: 41
+File: test/unit/voldemort/store/AbstractByteArrayStoreTest.java
+Meth: [(Ident "AbstractByteArrayStoreTest",Ident "testEmptyByteArray",[])]
+Orig: 92b1a1b6d840bbdc2653c38b094eda3007584fd3
+VarA: d9d1165755e89e1fe1c2bb0f04febc3ef949f3e7
+VarB: 8462031d2d8b676b27f533f8f7de5631c8eb70dd
+Merg: 04b8fb4ab87050093ea5b017010e736b028bd7c2
+-------------------------------------------
+Inst: 42
+File: test/unit/voldemort/client/rebalance/AbstractRebalanceTest.java
+Meth: [(Ident "AbstractRebalanceTest",Ident "testProxyGetDuringRebalancing",[]),(Ident "AbstractRebalanceTest",Ident "testServerSideRouting",[])]
+Orig: 92b1a1b6d840bbdc2653c38b094eda3007584fd3
+VarA: d9d1165755e89e1fe1c2bb0f04febc3ef949f3e7
+VarB: 8462031d2d8b676b27f533f8f7de5631c8eb70dd
+Merg: 04b8fb4ab87050093ea5b017010e736b028bd7c2
+-------------------------------------------
+Inst: 43
+File: src/java/voldemort/server/storage/StorageService.java
+Meth: [(Ident "StorageService",Ident "registerNodeStores",[RefType (ClassRefType (ClassType [(Ident "StoreDefinition",[])])),RefType (ClassRefType (ClassType [(Ident "Cluster",[])])),PrimType IntT])]
+Orig: 5bc56f724d2f899b0da38a5c1d97e0c784c153de
+VarA: 7c0110599e3e66ee8b4d183657f0ddaa669451da
+VarB: a1c9685e2a97a92b26c2926325e470bda89232dd
+Merg: 6b04e45910bb84b841575d77e416157d9e174976
+-------------------------------------------
+Inst: 44
+File: test/unit/voldemort/client/AdminServiceFailureTest.java
+Meth: [(Ident "AdminServiceFailureTest",Ident "getAdminServer",[RefType (ClassRefType (ClassType [(Ident "Node",[])])),RefType (ClassRefType (ClassType [(Ident "Cluster",[])])),RefType (ClassRefType (ClassType [(Ident "List",[ActualType (ClassRefType (ClassType [(Ident "StoreDefinition",[])]))])])),RefType (ClassRefType (ClassType [(Ident "StorageEngine",[ActualType (ClassRefType (ClassType [(Ident "ByteArray",[])])),ActualType (ArrayType (PrimType ByteT))])]))])]
+Orig: c9af7b2ae895f0aee34a6fc9d0e3ae110ba230b4
+VarA: 54c90faffbc00bea025ff3edd8759e9a1f2ccce3
+VarB: 1f1d05f4e817dcdbd110f56b028ea341f933512b
+Merg: daa286ed4cc6c1d78072592a5b46abb092a8d655
+-------------------------------------------
+Inst: 45
+File: test/integration/voldemort/socketpool/SimpleSocketPoolTest.java
+Meth: [(Ident "SimpleSocketPoolTest",Ident "testSocketPoolLimitSomeTimeout",[])]
+Orig: c9af7b2ae895f0aee34a6fc9d0e3ae110ba230b4
+VarA: 54c90faffbc00bea025ff3edd8759e9a1f2ccce3
+VarB: 1f1d05f4e817dcdbd110f56b028ea341f933512b
+Merg: daa286ed4cc6c1d78072592a5b46abb092a8d655
+-------------------------------------------
+Inst: 46
+File: src/java/voldemort/server/protocol/admin/AdminServiceRequestHandler.java
+Meth: [(Ident "AdminServiceRequestHandler",Ident "handleRequest",[RefType (ClassRefType (ClassType [(Ident "DataInputStream",[])])),RefType (ClassRefType (ClassType [(Ident "DataOutputStream",[])]))])]
+Orig: c9af7b2ae895f0aee34a6fc9d0e3ae110ba230b4
+VarA: 54c90faffbc00bea025ff3edd8759e9a1f2ccce3
+VarB: 1f1d05f4e817dcdbd110f56b028ea341f933512b
+Merg: daa286ed4cc6c1d78072592a5b46abb092a8d655
+-------------------------------------------
+Inst: 47
+File: test/unit/voldemort/client/rebalance/AbstractRebalanceTest.java
+Meth: [(Ident "AbstractRebalanceTest",Ident "testProxyGetDuringRebalancing",[])]
+Orig: 4460aa6dfeec17a81178e19eae4135dbac446dc3
+VarA: 54e5737b9711f15182ab9f7c3a96bdf35f5618b6
+VarB: 454597def7d70a549db89e2bba9c4809582d75d0
+Merg: 2db079513b2849316d17ddf5f251abb45fe52390
+-------------------------------------------
+Inst: 48
+File: src/java/voldemort/client/protocol/admin/AdminClient.java
+Meth: [(Ident "AdminClient",Ident "restoreDataFromReplications",[PrimType IntT,PrimType IntT])]
+Orig: 8830901c94e0bad3b38a08e9f366c2185a0466e0
+VarA: 33d85e25c3488bf3277bc5fb3f5ee0fa8216db71
+VarB: c3e93f8e5052c35893ecd4d8290ec45e6edacb54
+Merg: 454597def7d70a549db89e2bba9c4809582d75d0
+-------------------------------------------
+Inst: 49
+File: contrib/ec2-testing/test/voldemort/utils/Ec2RebalancingTest.java
+Meth: [(Ident "Ec2RebalancingTest",Ident "testSingleRebalancing",[])]
+Orig: a48ac00617188a5ca4fae91f04d722c05fad0131
+VarA: 2c25d84381f661833d9bbbb476fe155f253f39cd
+VarB: a0e207d40acd5e822f17ebf3a9908779be310beb
+Merg: 25ddea3ffc1f2931b5a3e11bc0f33144d6330cd6
+-------------------------------------------
+Inst: 50
+File: test/integration/voldemort/performance/AdminTest.java
+Meth: [(Ident "AdminTest",Ident "main",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "String",[])]))))])]
+Orig: 56c56942f787c4e7509539ee9e0e009d82db7d44
+VarA: 53a4c422cca2b50909dd95071fc36b0746c7f776
+VarB: 73f32a47e4e5460e57cb26f8cfa1d2d1d21c77a4
+Merg: a7a33b41f1894614e79794dfc72edf8a3892550e
+-------------------------------------------
+Inst: 51
+File: src/java/voldemort/server/protocol/admin/ProtoBuffAdminServiceRequestHandler.java
+Meth: [(Ident "ProtoBuffAdminServiceRequestHandler",Ident "handleFetchAndUpdate",[RefType (ClassRefType (ClassType [(Ident "VAdminProto",[]),(Ident "InitiateFetchAndUpdateRequest",[])]))])]
+Orig: 2fd35f9889875dc1f8ebc6501ed7682dfee1c131
+VarA: cffd8d763216d079250efc74b253074a5bea3dbc
+VarB: 46ab6674a7f12a92cda027d8bb05c93404e6b404
+Merg: 3ae9933e7e71a58a602fd02c1cbfd21682808cb2
+-------------------------------------------
+Inst: 52
+File: test/unit/voldemort/client/AdminServiceBasicTest.java
+Meth: [(Ident "AdminServiceBasicTest",Ident "testFetchAndUpdate",[])]
+Orig: 3b0211929c0c8be13cbf325e7aed303aaf916e1a
+VarA: 320c4118da731d4f1af1e2718edf0bb71006eb04
+VarB: 1f412ce8897f2ba00d98b3f4524aaab5b92f29c3
+Merg: ab97723dc2045d3b4267838df239fae843770bd0
+-------------------------------------------
+Inst: 53
+File: src/java/voldemort/server/protocol/admin/ProtoBuffAdminServiceRequestHandler.java
+Meth: [(Ident "ProtoBuffAdminServiceRequestHandler",Ident "handleFetchAndUpdate",[RefType (ClassRefType (ClassType [(Ident "VAdminProto",[]),(Ident "InitiateFetchAndUpdateRequest",[])]))])]
+Orig: 3b0211929c0c8be13cbf325e7aed303aaf916e1a
+VarA: 320c4118da731d4f1af1e2718edf0bb71006eb04
+VarB: 1f412ce8897f2ba00d98b3f4524aaab5b92f29c3
+Merg: ab97723dc2045d3b4267838df239fae843770bd0
+-------------------------------------------
+Inst: 54
+File: src/java/voldemort/server/protocol/admin/ProtoBuffAdminServiceRequestHandler.java
+Meth: [(Ident "ProtoBuffAdminServiceRequestHandler",Ident "handleFetchPartitionEntries",[RefType (ClassRefType (ClassType [(Ident "VAdminProto",[]),(Ident "FetchPartitionEntriesRequest",[])])),RefType (ClassRefType (ClassType [(Ident "DataOutputStream",[])]))])]
+Orig: 788a0b44cbf1b91f85b2bef3aa3c3b30cf329029
+VarA: b46736178349cddaab6500400b7f204b8753f834
+VarB: 935e7ac7409b5e1e6d55f72de0b6a1da1c420ff6
+Merg: afae7fb3f4cbbfedd3732786c75f4a52c7381df9
+-------------------------------------------
+Inst: 55
+File: src/java/voldemort/server/storage/StorageService.java
+Meth: [(Ident "StorageService",Ident "scheduleCleanupJob",[RefType (ClassRefType (ClassType [(Ident "StoreDefinition",[])])),RefType (ClassRefType (ClassType [(Ident "StorageEngine",[ActualType (ClassRefType (ClassType [(Ident "ByteArray",[])])),ActualType (ArrayType (PrimType ByteT))])]))])]
+Orig: bfd86e8fe3cec85052568c95ffac77837abb2f56
+VarA: 5b93843ff8461330d549c03c2a71be1a5be978b8
+VarB: 9e0ba425e280f3e9cdc0e7850bd45f4047faf97c
+Merg: 1289cc1e29a4a78b3ba90b5ecd228eccb84380e6
+-------------------------------------------
+Inst: 56
+File: test/unit/voldemort/store/readonly/ReadOnlyStorageEngineTestInstance.java
+Meth: [(Ident "ReadOnlyStorageEngineTestInstance",Ident "create",[RefType (ClassRefType (ClassType [(Ident "File",[])])),PrimType IntT,PrimType IntT,PrimType IntT])]
+Orig: bb6064a6881c315befe238363e590e6d225ac07c
+VarA: efcdd2626dd0c81cbd5d71e6ff5322b463b68fb3
+VarB: f318a72df95c213357b966fccb09b9f4bd64fd6f
+Merg: c9bec07b51e928efac16d4f5db21875c07c51dba
+-------------------------------------------
+Inst: 57
+File: test/common/voldemort/TestUtils.java
+Meth: [(Ident "TestUtils",Ident "createReadOnlyIndex",[RefType (ClassRefType (ClassType [(Ident "Cluster",[])])),RefType (ClassRefType (ClassType [(Ident "Map",[ActualType (ClassRefType (ClassType [(Ident "String",[])])),ActualType (ClassRefType (ClassType [(Ident "String",[])]))])])),RefType (ClassRefType (ClassType [(Ident "String",[])]))])]
+Orig: bb6064a6881c315befe238363e590e6d225ac07c
+VarA: efcdd2626dd0c81cbd5d71e6ff5322b463b68fb3
+VarB: f318a72df95c213357b966fccb09b9f4bd64fd6f
+Merg: c9bec07b51e928efac16d4f5db21875c07c51dba
+-------------------------------------------
+Inst: 58
+File: test/integration/voldemort/performance/RemoteStoreComparisonTest.java
+Meth: [(Ident "RemoteStoreComparisonTest",Ident "main",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "String",[])]))))])]
+Orig: abe83aa8dc05113ac3fac79b52901cee174aba79
+VarA: 927373bab872cba5fb6aad86fb13022412d48b06
+VarB: 2c3c94421e83e7d60a872ed795603ef7d4c39683
+Merg: 3f9cb465ff523237fc805221272a03fad4c97d21
+Done
