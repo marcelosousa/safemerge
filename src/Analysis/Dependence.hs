@@ -201,9 +201,9 @@ blockDep class_sum cfg =
   let initVal = ([], M.empty)
       res = fixpt class_sum cfg initVal 
   in case M.lookup (-1) res of
-       Nothing -> T.trace ("blockDep: empty ") $ M.empty 
+       Nothing -> trace ("blockDep: empty ") $ M.empty 
        Just r  ->  case r of
-         [(_,x)] -> T.trace ("block dependences result: " ++ show x) x
+         [(_,x)] -> trace ("block dependences result: " ++ show x) x
          _ -> error $ "memberDep: invalid result " ++ show r
 
 -- The main fixpoint for the dependence analysis

@@ -71,7 +71,8 @@ wiz_meth mode diff@MInst{..} (mth_id,mth,e_o,e_a,e_b,e_m) = do
                       AnnMethodBody (Just (AnnBlock b)) -> 
                        case ann_mth_body _m of
                          AnnMethodBody Nothing -> error "" 
-                         AnnMethodBody (Just (AnnBlock m)) -> o++a++b++m 
+                         -- This is LIKELY TO BE WRONG!! TEST 
+                         AnnMethodBody (Just (AnnBlock m)) -> miniproduct (o++a++b++m) 
              n_o = AnnMethodDecl _1 _2 _3 _4 _5 _6 (AnnMethodBody (Just (AnnBlock body)))
          in (n_o,[])
         _ -> 
@@ -154,18 +155,11 @@ analyse prog = do
  case prog of
   [] -> wizPrint "analyse: end of program" 
   (bstmt:cont) -> do
-    -- only apply dependence analysis if all variables are equal in all versions
-    applyDepCheck <- checkDep 
-    if (every $ getAnn bstmt) && applyDepCheck 
+    if (every $ getAnn bstmt) && _e_mode == Dep 
     then case next_block prog of
           (Left [b],cont) -> analyseBStmt b cont
-          (Left bck,cont) -> do
-             wizPrint "analyse: abstracting common block" 
-             analyseBlock $ map fromAnn bck 
-             analyse cont
-          (Right b,cont)  ->
-            -- we know that bstmt is a high level hole
-            analyseBStmt b cont 
+          (Left bck,cont) -> analyseBlock prog cont $ map fromAnn bck 
+          (Right b ,cont) -> analyseBStmt b cont 
     else analyseBStmt bstmt cont 
 
 -- | Analyse a block statement:
@@ -207,6 +201,7 @@ analyseExp vIds _exp rest =
    mapM_ (encodeCall minv Nothing) vIds 
    analyse rest
   Assign lhs aOp rhs -> do
+   wizPrint $ "analyseExp: " ++ show _exp
    assign vIds _exp lhs aOp rhs
    analyse rest 
   PostIncrement lhs -> do
@@ -399,15 +394,16 @@ analyseRet vIds _exp cont = do
  where
    ret_inner :: VId -> Maybe Exp -> EnvOp ()
    ret_inner vId mexpr = do
-    exp_ast <- 
-      case mexpr of
-        Nothing   -> error "ret: return Nothing"
-        Just expr -> getASTExp vId expr
     env@Env{..} <- get
-    -- encode the return value
-    let res_str = Ident "ret"
-        res_ast = getASTSSAMap "ret_inner ret" vId res_str _e_ssamap
-    ret <- lift $ mapM (uncurry mkEq) $ zip res_ast exp_ast 
+    ret <- 
+     case mexpr of
+       Nothing   -> return [] 
+       Just expr -> do
+        exp_ast <- getASTExp vId expr
+        -- encode the return value
+        let res_str = Ident "ret"
+            res_ast = getASTSSAMap "ret_inner ret" vId res_str _e_ssamap
+        lift $ mapM (uncurry mkEq) $ zip res_ast exp_ast 
     -- encode the fields which are part of the global state
     let class_vId@ClassSum{..} = _e_classes !! (vId-1)
         -- get the names of the fields
@@ -424,15 +420,6 @@ analyseRet vIds _exp cont = do
     updateNumRet
 
 -- CODE RELATED TO THE DEPENDENCE ANALYSIS
-checkDep :: EnvOp Bool
-checkDep = return False 
--- do
---  env@Env{..} <- get
---  preds       <- get_predicates _ssamap 
---  tmp_post    <- lift $ if null preds then mkTrue else mkAnd preds 
---  (r,_)       <- lift $ local $ helper _pre tmp_post
---  return (r == Unsat) 
-
 -- optimised a block that is shared by all variants
 --  i. generate the CFG for the block b
 --  ii. call the dependence analysis that will return
@@ -441,10 +428,9 @@ checkDep = return False
 --  iii. with the result, update the SSAMap and 
 --       use uninterpreted functions to model 
 --       the changes using assignments 
-analyseBlock :: [BlockStmt] -> EnvOp ()
-analyseBlock b = do 
-  undefined
-{-
+analyseBlock :: ProdProgram -> ProdProgram -> [BlockStmt] -> EnvOp ()
+analyseBlock (bstmt:cont) kont b = do 
+  wizPrint $ "analyseBlock:\n" ++ show b
   env@Env{..} <- get
   let mid = (Ident "", Ident "", [])
       mth_bdy = MethodBody $ Just $ Block (b ++ [BlockStmt $ Return Nothing])
@@ -454,13 +440,20 @@ analyseBlock b = do
       -- assume for now that they are all the same
       deps = M.toList $ blockDep (head _e_classes) cfg 
       -- need to get the all the inputs first 
-  list <- mapM get_inputs deps
-  mapM_ analyse_block_dep list 
+  wizPrint $ "analyseBlock: " ++ show deps
+  isSound <- checkDep $ concat $ snd $ unzip $ snd $ unzip deps
+  if isSound
+  then do
+   list <- mapM get_inputs deps
+   mapM_ analyse_block_dep list 
+   analyse kont
+  else analyseBStmt bstmt cont 
  where
+   -- | For each out in the dependence analysis, get the input ASTs
    get_inputs :: (AbsVar, (Tag, [AbsVar])) -> EnvOp (AbsVar, [[AST]])
    get_inputs (out, (_,inp)) = do
      let args = map symLocToExp inp
-     argsAST <- mapM (enc_exp [1,2,3,4]) args 
+     argsAST <- mapM (\e -> mapM (\vId -> encodeExp Nothing vId e) [1,2,3,4]) args 
      return (out, transpose argsAST)
 
    -- | analyse_block_dep: analyses for each dependence graph
@@ -472,99 +465,137 @@ analyseBlock b = do
      num <- incAnonym 
      let lhs = symLocToLhs out 
          id = Ident $ "Anonymous"++ show num
-     (ident, (_,sort,_)) <- enc_lhs 1 lhs
+     sortLhs <- getSortAbsVar out 
      rhs <- if null inp 
-            then mapM (\vId -> enc_meth_special vId id sort []) [1..4]
-            else mapM (\(vId,args) -> enc_meth_special vId id sort args) $ zip [1..4] inp 
+            then mapM (\vId -> enc_meth_special vId id sortLhs []) [1..4]
+            else mapM (\(vId,args) -> enc_meth_special vId id sortLhs args) $ zip [1..4] inp 
      mapM_ (\(vId,ast) -> assign_special vId lhs ast) $ zip [1..4] rhs
+
+checkDep :: [AbsVar] -> EnvOp Bool
+checkDep inputs = do
+  asts <- foldM checkDepInp [] inputs 
+  env@Env{..} <- get
+  if null asts
+  then return True
+  else do
+   tmp_post    <- lift $ mkAnd asts 
+   (r,_)       <- lift $ local $ helper _e_pre tmp_post
+   return (r == Unsat) 
+ where
+  checkDepInp :: [AST] -> AbsVar -> EnvOp [AST]
+  checkDepInp r v = do
+   env@Env{..} <- get
+   case v of
+    SField i  -> do
+     case M.lookup i _e_ssamap of
+       Nothing -> error $ "checkDepInp: Field " ++ show i ++ " is not in the SSAMap" 
+       Just ve -> do
+        let e  = M.elems ve
+            vs = lin e 
+        asts <- lift $ mapM (uncurry equalVariable) vs 
+        return $ asts ++ r 
+    SName  n  -> do
+     let i = toIdent n
+     case M.lookup i _e_ssamap of
+       Nothing -> return r
+       Just ve -> do
+        let e  = M.elems ve
+            vs = lin e 
+        asts <- lift $ mapM (uncurry equalVariable) vs 
+        return $ asts ++ r 
+    SArray ai -> error "checkDepInp: SArray" 
+
+absVarToIdent :: AbsVar -> Ident
+absVarToIdent (SField i) = i
+absVarToIdent (SName n) = toIdent n
+absVarToIdent (SArray (ArrayIndex e _)) = expToIdent e
+
+getSortAbsVar :: AbsVar -> EnvOp Sort
+getSortAbsVar v = do
+ env@Env{..} <- get
+ let i = absVarToIdent v 
+ case M.lookup i _e_ssamap of
+   Nothing -> lift $ mkIntSort
+   Just ve -> do 
+    let var = head $ M.elems ve
+    return $ _v_typ var
 
 enc_meth_special :: Int -> Ident -> Sort -> [AST] -> EnvOp AST
 enc_meth_special pid id@(Ident ident) sort args = do
   env@Env{..} <- get
   let arity = length args
-  sorts <- lift $ mapM getSort args 
-  fn <- lift $ mkFreshFuncDecl ident sorts sort 
-  ast <- lift $ mkApp fn args
-  let fnmap = M.insert (id,arity) (fn,M.empty) _e_fnmap 
-  updateFunctMap fnmap 
-  return ast 
+  case M.lookup (id,arity) _e_fnmap of
+    Nothing -> do 
+     sorts <- lift $ mapM getSort args 
+     fn <- lift $ mkFreshFuncDecl ident sorts sort 
+     ast <- lift $ mkApp fn args
+     let fnmap = M.insert (id,arity) (fn,M.empty) _e_fnmap 
+     updateFunctMap fnmap 
+     return ast 
+    Just (ast,_) -> lift $ mkApp ast args
 
-enc_lhs :: VId -> Lhs -> EnvOp (Ident,(AST,Sort,Int))
-enc_lhs vId lhs = do 
- env@Env{..} <- get
- case lhs of
-  NameLhs (Name [ident@(Ident str)]) -> do
-   case M.lookup ident _ssamap of
-       -- new variable
-       Nothing -> enc_lhs_inner vId ident
-       Just l -> case M.lookup vId l of
-         Nothing -> enc_lhs_inner vId ident
-         Just r  -> return (ident,r) 
-  FieldLhs (PrimaryFieldAccess This (ident@(Ident str))) -> do
-   case M.lookup ident _ssamap of
-       -- new variable
-       Nothing -> trace ("new field variable?") $ enc_lhs_inner vId ident
-       Just l -> case M.lookup vId l of
-         Nothing -> enc_lhs_inner vId ident
-         Just r  -> return (ident,r) 
-
-enc_lhs_inner vId ident@(Ident str) = do
-  env@Env{..} <- get
-  iSort <- lift $ mkIntSort
-  let i = 0
-  idAsts <- lift $ enc_ident [vId] str i iSort
-  let idAst = snd $ head idAsts
-      res = (idAst,iSort,i)
-      nssamap = updateSSAMap vId ident res _ssamap
-  updateSSAMap nssamap
-  return (ident,res)
-
-enc_ident :: [Int] -> String -> Int -> Sort -> Z3 [(Int, AST)]
-enc_ident pids str i sort = 
-  mapM (\j -> do
-    let nstr = str ++ "_" ++ show j ++ "_" ++ show i
-    sym <- mkStringSymbol nstr
-    ast <- mkVar sym sort
-    return (j,ast)) pids
+-- This is special because the variable might not be defined
 assign_special :: VId -> Lhs -> AST -> EnvOp ()
-assign_special vId lhs rhsAst = trace ("assign_special: " ++ show vId ++ " " ++ show lhs) $ do
- env@Env{..} <- get
- case lhs of
-  ArrayLhs (ArrayIndex e args) -> do
-   let ident@(Ident str) = expToIdent e
-   (plhsAST,sort, i) <- trace ("the ident is " ++ show ident) $  
-     case M.lookup ident _ssamap of
-       -- new variable
-       Nothing -> enc_lhs_inner vId ident >>= return . snd
-       Just l -> case M.lookup vId l of
-         Nothing -> enc_lhs_inner vId ident >>= return . snd
-         Just r  -> return r 
-   let cstr = str ++ "_" ++ show vId ++ "_" ++ show i
-       ni = i+1
-       nstr = str ++ "_" ++ show vId ++ "_" ++ show ni
-   sym <- lift $ mkStringSymbol nstr
-   astVar <- lift $ mkVar sym sort
-   let ssamap = updateSSAMap vId ident (astVar, sort, ni) _ssamap
-   a <- enc_exp_inner vId e
-   i <- case args of
-          [x] -> enc_exp_inner vId x
-          _ -> error $ "assign: ArrayLhs " ++ show lhs 
-   _rhsAst <- lift $ mkStore a i rhsAst
-   ass <- lift $ mkEq _rhsAst astVar
-   pre <- lift $ mkAnd [_pre, ass]
-   updatePre pre
-   updateSSAMap ssamap
-  _ -> do 
-   (ident@(Ident str),(plhsAST,sort,i)) <- enc_lhs vId lhs 
-   let cstr = str ++ "_" ++ show vId ++ "_" ++ show i
-       ni = i+1
-       nstr = str ++ "_" ++ show vId ++ "_" ++ show ni
-   sym <- lift $ mkStringSymbol nstr
-   var <- lift $ mkFreshFuncDecl nstr [] sort
-   astVar <- lift $ mkApp var []
-   let ssamap = updateSSAMap vId ident (astVar, sort, ni) _ssamap
-   ass <- lift $ processAssign astVar EqualA rhsAst plhsAST
-   pre <- lift $ mkAnd [_pre, ass]
-   updatePre pre
-   updateSSAMap ssamap
--}
+assign_special vId lhs rhsAst = do
+ wizPrint $ "assign_special: " ++ show lhs ++ ", vid = " ++ show vId
+ e <- get
+ let ident = case lhs of
+      NameLhs  name                            -> toIdent name 
+      FieldLhs (PrimaryFieldAccess This ident) -> ident 
+      ArrayLhs (ArrayIndex exp args)           -> expToIdent exp
+ case M.lookup ident (_e_ssamap e) of
+   Nothing -> do
+     -- new variable definition
+     -- adapted from encodeVarDecl @ Engine.hs
+     let sig = (ident,[PrimType IntT])
+     var  <- lift $ encodeVariable vId sig
+     let ssa = insertSSAVar vId ident var $ _e_ssamap e
+         lhs = NameLhs $ Name [ident]
+     updateSSAMap ssa 
+     assign_special vId lhs rhsAst 
+   Just ve  -> do 
+    case M.lookup vId ve of
+     Nothing -> do
+      -- new variable definition
+      -- adapted from encodeVarDecl @ Engine.hs
+      let sig = (ident,[PrimType IntT])
+      var  <- lift $ encodeVariable vId sig
+      let ssa = insertSSAVar vId ident var $ _e_ssamap e
+          lhs = NameLhs $ Name [ident]
+      updateSSAMap ssa 
+      assign_special vId lhs rhsAst 
+     Just _  -> do 
+      -- variable is already defined
+      -- adapted from assign @ Engine.hs
+      let lhsVar = getVarSSAMap "assign" vId ident (_e_ssamap e) 
+          aOp    = EqualA
+      nLhsVar <- lift $ updateVariable vId ident lhsVar
+      iSort   <- lift $ mkIntSort
+      env@Env{..} <- get
+      case lhs of
+       NameLhs (Name [ident]) -> do
+        let ssamap = insertSSAVar vId ident nLhsVar _e_ssamap
+        ass <- lift $ processAssign lhsVar nLhsVar aOp rhsAst 
+        pre <- lift $ mkAnd [_e_pre,ass]
+        updatePre pre
+        updateSSAMap ssamap
+       FieldLhs (PrimaryFieldAccess This ident) -> do
+        let ssamap = insertSSAVar vId ident nLhsVar _e_ssamap
+        ass <- lift $ processAssign lhsVar nLhsVar aOp rhsAst 
+        pre <- lift $ mkAnd [_e_pre,ass]
+        updatePre pre
+        updateSSAMap ssamap
+       ArrayLhs (ArrayIndex e args) -> do
+        nLhsVar <- lift $ updateVariable vId ident lhsVar
+        let ssamap = insertSSAVar vId ident nLhsVar _e_ssamap
+        a <- encodeExp (Just $ _v_typ lhsVar) vId e
+        i <- case args of
+               [x] -> encodeExp (Just iSort) vId x
+               _   -> error $ "assign: ArrayLhs " ++ show lhs 
+        _rhsAst <- lift $ mkStore a i rhsAst
+        ass <- lift $ mkEq (_v_ast nLhsVar) rhsAst 
+        pre <- lift $ mkAnd [_e_pre,ass]
+        updatePre pre
+        updateSSAMap ssamap
+       _ -> error $ "assign_special not supported"
+  

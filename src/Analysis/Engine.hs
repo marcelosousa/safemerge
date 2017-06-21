@@ -63,6 +63,7 @@ encodeAxioms axs v@SSAVar{..} =
  
 -- encode post-condition
 encodePost :: SSAMap -> [MemberSig] -> Z3 (SSAMap, AST)
+encodePost ssa [] = error $ "encodePost: stateless method"
 encodePost ssa fields = do 
   (nssa,conds) <- foldM encodePostVar (ssa,[]) fields 
   post <- mkAnd conds
