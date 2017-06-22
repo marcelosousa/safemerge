@@ -68,6 +68,7 @@ public class ScatterChartActivity extends DemoBase implements OnSeekBarChangeLis
 
         mChart.setData(data);
         mChart.invalidate();
+        return;
     }
 
 }

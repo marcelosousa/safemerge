@@ -5,17 +5,17 @@
 -------------------------------------------------------------------------------
 module Calculus where
 
+import Analysis.Java.AST
+import Data.Map (Map)
+import Data.Maybe (fromJust)
+import Edit.Apply
+import Edit.Types
 import Language.Java.Parser hiding (opt)
 import Language.Java.Pretty hiding (opt)
 import Language.Java.Syntax
-import Analysis.Java.AST
-
-import Data.Map (Map)
-import qualified Data.Map as M
-
-import qualified Debug.Trace as T
-import Edit.Types
 import qualified Data.List as L
+import qualified Data.Map as M
+import qualified Debug.Trace as T
 
 type Pid = Int
 type ProdProgram = [AnnBlockStmt]
@@ -116,3 +116,16 @@ flatten_stmt stmt = case stmt of
 flatten_switch_block :: AnnSwitchBlock -> AnnSwitchBlock
 flatten_switch_block (AnnSwitchBlock pid l b) =
   AnnSwitchBlock pid l $ map flatten_block b
+
+--
+-- | Whole product construction
+wholeProduct :: MemberDecl -> [Edit] -> (AnnMemberDecl,[AnnEdit]) 
+wholeProduct _mth _es = 
+  let _n_es = map (\(vId,_e) -> toAnn [vId] $ fst $ apply_edit_member _mth _e) $ zip [1,2,3,4] _es 
+      _n_bs = map ann_mth_body _n_es
+      _n_bss = map (\(AnnMethodBody m) -> fromJust m) _n_bs
+      _n_ss = map (\(vId,_e) -> AnnBlockStmt $ AnnStmtBlock [vId] _e) $ zip [1,2,3,4] _n_bss
+      body = miniproduct _n_ss 
+      AnnMethodDecl _1 _2 _3 _4 _5 _6 _ = head _n_es
+      n_o = AnnMethodDecl _1 _2 _3 _4 _5 _6 (AnnMethodBody (Just (AnnBlock body)))
+  in (n_o,[])

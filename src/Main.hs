@@ -154,5 +154,5 @@ verify mode ofl afl bfl mfl = do
   let mergeInst = liff oast aast bast mast
   -- computes per method, the edit scripts and the method with holes
       diffInst = diffMethods mergeInst
-  putStrLn $ printMethInsts $ _merges diffInst
+  -- putStrLn $ printMethInsts $ _merges diffInst
   wiz mode diffInst 

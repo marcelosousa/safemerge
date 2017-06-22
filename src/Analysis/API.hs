@@ -32,7 +32,7 @@ initial_FuncMap = do
   return $ M.singleton (Ident "size",0) (fn, M.empty)
 
 -- This function does the heavylifting in the join of the ssamap
---   It receives the original environemtn, one identifier that is 
+--   It receives the original environment, one identifier that is 
 --   shared in the new 2 environments and checks whether their 
 --   keys is the same in which case it generates Nothing
 --       otherwise it reports which versions need to updated
@@ -41,7 +41,7 @@ type DiffSSA = [(VId,Int,Sort,VarType,[(String,Int,Sort)])]
 diffSSAMap :: SSAMap -> Ident -> SSAVer -> SSAVer -> DiffSSA 
 diffSSAMap orig m e1 e2 = 
   case M.lookup m orig of
-    Nothing -> error $ "diffSSAMap: scoping issue for " ++ show m 
+    Nothing -> [] -- error $ "diffSSAMap: scoping issue for " ++ show m 
     Just v  -> 
       if e1 == v && e2 == v
       then [] 
@@ -155,14 +155,14 @@ joinEnv orig e1 e2 = do
       mode     = _e_mode    e2
       rety     = _e_rety    e1
       consts   = _e_consts  e2
-  wizPrint "join_env: original " 
-  printSSA ssa_orig
-  wizPrint "join_env: then branch" 
-  printSSA ssa_e1 
-  wizPrint "join_env: else branch" 
-  printSSA ssa_e2 
-  wizPrint "join_env: result"
-  printSSA ssa
+  --wizPrint "join_env: original " 
+  --printSSA ssa_orig
+  --wizPrint "join_env: then branch" 
+  --printSSA ssa_e1 
+  --wizPrint "join_env: else branch" 
+  --printSSA ssa_e2 
+  --wizPrint "join_env: result"
+  --printSSA ssa
   return $ Env ssa fnm pre classes eds debug numret vids anonym mode rety consts 
 
 -- | Replace Version Identifiers 

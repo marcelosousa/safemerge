@@ -5,7 +5,7 @@
 -- Copyright :  (c) 2017 Marcelo Sousa
 -- Utilities to Debug the Analysis
 -------------------------------------------------------------------------------
-module Analysis.Debug (menuText, prompt, wizPrint, wizBreak, debugger, printStat) where
+module Analysis.Debug (menuText, prompt, wizPrint, wizBreak, debugger, printStat, printProg, printEdits) where
 
 import Analysis.Java.AST
 import Analysis.Pretty
@@ -38,7 +38,8 @@ menuText :: String
 menuText = unlines [breaker,header,subhead,opt1,opt2,opt3,opt4,opt5,opt6,opt7,opt8]
 
 wizPrint :: String -> EnvOp ()
-wizPrint = liftIO . putStrLn 
+--wizPrint = liftIO . putStrLn 
+wizPrint s = return () 
 
 wizBreak :: EnvOp ()
 wizBreak = do

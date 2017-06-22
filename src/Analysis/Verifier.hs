@@ -6,7 +6,6 @@
 -------------------------------------------------------------------------------
 module Analysis.Verifier (wiz) where
 
--- import Analysis.Invariant
 import Analysis.API
 import Analysis.Dependence
 import Analysis.Debug
@@ -28,7 +27,6 @@ import Data.Map (Map)
 import Data.Maybe
 import Data.List
 import Edit
-import Edit.Apply
 import Edit.Types
 import Language.Java.Pretty
 import Language.Java.Syntax
@@ -39,61 +37,18 @@ import qualified Data.Map as M
 wiz :: WMode -> DiffInst -> IO () 
 wiz mode diff@MInst{..} = mapM_ (wiz_meth mode diff) _merges 
 
--- Assume the parameters names are the same in all 4 versions of the method 
+-- Pre-condition: same set of parameters names in all 4 versions of the method 
 wiz_meth :: WMode -> DiffInst -> MethInst -> IO ()
 wiz_meth mode diff@MInst{..} (mth_id,mth,e_o,e_a,e_b,e_m) = do 
-  putStrLn $ "wiz_meth: " ++ show mth_id
---  putStrLn $ "original wiz_meth:\n" ++ prettyPrint mth 
---  putStrLn $ "original edit o:\n" ++ (unlines $ map prettyPrint e_o) 
---  putStrLn $ "original edit a:\n" ++ (unlines $ map prettyPrint e_a) 
---  putStrLn $ "original edit b:\n" ++ (unlines $ map prettyPrint e_b) 
---  putStrLn $ "original edit m:\n" ++ (unlines $ map prettyPrint e_m) 
+  -- putStrLn $ "wiz_meth: " ++ show mth_id
   let _mth = simplifyMDecl mth
-      _e_o = simplifyEdit e_o
-      _e_a = simplifyEdit e_a
-      _e_b = simplifyEdit e_b
-      _e_m = simplifyEdit e_m
+      _es  = map simplifyEdit [e_o,e_a,e_b,e_m]
       (f_mth,f_edits) = case mode of
-        Prod -> 
-         let _o = toAnn [1] $ fst $ apply_edit_member _mth _e_o
-             _a = toAnn [2] $ fst $ apply_edit_member _mth _e_a
-             _b = toAnn [3] $ fst $ apply_edit_member _mth _e_b
-             _m = toAnn [4] $ fst $ apply_edit_member _mth _e_m
-             AnnMethodDecl _1 _2 _3 _4 _5 _6 b = _o
-             body = case b of
-              AnnMethodBody Nothing -> error "" 
-              AnnMethodBody (Just (AnnBlock o)) -> 
-                case ann_mth_body _a of
-                  AnnMethodBody Nothing -> error "" 
-                  AnnMethodBody (Just (AnnBlock a)) -> 
-                    case ann_mth_body _b of
-                      AnnMethodBody Nothing -> error "" 
-                      AnnMethodBody (Just (AnnBlock b)) -> 
-                       case ann_mth_body _m of
-                         AnnMethodBody Nothing -> error "" 
-                         -- This is LIKELY TO BE WRONG!! TEST 
-                         AnnMethodBody (Just (AnnBlock m)) -> miniproduct (o++a++b++m) 
-             n_o = AnnMethodDecl _1 _2 _3 _4 _5 _6 (AnnMethodBody (Just (AnnBlock body)))
-         in (n_o,[])
-        _ -> 
-         let f_mth = toAnn [1,2,3,4] _mth
-             f_e_o = map (toAnn [1]) _e_o
-             f_e_a = map (toAnn [2]) _e_a
-             f_e_b = map (toAnn [3]) _e_b
-             f_e_m = map (toAnn [4]) _e_m
-         in (f_mth,[f_e_o,f_e_a,f_e_b,f_e_m])
-  -- putStrLn $ "wiz_meth:\n" ++ prettyPrint _mth 
-  -- putStrLn $ "edit o:\n" ++ (unlines $ map (prettyPrint . fst) _e_o) 
-  -- putStrLn $ "edit a:\n" ++ (unlines $ map (prettyPrint . fst) _e_a) 
-  -- putStrLn $ "edit b:\n" ++ (unlines $ map (prettyPrint . fst) _e_b) 
-  -- putStrLn $ "edit m:\n" ++ (unlines $ map (prettyPrint . fst) _e_m) 
-  let o_class = findClass mth_id _o_info 
-      a_class = findClass mth_id _a_info 
-      b_class = findClass mth_id _b_info 
-      m_class = findClass mth_id _m_info 
-      classes = [o_class, a_class, b_class, m_class]
-  putStrLn $ "wiz_meth: Fields" 
-  putStrLn $ show $ concatMap (\l -> map fst $ toMemberSig l) $ M.elems $ M.unions $ map _cl_fields classes 
+        Prod -> wholeProduct _mth _es 
+        _ -> let f_mth = toAnn [1,2,3,4] _mth
+                 f_es  = map (\(vId,_e) -> map (toAnn [vId]) _e) $ zip [1,2,3,4] _es 
+             in (f_mth,f_es)
+      classes = map (findClass mth_id) [_o_info,_a_info,_b_info,_m_info]
   res <- evalZ3 $ verify mode (mth_id,f_mth) classes f_edits 
   case res of
     Nothing  -> putStrLn "No semantic conflict found"
@@ -117,7 +72,7 @@ verify mode (mid,mth) classes edits = do
  --  which is a special dummy variable res_version
  (_ssa,pre) <- encodePre $ params ++ fields  
  -- Compute the post-condition 
- liftIO $ print $ "verify: " ++ show mid 
+ liftIO $ putStrLn $ "verify: " ++ show mid 
  (ssa,post) <- case rty of 
                  Nothing -> encodePost _ssa fields  
                  Just ty -> encodePost _ssa $ (Ident "",[ty]):fields 
@@ -127,25 +82,24 @@ verify mode (mid,mth) classes edits = do
      body = case ann_mth_body mth of
               AnnMethodBody Nothing -> []
               AnnMethodBody (Just (AnnBlock b)) -> b 
- -- This should simply produce the relational post
- -- that should be checked against the post-condition
- ((),fEnv)   <- runStateT (analyse body) iEnv
+ -- Generate the relational post & check for semantic conflict freedom
+ ((),fEnv)   <- runStateT (analyser body) iEnv
  (res,model) <- local $ helper (_e_pre fEnv) post 
- liftIO $ putStrLn postStr
- liftIO $ putStrLn $ "result: " ++ show res 
+ -- liftIO $ putStrLn postStr
+ liftIO $ putStrLn $ "verify: result = " ++ show res 
  case res of 
   Unsat -> return Nothing
   Sat -> do
    str <- showModel $ fromJust model
    return $ Just str
 
--- @ Analyser main function
--- main verification heavyweight function 
--- checks if the vID = (ALL) and calls 
--- the optimiser to obtain the block and 
--- call the dependence analysis to deal 
--- with it.
--- otherwise, calls the standard analysis 
+analyser :: ProdProgram -> EnvOp ()
+analyser prog = do
+  printProg False prog
+  printEdits 
+  analyse prog
+
+-- | Analyser main function
 analyse :: ProdProgram -> EnvOp () 
 analyse prog = do
  --wizPrint "analyzer: press any key to continue..."
@@ -155,7 +109,7 @@ analyse prog = do
  case prog of
   [] -> wizPrint "analyse: end of program" 
   (bstmt:cont) -> do
-    if (every $ getAnn bstmt) && _e_mode == Dep 
+    if every (getAnn bstmt) && _e_mode == Dep 
     then case next_block prog of
           (Left [b],cont) -> analyseBStmt b cont
           (Left bck,cont) -> analyseBlock prog cont $ map fromAnn bck 
@@ -167,14 +121,14 @@ analyse prog = do
 --     Initialization of local variables
 analyseBStmt :: AnnBlockStmt -> ProdProgram -> EnvOp () 
 analyseBStmt bstmt cont = do 
- printStat bstmt
+ --printStat bstmt
  case bstmt of
   AnnBlockStmt stmt           -> analyseStmt stmt cont 
   AnnLocalVars vIds _ ty vars -> do
    mapM_ (encodeVarDecl vIds ty) vars 
    analyse cont 
 
--- | analyse a statement
+-- | Analyse a statement
 analyseStmt :: AnnStmt -> ProdProgram -> EnvOp () 
 analyseStmt stmt cont = 
  case stmt of
@@ -213,7 +167,6 @@ analyseExp vIds _exp rest =
 
 -- | The analysis of a hole
 --   Assume that there are no nested holes
---   @NOTE: April'17: it should support nested holes
 analyseHole :: [VId] -> ProdProgram -> EnvOp () 
 analyseHole vId rest =
  if every vId 
@@ -226,13 +179,7 @@ analyseHole vId rest =
 
 -- Analyse If Then Else
 -- Call the analyse over both branches to obtain the VCs 
--- Need to create additional assignments to uniformize the SSA construction
--- Test cases
---  1. Conditional with multiple assignments to make sure the SSA Map is correct
---  2. Conditional with return statements in one of the branches
---  3. Conditional within a loop
---  4. Conditional within a loop where one of the branches breaks
---  5. Conditional within a loop where one of the branches returns 
+-- @TODO: Check that all variants follow the same path
 analyseIf :: [VId] -> Exp -> AnnStmt -> AnnStmt -> ProdProgram -> EnvOp () 
 analyseIf vId cond s1 s2 cont = do
  wizPrint $ "analyseIf: versions " ++ show vId 
@@ -253,6 +200,14 @@ analyseIf vId cond s1 s2 cont = do
  else do
   condSmt  <- mapM (\v -> encodeExp bSort v cond) vId 
   env      <- get
+  -- check that all variants take the same paths 
+  condAst <- lift $ mkAnd condSmt
+  ncondSmt <- lift $ mapM mkNot condSmt
+  ncondAst <- lift $ mkAnd ncondSmt
+ -- (rThen,_)   <- lift $ local $ helper (_e_pre env) condAst 
+ -- (rElse,_)   <- lift $ local $ helper (_e_pre env) ncondAst 
+ -- if rThen == Unsat && rElse == Unsat 
+ -- then do 
   -- then branch
   preThen  <- lift $ mkAnd ((_e_pre env):condSmt)
   updatePre preThen
@@ -286,14 +241,15 @@ analyseIf vId cond s1 s2 cont = do
   new_env  <- joinEnv env env_then env_else
   put new_env
   analyse cont
+ -- else error $ "analyseIf: not all variants are taking the same path"
 
 -- Analyse Loops
 --  Houdini style loop invariant generation
 analyseLoop :: [(VId,Exp)] -> AnnStmt -> ProdProgram -> EnvOp () 
 analyseLoop conds body rest = do
- wizPrint "analyseLoop: press any key to continue..."
- wizBreak 
- debugger rest 
+ --wizPrint "analyseLoop: press any key to continue..."
+ --wizBreak 
+ --debugger rest 
  bSort <- lift $ mkBoolSort >>= return . Just
  env@Env{..} <- get
  -- use equality predicates between variables in the assignment map
@@ -305,9 +261,9 @@ analyseLoop conds body rest = do
  -- going to call houdini
  cond_str    <- lift $ astToString cond_ast
  preds_str   <- lift $ mapM (\(i,m,n,e) -> astToString e >>= \estr -> return $ show (i,m,n,estr)) init_preds 
- wizPrint $ "analyse_loop: calling houdini with following inputs\npredicate set: " 
-          ++ show preds_str ++ "\nloop condition:\n" ++ cond_str 
- wizBreak
+ -- wizPrint $ "analyse_loop: calling houdini with following inputs\npredicate set: " 
+ --          ++ show preds_str ++ "\nloop condition:\n" ++ cond_str 
+ -- wizBreak
  houdini init_preds cond_ast body 
  analyse rest
 
@@ -320,8 +276,8 @@ houdini ann_preds cond body = do
  -- candidate invariant is simply the conjunction of the current set of predicates
  inv    <- lift $ if null preds then mkTrue else mkAnd preds
  invStr <- lift $ astToString inv
- wizPrint $ "houdini: candidate invariant:\n" ++ invStr 
- wizBreak
+ --wizPrint $ "houdini: candidate invariant:\n" ++ invStr 
+ --wizBreak
  npre   <- lift $ mkAnd [inv,cond] 
  updatePre npre 
  -- compute the relational post condition 
@@ -337,9 +293,9 @@ houdini ann_preds cond body = do
  let old_sat_preds = map (toOldPredicate ann_preds) sat_preds 
      not_preds = ann_preds \\ old_sat_preds
  unsat_str <- lift $ mapM (\(i,m,n,e) -> astToString e >>= \estr -> return $ show (i,m,n,estr)) not_preds 
- wizPrint $ "houdini: candidate invariant:\n" ++ invStr ++ "\nrelational post:\n" ++ post_str
-          ++ "\npredicates not satisfied by relational post:\n" ++ show unsat_str 
- wizBreak
+ --wizPrint $ "houdini: candidate invariant:\n" ++ invStr ++ "\nrelational post:\n" ++ post_str
+ --         ++ "\npredicates not satisfied by relational post:\n" ++ show unsat_str 
+ --wizBreak
  -- revert to the original environment
  put i_env
  -- fixpoint check 
@@ -379,17 +335,17 @@ getPredicates m = do
  lift $ mapM (\(i,m,n,a,b) -> equalVariable a b >>= \eq -> return (i,m,n,eq)) pairs
 
 -- Analyse Return
--- @TODO: Review what happens when there is more than one return statement
 analyseRet :: [VId] -> Maybe Exp -> ProdProgram -> EnvOp () 
 analyseRet vIds _exp cont = do 
   mapM_ (\p -> ret_inner p _exp) vIds
   env@Env{..} <- get
   if _e_numret == 4
   then do
-    preast <- lift $ astToString _e_pre
-    wizPrint $ "return:\npre-condition:\n" ++ preast 
-    wizBreak
-    debugger cont 
+    --preast <- lift $ astToString _e_pre
+    --wizPrint $ "return:\npre-condition:\n" ++ preast 
+    --wizBreak
+    --debugger cont 
+    return ()
   else analyse cont 
  where
    ret_inner :: VId -> Maybe Exp -> EnvOp ()
@@ -430,7 +386,7 @@ analyseRet vIds _exp cont = do
 --       the changes using assignments 
 analyseBlock :: ProdProgram -> ProdProgram -> [BlockStmt] -> EnvOp ()
 analyseBlock (bstmt:cont) kont b = do 
-  wizPrint $ "analyseBlock:\n" ++ show b
+  wizPrint $ "analyseBlock:\n" ++ (unlines $ map prettyPrint b)
   env@Env{..} <- get
   let mid = (Ident "", Ident "", [])
       mth_bdy = MethodBody $ Just $ Block (b ++ [BlockStmt $ Return Nothing])
@@ -438,38 +394,27 @@ analyseBlock (bstmt:cont) kont b = do
       cfg = computeGraphMember mth
       -- blockDep returns a list of DepMap [O,A,B,M]
       -- assume for now that they are all the same
-      deps = M.toList $ blockDep (head _e_classes) cfg 
+      deps = blockDep (head _e_classes) cfg 
+      listDeps = M.toList deps
+      rhs = concat $ snd $ unzip $ snd $ unzip listDeps
       -- need to get the all the inputs first 
-  wizPrint $ "analyseBlock: " ++ show deps
-  isSound <- checkDep $ concat $ snd $ unzip $ snd $ unzip deps
+  wizPrint $ "analyseBlock:\n" ++ printDepMap deps
+  isSound <- checkDep rhs 
   if isSound
   then do
-   list <- mapM get_inputs deps
-   mapM_ analyse_block_dep list 
+   mapM_ analyse_block_dep listDeps 
    analyse kont
   else analyseBStmt bstmt cont 
  where
-   -- | For each out in the dependence analysis, get the input ASTs
-   get_inputs :: (AbsVar, (Tag, [AbsVar])) -> EnvOp (AbsVar, [[AST]])
-   get_inputs (out, (_,inp)) = do
-     let args = map symLocToExp inp
-     argsAST <- mapM (\e -> mapM (\vId -> encodeExp Nothing vId e) [1,2,3,4]) args 
-     return (out, transpose argsAST)
-
    -- | analyse_block_dep: analyses for each dependence graph
    --   the assignments:
    --    output = _anonymous (dep1, ..., depn)
    --    include the older versions of the variables in the dependencies
-   analyse_block_dep :: (AbsVar, [[AST]]) -> EnvOp ()
-   analyse_block_dep (out,inp) = do
+   analyse_block_dep :: (AbsVar,(Tag,[AbsVar])) -> EnvOp ()
+   analyse_block_dep (out,(_,inp)) = do
      num <- incAnonym 
-     let lhs = symLocToLhs out 
-         id = Ident $ "Anonymous"++ show num
-     sortLhs <- getSortAbsVar out 
-     rhs <- if null inp 
-            then mapM (\vId -> enc_meth_special vId id sortLhs []) [1..4]
-            else mapM (\(vId,args) -> enc_meth_special vId id sortLhs args) $ zip [1..4] inp 
-     mapM_ (\(vId,ast) -> assign_special vId lhs ast) $ zip [1..4] rhs
+     let id  = Ident $ "Anonymous"++ show num
+     mapM_ (\vId -> assign_special vId id out inp) [1..4]
 
 checkDep :: [AbsVar] -> EnvOp Bool
 checkDep inputs = do
@@ -510,16 +455,7 @@ absVarToIdent (SField i) = i
 absVarToIdent (SName n) = toIdent n
 absVarToIdent (SArray (ArrayIndex e _)) = expToIdent e
 
-getSortAbsVar :: AbsVar -> EnvOp Sort
-getSortAbsVar v = do
- env@Env{..} <- get
- let i = absVarToIdent v 
- case M.lookup i _e_ssamap of
-   Nothing -> lift $ mkIntSort
-   Just ve -> do 
-    let var = head $ M.elems ve
-    return $ _v_typ var
-
+-- | This will definitely fail for containers
 enc_meth_special :: Int -> Ident -> Sort -> [AST] -> EnvOp AST
 enc_meth_special pid id@(Ident ident) sort args = do
   env@Env{..} <- get
@@ -535,24 +471,21 @@ enc_meth_special pid id@(Ident ident) sort args = do
     Just (ast,_) -> lift $ mkApp ast args
 
 -- This is special because the variable might not be defined
-assign_special :: VId -> Lhs -> AST -> EnvOp ()
-assign_special vId lhs rhsAst = do
- wizPrint $ "assign_special: " ++ show lhs ++ ", vid = " ++ show vId
+assign_special :: VId -> Ident -> AbsVar -> [AbsVar] -> EnvOp ()
+assign_special vId fnId out inp = do
+-- wizPrint $ "assign_special: " ++ show lhs ++ ", vid = " ++ show vId
  e <- get
- let ident = case lhs of
-      NameLhs  name                            -> toIdent name 
-      FieldLhs (PrimaryFieldAccess This ident) -> ident 
-      ArrayLhs (ArrayIndex exp args)           -> expToIdent exp
+ let ident = absVarToIdent out 
  case M.lookup ident (_e_ssamap e) of
    Nothing -> do
      -- new variable definition
      -- adapted from encodeVarDecl @ Engine.hs
-     let sig = (ident,[PrimType IntT])
+     let sig = (ident,[PrimType IntT]) -- Might want to change this!
      var  <- lift $ encodeVariable vId sig
      let ssa = insertSSAVar vId ident var $ _e_ssamap e
          lhs = NameLhs $ Name [ident]
      updateSSAMap ssa 
-     assign_special vId lhs rhsAst 
+     assign_special vId fnId out (delete out inp)
    Just ve  -> do 
     case M.lookup vId ve of
      Nothing -> do
@@ -563,12 +496,17 @@ assign_special vId lhs rhsAst = do
       let ssa = insertSSAVar vId ident var $ _e_ssamap e
           lhs = NameLhs $ Name [ident]
       updateSSAMap ssa 
-      assign_special vId lhs rhsAst 
+      assign_special vId fnId out (delete out inp)
      Just _  -> do 
       -- variable is already defined
       -- adapted from assign @ Engine.hs
+      let args = map symLocToExp inp
+      argsAST <- mapM (\e -> encodeExp Nothing vId e) args 
       let lhsVar = getVarSSAMap "assign" vId ident (_e_ssamap e) 
           aOp    = EqualA
+          lhs = NameLhs $ Name [ident]
+          -- lhs = symLocToLhs out 
+      rhsAst  <- enc_meth_special vId fnId (_v_typ lhsVar) argsAST
       nLhsVar <- lift $ updateVariable vId ident lhsVar
       iSort   <- lift $ mkIntSort
       env@Env{..} <- get
@@ -585,17 +523,6 @@ assign_special vId lhs rhsAst = do
         pre <- lift $ mkAnd [_e_pre,ass]
         updatePre pre
         updateSSAMap ssamap
-       ArrayLhs (ArrayIndex e args) -> do
-        nLhsVar <- lift $ updateVariable vId ident lhsVar
-        let ssamap = insertSSAVar vId ident nLhsVar _e_ssamap
-        a <- encodeExp (Just $ _v_typ lhsVar) vId e
-        i <- case args of
-               [x] -> encodeExp (Just iSort) vId x
-               _   -> error $ "assign: ArrayLhs " ++ show lhs 
-        _rhsAst <- lift $ mkStore a i rhsAst
-        ass <- lift $ mkEq (_v_ast nLhsVar) rhsAst 
-        pre <- lift $ mkAnd [_e_pre,ass]
-        updatePre pre
-        updateSSAMap ssamap
+       ArrayLhs (ArrayIndex e args) -> error "not supported because of types"
        _ -> error $ "assign_special not supported"
   

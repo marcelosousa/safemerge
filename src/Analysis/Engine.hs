@@ -387,7 +387,7 @@ encodeCall m mSort vId = do
            updateSSAMap ssamap
            return rhsAst
          t -> error $ "encCall: unsupported calls to " ++ show t
-       Dep -> encCall nSort [concatIdent meth] ((_v_ast objVar):args)
+       _ -> encCall nSort [concatIdent meth] ((_v_ast objVar):args)
 
 -- Analyse Assign
 assign :: [VId] -> Exp -> Lhs -> AssignOp -> Exp -> EnvOp ()

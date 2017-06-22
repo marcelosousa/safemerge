@@ -56,9 +56,12 @@ toBlockStmt :: [Int] -> ProdProgram -> AnnBlockStmt
 toBlockStmt p = AnnBlockStmt . AnnStmtBlock p . AnnBlock
 
 is_common_block :: AnnBlock -> Bool
-is_common_block (AnnBlock b) = case next_block b of
-  (Left _, []) -> False 
-  _ -> True
+is_common_block (AnnBlock b) = all (is_common_bstmt) b
+
+is_common_bstmt :: AnnBlockStmt -> Bool
+is_common_bstmt a = case a of
+  AnnBlockStmt s -> is_common s
+  _ -> True 
 
 is_common_switch_block :: AnnSwitchBlock -> Bool
 is_common_switch_block (AnnSwitchBlock _ _ b) = is_common_block (AnnBlock b)
@@ -70,7 +73,7 @@ is_common :: AnnStmt -> Bool
 is_common s = case s of
   AnnStmtBlock    p b             -> every p && is_common_block b 
   AnnIfThen       p _ stmt        -> every p && is_common stmt
-  AnnIfThenElse   p _ t e         -> every p && is_common t || is_common e
+  AnnIfThenElse   p _ t e         -> every p && is_common t && is_common e
   AnnWhile        p bdy           -> every (fst $ unzip p) && is_common bdy
   AnnBasicFor     p _ _ _ bdy     -> every p && is_common bdy 
   AnnEnhancedFor  p _ _ _ _ bdy   -> every p && is_common bdy 

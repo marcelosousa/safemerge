@@ -15,6 +15,7 @@ import Analysis.Java.ClassInfo
 import Analysis.Java.Flow 
 import Analysis.Java.Graph
 import Control.Monad.State.Lazy
+import Data.Char
 import Data.List
 import Data.Map (Map)
 import Data.Set (Set)
@@ -29,6 +30,13 @@ import qualified Data.Set as S
 -- Symbolic Locations
 data SymLoc = SField Ident | SName Name | SArray ArrayIndex
   deriving (Show,Ord,Eq)
+
+writable :: SymLoc -> Bool
+writable sym = case sym of
+  SName  n ->
+   let Ident i = toIdent n 
+   in not $ isUpper $ head i
+  _ -> True
 
 symLocToLhs :: SymLoc -> Lhs
 symLocToLhs sym = case sym of
@@ -84,8 +92,7 @@ type AbsVarAnn = (SymLoc,Tag)
 type DepMap = Map AbsVar (Tag,[AbsVar])
 
 join_depmap :: DepMap -> DepMap -> DepMap
-join_depmap = M.unionWith (\(ta,a) (tb,b) -> 
-  (ta `join_tag` tb, nub $ a ++ b)) 
+join_depmap m1 m2 = M.unionWith (\(ta,a) (tb,b) -> (ta `join_tag` tb, nub $ a ++ b)) m1 m2 
 
 -- | Given a dependence map, returns the set of
 --   read global and write globals.
@@ -190,7 +197,7 @@ memberDep :: ClassInfo -> MIdent ->  (MemberDecl,DepGraph) -> DepMap
 memberDep class_info mIdent (mDecl,cfg) = 
   let res = dependencies class_info mIdent (mDecl,cfg) 
   in case M.lookup (-1) res of
-       Nothing -> T.trace ("memberDep: empty for " ++ show mIdent) $ M.empty 
+       Nothing -> M.empty 
        Just r  -> case r of
          [(_,x)] -> x
          _ -> error $ "memberDep: invalid result " ++ show r
@@ -201,9 +208,9 @@ blockDep class_sum cfg =
   let initVal = ([], M.empty)
       res = fixpt class_sum cfg initVal 
   in case M.lookup (-1) res of
-       Nothing -> trace ("blockDep: empty ") $ M.empty 
+       Nothing ->  M.empty 
        Just r  ->  case r of
-         [(_,x)] -> trace ("block dependences result: " ++ show x) x
+         [(_,x)] ->  x
          _ -> error $ "memberDep: invalid result " ++ show r
 
 -- The main fixpoint for the dependence analysis
@@ -249,6 +256,7 @@ worklist _wlist = do
                    else (wlist ++ rwlst)
       worklist nwlist
 
+-- | What if the context is different?
 weak_update :: NodeTable -> NodeId -> AbsElem -> (Bool, NodeTable)
 weak_update node_table node el@(cont,depMap) =
   case M.lookup node node_table of
@@ -262,20 +270,8 @@ weak_update node_table node el@(cont,depMap) =
            else (False, M.insert node [(cont,_depMap)] node_table)
       _ -> error "join_update: more than one state in the list"
 
-strong_update :: NodeTable -> NodeId -> AbsElem -> (Bool, NodeTable)
-strong_update node_table node el = 
-  case M.lookup node node_table of
-    Nothing -> (False, M.insert node [el] node_table) 
-    Just lst -> case lst of
-      [] -> (False, M.insert node [el] node_table)
-      [el'] ->
-        if el == el'
-        then (True, node_table)
-        else (False, M.insert node [el] node_table)
-      _ -> error "strong_update: more than one state in the list" 
-
 transformer :: Stmt -> ClassSum -> AbsElem -> AbsElem 
-transformer stmt class_sum el@(k,dmap) = 
+transformer stmt class_sum el@(k,dmap) =  -- T.trace ("transformer: " ++ show stmt) $ 
   let kvars = nub $ concat k 
   in case stmt of
     Skip -> el 
@@ -288,7 +284,7 @@ transformer stmt class_sum el@(k,dmap) =
            else error $ "transformer: Write set of return should be empty, " ++ show w 
     ExpStmt e -> 
       let (r,w) = transformer_expr class_sum e
-      in (k, foldr (set_dep $ r ++ kvars) dmap w) 
+      in  (k, foldr (set_dep $ r ++ kvars) dmap w) 
     Assume e -> 
       let (r,w) = transformer_expr class_sum e
       in (r:k, foldr (set_dep $ r ++ kvars) dmap w) 
@@ -302,7 +298,8 @@ set_output v m = -- trace ("set_output: " ++ show v) $
     Just (t,l) -> M.insert v (t `join_tag` Output,l) m  
 
 set_dep :: [AbsVar] -> AbsVarAnn -> DepMap -> DepMap
-set_dep r (w,t) m = M.insert w (t,r) m
+set_dep r (w,t) m = -- T.trace ("set_dep: w = " ++ show w ++ ", r = " ++ show r) $ 
+  m `join_depmap` (M.singleton w (t,r))
  
 -- transformer_expr: generates the read and write set of an expression
 transformer_expr :: ClassSum -> Exp -> ([AbsVar], [AbsVarAnn])
@@ -316,18 +313,20 @@ transformer_expr class_sum e = case e of
   MethodInv m -> transformer_methInv class_sum m
   _ -> (getReadSet class_sum e,[]) 
 
+-- | transformer for a method invocation
+--   need to identify if it is an object method being invoked
 transformer_methInv :: ClassSum -> MethodInvocation -> ([AbsVar], [AbsVarAnn])
 transformer_methInv class_sum m =
   let rSet = getReadSetInv class_sum m 
       (mths,args) = case m of
-        MethodCall (Name [i])       args -> (findMethodGen i (length args) class_sum, args) 
         PrimaryMethodCall This [] i args -> (findMethodGen i (length args) class_sum, args) 
-        _ -> T.trace ("transformer_methInv unsupported: " ++ show m) ([],[])
+        _ -> ([],[])
       cfgs = map computeGraphMember mths
       deps = map (readWriteSet . blockDep class_sum) cfgs
       (r,w) = foldr (\(a,b) (c,d) -> (a++c, b++d)) ([],[]) deps
-      k = T.trace ("transformer: " ++ prettyPrint m ++ "\n" ++ unlines (map prettyPrint mths)) $ unsafePerformIO $ getChar
-  in k `seq` (rSet++r, w)
+      -- the objects that are read can also be written
+      wR = map (\a -> (a,None)) $ filter writable (rSet++r) 
+  in (rSet++r, wR++w)
 
 getWrite :: ClassSum -> Lhs -> ([AbsVar],[AbsVarAnn])
 getWrite class_sum lhs = case lhs of
@@ -384,6 +383,10 @@ getReadSet class_sum e = case e of
 
 getReadSetInv :: ClassSum -> MethodInvocation -> [AbsVar]
 getReadSetInv class_sum mi = case mi of
-  MethodCall n args -> concatMap (getReadSet class_sum) args
+  MethodCall (Name n) args -> (getReadSetName n):(concatMap (getReadSet class_sum) args)
   PrimaryMethodCall e _ _ args -> (getReadSet class_sum) e ++ concatMap (getReadSet class_sum) args
   _ -> error $ "getReadSetInv: " ++ show mi 
+
+getReadSetName :: [Ident] -> AbsVar
+getReadSetName [] = error "getReadSetInv"
+getReadSetName (Ident i:_) = SName (Name [Ident i])
