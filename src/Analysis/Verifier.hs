@@ -85,7 +85,11 @@ verify mode (mid,mth) classes edits = do
  -- Generate the relational post & check for semantic conflict freedom
  ((),fEnv)   <- runStateT (analyser body) iEnv
  (res,model) <- local $ helper (_e_pre fEnv) post 
- -- liftIO $ putStrLn postStr
+ liftIO $ putStrLn "verify: relational post condition" 
+ preStr <- astToString (_e_pre fEnv)
+ liftIO $ putStrLn preStr 
+ liftIO $ putStrLn "verify: semantic conflict check" 
+ liftIO $ putStrLn postStr
  liftIO $ putStrLn $ "verify: result = " ++ show res 
  case res of 
   Unsat -> return Nothing
@@ -316,6 +320,9 @@ houdini ann_preds cond body = do
  -- we are done
  then do
   neg_cond <- lift $ mkNot cond
+  invStr <- lift $ astToString inv
+  liftIO $ putStrLn "houdini: loop invariant"
+  liftIO $ putStrLn invStr
   new_pre  <- lift $ mkAnd [inv,neg_cond]
   updatePre new_pre 
   updateEdits (_e_edits nenv)
