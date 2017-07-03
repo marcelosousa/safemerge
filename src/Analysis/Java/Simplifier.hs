@@ -73,7 +73,7 @@ simplifyStmt stmt = case stmt of
         nameI = ExpName $ Name [idI]
         varDeclI = LocalVars [] (PrimType IntT) [varI]
         -- varDecl for i
-        varK = VarDecl (VarId i) $ Just $ InitExp $ ArrayAccess $ ArrayIndex exp [nameI] 
+        varK = VarDecl (VarId i) $ Just $ InitExp $ MethodInv $ PrimaryMethodCall exp [] (Ident "get") [nameI] 
         varDeclK = LocalVars mods ty [varK]
         -- condition for the while
         exp = simplifyExp e

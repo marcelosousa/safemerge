@@ -198,6 +198,7 @@ public class GeoShapeQueryBuilder extends AbstractQueryBuilder<GeoShapeQueryBuil
         }
 
         builder.endObject();
+        return;
     }
 
     @Override

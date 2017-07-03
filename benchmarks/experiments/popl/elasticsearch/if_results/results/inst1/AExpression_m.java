@@ -122,7 +122,7 @@ public abstract class AExpression extends ANode {
         final Cast cast = AnalyzerCaster.getLegalCast(location, actual, expected, explicit, internal);
 
         if (cast == null) {
-            if (constant == null || this instanceof EConstant) {
+            if ((constant == null) || (instanceofEConstant() == 0)) {
                 // For the case where a cast is not required and a constant is not set
                 // or the node is already an EConstant no changes are required to the tree.
 
@@ -138,7 +138,7 @@ public abstract class AExpression extends ANode {
                 EConstant econstant = new EConstant(location, constant);
                 econstant.analyze(variables);
 
-                if (!expected.equals(econstant.actual)) {
+                if (expected.equals(econstant.actual) == 1) {
                     throw createError(new IllegalStateException("Illegal tree structure."));
                 }
 
@@ -152,13 +152,13 @@ public abstract class AExpression extends ANode {
                 // further reads done by the parent.
 
                 ECast ecast = new ECast(location, this, cast);
-                ecast.statement = statement;
-                ecast.actual = expected;
-                ecast.isNull = isNull;
+                ecast.statement(statement);
+                ecast.actual(expected);
+                ecast.isNull(isNull);
 
                 return ecast;
             } else {
-                if (expected.sort.constant) {
+                if (expected.sortConstant() == 0) {
                     // For the case where a cast is required, a constant is set,
                     // and the constant can be immediately cast to the expected type.
                     // An EConstant replaces this node with the constant cast appropriately
@@ -172,12 +172,13 @@ public abstract class AExpression extends ANode {
                     EConstant econstant = new EConstant(location, constant);
                     econstant.analyze(variables);
 
-                    if (!expected.equals(econstant.actual)) {
+                    if (expected.equals(econstant.actual) == 1) {
                         throw createError(new IllegalStateException("Illegal tree structure."));
                     }
 
-                    return econstant;
-                } else if (this instanceof EConstant) {
+                    //return econstant;
+                    return 0;
+                } else if (instanceofEConstant() == 0) {
                     // For the case where a cast is required, a constant is set,
                     // the constant cannot be immediately cast to the expected type,
                     // and this node is already an EConstant.  Modify the tree to add
@@ -187,9 +188,10 @@ public abstract class AExpression extends ANode {
                     // will already be the same.
 
                     ECast ecast = new ECast(location, this, cast);
-                    ecast.actual = expected;
+                    ecast.actual(expected);
 
                     return ecast;
+                    //return 0;
                 } else {
                     // For the case where a cast is required, a constant is set,
                     // the constant cannot be immediately cast to the expected type,
@@ -203,14 +205,15 @@ public abstract class AExpression extends ANode {
                     EConstant econstant = new EConstant(location, constant);
                     econstant.analyze(variables);
 
-                    if (!actual.equals(econstant.actual)) {
+                    if (actual.equals(econstant.actual) == 1) {
                         throw createError(new IllegalStateException("Illegal tree structure."));
                     }
 
                     ECast ecast = new ECast(location, econstant, cast);
-                    ecast.actual = expected;
+                    ecast.actual(expected);
 
-                    return ecast;
+                    //return ecast;
+                    return 0;
                 }
             }
         }

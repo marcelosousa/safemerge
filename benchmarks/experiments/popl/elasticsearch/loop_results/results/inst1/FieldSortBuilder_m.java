@@ -351,32 +351,33 @@ public class FieldSortBuilder extends SortBuilder<FieldSortBuilder> {
 
         String currentFieldName = null;
         XContentParser.Token token;
-        while ((token = parser.nextToken()) != XContentParser.Token.END_OBJECT) {
+        token = parser.nextToken();
+        while (token != XContentParser.Token.END_OBJECT) {
             if (token == XContentParser.Token.FIELD_NAME) {
                 currentFieldName = parser.currentName();
             } else if (token == XContentParser.Token.START_OBJECT) {
-                if (context.parseFieldMatcher().match(currentFieldName, NESTED_FILTER)) {
+                if (context.parseFieldMatcher().match(currentFieldName, NESTED_FILTER) == 1) {
                     nestedFilter = context.parseInnerQueryBuilder();
                 } else {
                     throw new ParsingException(parser.getTokenLocation(), "Expected " + NESTED_FILTER.getPreferredName() + " element.");
                 }
-            } else if (token.isValue()) {
-                if (context.parseFieldMatcher().match(currentFieldName, NESTED_PATH)) {
+            } else if (token.isValue() == 1) {
+                if (context.parseFieldMatcher().match(currentFieldName, NESTED_PATH) == 1) {
                     nestedPath = parser.text();
-                } else if (context.parseFieldMatcher().match(currentFieldName, MISSING)) {
+                } else if (context.parseFieldMatcher().match(currentFieldName, MISSING) == 1) {
                     missing = parser.objectText();
-                } else if (context.parseFieldMatcher().match(currentFieldName, ORDER)) {
+                } else if (context.parseFieldMatcher().match(currentFieldName, ORDER) == 1) {
                     String sortOrder = parser.text();
-                    if ("asc".equals(sortOrder)) {
+                    if ("asc".equals(sortOrder) == 1) {
                         order = SortOrder.ASC;
-                    } else if ("desc".equals(sortOrder)) {
+                    } else if ("desc".equals(sortOrder) == 1) {
                         order = SortOrder.DESC;
                     } else {
                         throw new IllegalStateException("Sort order " + sortOrder + " not supported.");
                     }
-                } else if (context.parseFieldMatcher().match(currentFieldName, SORT_MODE)) {
+                } else if (context.parseFieldMatcher().match(currentFieldName, SORT_MODE) == 1) {
                     sortMode = SortMode.fromString(parser.text());
-                } else if (context.parseFieldMatcher().match(currentFieldName, UNMAPPED_TYPE)) {
+                } else if (context.parseFieldMatcher().match(currentFieldName, UNMAPPED_TYPE) == 1) {
                     unmappedType = parser.text();
                 } else {
                     throw new IllegalArgumentException("Option " + currentFieldName + " not supported.");

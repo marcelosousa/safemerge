@@ -385,6 +385,7 @@ getReadSetInv :: ClassSum -> MethodInvocation -> [AbsVar]
 getReadSetInv class_sum mi = case mi of
   MethodCall (Name n) args -> (getReadSetName n):(concatMap (getReadSet class_sum) args)
   PrimaryMethodCall e _ _ args -> (getReadSet class_sum) e ++ concatMap (getReadSet class_sum) args
+  SuperMethodCall _ i args -> (getReadSetName [i]):(concatMap (getReadSet class_sum) args)
   _ -> error $ "getReadSetInv: " ++ show mi 
 
 getReadSetName :: [Ident] -> AbsVar

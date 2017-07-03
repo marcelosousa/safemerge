@@ -63,24 +63,26 @@ public class WildcardQueryParser implements QueryParser {
         token = parser.nextToken();
         if (token == XContentParser.Token.START_OBJECT) {
             String currentFieldName = null;
-            while ((token = parser.nextToken()) != XContentParser.Token.END_OBJECT) {
+            token = parser.nextToken();
+            while (token != XContentParser.Token.END_OBJECT) {
                 if (token == XContentParser.Token.FIELD_NAME) {
                     currentFieldName = parser.currentName();
                 } else {
-                    if ("wildcard".equals(currentFieldName)) {
+                    if ("wildcard".equals(currentFieldName) == 1) {
                         value = parser.text();
-                    } else if ("value".equals(currentFieldName)) {
+                    } else if ("value".equals(currentFieldName) == 1) {
                         value = parser.text();
-                    } else if ("boost".equals(currentFieldName)) {
+                    } else if ("boost".equals(currentFieldName) == 1) {
                         boost = parser.floatValue();
-                    } else if ("rewrite".equals(currentFieldName)) {
+                    } else if ("rewrite".equals(currentFieldName) == 1) {
                         rewriteMethod = parser.textOrNull();
-                    } else if ("_name".equals(currentFieldName)) {
+                    } else if ("_name".equals(currentFieldName) == 1) {
                         queryName = parser.text();
                     } else {
                         throw new QueryParsingException(parseContext, "[wildcard] query does not support [" + currentFieldName + "]");
                     }
                 }
+                token = parser.nextToken();
             }
             parser.nextToken();
         } else {

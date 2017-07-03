@@ -209,6 +209,7 @@ public class TermsQueryBuilder extends AbstractQueryBuilder<TermsQueryBuilder> {
         printBoostAndQueryName(builder);
 
         builder.endObject();
+        return;
     }
 
     @Override

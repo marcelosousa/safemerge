@@ -41,6 +41,7 @@ import java.io.IOException;
  */
 public class NestedInnerQueryParseSupport {
 
+    protected final QueryShardContext shardContext;
     protected final QueryParseContext parseContext;
 
     private BytesReference source;
@@ -54,7 +55,7 @@ public class NestedInnerQueryParseSupport {
     protected boolean filterFound = false;
 
     protected BitDocIdSetFilter parentFilter;
-    protected BitDocIdSetFilter childFilter;
+    protected Filter childFilter;
 
     protected ObjectMapper nestedObjectMapper;
     private ObjectMapper parentObjectMapper;
@@ -186,6 +187,7 @@ public class NestedInnerQueryParseSupport {
 
     private void setPathLevel() {
         ObjectMapper objectMapper = parseContext.nestedScope().getObjectMapper();
+        shardContext = parseContext;
         if (objectMapper == null) {
             parentFilter = parseContext.bitsetFilter(Queries.newNonNestedFilter());
         } else {
@@ -193,6 +195,7 @@ public class NestedInnerQueryParseSupport {
         }
         childFilter = parseContext.bitsetFilter(nestedObjectMapper.nestedTypeFilter());
         parentObjectMapper = parseContext.nestedScope().nextLevel(nestedObjectMapper);
+        return;
     }
 
     private void resetPathLevel() {

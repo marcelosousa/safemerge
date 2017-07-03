@@ -236,6 +236,7 @@ public class MatchQueryBuilder extends AbstractQueryBuilder<MatchQueryBuilder> {
         printBoostAndQueryName(builder);
         builder.endObject();
         builder.endObject();
+        return;
     }
 
     @Override

@@ -36,6 +36,10 @@ public class TermsQueryBuilder extends AbstractQueryBuilder<TermsQueryBuilder> {
 
     private final Object values;
 
+    private String minimumShouldMatch;
+
+    private Boolean disableCoord;
+
     private String execution;
 
     private String lookupIndex;
@@ -43,7 +47,6 @@ public class TermsQueryBuilder extends AbstractQueryBuilder<TermsQueryBuilder> {
     private String lookupId;
     private String lookupRouting;
     private String lookupPath;
-    private Boolean lookupCache;
 
     /**
      * A filter for a field based on several terms matching on any of them.
@@ -201,6 +204,7 @@ public class TermsQueryBuilder extends AbstractQueryBuilder<TermsQueryBuilder> {
 
         printBoostAndQueryName(builder);
         builder.endObject();
+        return;
     }
 
     @Override

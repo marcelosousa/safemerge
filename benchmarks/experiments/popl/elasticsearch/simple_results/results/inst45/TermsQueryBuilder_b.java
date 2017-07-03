@@ -28,6 +28,10 @@ import java.io.IOException;
  */
 public class TermsQueryBuilder extends QueryBuilder implements BoostableQueryBuilder<TermsQueryBuilder> {
 
+    public static final String NAME = "terms";
+
+    static final TermsQueryBuilder PROTOTYPE = new TermsQueryBuilder(null, (Object) null);
+
     private final String name;
 
     private final Object values;
@@ -36,9 +40,12 @@ public class TermsQueryBuilder extends QueryBuilder implements BoostableQueryBui
 
     private Boolean disableCoord;
 
-    private String queryName;
+    private String lookupIndex;
+    private String lookupType;
+    private String lookupId;
+    private String lookupRouting;
+    private String lookupPath;
 
-    private float boost = -1;
 
     /**
      * A filer for a field based on several terms matching on any of them.
@@ -172,5 +179,6 @@ public class TermsQueryBuilder extends QueryBuilder implements BoostableQueryBui
         }
 
         builder.endObject();
+        return;
     }
 }

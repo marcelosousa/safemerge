@@ -58,7 +58,7 @@ public class RestUpdateByQueryAction extends
     }
 
     @Override
-    protected void handleRequest(RestRequest request, RestChannel channel, Client client) throws Exception {
+    protected UpdateByQueryRequest handleRequest(RestRequest request, RestChannel channel, Client client) throws Exception {
         /*
          * Passing the search request through UpdateByQueryRequest first allows
          * it to set its own defaults which differ from SearchRequest's
@@ -75,7 +75,7 @@ public class RestUpdateByQueryAction extends
          * then we can delegate and stuff.
          */
         BytesReference bodyContent = null;
-        if (RestActions.hasBodyContent(request)) {
+        if (RestActions.hasBodyContent(request) == 0) {
             bodyContent = RestActions.getRestContent(request);
             Tuple<XContentType, Map<String, Object>> body = XContentHelper.convertToMap(bodyContent, false);
             boolean modified = false;
@@ -111,5 +111,6 @@ public class RestUpdateByQueryAction extends
 
 
         execute(request, internalRequest, channel);
+        return internalRequest;
     }
 }

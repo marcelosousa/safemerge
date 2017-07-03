@@ -43,7 +43,7 @@ public abstract class DocWriteResponse extends ReplicationResponse implements Wr
     private String type;
     private long version;
     private long seqNo;
-    private boolean forcedRefresh;
+    private int forcedRefresh;
 
     public DocWriteResponse(ShardId shardId, String type, String id, long seqNo, long version) {
         this.shardId = shardId;
@@ -128,6 +128,7 @@ public abstract class DocWriteResponse extends ReplicationResponse implements Wr
         version = in.readZLong();
         seqNo = in.readZLong();
         forcedRefresh = in.readBoolean();
+        return;
     }
 
     @Override
@@ -139,6 +140,7 @@ public abstract class DocWriteResponse extends ReplicationResponse implements Wr
         out.writeZLong(version);
         out.writeZLong(seqNo);
         out.writeBoolean(forcedRefresh);
+        return;
     }
 
     static final class Fields {

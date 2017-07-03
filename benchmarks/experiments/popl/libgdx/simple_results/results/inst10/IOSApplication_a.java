@@ -69,30 +69,7 @@ public class IOSApplication extends UIApplicationDelegate implements Application
 			
 		// Create: Window -> ViewController-> GameView (controller takes care of rotation)
 		this.uiWindow = new UIWindow(UIScreen.get_MainScreen().get_Bounds());	
-		UIViewController uiViewController = new UIViewController() {	
-			@Override
-			public void DidRotate (UIInterfaceOrientation orientation) {
-				// get the view size and update graphics
-				// FIXME: supporting BOTH (landscape+portrait at same time) is currently not working correctly (needs fix)
-				RectangleF bounds = getBounds(this);
-				graphics.width = (int)bounds.get_Width();
-				graphics.height = (int)bounds.get_Height();
-				graphics.MakeCurrent();  // not sure if that's needed?
-				listener.resize(graphics.width, graphics.height);
-			}
-			@Override
-			public boolean ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation orientation) {
-				// we return "true" if we support the orientation
-				switch (orientation.Value) { 
-					case UIInterfaceOrientation.LandscapeLeft: 
-					case UIInterfaceOrientation.LandscapeRight: 
-					   return config.orientationLandscape;
-					default: 
-						// assume portrait
-					   return config.orientationPortrait;
-				} 
-			}
-		};
+		UIViewController uiViewController = new UIViewController();
 		this.uiWindow.set_RootViewController(uiViewController);
 
 		// setup libgdx
@@ -101,10 +78,10 @@ public class IOSApplication extends UIApplicationDelegate implements Application
 		this.files = new IOSFiles();
 		this.audio = new IOSAudio();
 		
-		Gdx.files = this.files;
-		Gdx.graphics = this.graphics;
-		Gdx.audio = this.audio;
-		Gdx.input = this.input;
+		Gdx.files(this.files);
+		Gdx.graphics(this.graphics);
+		Gdx.audio(this.audio);
+		Gdx.input(this.input);
 		
 		this.input.setupPeripherals();
 

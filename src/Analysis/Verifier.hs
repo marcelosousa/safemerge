@@ -61,7 +61,7 @@ verify :: WMode -> (MIdent,AnnMemberDecl) -> [ClassSum]-> [AnnEdit] -> Z3 (Maybe
 verify mode (mid,mth) classes edits = do 
  -- compute the set of inputs 
  -- i. union the fields of all classes
- let class_fields    = nub $ M.elems $ M.unions $ map _cl_fields classes 
+ let class_fields    = nub $ concatMap M.elems $ map _cl_fields classes 
  -- ii. get the member signatures for the method (parameters) and the fields
      (params,fields) = (toMemberSig mth,concatMap toMemberSig class_fields) 
  -- iii. get the return type
@@ -95,8 +95,8 @@ verify mode (mid,mth) classes edits = do
 
 analyser :: ProdProgram -> EnvOp ()
 analyser prog = do
-  printProg False prog
-  printEdits 
+ -- printProg False prog
+ -- printEdits 
   analyse prog
 
 -- | Analyser main function
@@ -111,7 +111,10 @@ analyse prog = do
   (bstmt:cont) -> do
     if every (getAnn bstmt) && _e_mode == Dep 
     then case next_block prog of
-          (Left [b],cont) -> analyseBStmt b cont
+          (Left [b],cont) -> 
+            if isComplex b 
+            then analyseBlock prog cont [fromAnn b] 
+            else analyseBStmt b cont
           (Left bck,cont) -> analyseBlock prog cont $ map fromAnn bck 
           (Right b ,cont) -> analyseBStmt b cont 
     else analyseBStmt bstmt cont 
@@ -128,6 +131,16 @@ analyseBStmt bstmt cont = do
    mapM_ (encodeVarDecl vIds ty) vars 
    analyse cont 
 
+isComplex :: AnnBlockStmt -> Bool
+isComplex bstmt = case bstmt of
+  AnnBlockStmt stmt           -> case stmt of
+    AnnStmtBlock vId (AnnBlock b) -> True 
+    AnnIfThen vId cond s1         -> True
+    AnnIfThenElse vId cond s1 s2  -> True 
+    AnnWhile _cond _body          -> True 
+    _                             -> False 
+  AnnLocalVars vIds _ ty vars -> False 
+  
 -- | Analyse a statement
 analyseStmt :: AnnStmt -> ProdProgram -> EnvOp () 
 analyseStmt stmt cont = 
@@ -399,12 +412,12 @@ analyseBlock (bstmt:cont) kont b = do
       rhs = concat $ snd $ unzip $ snd $ unzip listDeps
       -- need to get the all the inputs first 
   wizPrint $ "analyseBlock:\n" ++ printDepMap deps
-  isSound <- checkDep rhs 
-  if isSound
-  then do
-   mapM_ analyse_block_dep listDeps 
-   analyse kont
-  else analyseBStmt bstmt cont 
+  --isSound <- checkDep rhs 
+  --if isSound
+  --then do
+  mapM_ analyse_block_dep listDeps 
+  analyse kont
+ -- else analyseBStmt bstmt cont 
  where
    -- | analyse_block_dep: analyses for each dependence graph
    --   the assignments:

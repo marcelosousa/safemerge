@@ -33,6 +33,8 @@ public class GeoShapeQueryBuilder extends AbstractQueryBuilder<GeoShapeQueryBuil
 
     public static final String NAME = "geo_shape";
 
+    static final GeoShapeQueryBuilder PROTOTYPE = new GeoShapeQueryBuilder(null, null);
+
     private final String name;
 
     private final ShapeBuilder shape;
@@ -49,7 +51,7 @@ public class GeoShapeQueryBuilder extends AbstractQueryBuilder<GeoShapeQueryBuil
 
     private ShapeRelation relation = null;
 
-    static final GeoShapeQueryBuilder PROTOTYPE = new GeoShapeQueryBuilder(null, null);
+    private float boost = -1;
 
     /**
      * Creates a new GeoShapeQueryBuilder whose Filter will be against the
@@ -186,6 +188,7 @@ public class GeoShapeQueryBuilder extends AbstractQueryBuilder<GeoShapeQueryBuil
         }
 
         builder.endObject();
+        return;
     }
 
     @Override

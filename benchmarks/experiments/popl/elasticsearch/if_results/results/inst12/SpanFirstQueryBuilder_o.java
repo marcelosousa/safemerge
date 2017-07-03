@@ -25,6 +25,8 @@ import java.io.IOException;
 
 public class SpanFirstQueryBuilder extends SpanQueryBuilder implements BoostableQueryBuilder<SpanFirstQueryBuilder> {
 
+    public static final String NAME = "span_first";
+
     private final SpanQueryBuilder matchBuilder;
 
     private final int end;
@@ -32,6 +34,8 @@ public class SpanFirstQueryBuilder extends SpanQueryBuilder implements Boostable
     private float boost = -1;
 
     private String queryName;
+
+    static final SpanFirstQueryBuilder SPAN_FIRST_QUERY_BUILDER = new SpanFirstQueryBuilder(null, -1);
 
     public SpanFirstQueryBuilder(SpanQueryBuilder matchBuilder, int end) {
         this.matchBuilder = matchBuilder;
@@ -65,5 +69,6 @@ public class SpanFirstQueryBuilder extends SpanQueryBuilder implements Boostable
             builder.field("name", queryName);
         }
         builder.endObject();
+        return;
     }
 }

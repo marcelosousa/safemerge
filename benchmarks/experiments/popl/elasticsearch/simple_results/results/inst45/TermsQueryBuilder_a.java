@@ -40,8 +40,6 @@ public class TermsQueryBuilder extends AbstractQueryBuilder<TermsQueryBuilder> {
 
     private Boolean disableCoord;
 
-    private String execution;
-
     private String lookupIndex;
     private String lookupType;
     private String lookupId;
@@ -229,6 +227,7 @@ public class TermsQueryBuilder extends AbstractQueryBuilder<TermsQueryBuilder> {
         printBoostAndQueryName(builder);
 
         builder.endObject();
+        return;
     }
 
     @Override

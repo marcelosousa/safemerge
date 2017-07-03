@@ -36,6 +36,8 @@ public abstract class DocWriteResponse extends ReplicationResponse implements St
     private String id;
     private String type;
     private long version;
+    private long seqNo;
+    private int forcedRefresh;
 
     public DocWriteResponse(ShardId shardId, String type, String id, long version) {
         this.shardId = shardId;
@@ -97,6 +99,7 @@ public abstract class DocWriteResponse extends ReplicationResponse implements St
         type = in.readString();
         id = in.readString();
         version = in.readZLong();
+        return;
     }
 
     @Override
@@ -106,6 +109,7 @@ public abstract class DocWriteResponse extends ReplicationResponse implements St
         out.writeString(type);
         out.writeString(id);
         out.writeZLong(version);
+        return;
     }
 
     static final class Fields {

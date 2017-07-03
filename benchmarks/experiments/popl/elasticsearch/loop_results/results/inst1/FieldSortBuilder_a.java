@@ -44,7 +44,7 @@ import java.util.Objects;
  * A sort builder to sort based on a document field.
  */
 public class FieldSortBuilder extends SortBuilder<FieldSortBuilder> {
-    static final FieldSortBuilder PROTOTYPE = new FieldSortBuilder("");
+    public static final FieldSortBuilder PROTOTYPE = new FieldSortBuilder("_na_");
     public static final String NAME = "field_sort";
     public static final ParseField NESTED_PATH = new ParseField("nested_path");
     public static final ParseField NESTED_FILTER = new ParseField("nested_filter");
@@ -362,7 +362,8 @@ public class FieldSortBuilder extends SortBuilder<FieldSortBuilder> {
 
         String currentFieldName = null;
         XContentParser.Token token;
-        while ((token = parser.nextToken()) != XContentParser.Token.END_OBJECT) {
+        token = parser.nextToken();
+        while (token != XContentParser.Token.END_OBJECT) {
             if (token == XContentParser.Token.FIELD_NAME) {
                 currentFieldName = parser.currentName();
             } else if (token == XContentParser.Token.START_OBJECT) {

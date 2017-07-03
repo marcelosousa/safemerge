@@ -184,7 +184,7 @@ _v_mod	./Analysis/Types.hs	40;"	v
 _v_mty	./Analysis/Types.hs	41;"	v
 _v_typ	./Analysis/Types.hs	37;"	v
 a	Main.hs	50;"	v
-absVarToIdent	./Analysis/Verifier.hs	448;"	v	file:
+absVarToIdent	./Analysis/Verifier.hs	454;"	v	file:
 addDef	./Analysis/Java/Flow.hs	113;"	v
 addEdge	./Analysis/Java/Flow.hs	67;"	v
 addEdgeInfo	./Analysis/Java/Flow.hs	53;"	v
@@ -195,15 +195,16 @@ add_clcons	./Analysis/Java/ClassInfo.hs	102;"	v
 add_clfield	./Analysis/Java/ClassInfo.hs	92;"	v
 add_clmeth	./Analysis/Java/ClassInfo.hs	97;"	v
 add_skip	./Analysis/Java/AST.hs	271;"	v
-analyse	./Analysis/Verifier.hs	98;"	v	file:
-analyseBStmt	./Analysis/Verifier.hs	117;"	v	file:
-analyseBlock	./Analysis/Verifier.hs	382;"	v	file:
-analyseExp	./Analysis/Verifier.hs	146;"	v	file:
-analyseHole	./Analysis/Verifier.hs	165;"	v	file:
-analyseIf	./Analysis/Verifier.hs	178;"	v	file:
-analyseLoop	./Analysis/Verifier.hs	243;"	v	file:
-analyseRet	./Analysis/Verifier.hs	333;"	v	file:
-analyseStmt	./Analysis/Verifier.hs	127;"	v	file:
+analyse	./Analysis/Verifier.hs	104;"	v	file:
+analyseBStmt	./Analysis/Verifier.hs	123;"	v	file:
+analyseBlock	./Analysis/Verifier.hs	388;"	v	file:
+analyseExp	./Analysis/Verifier.hs	152;"	v	file:
+analyseHole	./Analysis/Verifier.hs	171;"	v	file:
+analyseIf	./Analysis/Verifier.hs	184;"	v	file:
+analyseLoop	./Analysis/Verifier.hs	249;"	v	file:
+analyseRet	./Analysis/Verifier.hs	339;"	v	file:
+analyseStmt	./Analysis/Verifier.hs	133;"	v	file:
+analyser	./Analysis/Verifier.hs	97;"	v	file:
 andAST	./Analysis/Java/AST.hs	205;"	v
 ann_mth_body	./Analysis/Java/AST.hs	257;"	v
 apply_edit	./Edit/Apply.hs	20;"	v
@@ -225,13 +226,13 @@ arrayListAxioms	./Analysis/Model/ArrayList.hs	98;"	v
 arrayListInit	./Analysis/Model/ArrayList.hs	22;"	v
 arrayListModel	./Analysis/Model/ArrayList.hs	32;"	v
 arrayListNew	./Analysis/Model/ArrayList.hs	106;"	v
-assign	./Analysis/Engine.hs	394;"	v
-assign_special	./Analysis/Verifier.hs	469;"	v	file:
+assign	./Analysis/Engine.hs	402;"	v
+assign_special	./Analysis/Verifier.hs	475;"	v	file:
 b	Main.hs	53;"	v
 base	Main.hs	51;"	v
 blockDep	./Analysis/Dependence.hs	207;"	v
 breaker	./Analysis/Debug.hs	24;"	v	file:
-checkDep	./Analysis/Verifier.hs	414;"	v	file:
+checkDep	./Analysis/Verifier.hs	420;"	v	file:
 checkSAT	./Analysis/Util.hs	13;"	v
 check_edit_soundness	./Edit.hs	134;"	v
 class_diff	./Analysis/Java/Liff.hs	44;"	v
@@ -283,17 +284,17 @@ edit_method_body_gen	./Edit/Gen.hs	122;"	v
 edit_ty_gen	./Edit/Gen.hs	40;"	v
 edit_tys_gen	./Edit/Gen.hs	28;"	v
 edit_tys_gen_aux	./Edit/Gen.hs	35;"	v
-enc_array_access	./Analysis/Engine.hs	448;"	v
-enc_binop	./Analysis/Engine.hs	490;"	v
-enc_field_access	./Analysis/Engine.hs	463;"	v
-enc_meth_special	./Analysis/Verifier.hs	454;"	v	file:
+enc_array_access	./Analysis/Engine.hs	456;"	v
+enc_binop	./Analysis/Engine.hs	498;"	v
+enc_field_access	./Analysis/Engine.hs	471;"	v
+enc_meth_special	./Analysis/Verifier.hs	460;"	v	file:
 encodeAxioms	./Analysis/Engine.hs	54;"	v
 encodeCall	./Analysis/Engine.hs	316;"	v
 encodeClassType	./Analysis/Engine.hs	190;"	v
 encodeConstant	./Analysis/Engine.hs	254;"	v
 encodeExp	./Analysis/Engine.hs	269;"	v
 encodeExpName	./Analysis/Engine.hs	243;"	v
-encodeLiteral	./Analysis/Engine.hs	471;"	v
+encodeLiteral	./Analysis/Engine.hs	479;"	v
 encodeNew	./Analysis/Engine.hs	306;"	v
 encodePost	./Analysis/Engine.hs	66;"	v
 encodePre	./Analysis/Engine.hs	30;"	v
@@ -336,11 +337,11 @@ getNext	./Analysis/Java/Flow.hs	185;"	v
 getPCLabel	./Analysis/Java/Flow.hs	176;"	v
 getParIdents	./Analysis/Util.hs	73;"	v
 getParamType	./Analysis/Java/ClassInfo.hs	132;"	v
-getPredicates	./Analysis/Verifier.hs	324;"	v	file:
+getPredicates	./Analysis/Verifier.hs	330;"	v	file:
 getPrev	./Analysis/Java/Flow.hs	154;"	v
 getReadSet	./Analysis/Dependence.hs	345;"	v
 getReadSetInv	./Analysis/Dependence.hs	385;"	v
-getReadSetName	./Analysis/Dependence.hs	391;"	v
+getReadSetName	./Analysis/Dependence.hs	392;"	v
 getReturnType	./Analysis/Util.hs	68;"	v
 getVarSSAMap	./Analysis/API.hs	225;"	v
 getWrite	./Analysis/Dependence.hs	332;"	v
@@ -352,7 +353,7 @@ graphs	./Analysis/Java/Flow.hs	31;"	v
 header	./Analysis/Debug.hs	25;"	v	file:
 helper	./Analysis/Util.hs	17;"	v
 hole	./Edit/Diff.hs	49;"	v
-houdini	./Analysis/Verifier.hs	266;"	v	file:
+houdini	./Analysis/Verifier.hs	272;"	v	file:
 iM	./Edit/Diff.hs	28;"	v
 i_clsum	./Analysis/Java/ClassInfo.hs	86;"	v
 if_scope	./Edit/Types.hs	35;"	v
@@ -437,7 +438,7 @@ pc_counter	./Analysis/Java/Flow.hs	42;"	v
 popEdits	./Analysis/API.hs	188;"	v
 popNext	./Analysis/Java/Flow.hs	167;"	v
 popPrev	./Analysis/Java/Flow.hs	145;"	v
-post_op	./Analysis/Engine.hs	511;"	v
+post_op	./Analysis/Engine.hs	519;"	v
 post_process	./Edit/Gen.hs	154;"	v
 pp_dot_edge	./Analysis/Java/Flow.hs	560;"	v
 pp_dot_edges	./Analysis/Java/Flow.hs	557;"	v
@@ -449,11 +450,11 @@ printAbsElem	./Analysis/Dependence.hs	135;"	v
 printDepInfo	./Analysis/Dependence.hs	144;"	v
 printDepMap	./Analysis/Dependence.hs	140;"	v
 printEdit	./Edit/Print.hs	15;"	v
-printEdits	./Analysis/Debug.hs	95;"	v	file:
+printEdits	./Analysis/Debug.hs	95;"	v
 printEnv	./Analysis/Debug.hs	124;"	v	file:
 printMethInsts	./Edit.hs	43;"	v
 printPre	./Analysis/Debug.hs	113;"	v	file:
-printProg	./Analysis/Debug.hs	82;"	v	file:
+printProg	./Analysis/Debug.hs	82;"	v
 printProg	./Edit/Print.hs	18;"	v
 printResultList	./Analysis/Dependence.hs	131;"	v
 printSSA	./Analysis/Pretty.hs	39;"	v
@@ -463,7 +464,7 @@ printSSAVer	./Analysis/Pretty.hs	32;"	v
 printStat	./Analysis/Debug.hs	75;"	v
 print_edit	./Edit/Print.hs	26;"	v
 print_edit_simple	./Edit/Print.hs	21;"	v
-processAssign	./Analysis/Engine.hs	437;"	v
+processAssign	./Analysis/Engine.hs	445;"	v
 productMode	Main.hs	59;"	v
 prog	Main.hs	49;"	v
 progModes	Main.hs	68;"	v
@@ -514,7 +515,7 @@ toIdent	./Analysis/Java/ClassInfo.hs	160;"	v
 toIf	./Calculus.hs	92;"	v
 toIfs	./Calculus.hs	86;"	v
 toMemberSig	./Analysis/Java/ClassInfo.hs	72;"	v
-toOldPredicate	./Analysis/Verifier.hs	309;"	v	file:
+toOldPredicate	./Analysis/Verifier.hs	315;"	v	file:
 toOp	./Analysis/Java/Simplifier.hs	120;"	v
 toSSAMap	./Analysis/API.hs	74;"	v
 toString	./Analysis/Util.hs	80;"	v
@@ -531,7 +532,7 @@ updateFunctMap	./Analysis/API.hs	251;"	v
 updateNumRet	./Analysis/API.hs	196;"	v
 updatePid	./Analysis/API.hs	170;"	v
 updatePre	./Analysis/API.hs	176;"	v
-updatePredicate	./Analysis/Verifier.hs	315;"	v	file:
+updatePredicate	./Analysis/Verifier.hs	321;"	v	file:
 updateSSAMap	./Analysis/API.hs	205;"	v
 updateVariable	./Analysis/API.hs	234;"	v
 update_node_table	./Analysis/Dependence.hs	159;"	v

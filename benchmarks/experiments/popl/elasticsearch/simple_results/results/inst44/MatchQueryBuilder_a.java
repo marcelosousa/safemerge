@@ -73,8 +73,6 @@ public class MatchQueryBuilder extends AbstractQueryBuilder<MatchQueryBuilder> {
 
     private String minimumShouldMatch;
 
-    private String rewrite = null;
-
     private String fuzzyRewrite = null;
 
     private Boolean lenient;
@@ -86,6 +84,7 @@ public class MatchQueryBuilder extends AbstractQueryBuilder<MatchQueryBuilder> {
     private Float cutoff_Frequency = null;
 
     static final MatchQueryBuilder PROTOTYPE = new MatchQueryBuilder(null, null);
+
 
     /**
      * Constructs a new text query.
@@ -246,6 +245,7 @@ public class MatchQueryBuilder extends AbstractQueryBuilder<MatchQueryBuilder> {
         printBoostAndQueryName(builder);
         builder.endObject();
         builder.endObject();
+        return;
     }
 
     @Override

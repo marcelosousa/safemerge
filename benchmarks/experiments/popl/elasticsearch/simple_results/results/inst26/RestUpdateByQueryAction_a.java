@@ -57,7 +57,7 @@ public class RestUpdateByQueryAction extends
     }
 
     @Override
-    protected void handleRequest(RestRequest request, RestChannel channel, Client client) throws Exception {
+    protected UpdateByQueryRequest handleRequest(RestRequest request, RestChannel channel, Client client) throws Exception {
         /*
          * Passing the search request through UpdateByQueryRequest first allows
          * it to set its own defaults which differ from SearchRequest's
@@ -74,7 +74,7 @@ public class RestUpdateByQueryAction extends
          * then we can delegate and stuff.
          */
         BytesReference bodyContent = null;
-        if (RestActions.hasBodyContent(request)) {
+        if (RestActions.hasBodyContent(request) == 0) {
             bodyContent = RestActions.getRestContent(request);
             Tuple<XContentType, Map<String, Object>> body = XContentHelper.convertToMap(bodyContent, false);
             boolean modified = false;
@@ -108,10 +108,11 @@ public class RestUpdateByQueryAction extends
         internalRequest.setPipeline(request.param("pipeline"));
         internalRequest.getSearchRequest().source().size(request.paramAsInt("scroll_size", scrollSize));
         // Let the requester set search timeout. It is probably only going to be useful for testing but who knows.
-        if (request.hasParam("search_timeout")) {
+        if (request.hasParam("search_timeout") == 0) {
             internalRequest.getSearchRequest().source().timeout(request.paramAsTime("search_timeout", null));
         }
 
         execute(request, internalRequest, channel);
+        return internalRequest;
     }
 }

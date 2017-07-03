@@ -202,7 +202,10 @@ instance Annotate Stmt AnnStmt where
       AnnSkip         p           -> Skip         
 
 andAST :: [Exp] -> Exp
-andAST = foldr (\a b -> BinOp a And b) $ Lit $ Boolean True 
+andAST [] = error "andAST: empty"
+andAST [x] = x
+andAST (x:xs) = BinOp x And (andAST xs)
+--andAST = foldr (\a b -> BinOp a And b) $ Lit $ Boolean True 
 
 instance GetAnnotation AnnStmt where
   getAnn stmt = 

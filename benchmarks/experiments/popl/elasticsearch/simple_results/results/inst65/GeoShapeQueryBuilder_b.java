@@ -31,6 +31,11 @@ import java.io.IOException;
  */
 public class GeoShapeQueryBuilder extends QueryBuilder implements BoostableQueryBuilder<GeoShapeQueryBuilder> {
 
+
+    public static final String NAME = "geo_shape";
+
+    static final GeoShapeQueryBuilder PROTOTYPE = new GeoShapeQueryBuilder(null, null);
+
     private final String name;
 
     private final ShapeBuilder shape;
@@ -194,5 +199,6 @@ public class GeoShapeQueryBuilder extends QueryBuilder implements BoostableQuery
         }
 
         builder.endObject();
+        return;
     }
 }

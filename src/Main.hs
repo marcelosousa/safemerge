@@ -114,9 +114,13 @@ parse f = do
 parse4 :: FilePath -> FilePath -> FilePath -> FilePath -> IO (Program, Program, Program, Program)
 parse4 ofl afl bfl mfl = do
   putStrLn "Parsing files..."
+  putStrLn "Parsing o..."
   o <- parse ofl 
+  putStrLn "Parsing a..."
   a <- parse afl 
+  putStrLn "Parsing b..."
   b <- parse bfl 
+  putStrLn "Parsing m..."
   m <- parse mfl 
   return (o,a,b,m)
 

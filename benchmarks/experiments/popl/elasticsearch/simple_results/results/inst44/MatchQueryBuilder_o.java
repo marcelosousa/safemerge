@@ -31,10 +31,7 @@ import java.util.Locale;
  */
 public class MatchQueryBuilder extends QueryBuilder implements BoostableQueryBuilder<MatchQueryBuilder> {
 
-    public enum Operator {
-        OR,
-        AND
-    }
+    public static final String NAME = "match";
 
     public enum Type {
         /**
@@ -66,8 +63,6 @@ public class MatchQueryBuilder extends QueryBuilder implements BoostableQueryBui
 
     private String analyzer;
 
-    private Float boost;
-
     private Integer slop;
 
     private Fuzziness fuzziness;
@@ -77,8 +72,6 @@ public class MatchQueryBuilder extends QueryBuilder implements BoostableQueryBui
     private Integer maxExpansions;
 
     private String minimumShouldMatch;
-
-    private String rewrite = null;
 
     private String fuzzyRewrite = null;
 
@@ -90,7 +83,7 @@ public class MatchQueryBuilder extends QueryBuilder implements BoostableQueryBui
 
     private Float cutoff_Frequency = null;
 
-    private String queryName;
+    static final MatchQueryBuilder PROTOTYPE = new MatchQueryBuilder(null, null);
 
     /**
      * Constructs a new text query.
@@ -275,5 +268,6 @@ public class MatchQueryBuilder extends QueryBuilder implements BoostableQueryBui
 
         builder.endObject();
         builder.endObject();
+        return;
     }
 }

@@ -40,12 +40,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 
 public class Lwjgl3ApplicationConfiguration {
-	boolean disableAudio = false;
+	int disableAudio = false;
 	int audioDeviceSimultaneousSources = 16;
 	int audioDeviceBufferSize = 512;
 	int audioDeviceBufferCount = 9;
 
-	boolean useGL30 = false;
+	int useGL30 = false;
 	int gles30ContextMajorVersion = 3;
 	int gles30ContextMinorVersion = 2;
 
@@ -57,51 +57,52 @@ public class Lwjgl3ApplicationConfiguration {
 	int windowY = -1;
 	int windowWidth = 640;
 	int windowHeight = 480;
-	boolean windowResizable = true;
-	boolean windowDecorated = true;
+	int windowMinWidth = -1, windowMinHeight = -1, windowMaxWidth = -1, windowMaxHeight = -1;
+	int windowResizable = true;
+	int windowDecorated = true;
 	Lwjgl3WindowListener windowListener;
 	Lwjgl3DisplayMode fullscreenMode;
 
-	boolean vSyncEnabled = true;
+	int vSyncEnabled = true;
 	String title = "";
 	Color initialBackgroundColor = Color.BLACK;
+	int initialVisible = true;
 
 	String preferencesDirectory = ".prefs/";
 	Files.FileType preferencesFileType = FileType.External;
 
 	HdpiMode hdpiMode = HdpiMode.Logical;
 	
-	static Lwjgl3ApplicationConfiguration copy(Lwjgl3ApplicationConfiguration config) {
-		Lwjgl3ApplicationConfiguration copy = new Lwjgl3ApplicationConfiguration();
-		copy.disableAudio = config.disableAudio;
-		copy.audioDeviceSimultaneousSources = config.audioDeviceSimultaneousSources;
-		copy.audioDeviceBufferSize = config.audioDeviceBufferSize;
-		copy.audioDeviceBufferCount = config.audioDeviceBufferCount;
-		copy.useGL30 = config.useGL30;
-		copy.gles30ContextMajorVersion = config.gles30ContextMajorVersion;
-		copy.gles30ContextMinorVersion = config.gles30ContextMinorVersion;
-		copy.r = config.r;
-		copy.g = config.g;
-		copy.b = config.b;
-		copy.a = config.a;
-		copy.depth = config.depth;
-		copy.stencil = config.stencil;
-		copy.samples = config.samples;
-		copy.windowX = config.windowX;
-		copy.windowY = config.windowY;
-		copy.windowWidth = config.windowWidth;
-		copy.windowHeight = config.windowHeight;
-		copy.windowResizable = config.windowResizable;
-		copy.windowDecorated = config.windowDecorated;
-		copy.windowListener = config.windowListener;
-		copy.fullscreenMode = config.fullscreenMode;
-		copy.vSyncEnabled = config.vSyncEnabled;
-		copy.title = config.title;
-		copy.initialBackgroundColor = config.initialBackgroundColor;
-		copy.preferencesDirectory = config.preferencesDirectory;
-		copy.preferencesFileType = config.preferencesFileType;
-		copy.hdpiMode = config.hdpiMode;
-		return copy;
+	static void copy(Lwjgl3ApplicationConfiguration config) {
+		this.disableAudio = config.disableAudio;
+		this.audioDeviceSimultaneousSources = config.audioDeviceSimultaneousSources;
+		this.audioDeviceBufferSize = config.audioDeviceBufferSize;
+		this.audioDeviceBufferCount = config.audioDeviceBufferCount;
+		this.useGL30 = config.useGL30;
+		this.gles30ContextMajorVersion = config.gles30ContextMajorVersion;
+		this.gles30ContextMinorVersion = config.gles30ContextMinorVersion;
+		this.r = config.r;
+		this.g = config.g;
+		this.b = config.b;
+		this.a = config.a;
+		this.depth = config.depth;
+		this.stencil = config.stencil;
+		this.samples = config.samples;
+		this.windowX = config.windowX;
+		this.windowY = config.windowY;
+		this.windowWidth = config.windowWidth;
+		this.windowHeight = config.windowHeight;
+		this.windowResizable = config.windowResizable;
+		this.windowDecorated = config.windowDecorated;
+		this.windowListener = config.windowListener;
+		this.fullscreenMode = config.fullscreenMode;
+		this.vSyncEnabled = config.vSyncEnabled;
+		this.title = config.title;
+		this.initialBackgroundColor = config.initialBackgroundColor;
+		this.preferencesDirectory = config.preferencesDirectory;
+		this.preferencesFileType = config.preferencesFileType;
+		this.hdpiMode = config.hdpiMode;
+		return ;
 	}
 	
 
@@ -110,7 +111,7 @@ public class Lwjgl3ApplicationConfiguration {
 	 * class instances like {@link Audio} or {@link Music} will be mock
 	 * implementations.
 	 */
-	public void disableAudio(boolean disableAudio) {
+	public void disableAudio(int disableAudio) {
 		this.disableAudio = disableAudio;
 	}
 
@@ -150,7 +151,7 @@ public class Lwjgl3ApplicationConfiguration {
 	 * @param gles3MinorVersion
 	 *            OpenGL ES minor version, use 2 as default
 	 */
-	public void useOpenGL3(boolean useGL30, int gles3MajorVersion, int gles3MinorVersion) {
+	public void useOpenGL3(int useGL30, int gles3MajorVersion, int gles3MinorVersion) {
 		this.useGL30 = useGL30;
 		this.gles30ContextMajorVersion = gles3MajorVersion;
 		this.gles30ContextMinorVersion = gles3MinorVersion;
@@ -201,14 +202,14 @@ public class Lwjgl3ApplicationConfiguration {
 	/** 
 	 * @param resizable whether the windowed mode window is resizable (default true)
 	 */
-	public void setResizable(boolean resizable) {
+	public void setResizable(int resizable) {
 		this.windowResizable = resizable;
 	}
 	
 	/**
 	 * @param decorated whether the windowed mode window is decorated, i.e. displaying the title bars (default true)
 	 */
-	public void setDecorated(boolean decorated) {
+	public void setDecorated(int decorated) {
 		this.windowDecorated = decorated;
 	}
 	
@@ -240,9 +241,9 @@ public class Lwjgl3ApplicationConfiguration {
 
 	/**
 	 * Sets whether to use vsync. This setting can be changed anytime at runtime
-	 * via {@link Graphics#setVSync(boolean)}.
+	 * via {@link Graphics#setVSync(int)}.
 	 */
-	public void useVsync(boolean vsync) {
+	public void useVsync(int vsync) {
 		this.vSyncEnabled = vsync;
 	}
 

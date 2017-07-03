@@ -267,7 +267,7 @@ encodeConstant s = do
 --   in the case where it calls some method.
 encodeExp :: Maybe Sort -> VId -> Exp ->  EnvOp AST
 encodeExp mSort vId expr = do 
- wizPrint $ "encodeExp: " ++ show expr
+-- wizPrint $ "encodeExp: " ++ show expr
  env@Env{..} <- get
  bSort <- lift $ mkBoolSort >>= return . Just
  iSort <- lift $ mkIntSort  >>= return . Just
@@ -299,6 +299,7 @@ encodeExp mSort vId expr = do
   Cast typ exp -> do
     wizPrint $ "encodeExp: Ignoring Cast"
     encodeExp mSort vId exp
+  This -> lift $ mkIntNum 0
   _ -> error $  "encodeExp: " ++ show expr
 
 -- | Encode New Instance via a call to an uninterpreted function
@@ -329,6 +330,9 @@ encodeCall m mSort vId = do
       argsAST <- mapM (encodeExp mSort vId) args
       arg <- encodeExp mSort vId e
       encCall mSort [name] (arg:argsAST)
+  SuperMethodCall _ i args -> do
+    argsAST <- mapM (encodeExp mSort vId) args
+    encCall mSort [i] argsAST   
   _ -> error $ "encodeCall: " ++ show m
  where
   encCall nSort name args = do
@@ -377,15 +381,20 @@ encodeCall m mSort vId = do
          -- Call to an object; assume that the object is changed; thus, need to
          -- update it
          Object -> do 
-           rhsAst  <- encCall (Just (_v_typ objVar)) [concatIdent meth] ((_v_ast objVar):args)
-           env@Env{..} <- get
-           nLhsVar <- lift $ updateVariable vId oc objVar 
-           let ssamap = insertSSAVar vId oc nLhsVar _e_ssamap
-           ass <- lift $ mkEq (_v_ast nLhsVar) rhsAst 
-           pre <- lift $ mkAnd [_e_pre,ass]
-           updatePre pre
-           updateSSAMap ssamap
-           return rhsAst
+           let ident@(Ident id) = concatIdent meth
+           rhsAst  <- encCall (Just (_v_typ objVar)) [ident] ((_v_ast objVar):args)
+           let isReadOrGet = (length id > 5) && ((take 3 id) == "get") || ((take 4 id) == "read")
+           if isReadOrGet
+           then return rhsAst
+           else do
+             env@Env{..} <- get
+             nLhsVar <- lift $ updateVariable vId oc objVar 
+             let ssamap = insertSSAVar vId oc nLhsVar _e_ssamap
+             ass <- lift $ mkEq (_v_ast nLhsVar) rhsAst 
+             pre <- lift $ mkAnd [_e_pre,ass]
+             updatePre pre
+             updateSSAMap ssamap
+             return rhsAst
          t -> error $ "encCall: unsupported calls to " ++ show t
        _ -> encCall nSort [concatIdent meth] ((_v_ast objVar):args)
 

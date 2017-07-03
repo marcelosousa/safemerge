@@ -69,6 +69,7 @@ public class SpanFirstQueryBuilder extends QueryBuilder implements SpanQueryBuil
             builder.field("_name", queryName);
         }
         builder.endObject();
+        return;
     }
 
     @Override
