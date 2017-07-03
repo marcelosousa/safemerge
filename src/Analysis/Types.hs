@@ -78,6 +78,7 @@ data Env = Env
   , _e_mode    :: WMode
   , _e_rety    :: Maybe Type
   , _e_consts  :: ConstMap 
+  , _e_loc     :: [MemberDecl] 
   }
 
 data WMode = Dep | Model | Prod

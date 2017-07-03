@@ -346,6 +346,8 @@ encodeCall m mSort vId = do
          meths     = findMethodGen id arity class_sum
          cfgs      = map computeGraphMember meths
          deps  = foldr (\cfg res -> M.union res $ blockDep class_sum cfg) M.empty cfgs
+     wizPrint $ "encCall: Found methods " ++ show meths
+     mapM_ incLoc meths
      case M.lookup (id,arity) _e_fnmap of
        Nothing -> do
          sorts <- lift $ mapM getSort args 

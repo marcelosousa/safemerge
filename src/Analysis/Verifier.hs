@@ -27,6 +27,7 @@ import Data.Map (Map)
 import Data.Maybe
 import Data.List
 import Edit
+import Edit.Apply
 import Edit.Types
 import Language.Java.Pretty
 import Language.Java.Syntax
@@ -43,13 +44,14 @@ wiz_meth mode diff@MInst{..} (mth_id,mth,e_o,e_a,e_b,e_m) = do
   -- putStrLn $ "wiz_meth: " ++ show mth_id
   let _mth = simplifyMDecl mth
       _es  = map simplifyEdit [e_o,e_a,e_b,e_m]
+      m_mth = fst $ apply_edit_member _mth (_es!!3)
       (f_mth,f_edits) = case mode of
         Prod -> wholeProduct _mth _es 
         _ -> let f_mth = toAnn [1,2,3,4] _mth
                  f_es  = map (\(vId,_e) -> map (toAnn [vId]) _e) $ zip [1,2,3,4] _es 
              in (f_mth,f_es)
       classes = map (findClass mth_id) [_o_info,_a_info,_b_info,_m_info]
-  res <- evalZ3 $ verify mode (mth_id,f_mth) classes f_edits 
+  res <- evalZ3 $ verify mode m_mth (mth_id,f_mth) classes f_edits 
   case res of
     Nothing  -> putStrLn "No semantic conflict found"
     Just str -> do
@@ -57,13 +59,13 @@ wiz_meth mode diff@MInst{..} (mth_id,mth,e_o,e_a,e_b,e_m) = do
       putStrLn str    
 
 -- The main verification function
-verify :: WMode -> (MIdent,AnnMemberDecl) -> [ClassSum]-> [AnnEdit] -> Z3 (Maybe String)
-verify mode (mid,mth) classes edits = do 
+verify :: WMode -> MemberDecl -> (MIdent,AnnMemberDecl) -> [ClassSum]-> [AnnEdit] -> Z3 (Maybe String)
+verify mode m (mid,mth) classes edits = do 
  -- compute the set of inputs 
  -- i. union the fields of all classes
  let class_fields    = nub $ concatMap M.elems $ map _cl_fields classes 
  -- ii. get the member signatures for the method (parameters) and the fields
-     (params,fields) = (toMemberSig mth,concatMap toMemberSig class_fields) 
+     (params,fields) = (toMemberSig mth, concatMap toMemberSig class_fields) 
  -- iii. get the return type
      rty = getReturnType mth
  -- compute the pre and the post condition
@@ -72,25 +74,26 @@ verify mode (mid,mth) classes edits = do
  --  which is a special dummy variable res_version
  (_ssa,pre) <- encodePre $ params ++ fields  
  -- Compute the post-condition 
- liftIO $ putStrLn $ "verify: " ++ show mid 
+ liftIO $ putStrLn $ "verify: " ++ show mid ++ "\n" ++ show fields
  (ssa,post) <- case rty of 
                  Nothing -> encodePost _ssa fields  
                  Just ty -> encodePost _ssa $ (Ident "",[ty]):fields 
  postStr    <- astToString post
  iFuncMap   <- initial_FuncMap
- let iEnv = Env ssa iFuncMap pre classes edits True 0 [1..4] 0 mode rty M.empty
+ let iEnv = Env ssa iFuncMap pre classes edits True 0 [1..4] 0 mode rty M.empty (class_fields++[m]) 
      body = case ann_mth_body mth of
               AnnMethodBody Nothing -> []
               AnnMethodBody (Just (AnnBlock b)) -> b 
  -- Generate the relational post & check for semantic conflict freedom
  ((),fEnv)   <- runStateT (analyser body) iEnv
  (res,model) <- local $ helper (_e_pre fEnv) post 
- liftIO $ putStrLn "verify: relational post condition" 
- preStr <- astToString (_e_pre fEnv)
- liftIO $ putStrLn preStr 
- liftIO $ putStrLn "verify: semantic conflict check" 
- liftIO $ putStrLn postStr
+-- liftIO $ putStrLn "verify: relational post condition" 
+-- preStr <- astToString (_e_pre fEnv)
+-- liftIO $ putStrLn preStr 
+-- liftIO $ putStrLn "verify: semantic conflict check" 
+-- liftIO $ putStrLn postStr
  liftIO $ putStrLn $ "verify: result = " ++ show res 
+ liftIO $ writeFile "out.java" (unlines $ map prettyPrint (_e_loc fEnv))
  case res of 
   Unsat -> return Nothing
   Sat -> do
@@ -320,12 +323,13 @@ houdini ann_preds cond body = do
  -- we are done
  then do
   neg_cond <- lift $ mkNot cond
-  invStr <- lift $ astToString inv
-  liftIO $ putStrLn "houdini: loop invariant"
-  liftIO $ putStrLn invStr
+ -- invStr <- lift $ astToString inv
+ -- liftIO $ putStrLn "houdini: loop invariant"
+ -- liftIO $ putStrLn invStr
   new_pre  <- lift $ mkAnd [inv,neg_cond]
   updatePre new_pre 
   updateEdits (_e_edits nenv)
+  updateLoc (_e_loc nenv)
  -- we are not done unless preds == [] where we just default to True
  else if null preds 
       then error $ "houdini: unable to compute inductive fixpoint" 
@@ -381,9 +385,10 @@ analyseRet vIds _exp cont = do
             res_ast = getASTSSAMap "ret_inner ret" vId res_str _e_ssamap
         lift $ mapM (uncurry mkEq) $ zip res_ast exp_ast 
     -- encode the fields which are part of the global state
-    let class_vId@ClassSum{..} = _e_classes !! (vId-1)
+    -- let class_vId@ClassSum{..} = _e_classes !! (vId-1)
+    let fls = nub $ concatMap M.keys $ map _cl_fields _e_classes 
         -- get the names of the fields
-        fls      = M.keys _cl_fields
+        -- fls      = M.keys _cl_fields
         -- get the ASTs per field
         fls_last = concatMap (\i -> getASTSSAMap "ret_inner" vId i _e_ssamap) fls
         -- computes the return names of the fields

@@ -155,6 +155,7 @@ joinEnv orig e1 e2 = do
       mode     = _e_mode    e2
       rety     = _e_rety    e1
       consts   = _e_consts  e2
+      loc      = nub $ ((_e_loc e1) ++ (_e_loc e2)) 
   --wizPrint "join_env: original " 
   --printSSA ssa_orig
   --wizPrint "join_env: then branch" 
@@ -163,7 +164,7 @@ joinEnv orig e1 e2 = do
   --printSSA ssa_e2 
   --wizPrint "join_env: result"
   --printSSA ssa
-  return $ Env ssa fnm pre classes eds debug numret vids anonym mode rety consts 
+  return $ Env ssa fnm pre classes eds debug numret vids anonym mode rety consts loc 
 
 -- | Replace Version Identifiers 
 updatePid :: [VId] -> EnvOp ()
@@ -272,3 +273,16 @@ updateConsts :: ConstMap -> EnvOp ()
 updateConsts c = do
   s@Env{..} <- get
   put s{ _e_consts = c }
+
+-- | Increment Loc
+incLoc :: MemberDecl -> EnvOp ()
+incLoc m = do
+  wizPrint $ "incLoc"
+  s@Env{..} <- get
+  let loc = nub $ (_e_loc ++ [m])
+  put s { _e_loc = loc }
+ 
+updateLoc :: [MemberDecl] -> EnvOp ()
+updateLoc c = do
+  s@Env{..} <- get
+  put s{ _e_loc = c }
