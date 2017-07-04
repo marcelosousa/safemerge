@@ -92,8 +92,10 @@ verify mode m (mid,mth) classes edits = do
 -- liftIO $ putStrLn preStr 
 -- liftIO $ putStrLn "verify: semantic conflict check" 
 -- liftIO $ putStrLn postStr
+ let sFile = case snd3 mid of
+               Ident s -> s
  liftIO $ putStrLn $ "verify: result = " ++ show res 
- liftIO $ writeFile "out.java" (unlines $ map prettyPrint (_e_loc fEnv))
+ liftIO $ writeFile (sFile ++ ".java") (unlines $ map prettyPrint (_e_loc fEnv))
  case res of 
   Unsat -> return Nothing
   Sat -> do
@@ -423,13 +425,16 @@ analyseBlock (bstmt:cont) kont b = do
       listDeps = M.toList deps
       rhs = concat $ snd $ unzip $ snd $ unzip listDeps
       -- need to get the all the inputs first 
+  wizPrint $ "analyseBlock: \n" ++ show mth_bdy
+  wizPrint $ "analyseBlock: CFG\n" ++ show (cfg :: DepGraph)
   wizPrint $ "analyseBlock:\n" ++ printDepMap deps
-  --isSound <- checkDep rhs 
-  --if isSound
-  --then do
-  mapM_ analyse_block_dep listDeps 
-  analyse kont
- -- else analyseBStmt bstmt cont 
+  isSound <- checkDep rhs 
+  if isSound
+  then do
+    wizPrint $ "analyseBlock: True"
+    mapM_ analyse_block_dep listDeps 
+    analyse kont
+  else analyseBStmt bstmt cont 
  where
    -- | analyse_block_dep: analyses for each dependence graph
    --   the assignments:

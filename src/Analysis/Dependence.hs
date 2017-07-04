@@ -289,6 +289,9 @@ transformer stmt class_sum el@(k,dmap) =  -- T.trace ("transformer: " ++ show st
       let (r,w) = transformer_expr class_sum e
       in (r:k, foldr (set_dep $ r ++ kvars) dmap w) 
     Empty -> el
+    Throw e -> 
+      let (r,w) = transformer_expr class_sum e
+      in  (k, foldr (set_dep $ r ++ kvars) dmap w) 
     _ -> error $ "transformer: " ++ show stmt
 
 set_output :: AbsVar -> DepMap -> DepMap 

@@ -219,7 +219,7 @@ instance Flow Program () where
     mapM_ computeGraph $ M.toList defs 
 
 instance Flow MemberDecl () where
-  toFlow mem = do
+  toFlow mem =  do
     let mid = (Ident "", Ident "", [])
     newEntry mid mem 
     computeGraph (mid,mem)
@@ -269,12 +269,12 @@ computeGraph (sym,mdecl) = do
 
 -- | computes the body of a method or constructor
 computeGraphBody :: MemberDecl -> FlowOp () st
-computeGraphBody mDecl = case mDecl of
+computeGraphBody mDecl =  case mDecl of
   MethodDecl _ _ _ _ _ _ (MethodBody mBlock) -> case mBlock of
     Nothing -> return () 
     Just (Block block) -> do
       let blockStr = show block
-      if isInfixOf "Throw" blockStr || isInfixOf "Synchronized" blockStr || isInfixOf "Try" blockStr
+      if isInfixOf "Synchronized" blockStr || isInfixOf "Try" blockStr
       then return () 
       else if isInfixOf "Return" blockStr 
            then mapM_ computeGraphBStmt block
@@ -343,6 +343,7 @@ computeGraphStmt stmt = do
     Assert a b -> computeGraphSimpleStmt stmt
     Assume a   -> computeGraphSimpleStmt stmt
     Skip       -> computeGraphSimpleStmt stmt
+    Throw e    -> computeGraphSimpleStmt stmt
     IfThen cond tExp -> computeGraphStmt $ IfThenElse cond tExp Skip 
     IfThenElse cond tStmt eStmt -> do
       curr <- getCurrent

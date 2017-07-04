@@ -96,6 +96,9 @@ pairFst (a,_,_) (a',_,_) = (a,a')
 fst3 :: (a,b,c) -> a
 fst3 (a,b,c) = a
 
+snd3 :: (a,b,c) -> b
+snd3 (a,b,c) = b
+
 -- computes a triangle of equalities
 comb :: [(i,n,a)] -> [(i,n,n,a,a)]
 comb [] = []
