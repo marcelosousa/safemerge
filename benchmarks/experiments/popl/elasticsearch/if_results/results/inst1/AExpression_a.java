@@ -158,8 +158,8 @@ public abstract class AExpression extends ANode {
                     ECast ecast = new ECast(line, offset, location, this, cast);
                     ecast.actual(expected);
 
-                    //return ecast;
-                    return 0;
+                    return ecast;
+                    //return 0;
                 } else {
                     EConstant econstant = new EConstant(line, offset, location, constant);
                     econstant.analyze(variables);
@@ -171,8 +171,8 @@ public abstract class AExpression extends ANode {
                     ECast ecast = new ECast(line, offset, location, econstant, cast);
                     ecast.actual(expected);
 
-                    return 0;
-                    //return ecast;
+                    //return 0;
+                    return ecast;
                 }
             }
         }

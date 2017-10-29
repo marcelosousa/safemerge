@@ -153,14 +153,14 @@ public abstract class AExpression extends ANode {
                         throw createError(new IllegalStateException("Illegal tree structure."));
                     }
 
-                    //return econstant;
-                    return 0;
+                    return econstant;
+                    //return 0;
                 } else if (instanceofEConstant() == 0) {
                     final ECast ecast = new ECast(location, this, cast);
                     ecast.actual(expected);
 
-                    //return ecast;
-                    return 0;
+                    return ecast;
+                    //return 0;
                 } else {
                     final EConstant econstant = new EConstant(location, constant);
                     econstant.analyze(variables);
@@ -172,8 +172,8 @@ public abstract class AExpression extends ANode {
                     final ECast ecast = new ECast(location, econstant, cast);
                     ecast.actual(expected);
 
-                    //return ecast;
-                    return 0;
+                    return ecast;
+                    //return 0;
                 }
             }
         }

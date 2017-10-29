@@ -73,7 +73,7 @@ public class LineChartRenderer extends DataRenderer {
     @Override
     public void drawData(Canvas c) {
 
-        if (mPathBitmap == null
+        if ((mPathBitmap == null)
                 || ((int) mViewPortHandler.getChartHeight() != mPathBitmap.getHeight())) {
             mPathBitmap = Bitmap.createBitmap((int) mViewPortHandler.getChartWidth(),
                     (int) mViewPortHandler.getChartHeight(), Bitmap.Config.ARGB_4444);
@@ -91,6 +91,7 @@ public class LineChartRenderer extends DataRenderer {
         }
 
         c.drawBitmap(mPathBitmap, 0, 0, mRenderPaint);
+        return;
     }
 
     protected void drawDataSet(Canvas c, LineDataSet dataSet) {

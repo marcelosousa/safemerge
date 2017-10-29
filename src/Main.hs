@@ -142,7 +142,7 @@ diff4 ofl afl bfl mfl = do
   -- parses the files
   (oast,aast,bast,mast) <- parse4 ofl afl bfl mfl
   -- converts to class info and finds which methods contain changes
-  let mergeInst = liff oast aast bast mast
+  let (_,mergeInst) = liff oast aast bast mast
   -- computes per method, the edit scripts and the method with holes
       diffInst = diffMethods mergeInst
   putStrLn $ printMethInsts $ _merges diffInst
@@ -155,7 +155,7 @@ verify mode ofl afl bfl mfl = do
   -- parses the files
   (oast,aast,bast,mast) <- parse4 ofl afl bfl mfl
   -- converts to class info and finds which methods contain changes
-  let mergeInst = liff oast aast bast mast
+  let (_,mergeInst) = liff oast aast bast mast
   -- computes per method, the edit scripts and the method with holes
       diffInst = diffMethods mergeInst
   -- putStrLn $ printMethInsts $ _merges diffInst

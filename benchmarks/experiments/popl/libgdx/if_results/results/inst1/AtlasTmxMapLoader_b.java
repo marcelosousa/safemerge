@@ -461,6 +461,7 @@ public class AtlasTmxMapLoader extends BaseTmxMapLoader<AtlasTmxMapLoader.AtlasT
 			}
 			map.getTileSets().addTileSet(tileset);
 		}
+        return;
 	}
 
 }

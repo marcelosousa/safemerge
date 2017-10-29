@@ -103,13 +103,13 @@ public class LineChartActivityColored extends DemoBase {
 
         ArrayList<String> xVals = new ArrayList<String>();
         for (int i = 0; i < count; i++) {
-            xVals.add(mMonths[i % 12]);
+            xVals.add(mMonths(i,12));
         }
 
         ArrayList<Entry> yVals = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range) + 3;
+            int val = compute(range);
             yVals.add(new Entry(val, i));
         }
 

@@ -478,7 +478,7 @@ checkDep inputs = do
             vs = lin e 
         asts <- lift $ mapM (uncurry equalVariable) vs 
         return $ asts ++ r 
-    SArray ai -> error "checkDepInp: SArray" 
+    SArray ai -> return r -- error "checkDepInp: SArray" 
 
 absVarToIdent :: AbsVar -> Ident
 absVarToIdent (SField i) = i

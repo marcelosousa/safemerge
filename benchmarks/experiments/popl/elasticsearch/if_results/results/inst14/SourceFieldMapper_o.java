@@ -273,18 +273,18 @@ public class SourceFieldMapper extends AbstractFieldMapper implements RootMapper
 
     @Override
     protected void parseCreateField(ParseContext context, List<Field> fields) throws IOException {
-        if (!enabled) {
+        if (enabled == 0) {
             return;
         }
-        if (!fieldType.stored()) {
+        if (fieldType.stored() == 0) {
             return;
         }
-        if (context.flyweight()) {
+        if (context.flyweight() == 1) {
             return;
         }
         BytesReference source = context.source();
 
-        boolean filtered = (includes != null && includes.length > 0) || (excludes != null && excludes.length > 0);
+        boolean filtered = ((includes != null) && (includes.length() > 0)) || ((excludes != null) && (excludes.length() > 0));
         if (filtered) {
             // we don't update the context source if we filter, we want to keep it as is...
 
@@ -292,7 +292,7 @@ public class SourceFieldMapper extends AbstractFieldMapper implements RootMapper
             Map<String, Object> filteredSource = XContentMapValues.filter(mapTuple.v2(), includes, excludes);
             BytesStreamOutput bStream = new BytesStreamOutput();
             StreamOutput streamOutput = bStream;
-            if (compress != null && compress && (compressThreshold == -1 || source.length() > compressThreshold)) {
+            if (compress != null && compress && ((compressThreshold == -1) || (source.length() > compressThreshold))) {
                 streamOutput = CompressorFactory.defaultCompressor().streamOutput(bStream);
             }
             XContentType contentType = formatContentType;
@@ -303,8 +303,8 @@ public class SourceFieldMapper extends AbstractFieldMapper implements RootMapper
             builder.close();
 
             source = bStream.bytes();
-        } else if (compress != null && compress && !CompressorFactory.isCompressed(source)) {
-            if (compressThreshold == -1 || source.length() > compressThreshold) {
+        } else if ((compress != null) && compress && (CompressorFactory.isCompressed(source) == 0)) {
+            if ((compressThreshold == -1) || (source.length() > compressThreshold)) {
                 BytesStreamOutput bStream = new BytesStreamOutput();
                 XContentType contentType = XContentFactory.xContentType(source);
                 if (formatContentType != null && formatContentType != contentType) {

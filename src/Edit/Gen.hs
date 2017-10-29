@@ -93,12 +93,12 @@ edit_member_gen o_mem v_mem =
   case (o_mem,v_mem) of
     (FieldDecl _ _ _,_) -> if o_mem == v_mem then (o_mem,[],[]) else error "edit_member_gen 1: unsupported differences"
     (MethodDecl o_mods o_tys o_ty o_id o_fpars o_ex o_mbody, MethodDecl v_mods v_tys v_ty v_id v_fpars v_ex v_mbody) ->
-      let checks = [ o_mods == v_mods
-                   , o_tys == v_tys
+      let checks = [ -- o_mods == v_mods
+                     o_tys == v_tys
                    , o_ty == v_ty
                    , o_id == v_id
-                   , o_fpars == v_fpars
-                   , o_ex == v_ex ]
+                   , o_fpars == v_fpars ]
+                  -- , o_ex == v_ex ]
           (no_mbody,o_edit,v_edit) = edit_method_body_gen o_mbody v_mbody
       in if all id checks
          then (MethodDecl o_mods o_tys o_ty o_id o_fpars o_ex no_mbody, o_edit, v_edit)

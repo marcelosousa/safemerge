@@ -389,6 +389,7 @@ encodeCall m mSort vId = do
            if isReadOrGet
            then return rhsAst
            else do
+             wizPrint "HERE!!!!!"
              env@Env{..} <- get
              nLhsVar <- lift $ updateVariable vId oc objVar 
              let ssamap = insertSSAVar vId oc nLhsVar _e_ssamap
@@ -398,7 +399,25 @@ encodeCall m mSort vId = do
              updateSSAMap ssamap
              return rhsAst
          t -> error $ "encCall: unsupported calls to " ++ show t
-       _ -> encCall nSort [concatIdent meth] ((_v_ast objVar):args)
+       _ -> do 
+         case _v_mty objVar of
+           Object -> do 
+             let ident@(Ident id) = concatIdent meth
+             rhsAst  <- encCall (Just (_v_typ objVar)) [ident] ((_v_ast objVar):args)
+             let isReadOrGet = (length id > 5) && ((take 3 id) == "get") || ((take 4 id) == "read") 
+             if isReadOrGet
+             then return rhsAst
+             else do
+               wizPrint "HERE!!!!!"
+               env@Env{..} <- get
+               nLhsVar <- lift $ updateVariable vId oc objVar 
+               let ssamap = insertSSAVar vId oc nLhsVar _e_ssamap
+               ass <- lift $ mkEq (_v_ast nLhsVar) rhsAst 
+               pre <- lift $ mkAnd [_e_pre,ass]
+               updatePre pre
+               updateSSAMap ssamap
+               return rhsAst
+           _ -> encCall nSort [concatIdent meth] ((_v_ast objVar):args)
 
 -- Analyse Assign
 assign :: [VId] -> Exp -> Lhs -> AssignOp -> Exp -> EnvOp ()
@@ -501,7 +520,13 @@ enc_binop :: Op -> AST -> AST -> Z3 AST
 enc_binop op lhs rhs = do 
   case op of
     NotEq  -> mkEq lhs rhs >>= \eq -> mkNot eq
-    And    -> mkAnd [lhs,rhs]
+    And    -> do
+      one <- mkIntNum 1
+      lhsSort <- getSort lhs >>= sortToString
+      rhsSort <- getSort rhs >>= sortToString
+      _lhs <- if lhsSort == "Bool" then return lhs else mkEq lhs one 
+      _rhs <- if rhsSort == "Bool" then return rhs else mkEq rhs one 
+      mkAnd [_lhs,_rhs]
     Add    -> mkAdd [lhs,rhs]
     Mult   -> mkMul [lhs,rhs]
     Sub    -> mkSub [lhs,rhs]
@@ -512,8 +537,20 @@ enc_binop op lhs rhs = do
     GThan  -> mkGt lhs rhs
     GThanE -> mkGe lhs rhs
     Equal  -> mkEq lhs rhs
-    COr    -> mkOr [lhs, rhs]
-    CAnd   -> mkAnd [lhs, rhs]
+    COr    -> do
+      one <- mkIntNum 1
+      lhsSort <- getSort lhs >>= sortToString
+      rhsSort <- getSort rhs >>= sortToString
+      _lhs <- if lhsSort == "Bool" then return lhs else mkEq lhs one 
+      _rhs <- if rhsSort == "Bool" then return rhs else mkEq rhs one 
+      mkOr [_lhs,_rhs]
+    CAnd   -> do 
+      one <- mkIntNum 1
+      lhsSort <- getSort lhs >>= sortToString
+      rhsSort <- getSort rhs >>= sortToString
+      _lhs <- if lhsSort == "Bool" then return lhs else mkEq lhs one 
+      _rhs <- if rhsSort == "Bool" then return rhs else mkEq rhs one 
+      mkAnd [_lhs,_rhs]
     _ -> error $ "enc_binop: not supported " ++ show op
 
 -- Analyse Post De/Increment

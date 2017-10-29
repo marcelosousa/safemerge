@@ -315,7 +315,7 @@ public class ExploreSessionsActivity extends BaseActivity
      * header image; otherwise a generic title and image is shown.
      */
     private void setHeader() {
-        if (mMode == MODE_EXPLORE && mTagMetadata != null) {
+        if ((mMode == MODE_EXPLORE) && (mTagMetadata != null)) {
             String title = null;
             String headerImage = null;
             @ColorInt int trackColor = Color.TRANSPARENT;

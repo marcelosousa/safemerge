@@ -90,6 +90,7 @@ public class LineChartRenderer extends DataRenderer {
         }
 
         c.drawBitmap(mPathBitmap, 0, 0, mRenderPaint);
+        return;
     }
 
     protected void drawDataSet(Canvas c, LineDataSet dataSet) {

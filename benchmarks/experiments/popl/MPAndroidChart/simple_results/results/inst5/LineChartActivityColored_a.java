@@ -104,7 +104,7 @@ public class LineChartActivityColored extends DemoBase {
         ArrayList<Entry> yVals = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range) + 3;
+            int val = compute(range); 
             yVals.add(new Entry(val, i));
         }
 

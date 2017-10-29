@@ -367,6 +367,7 @@ public abstract class BarLineChartBase extends Chart {
         offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
 
         mMatrixOffset.set(offset);
+        return;
     }
 
     /**

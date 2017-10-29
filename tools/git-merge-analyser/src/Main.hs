@@ -1,4 +1,4 @@
-{-# LANGUAGE DoAndIfThenElse #-}
+{-# LANGUAGE DoAndIfThenElse, RecordWildCards #-}
 module Main where
 
 -- Project Liff: Identifies relevant merges based on the git log 
@@ -33,26 +33,31 @@ main = do
     Nothing -> error "liff_project: failed to obtain the merges from git log"
     Just merges -> do
       let merge_lines = lines merges
+          stats = init_stats $ length merge_lines
       -- in each element of merge_lines, we have [merge,varA,varB]
       versions <- foldM merge_base [] merge_lines 
-      relevant_merges <- foldM analyse_merge_tree [] versions 
-      foldM_ liff_merge 1 relevant_merges 
+      (stats',relevant_merges) <- foldM analyse_merge_tree (stats,[]) versions 
+      (res_stats,k) <- foldM liff_merge (stats',1) relevant_merges 
+      putStrLn $ show res_stats
       putStrLn "Done"
 
-liff_merge :: Int -> GitMerge -> IO Int
-liff_merge n m@(GitMerge args chs) = foldM (liff_main args) n chs
+liff_merge :: (Stats,Int) -> GitMerge -> IO (Stats,Int)
+liff_merge (stats,n) m@(GitMerge args chs) = foldM (liff_main args) (stats,n) chs
 
-liff_main :: [String] -> Int -> Change -> IO Int
-liff_main [o,m,a,b] i ch@(Change _ f) = do 
+-- | Checks the changes per Java file
+liff_main :: [String] -> (Stats,Int) -> Change -> IO (Stats,Int)
+liff_main [o,m,a,b] (stats,i) ch@(Change _ f) = do 
   m_o <- parse_git_show o f
   m_a <- parse_git_show a f
   m_b <- parse_git_show b f
   m_m <- parse_git_show m f
   case (m_o,m_a,m_b,m_m) of
     (Just (o_ast,o_str), Just (a_ast,a_str),Just (b_ast,b_str),Just (m_ast,m_str)) -> do
-      let r = liff o_ast a_ast b_ast m_ast
+      let (lstats,r) = liff o_ast a_ast b_ast m_ast
+          stats' = inc_liff_stats lstats stats
+      -- putStrLn $ show lstats
       if null $ _merges r
-      then return i
+      then return (stats',i)
       else do
         let dir = "results/inst"++show i++"/"
             fl  = takeBaseName f
@@ -62,24 +67,24 @@ liff_main [o,m,a,b] i ch@(Change _ f) = do
             f_m = dir ++ fl ++ "_m.java"
         putStrLn "-------------------------------------------"
         putStrLn $ "Inst: " ++ show i
-        putStrLn $ "File: " ++ f 
-        putStrLn $ "Meth: " ++ show (_merges r)
-        putStrLn $ "Orig: " ++ o
-        putStrLn $ "VarA: " ++ a
-        putStrLn $ "VarB: " ++ b
-        putStrLn $ "Merg: " ++ m
+        -- putStrLn $ "File: " ++ f 
+        -- putStrLn $ "Meth: " ++ show (_merges r)
+        -- putStrLn $ "Orig: " ++ o
+        -- putStrLn $ "VarA: " ++ a
+        -- putStrLn $ "VarB: " ++ b
+        -- putStrLn $ "Merg: " ++ m
         createDirectoryIfMissing True dir
         writeFile f_o o_str
         writeFile f_a a_str
         writeFile f_b b_str
         writeFile f_m m_str
-        return $ i + 1
-    _ -> return i
+        return (stats',i + 1)
+    _ -> return (inc_show_errs stats,i)
 
 -- | API to retrieve & process information from git commands
 -- | Analyse a git merge-tree result
-analyse_merge_tree :: [GitMerge] -> [String] -> IO [GitMerge]
-analyse_merge_tree gmerges as@[o,m,a,b] = 
+analyse_merge_tree :: (Stats,[GitMerge]) -> [String] -> IO (Stats,[GitMerge])
+analyse_merge_tree (stats,gmerges) as@[o,m,a,b] = 
   -- removes the triangle pattern:
   --     m
   --     | \
@@ -87,20 +92,20 @@ analyse_merge_tree gmerges as@[o,m,a,b] =
   --     | /
   --     a
   if o == a || o == b
-  then return gmerges
+  then return (inc_trivial stats, gmerges)
   else do
     let args = [o,a,b]
     mStr <- git_merge_tree args
     case mStr of
-      Nothing -> return gmerges
+      Nothing -> return (inc_error stats, gmerges)
       Just str -> do
         let str_lines = lines str
-            changes = analyse_changes str_lines []
+            (stats',changes) = analyse_changes str_lines (stats,[])
             gmerge = GitMerge as changes
         if not $ null changes
-        then return (gmerge:gmerges) 
-        else return gmerges 
-analyse_merge_tree gmerges _ = return gmerges
+        then return (inc_java_merges stats', gmerge:gmerges) 
+        else return (inc_other_merges stats',gmerges) 
+analyse_merge_tree (stats,gmerges) _ = return (inc_error stats, gmerges)
 
 -- ^ merge_base: retrieves the hash of the base based on the variants
 merge_base :: [[String]] -> String -> IO [[String]]

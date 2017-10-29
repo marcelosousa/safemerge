@@ -176,8 +176,8 @@ public abstract class AExpression extends ANode {
                         throw createError(new IllegalStateException("Illegal tree structure."));
                     }
 
-                    //return econstant;
-                    return 0;
+                    return econstant;
+                    // return 0;
                 } else if (instanceofEConstant() == 0) {
                     // For the case where a cast is required, a constant is set,
                     // the constant cannot be immediately cast to the expected type,
@@ -212,8 +212,8 @@ public abstract class AExpression extends ANode {
                     ECast ecast = new ECast(location, econstant, cast);
                     ecast.actual(expected);
 
-                    //return ecast;
-                    return 0;
+                    return ecast;
+                    //return 0;
                 }
             }
         }

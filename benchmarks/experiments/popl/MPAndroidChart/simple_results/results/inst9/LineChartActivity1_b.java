@@ -160,6 +160,7 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
 
         // // dont forget to refresh the drawing
         // mChart.invalidate();
+        return;
     }
 
     @Override

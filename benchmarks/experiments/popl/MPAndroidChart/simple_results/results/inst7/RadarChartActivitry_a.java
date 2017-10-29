@@ -76,6 +76,7 @@ public class RadarChartActivitry extends DemoBase {
         l.setTypeface(tf);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(5f);
+        return;
     }
 
     @Override

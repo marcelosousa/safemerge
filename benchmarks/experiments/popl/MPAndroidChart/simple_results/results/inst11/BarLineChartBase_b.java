@@ -326,7 +326,7 @@ public abstract class BarLineChartBase extends Chart {
     @Override
     public void calculateOffsets() {
 
-        if (mDrawLegend) {
+        if (mDrawLegend == 1) {
             if (mLegend.getPosition() == LegendPosition.RIGHT_OF_CHART) {
 
                 mOffsetRight = mLegend.getMaximumEntryLength(mLegendLabelPaint);
@@ -355,6 +355,7 @@ public abstract class BarLineChartBase extends Chart {
         offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
 
         mMatrixOffset.set(offset);
+        return;
     }
 
     /**

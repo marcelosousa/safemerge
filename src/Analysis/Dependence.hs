@@ -356,9 +356,9 @@ getReadSet class_sum e = case e of
   -- Exp [TypeArgument] Ident [Argument] (Maybe ClassBody)
   QualInstanceCreation e tyargs classty args mclass -> error $ "getReadSet: " ++ show e
   -- Type [Exp] Int
-  ArrayCreate ty   exps  n   -> error $ "getReadSet: " ++ show e
+  ArrayCreate ty   exps  n   -> [] -- error $ "getReadSet: " ++ show e
   -- Type Int ArrayInit
-  ArrayCreateInit ty n ainit -> error $ "getReadSet: " ++ show e
+  ArrayCreateInit ty n ainit -> [] -- error $ "getReadSet: " ++ show e
   FieldAccess fa -> case fa of
     PrimaryFieldAccess e i -> [SField i]
     SuperFieldAccess i     -> [SField i]
@@ -382,7 +382,7 @@ getReadSet class_sum e = case e of
   BinOp  lhs op rhs -> getReadSet class_sum lhs ++ getReadSet class_sum rhs
   InstanceOf    exp refType -> getReadSet class_sum exp
   Cond c t e -> getReadSet class_sum c ++ getReadSet class_sum t ++ getReadSet class_sum e
-  Assign lhs assignOp rhs -> error $ "getReadSet of " ++ show e 
+  Assign lhs assignOp rhs -> [] -- error $ "getReadSet of " ++ show e 
 
 getReadSetInv :: ClassSum -> MethodInvocation -> [AbsVar]
 getReadSetInv class_sum mi = case mi of

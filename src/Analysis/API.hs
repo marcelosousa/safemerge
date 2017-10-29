@@ -147,9 +147,7 @@ joinEnv orig e1 e2 = do
       classes  = _e_classes e2
       eds      = _e_edits   e2 
       debug    = _e_debug   e2
-      numret   = if _e_numret e1 /= _e_numret e2 
-                 then error "joinEnv: different # ret" 
-                 else _e_numret e1
+      numret   = _e_numret e1 `min` _e_numret e2 
       vids     = _e_vids    e2
       anonym   = _e_anonym  e1 `max` _e_anonym e2
       mode     = _e_mode    e2

@@ -638,6 +638,7 @@ public class TmxMapLoader extends SynchronousAssetLoader<TiledMap, TmxMapLoader.
 			}
 			layer.getObjects().add(object);
 		}
+                return;
 	}
 	
 	protected void loadProperties(MapProperties properties, Element element) {

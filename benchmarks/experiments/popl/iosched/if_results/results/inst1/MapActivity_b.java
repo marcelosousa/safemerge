@@ -115,12 +115,7 @@ public class MapActivity extends BaseActivity
         if (mDetachedMode) {
             final Toolbar toolbar = getActionBarToolbar();
             toolbar.setNavigationIcon(R.drawable.ic_up);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    finish();
-                }
-            });
+            toolbar.setNavigationOnClickListener();
         }
 
         if (mMapFragment == null) {
@@ -150,6 +145,7 @@ public class MapActivity extends BaseActivity
         mDetachedMode = getIntent().getBooleanExtra(EXTRA_DETACHED_MODE, false);
 
         attemptEnableMyLocation();
+        return;
     }
 
     @Override

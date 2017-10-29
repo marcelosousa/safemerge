@@ -128,6 +128,7 @@ public class HorizontalBarChart extends BarChart {
 
         prepareOffsetMatrix();
         prepareValuePxMatrix();
+        return;
     }
 
     @Override

@@ -22,6 +22,7 @@ import java.util.List;
 
 public class LineChartRenderer extends DataRenderer {
 
+    protected Object mViewPortHandler;
     protected LineDataProvider mChart;
 
     /** paint for the inner circle of the value indicators */
@@ -73,8 +74,8 @@ public class LineChartRenderer extends DataRenderer {
     @Override
     public void drawData(Canvas c) {
 
-        if (mPathBitmap == null
-				|| (mPathBitmap.getWidth() != (int) mViewPortHandler.getChartWidth())
+        if ((mPathBitmap == null)
+				|| ((mPathBitmap.getWidth() != (int) mViewPortHandler.getChartWidth()))
 				|| (mPathBitmap.getHeight() != (int) mViewPortHandler.getChartHeight())) {
             mPathBitmap = Bitmap.createBitmap((int) mViewPortHandler.getChartWidth(),
                     (int) mViewPortHandler.getChartHeight(), Bitmap.Config.ARGB_4444);
@@ -92,6 +93,7 @@ public class LineChartRenderer extends DataRenderer {
         }
 
         c.drawBitmap(mPathBitmap, 0, 0, mRenderPaint);
+        return;
     }
 
     protected void drawDataSet(Canvas c, LineDataSet dataSet) {
