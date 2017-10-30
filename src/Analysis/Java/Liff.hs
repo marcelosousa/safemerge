@@ -185,7 +185,9 @@ class_diff cls_name (cl_o:cls) (stats,r) =
     in case (M.lookup mth_sig mi_a, M.lookup mth_sig mi_b, M.lookup mth_sig mi_m) of
        (Just m_a, Just m_b, Just m_m) ->
          let stats2 = inc_meth_total stats1 
-         in if m_o /= m_a && m_o /= m_b && m_a /= m_b && m_a /= m_m && m_b /= m_m -- && simple_scope e_o 
+         --in if m_o /= m_a && m_o /= m_b && m_a /= m_b && m_a /= m_m && m_b /= m_m -- && simple_scope e_o 
+         --in if m_o /= m_a && m_o /= m_b && m_a /= m_m && m_b /= m_m 
+         in if m_o /= m_a && m_o /= m_b 
             then let stats3 = inc_meth_changed stats2
                      res    = (cls,fst mth_sig, snd mth_sig):r
                  in case diff4gen_meth (cls,mi,mty) m_o m_a m_b m_m of
