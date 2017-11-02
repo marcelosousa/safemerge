@@ -61,14 +61,13 @@ data Stats = Stats
  , meth_class   :: Int  -- number of base methods analyzed
  , err_meth     :: Int  -- number of methods in base and not in all 3 other classes 
  , meth_total   :: Int  -- number of methods in the 4 versions
- , meth_changed :: Int  -- number of methods where the 4 versions are different
+ , meth_changed :: Int  -- number of methods changed by at least one variant 
+ , meth_context :: MContexts -- method contexts
  , meth_edits   :: Int  -- *number of methods with successful edit script generation 
  , meth_complex :: Int  -- number of methods with complex code  (concurrency, exceptions, reflection, inner method definitions)
  , meth_simple  :: Int  -- number of methods with straight line code
  , meth_cond    :: Int  -- number of methods with conditionals 
  , meth_loop    :: Int  -- number of methods with loops
- , meth_cond_loop :: Int  -- number of methods with conditionals and loops
- , meth_return    :: Int  -- number of methods with return statements 
  , meth_stateless :: Int  -- number of methods without return statements where the class has no fields
  , edit_simple  :: Int  -- number of methods where the edit is in straight line code
  , edit_cond    :: Int  -- number of methods where the edit is in a conditional
@@ -100,24 +99,23 @@ instance Show Stats where
       ae = "|Method Error|    =\t " ++ show err_meth
       n = "|Method Valid|   =\t " ++ show meth_total
       o = "|Method Changed| =\t " ++ show meth_changed 
+      x = show meth_context
       p = "|Method Edit|    =\t " ++ show meth_edits 
       q = "|Method Unsup|   =\t " ++ show meth_complex
       r = "|Method Stateless|=\t " ++ show meth_stateless 
       s = "|Method Simple|  =\t " ++ show meth_simple
       t = "|Method Ifs|     =\t " ++ show meth_cond
       u = "|Method Loops|   =\t " ++ show meth_loop
-      v = "|Method If-Loop| =\t " ++ show meth_cond_loop
-      x = "|Method Return|  =\t " ++ show meth_return
       y = "|Edit Simple|    =\t " ++ show edit_simple 
       z = "|Edit Ifs|       =\t " ++ show edit_cond
       aa = "|Edit Loop|      =\t " ++ show edit_loop
       ab = "Method Sizes     =\t " ++ show meth_size_dist 
       ac = "Edit Sizes       =\t " ++ show edit_size_dist 
-  in unlines [a,b,c,d,e,i,j,f,g,h,k,l,m,ad,ae,n,o,p,q,r,s,t,u,v,x,y,z,aa,ab,ac] 
+  in unlines [a,b,c,d,e,i,j,f,g,h,k,l,m,ad,ae,n,o,x,p,q,r,s,t,u,y,z,aa,ab,ac] 
 --  in unlines [a,a_,b,c,d,e,e_,i,j,f,g,h,k,k_,l,m,ad,ae,n,o,p,q,r,s,t,u,v,x,y,z,aa,ab,ac] 
 
 init_stats :: Int -> Stats
-init_stats n = Stats n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 (0,0,0,0) (0,0,0) 
+init_stats n = Stats n 0 0 0 0 0 0 0 0 0 0 0 0 0 0 i_context 0 0 0 0 0 0 0 0 0 (0,0,0,0) (0,0,0) 
 
 inc_trivial :: Stats -> Stats
 inc_trivial s =
@@ -130,7 +128,6 @@ inc_error s =
   in s { log_error = n + 1 }
 
 -- Valid Merges Information  
-
 inc_java_merges :: Stats -> Stats
 inc_java_merges s =
   let n = java_merges s
@@ -169,12 +166,11 @@ inc_liff_stats l s =
       _meth_simple    = meth_simple    s + l_meth_simple    l 
       _meth_cond      = meth_cond      s + l_meth_cond      l 
       _meth_loop      = meth_loop      s + l_meth_loop      l 
-      _meth_cond_loop = meth_cond_loop s + l_meth_cond_loop l  
-      _meth_return    = meth_return    s + l_meth_return    l
       _meth_stateless = meth_stateless s + l_meth_stateless l
       _edit_simple    = edit_simple    s + l_edit_simple    l
       _edit_cond      = edit_cond      s + l_edit_cond      l
       _edit_loop      = edit_loop      s + l_edit_loop      l
+      _meth_context   = join_context (meth_context s) (l_m_context l) 
       _meth_size_dist = 
          let (a,b,c,d) = meth_size_dist s 
              (a',b',c',d') = l_meth_size_dist l
@@ -189,13 +185,12 @@ inc_liff_stats l s =
        , err_meth        =  _err_meth        
        , meth_total      =  _meth_total      
        , meth_changed    =  _meth_changed    
+       , meth_context    =  _meth_context
        , meth_edits      =  _meth_edits      
        , meth_complex    =  _meth_complex    
        , meth_simple     =  _meth_simple     
        , meth_cond       =  _meth_cond       
        , meth_loop       =  _meth_loop       
-       , meth_cond_loop  =  _meth_cond_loop   
-       , meth_return     =  _meth_return      
        , meth_stateless  =  _meth_stateless   
        , edit_simple     =  _edit_simple       
        , edit_cond       =  _edit_cond        

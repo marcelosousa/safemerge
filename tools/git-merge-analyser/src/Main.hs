@@ -53,34 +53,64 @@ liff_main [o,m,a,b] (stats,i) ch@(Change _ f) = do
   m_m <- parse_git_show m f
   case (m_o,m_a,m_b,m_m) of
     (Just (o_ast,o_str), Just (a_ast,a_str),Just (b_ast,b_str),Just (m_ast,m_str)) -> do
-      let (lstats,r) = liff o_ast a_ast b_ast m_ast
+      let (lstats,mergeInst) = liff o_ast a_ast b_ast m_ast
           stats' = inc_liff_stats lstats stats
+          diffInst = diffMethods mergeInst
+          merges = _merges diffInst
       -- putStrLn $ show lstats
-      if null $ _merges r
+      -- putStrLn $ show stats'
+      if null merges 
       then return (stats',i)
       else do
-        let dir = "results/inst"++show i++"/"
-            fl  = takeBaseName f
-            f_o = dir ++ fl ++ "_o.java"
-            f_a = dir ++ fl ++ "_a.java"
-            f_b = dir ++ fl ++ "_b.java"
-            f_m = dir ++ fl ++ "_m.java"
-        putStrLn "-------------------------------------------"
-        putStrLn $ "Inst: " ++ show i
-        -- putStrLn $ "File: " ++ f 
-        -- putStrLn $ "Meth: " ++ show (_merges r)
-        -- putStrLn $ "Orig: " ++ o
-        -- putStrLn $ "VarA: " ++ a
-        -- putStrLn $ "VarB: " ++ b
-        -- putStrLn $ "Merg: " ++ m
-        createDirectoryIfMissing True dir
-        writeFile f_o o_str
-        writeFile f_a a_str
-        writeFile f_b b_str
-        writeFile f_m m_str
-        return (stats',i + 1)
+        k <- foldM (\_i ident -> printInst _i f ident (l_map lstats) o_str a_str b_str m_str) i merges 
+        return (stats',k + 1)
     _ -> return (inc_show_errs stats,i)
 
+printInst :: Int -> FilePath -> MethInst -> Map MIdent MSummary -> String -> String -> String -> String -> IO Int  
+printInst i f m@(ident,_,_,_,_,_) map o_str a_str b_str m_str = do 
+  dir <- getDir ident map i 
+  let fl  = takeBaseName f
+      f_o = dir ++ fl ++ "_o.java"
+      f_a = dir ++ fl ++ "_a.java"
+      f_b = dir ++ fl ++ "_b.java"
+      f_m = dir ++ fl ++ "_m.java"
+      log = dir ++ "diff.txt"
+  putStrLn "-------------------------------------------"
+  putStrLn $ "Inst: " ++ show i
+  -- putStrLn $ "File: " ++ f 
+  -- putStrLn $ "Meth: " ++ show (_merges r)
+  -- putStrLn $ "Orig: " ++ o
+  -- putStrLn $ "VarA: " ++ a
+  -- putStrLn $ "VarB: " ++ b
+  -- putStrLn $ "Merg: " ++ m
+  writeFile f_o o_str
+  writeFile f_a a_str
+  writeFile f_b b_str
+  writeFile f_m m_str
+  writeFile log $ printMethInst m
+  return (i+1)
+
+getDir :: MIdent -> Map MIdent MSummary -> Int -> IO String
+getDir ident map i = do 
+  case M.lookup ident map of
+    Nothing -> do
+      let dir = "results/misc/inst"++show i++"/" 
+      createDirectoryIfMissing True dir
+      return dir 
+    Just s@MSum{..} -> do 
+      let h = "results/cat"++show _m_ctx ++"/" 
+      case _m_diff of
+        Nothing -> do 
+          let dir = h ++ show _m_meth ++ "/" ++ show _m_edit ++ "/inst" ++ show i ++ "/"
+          createDirectoryIfMissing True dir
+          return dir 
+        Just  e -> do
+          let dir = h ++ "differr/inst" ++ show i ++ "/"
+              err = dir ++ "diff.log"
+          createDirectoryIfMissing True dir
+          writeFile err e
+          return dir 
+       
 -- | API to retrieve & process information from git commands
 -- | Analyse a git merge-tree result
 analyse_merge_tree :: (Stats,[GitMerge]) -> [String] -> IO (Stats,[GitMerge])

@@ -41,15 +41,20 @@ instance Show a => Show (PMergeInst a) where
 
 printMethInsts :: [MethInst] -> String
 printMethInsts [] = ""
-printMethInsts ((mid,mdecl,o,a,b,m):rest) = 
+printMethInsts (h:rest) = 
+  let header = printMethInst h
+      restStr = printMethInsts rest
+  in header++restStr
+
+printMethInst :: MethInst -> String
+printMethInst (mid,mdecl,o,a,b,m) = 
   let header  = "Merge Instance for method " ++ show mid ++ "\n"
       mDStr   = prettyPrint mdecl ++ "\n"
       oStr    = "Edit Base:\n" ++ printEdit o ++ "\n"
       aStr    = "Edit A:\n"    ++ printEdit a ++ "\n"
       bStr    = "Edit B:\n"    ++ printEdit b ++ "\n"
       mStr    = "Edit M:\n"    ++ printEdit m ++ "\n"
-      restStr = printMethInsts rest
-  in header++mDStr++oStr++aStr++bStr++mStr++restStr
+  in header++mDStr++oStr++aStr++bStr++mStr
 
 -- | Computes a 4-way diff of Programs
 diff4gen :: Program -> Program -> Program -> Program -> (Program, Edit, Edit, Edit, Edit)
