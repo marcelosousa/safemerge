@@ -62,54 +62,62 @@ liff_main [o,m,a,b] (stats,i) ch@(Change _ f) = do
       if null merges 
       then return (stats',i)
       else do
-        k <- foldM (\_i ident -> printInst _i f ident (l_map lstats) o_str a_str b_str m_str) i merges 
+        k <- foldM (\_i ident -> printInst _i [o,m,a,b] f ident (l_map lstats) o_str a_str b_str m_str) i merges 
         return (stats',k + 1)
     _ -> return (inc_show_errs stats,i)
 
-printInst :: Int -> FilePath -> MethInst -> Map MIdent MSummary -> String -> String -> String -> String -> IO Int  
-printInst i f m@(ident,_,_,_,_,_) map o_str a_str b_str m_str = do 
-  dir <- getDir ident map i 
+printInst :: Int -> [String] -> FilePath -> MethInst -> Map MIdent MSummary -> String -> String -> String -> String -> IO Int  
+printInst i [o,m,a,b] f mInst@(ident,_,_,_,_,_) map o_str a_str b_str m_str = do 
+  (dir,write) <- getDir ident map i 
   let fl  = takeBaseName f
       f_o = dir ++ fl ++ "_o.java"
       f_a = dir ++ fl ++ "_a.java"
       f_b = dir ++ fl ++ "_b.java"
       f_m = dir ++ fl ++ "_m.java"
       log = dir ++ "diff.txt"
-  putStrLn "-------------------------------------------"
-  putStrLn $ "Inst: " ++ show i
-  -- putStrLn $ "File: " ++ f 
-  -- putStrLn $ "Meth: " ++ show (_merges r)
-  -- putStrLn $ "Orig: " ++ o
-  -- putStrLn $ "VarA: " ++ a
-  -- putStrLn $ "VarB: " ++ b
-  -- putStrLn $ "Merg: " ++ m
-  writeFile f_o o_str
-  writeFile f_a a_str
-  writeFile f_b b_str
-  writeFile f_m m_str
-  writeFile log $ printMethInst m
-  return (i+1)
+      iog = dir ++ "log.txt"
+      str = unlines ["-------------------------------------------"
+                    ,"Inst: " ++ show i
+                    ,"File: " ++ f 
+                    ,"Orig: " ++ o
+                    ,"VarA: " ++ a
+                    ,"VarB: " ++ b
+                    ,"Merg: " ++ m]
+  if write 
+  then do
+    writeFile f_o o_str
+    writeFile f_a a_str
+    writeFile f_b b_str
+    writeFile f_m m_str
+    writeFile log $ printMethInst mInst
+    writeFile iog str
+    return (i+1)
+  else return i
 
-getDir :: MIdent -> Map MIdent MSummary -> Int -> IO String
+getDir :: MIdent -> Map MIdent MSummary -> Int -> IO (String,Bool)
 getDir ident map i = do 
   case M.lookup ident map of
     Nothing -> do
       let dir = "results/misc/inst"++show i++"/" 
       createDirectoryIfMissing True dir
-      return dir 
+      return (dir,True) 
     Just s@MSum{..} -> do 
       let h = "results/cat"++show _m_ctx ++"/" 
       case _m_diff of
         Nothing -> do 
           let dir = h ++ show _m_meth ++ "/" ++ show _m_edit ++ "/inst" ++ show i ++ "/"
-          createDirectoryIfMissing True dir
-          return dir 
+              res = _m_ctx == 9
+          if res 
+          then do
+            createDirectoryIfMissing True dir
+            return (dir,res) 
+          else return (dir,res)
         Just  e -> do
           let dir = h ++ "differr/inst" ++ show i ++ "/"
               err = dir ++ "diff.log"
           createDirectoryIfMissing True dir
           writeFile err e
-          return dir 
+          return (dir,True)
        
 -- | API to retrieve & process information from git commands
 -- | Analyse a git merge-tree result

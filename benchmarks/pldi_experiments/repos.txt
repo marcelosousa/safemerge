@@ -1,0 +1,2 @@
+druid                          git@github.com:alibaba/druid.git
+MaterialDrawer                 git@github.com:mikepenz/MaterialDrawer.git 

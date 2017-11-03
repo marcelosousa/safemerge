@@ -377,7 +377,7 @@ get_stats fields ident ctx o a b m st =
       let sum = i_sum ctx 
       in add_to_map ident sum st
     Just (_,_,e_o,e_a,e_b,e_m) ->
-      let code_m = prettyPrint m
+      let code_m = show m -- prettyPrint m
           st1    = inc_meth_edits st
           mcat   = get_meth_category fields code_m 
           ecat   = get_edit_category e_m
@@ -423,25 +423,26 @@ is_code_complex :: String -> Bool
 is_code_complex str = any (\s -> isInfixOf s str) complexKeywords
 
 complexKeywords :: [String]
-complexKeywords = ["try","catch","synchronized","getMethod","getClass","goto"]
+complexKeywords = ["Throw","Try","Catch","Synchronized"]
+-- complexKeywords = ["Throw","Try","Catch","Synchronized","getMethod","getClass"]
 
 is_code_cond :: String -> Bool
 is_code_cond str = any (\s -> isInfixOf s str) condKeywords
 
 condKeywords :: [String]
-condKeywords = ["if","switch"]
+condKeywords = ["IfThen","IfThenElse","Switch"]
 
 is_code_loop :: String -> Bool
 is_code_loop str = any (\s -> isInfixOf s str) loopKeywords
 
 loopKeywords :: [String]
-loopKeywords = ["while","for"]
+loopKeywords = ["While","Do","BasicFor","EnhancedFor"]
 
 is_code_simple :: String -> Bool
 is_code_simple str = not (is_code_cond str || is_code_loop str)
 
 is_code_return :: String -> Bool
-is_code_return str = isInfixOf "return" str
+is_code_return str = isInfixOf "Return" str
 
 is_code_stateless :: Bool -> String -> Bool
 is_code_stateless f str = f && (not $ is_code_return str)

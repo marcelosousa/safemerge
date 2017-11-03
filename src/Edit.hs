@@ -95,10 +95,8 @@ diffMethods m@MInst{..} =
 diff4gen_meth :: MIdent -> MemberDecl -> MemberDecl -> MemberDecl -> MemberDecl -> Maybe MethInst
 diff4gen_meth ident o a b m =
   let (no, eo, ea) = edit_member_gen o a 
-      (nno, eab)   = -- T.trace ("edit_member:\n" ++ prettyPrint no ++ "\n" ++ printEdit eo ++ "\n" ++ printEdit ea) $ 
-        gen_edit edit_member_gen no b [eo,ea]
-  in -- T.trace ("edit_member II:\n" ++ prettyPrint nno ++ "\n" ++ unlines (map printEdit eab)) $ 
-     case gen_edit edit_member_gen nno m eab of
+      (nno, eab)   = gen_edit edit_member_gen no b [eo,ea]
+  in case gen_edit edit_member_gen nno m eab of
       (fo,[[]]) -> Nothing -- Just (ident, fo, [], [], [], [])
       (fo, [e_o,e_a,e_b,e_m]) ->
         let -- (n_fo,[n_e_o,n_e_a,n_e_b,n_e_m]) = opt_holes fo [e_o,e_a,e_b,e_m] 
@@ -112,16 +110,7 @@ diff4gen_meth ident o a b m =
         in if all id checks 
            then Just nres 
            else Nothing  
-        {-
-             let oStr = "Edit Base:\n" ++ printEdit e_o ++ "\n"
-                 aStr = "Edit A:\n"    ++ printEdit e_a ++ "\n"
-                 bStr = "Edit B:\n"    ++ printEdit e_b ++ "\n"
-                 mStr = "Edit M:\n"    ++ printEdit e_m ++ "\n"
-              -- in T.trace  ("diff4gen_meth: bug in the edit script generation\n" ++ prettyPrint fo ++ "\n" ++ prettyPrint o ++ oStr ++ aStr ++ bStr ++ mStr) $ (ident,fo, [],[],[],[])
-              -- in error ("diff4gen_meth: bug in the edit script generation\n" ++ show checks ++ "\n" ++ prettyPrint o ++ "\n" ++ prettyPrint fo ++ "\n" ++ prettyPrint _o ++ "\n" ++ oStr ++ "\n" ++ show o ++ "\n" ++ show _o) 
-              in T.trace ("diff4gen_meth: unusable edit scripts " ++ show checks)  $ (ident,fo, [],[],[],[])
-         -}
-      (fo, xs) -> T.trace ("diff4: strange result: " ++ show (length xs)) $ Nothing -- (ident,fo, [],[],[],[])
+      (fo, xs) -> Nothing -- T.trace ("diff4: strange result: " ++ show (length xs)) $ Nothing -- (ident,fo, [],[],[],[])
 
 gen_edit :: (a -> a -> (a,Edit,Edit)) -> a -> a -> [Edit] -> (a, [Edit])
 gen_edit f p1 p2 eis =
