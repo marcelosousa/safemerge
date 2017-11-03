@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 264
+File: spring-boot-actuator/src/main/java/org/springframework/boot/actuate/endpoint/ShutdownEndpoint.java
+Orig: e53d3167ab839dd809cf5980104907fc889f2c72
+VarA: eb995cc07a9af73bda9bca915b6203520e3d34e4
+VarB: 4963cfd67b2758966ce4def6e243eb2fb5bd1d0e
+Merg: 8e669e2eef3b2ff8aea64a20dff51dc12a013107

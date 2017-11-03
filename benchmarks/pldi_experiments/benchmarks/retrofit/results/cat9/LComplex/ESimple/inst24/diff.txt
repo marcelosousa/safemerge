@@ -1,0 +1,281 @@
+Merge Instance for method (Ident "RequestBuilder",Ident "build",[])
+Request build ()
+{
+  Set<String> pathParams = new LinkedHashSet<String>(methodInfo.pathParams);
+  List<Parameter> paramList = createParamList();
+  String replacedPath = methodInfo.path;
+  for (String pathParam : pathParams) {
+                                        Parameter found = null;
+                                        for (Parameter param : paramList) {
+                                                                            if (param.getName().equals(pathParam))
+                                                                            {
+                                                                              found = param;
+                                                                              break;
+                                                                            }
+                                                                          }
+                                        if (found != null)
+                                        {
+                                          String value;
+                                          try
+                                          {
+                                            value = URLEncoder.encode(String.valueOf(found.getValue()), UTF_8);
+                                          }
+                                          catch (UnsupportedEncodingException e)
+                                          {
+                                            throw new AssertionError(e);
+                                          }
+                                          replacedPath = replacedPath.replace(("{" + found.getName() + "}"), value);
+                                          paramList.remove(found);
+                                        }
+                                        else
+                                        {
+                                          throw new IllegalArgumentException("URL param " + pathParam + " has no matching method @Name param.");
+                                        }
+                                      }
+  if (methodInfo.singleEntityArgumentIndex != NO_SINGLE_ENTITY)
+  {
+    if (!paramList.isEmpty())
+    {
+      throw new IllegalStateException("Found @Name param on single-entity request that was not used for path substitution.");
+    }
+  }
+  StringBuilder url = new StringBuilder(apiUrl);
+  if (apiUrl.endsWith("/"))
+  {
+    url.deleteCharAt((url.length() - 1));
+  }
+  url.append(replacedPath);
+  <?HOLE?>
+  TypedOutput body = null;
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: Map<String, TypedOutput> bodyParams = new LinkedHashMap<String, TypedOutput>();
+Hole 3:
+[]: if (!methodInfo.restMethod.hasBody())
+{
+  for (int i = 0, count = paramList.size() ; i < count ; i++)
+  {
+    url.append((i == 0 ? '?' : '&'));
+    Parameter nonPathParam = paramList.get(i);
+    url.append(nonPathParam.getName()).append("=").append(nonPathParam.getValue());
+  }
+}
+else
+  if (!paramList.isEmpty())
+  {
+    if (methodInfo.isMultipart)
+    {
+      for (Parameter parameter : paramList) {
+                                              Object value = parameter.getValue();
+                                              TypedOutput typedOutput;
+                                              if (value instanceof TypedOutput)
+                                              {
+                                                typedOutput = (TypedOutput) value;
+                                              }
+                                              else
+                                              {
+                                                typedOutput = new TypedString(value.toString());
+                                              }
+                                              bodyParams.put(parameter.getName(), typedOutput);
+                                            }
+    }
+    else
+    {
+      body = converter.toBody(paramList);
+    }
+  }
+  else
+    if (methodInfo.singleEntityArgumentIndex != NO_SINGLE_ENTITY)
+    {
+      Object singleEntity = args[methodInfo.singleEntityArgumentIndex];
+      if (singleEntity instanceof TypedOutput)
+      {
+        body = (TypedOutput) singleEntity;
+      }
+      else
+      {
+        body = converter.toBody(singleEntity);
+      }
+    }
+Hole 4:
+[]: return new Request(methodInfo.restMethod.value(), url.toString(), headers, methodInfo.isMultipart, body, bodyParams);
+
+Edit A:
+Hole 1:
+[]: for (QueryParam annotation : methodInfo.pathQueryParams) {
+                                                           paramList.add(new Parameter(annotation.name(), annotation.value(), String.class));
+                                                         }
+Hole 2:
+[]: Map<String, TypedOutput> bodyParams = new LinkedHashMap<String, TypedOutput>();
+Hole 3:
+[]: if (!methodInfo.restMethod.hasBody())
+{
+  for (int i = 0, count = paramList.size() ; i < count ; i++)
+  {
+    url.append((i == 0 ? '?' : '&'));
+    Parameter nonPathParam = paramList.get(i);
+    url.append(nonPathParam.getName()).append("=").append(nonPathParam.getValue());
+  }
+}
+else
+  if (!paramList.isEmpty())
+  {
+    if (methodInfo.isMultipart)
+    {
+      for (Parameter parameter : paramList) {
+                                              Object value = parameter.getValue();
+                                              TypedOutput typedOutput;
+                                              if (value instanceof TypedOutput)
+                                              {
+                                                typedOutput = (TypedOutput) value;
+                                              }
+                                              else
+                                              {
+                                                typedOutput = new TypedString(value.toString());
+                                              }
+                                              bodyParams.put(parameter.getName(), typedOutput);
+                                            }
+    }
+    else
+    {
+      body = converter.toBody(paramList);
+    }
+  }
+  else
+    if (methodInfo.singleEntityArgumentIndex != NO_SINGLE_ENTITY)
+    {
+      Object singleEntity = args[methodInfo.singleEntityArgumentIndex];
+      if (singleEntity instanceof TypedOutput)
+      {
+        body = (TypedOutput) singleEntity;
+      }
+      else
+      {
+        body = converter.toBody(singleEntity);
+      }
+    }
+Hole 4:
+[]: return new Request(methodInfo.restMethod.value(), url.toString(), headers, methodInfo.isMultipart, body, bodyParams);
+
+Edit B:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: if (!methodInfo.restMethod.hasBody())
+{
+  for (int i = 0, count = paramList.size() ; i < count ; i++)
+  {
+    url.append((i == 0 ? '?' : '&'));
+    Parameter nonPathParam = paramList.get(i);
+    url.append(nonPathParam.getName()).append("=").append(nonPathParam.getValue());
+  }
+}
+else
+  if (!paramList.isEmpty())
+  {
+    if (methodInfo.isMultipart)
+    {
+      MultipartTypedOutput multipartBody = new MultipartTypedOutput();
+      for (Parameter parameter : paramList) {
+                                              Object value = parameter.getValue();
+                                              TypedOutput typedOutput;
+                                              if (value instanceof TypedOutput)
+                                              {
+                                                typedOutput = (TypedOutput) value;
+                                              }
+                                              else
+                                              {
+                                                typedOutput = new TypedString(value.toString());
+                                              }
+                                              multipartBody.addPart(parameter.getName(), typedOutput);
+                                            }
+      body = multipartBody;
+    }
+    else
+    {
+      body = converter.toBody(paramList);
+    }
+  }
+  else
+    if (methodInfo.singleEntityArgumentIndex != NO_SINGLE_ENTITY)
+    {
+      Object singleEntity = args[methodInfo.singleEntityArgumentIndex];
+      if (singleEntity instanceof TypedOutput)
+      {
+        body = (TypedOutput) singleEntity;
+      }
+      else
+      {
+        body = converter.toBody(singleEntity);
+      }
+    }
+Hole 3:
+[]: return new Request(methodInfo.restMethod.value(), url.toString(), headers, body);
+Hole 4:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: for (QueryParam annotation : methodInfo.pathQueryParams) {
+                                                           paramList.add(new Parameter(annotation.name(), annotation.value(), String.class));
+                                                         }
+Hole 2:
+[]: if (!methodInfo.restMethod.hasBody())
+{
+  for (int i = 0, count = paramList.size() ; i < count ; i++)
+  {
+    url.append((i == 0 ? '?' : '&'));
+    Parameter nonPathParam = paramList.get(i);
+    url.append(nonPathParam.getName()).append("=").append(nonPathParam.getValue());
+  }
+}
+else
+  if (!paramList.isEmpty())
+  {
+    if (methodInfo.isMultipart)
+    {
+      MultipartTypedOutput multipartBody = new MultipartTypedOutput();
+      for (Parameter parameter : paramList) {
+                                              Object value = parameter.getValue();
+                                              TypedOutput typedOutput;
+                                              if (value instanceof TypedOutput)
+                                              {
+                                                typedOutput = (TypedOutput) value;
+                                              }
+                                              else
+                                              {
+                                                typedOutput = new TypedString(value.toString());
+                                              }
+                                              multipartBody.addPart(parameter.getName(), typedOutput);
+                                            }
+      body = multipartBody;
+    }
+    else
+    {
+      body = converter.toBody(paramList);
+    }
+  }
+  else
+    if (methodInfo.singleEntityArgumentIndex != NO_SINGLE_ENTITY)
+    {
+      Object singleEntity = args[methodInfo.singleEntityArgumentIndex];
+      if (singleEntity instanceof TypedOutput)
+      {
+        body = (TypedOutput) singleEntity;
+      }
+      else
+      {
+        body = converter.toBody(singleEntity);
+      }
+    }
+Hole 3:
+[]: return new Request(methodInfo.restMethod.value(), url.toString(), headers, body);
+Hole 4:
+[]: <SKIP>
+

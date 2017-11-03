@@ -1,0 +1,58 @@
+Merge Instance for method (Ident "RequestCreator",Ident "into",[RefType (ClassRefType (ClassType [(Ident "RemoteViews",[])])),PrimType IntT,RefType (ArrayType (PrimType IntT))])
+public void into (RemoteViews remoteViews, int viewId, int[] appWidgetIds)
+{
+  long started = System.nanoTime();
+  <?HOLE?>
+  if (remoteViews == null)
+  {
+    throw new IllegalArgumentException("remoteViews must not be null.");
+  }
+  if (appWidgetIds == null)
+  {
+    throw new IllegalArgumentException("appWidgetIds must not be null.");
+  }
+  if (deferred)
+  {
+    throw new IllegalStateException("Fit cannot be used with remote views.");
+  }
+  if (((placeholderDrawable != null || placeholderResId) != 0 || errorDrawable) != null)
+  {
+    throw new IllegalArgumentException("Cannot use placeholder or error drawables with remote views.");
+  }
+  Request request = createRequest(started);
+  <?HOLE?>
+  <?HOLE?>
+  performRemoteViewInto(action);
+}
+Edit Base:
+Hole 1:
+[]: checkMain();
+Hole 2:
+[]: String key = createKey(request);
+Hole 3:
+[]: RemoteViewsAction action = new AppWidgetAction(picasso, request, remoteViews, viewId, appWidgetIds, skipMemoryCache, errorResId, key, tag);
+
+Edit A:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: String key = createKey(request, new StringBuilder());
+Hole 3:
+[]: RemoteViewsAction action = new AppWidgetAction(picasso, request, remoteViews, viewId, appWidgetIds, skipMemoryCache, errorResId, key, tag);
+
+Edit B:
+Hole 1:
+[]: checkMain();
+Hole 2:
+[]: String key = createKey(request);
+Hole 3:
+[]: RemoteViewsAction action = new AppWidgetAction(picasso, request, remoteViews, viewId, appWidgetIds, memoryPolicy, errorResId, key, tag);
+
+Edit M:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: String key = createKey(request, new StringBuilder());
+Hole 3:
+[]: RemoteViewsAction action = new AppWidgetAction(picasso, request, remoteViews, viewId, appWidgetIds, memoryPolicy, errorResId, key, tag);
+

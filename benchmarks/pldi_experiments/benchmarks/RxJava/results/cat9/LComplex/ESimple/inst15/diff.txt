@@ -1,0 +1,191 @@
+Merge Instance for method (Ident "OperatorConcatTest",Ident "testIssue2890NoStackoverflow",[])
+@Test(timeout = 10000)
+ public void testIssue2890NoStackoverflow () throws InterruptedException
+{
+  final ExecutorService executor = Executors.newFixedThreadPool(2);
+  final Scheduler sch = Schedulers.from(executor);
+  <?HOLE?>
+  int n = 5000;
+  final AtomicInteger counter = new AtomicInteger();
+  <?HOLE?>
+  executor.awaitTermination(12000, TimeUnit.MILLISECONDS);
+  assertEquals(n, counter.get());
+}
+Edit Base:
+Hole 1:
+[]: Func1<Integer, Observable<Integer>> func = new Func1<Integer, Observable<Integer>>()
+                                           {
+                                             @Override
+                                             public Observable<Integer> call (Integer t)
+                                             {
+                                               Observable<Integer> observable = Observable.just(t).subscribeOn(sch);
+                                               Subject<Integer, Integer> subject = BufferUntilSubscriber.create();
+                                               observable.subscribe(subject);
+                                               return subject;
+                                             }
+                                           };
+Hole 2:
+[]: Observable.range(1, n).concatMap(func).subscribe(new Subscriber<Integer>()
+                                                 {
+                                                   @Override
+                                                   public void onNext (Integer t)
+                                                   {
+                                                     try
+                                                     {
+                                                       Thread.sleep(1);
+                                                     }
+                                                     catch (InterruptedException e)
+                                                     {
+                                                     }
+                                                     if (counter.getAndIncrement() % 100 == 0)
+                                                     {
+                                                       System.out.print("testIssue2890NoStackoverflow -> ");
+                                                       System.out.println(counter.get());
+                                                     }
+                                                     ;
+                                                   }
+                                                   @Override
+                                                   public void onCompleted ()
+                                                   {
+                                                     executor.shutdown();
+                                                   }
+                                                   @Override
+                                                   public void onError (Throwable e)
+                                                   {
+                                                     executor.shutdown();
+                                                   }
+                                                 });
+
+Edit A:
+Hole 1:
+[]: Func1<Integer, Observable<Integer>> func = new Func1<Integer, Observable<Integer>>()
+                                           {
+                                             @Override
+                                             public Observable<Integer> call (Integer t)
+                                             {
+                                               Observable<Integer> observable = Observable.just(t).subscribeOn(sch);
+                                               Subject<Integer, Integer> subject = BufferUntilSubscriber.create();
+                                               observable.subscribe(subject);
+                                               return subject;
+                                             }
+                                           };
+Hole 2:
+[]: Observable.range(1, n).concatMap(func).subscribe(new Subscriber<Integer>()
+                                                 {
+                                                   @Override
+                                                   public void onNext (Integer t)
+                                                   {
+                                                     try
+                                                     {
+                                                       Thread.sleep(1);
+                                                     }
+                                                     catch (InterruptedException e)
+                                                     {
+                                                     }
+                                                     if (counter.getAndIncrement() % 100 == 0)
+                                                     {
+                                                       System.out.print("testIssue2890NoStackoverflow -> ");
+                                                       System.out.println(counter.get());
+                                                     }
+                                                   }
+                                                   @Override
+                                                   public void onCompleted ()
+                                                   {
+                                                     executor.shutdown();
+                                                   }
+                                                   @Override
+                                                   public void onError (Throwable e)
+                                                   {
+                                                     executor.shutdown();
+                                                   }
+                                                 });
+
+Edit B:
+Hole 1:
+[]: Func1<Integer, Observable<Integer>> func = new Func1<Integer, Observable<Integer>>()
+                                           {
+                                             @Override
+                                             public Observable<Integer> call (Integer t)
+                                             {
+                                               Observable<Integer> observable = Observable.just(t).subscribeOn(sch);
+                                               Subject<Integer, Integer> subject = UnicastSubject.create();
+                                               observable.subscribe(subject);
+                                               return subject;
+                                             }
+                                           };
+Hole 2:
+[]: Observable.range(1, n).concatMap(func).subscribe(new Subscriber<Integer>()
+                                                 {
+                                                   @Override
+                                                   public void onNext (Integer t)
+                                                   {
+                                                     try
+                                                     {
+                                                       Thread.sleep(1);
+                                                     }
+                                                     catch (InterruptedException e)
+                                                     {
+                                                     }
+                                                     if (counter.getAndIncrement() % 100 == 0)
+                                                     {
+                                                       System.out.print("testIssue2890NoStackoverflow -> ");
+                                                       System.out.println(counter.get());
+                                                     }
+                                                     ;
+                                                   }
+                                                   @Override
+                                                   public void onCompleted ()
+                                                   {
+                                                     executor.shutdown();
+                                                   }
+                                                   @Override
+                                                   public void onError (Throwable e)
+                                                   {
+                                                     executor.shutdown();
+                                                   }
+                                                 });
+
+Edit M:
+Hole 1:
+[]: Func1<Integer, Observable<Integer>> func = new Func1<Integer, Observable<Integer>>()
+                                           {
+                                             @Override
+                                             public Observable<Integer> call (Integer t)
+                                             {
+                                               Observable<Integer> observable = Observable.just(t).subscribeOn(sch);
+                                               Subject<Integer, Integer> subject = UnicastSubject.create();
+                                               observable.subscribe(subject);
+                                               return subject;
+                                             }
+                                           };
+Hole 2:
+[]: Observable.range(1, n).concatMap(func).subscribe(new Subscriber<Integer>()
+                                                 {
+                                                   @Override
+                                                   public void onNext (Integer t)
+                                                   {
+                                                     try
+                                                     {
+                                                       Thread.sleep(1);
+                                                     }
+                                                     catch (InterruptedException e)
+                                                     {
+                                                     }
+                                                     if (counter.getAndIncrement() % 100 == 0)
+                                                     {
+                                                       System.out.print("testIssue2890NoStackoverflow -> ");
+                                                       System.out.println(counter.get());
+                                                     }
+                                                   }
+                                                   @Override
+                                                   public void onCompleted ()
+                                                   {
+                                                     executor.shutdown();
+                                                   }
+                                                   @Override
+                                                   public void onError (Throwable e)
+                                                   {
+                                                     executor.shutdown();
+                                                   }
+                                                 });
+

@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 110
+File: tests/gdx-tests-lwjgl/src/com/badlogic/gdx/tests/lwjgl/LwjglDebugStarter.java
+Orig: 7ecd6b1f7cbc9e67369b63d14b18407790bbea35
+VarA: 34f4bf53b63319e8d422e9b2419cf725fd71e3c6
+VarB: 85e91328ae1bfed6679f04528a013e1a2dadb15a
+Merg: aeb4c979d62ce9ce714df5c9912afd182b13ab98

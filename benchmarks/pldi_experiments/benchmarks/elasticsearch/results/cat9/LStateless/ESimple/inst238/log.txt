@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 238
+File: core/src/test/java/org/elasticsearch/aliases/IndexAliasesTests.java
+Orig: 3e0532a0c549c1ffb52f34307e24b2662819b75d
+VarA: 3d534136503ac860df7f6b775823a9cf3db1acaa
+VarB: 20facccaf6b2aa40ab7bd93eb9357359d336a1cf
+Merg: 012825207521ad97adbe82d08aab4c835378909f

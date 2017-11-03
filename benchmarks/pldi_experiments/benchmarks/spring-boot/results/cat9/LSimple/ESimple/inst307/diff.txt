@@ -1,0 +1,52 @@
+Merge Instance for method (Ident "SampleElasticsearchApplicationTests",Ident "testDefaultSettings",[])
+@Test
+ public void testDefaultSettings () throws Exception
+{
+  <?HOLE?>
+  String output = this.outputCapture.toString();
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: try
+{
+  new SpringApplicationBuilder(SampleElasticsearchApplication.class).properties(PROPERTIES).run();
+}
+catch (IllegalStateException ex)
+{
+  if (serverNotRunning(ex))
+  {
+    return;
+  }
+}
+Hole 2:
+[]: assertTrue(("Wrong output: " + output), output.contains("firstName='Alice', lastName='Smith'"));
+
+Edit A:
+Hole 1:
+[]: try
+{
+  new SpringApplicationBuilder(SampleElasticsearchApplication.class).run();
+}
+catch (IllegalStateException ex)
+{
+  if (serverNotRunning(ex))
+  {
+    return;
+  }
+}
+Hole 2:
+[]: assertThat(output).contains("firstName='Alice', lastName='Smith'");
+
+Edit B:
+Hole 1:
+[]: new SpringApplicationBuilder(SampleElasticsearchApplication.class).properties(PROPERTIES).run();
+Hole 2:
+[]: assertTrue(("Wrong output: " + output), output.contains("firstName='Alice', lastName='Smith'"));
+
+Edit M:
+Hole 1:
+[]: new SpringApplicationBuilder(SampleElasticsearchApplication.class).run();
+Hole 2:
+[]: assertThat(output).contains("firstName='Alice', lastName='Smith'");
+

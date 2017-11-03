@@ -1,0 +1,41 @@
+Git Merge Statistics
+|Merges|         =	 98
+|Variant=Base|   =	 24
+|Merge-Tree Err| =	 13
+|Valid Merge|    =	 61
+|Java Merge|     =	 12
+|Non-Java Merge| =	 49
+|Total Files|    =	 183
+|Java Files|     =	 140
+|Java Changed 2| =	 16
+|Git Show Error| =	 1
+|Java Class|     =	 15
+|Java Class Err| =	 0
+|Method Analyzed| =	 204
+|Method Error|    =	 14
+|Method Valid|   =	 190
+|Method Changed| =	 12
+Merge Scenario Distribution
+1. |{O,A,M}     {B}| = 0
+2. |{O,B,M}     {A}| = 0
+3. |{O,M}  {A}  {B}| = 0
+4. |{O,M}     {A,B}| = 0
+5. |{O}     {A,B,M}| = 1
+6. |{O}  {A,B}  {M}| = 0
+7. |{O}  {A,M}  {B}| = 10
+8. |{O}   {A} {M,B}| = 0
+9. |{O} {A} {B} {M}| = 1
+
+|Method Edit|    =	 12
+|Method Unsup|   =	 5
+|Method Stateless|=	 0
+|Method Simple|  =	 2
+|Method Ifs|     =	 4
+|Method Loops|   =	 1
+|Edit Simple|    =	 10
+|Edit Ifs|       =	 2
+|Edit Loop|      =	 0
+Method Sizes     =	 (12,0,0,0)
+Edit Sizes       =	 (11,1,0)
+
+Done

@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 380
+File: src/test/java/org/elasticsearch/indices/memory/breaker/RandomExceptionCircuitBreakerTests.java
+Orig: 86e1655e4bcf12dd4446d307507409a6ffe5370c
+VarA: e29cf903c8c69ffdf320fb2e74938deb559dc8d8
+VarB: 358bb9bd7585502b269a3cbd4efb60ad7d3d238d
+Merg: 0f405e9710190befbec2ee5194368e9093e742b2

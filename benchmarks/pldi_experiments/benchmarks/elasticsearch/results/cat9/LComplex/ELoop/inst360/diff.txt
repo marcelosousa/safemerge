@@ -1,0 +1,224 @@
+Merge Instance for method (Ident "MissingQueryParser",Ident "newFilter",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])])),RefType (ClassRefType (ClassType [(Ident "String",[])])),PrimType BooleanT,PrimType BooleanT,RefType (ClassRefType (ClassType [(Ident "String",[])]))])
+public static Query newFilter (QueryParseContext parseContext, String fieldPattern, boolean existence, boolean nullValue, String queryName)
+{
+  if (!existence && !nullValue)
+  {
+    throw new QueryParsingException(parseContext, "missing must have either existence, or null_value, or both set to true");
+  }
+  <?HOLE?>
+  <?HOLE?>
+  MapperService.SmartNameObjectMapper smartNameObjectMapper = parseContext.smartObjectMapper(fieldPattern);
+  if (smartNameObjectMapper != null && smartNameObjectMapper.hasMapper())
+  {
+    fieldPattern = fieldPattern + ".*";
+  }
+  List<String> fields = parseContext.simpleMatchToIndexNames(fieldPattern);
+  if (fields.isEmpty())
+  {
+    if (existence)
+    {
+      return Queries.newMatchAllQuery();
+    }
+    return null;
+  }
+  <?HOLE?>
+  Query nullFilter = null;
+  if (existence)
+  {
+    BooleanQuery boolFilter = new BooleanQuery();
+    for (String field : fields) {
+                                  <?HOLE?>
+                                  Query filter = null;
+                                  if (fieldNamesMapper != null && fieldNamesMapper.enabled())
+                                  {
+                                    final String f;
+                                    <?HOLE?>
+                                    filter = fieldNamesMapper.termQuery(f, parseContext);
+                                  }
+                                  <?HOLE?>
+                                  if (filter == null)
+                                  {
+                                    filter = new TermRangeQuery(field, null, null, true, true);
+                                  }
+                                  boolFilter.add(filter, BooleanClause.Occur.SHOULD);
+                                }
+    <?HOLE?>
+    <?HOLE?>
+    ;
+  }
+  if (nullValue)
+  {
+    for (String field : fields) {
+                                  <?HOLE?>
+                                  <?HOLE?>
+                                }
+  }
+  Query filter;
+  if (nullFilter != null)
+  {
+    if (existenceFilter != null)
+    {
+      BooleanQuery combined = new BooleanQuery();
+      combined.add(existenceFilter, BooleanClause.Occur.SHOULD);
+      combined.add(nullFilter, BooleanClause.Occur.SHOULD);
+      filter = combined;
+    }
+    else
+    {
+      filter = nullFilter;
+    }
+  }
+  else
+  {
+    filter = existenceFilter;
+  }
+  if (filter == null)
+  {
+    return null;
+  }
+  if (queryName != null)
+  {
+    parseContext.addNamedQuery(queryName, existenceFilter);
+  }
+  return new ConstantScoreQuery(filter);
+}
+Edit Base:
+Hole 1:
+[]: final FieldMappers fieldNamesMappers = parseContext.mapperService().fullName(FieldNamesFieldMapper.NAME);
+Hole 2:
+[]: final FieldNamesFieldMapper fieldNamesMapper = (FieldNamesFieldMapper) fieldNamesMappers.mapper();
+Hole 3:
+[]: Filter existenceFilter = null;
+Hole 4:
+[SLoop,SCond]: MapperService.SmartNameFieldMappers smartNameFieldMappers = parseContext.smartFieldMappers(field);
+Hole 5:
+[SCond,SCond,SLoop,SCond]: if (smartNameFieldMappers != null && smartNameFieldMappers.hasMapper())
+{
+  f = smartNameFieldMappers.mapper().names().indexName();
+}
+else
+{
+  f = field;
+}
+Hole 6:
+[SCond,SLoop,SCond]: if ((filter == null && smartNameFieldMappers) != null && smartNameFieldMappers.hasMapper())
+{
+  filter = smartNameFieldMappers.mapper().rangeQuery(null, null, true, true, parseContext);
+}
+Hole 7:
+[SCond]: existenceFilter = new QueryWrapperFilter(boolFilter);
+Hole 8:
+[SCond]: existenceFilter = new QueryWrapperFilter(Queries.not(existenceFilter));
+Hole 9:
+[SLoop,SCond]: MapperService.SmartNameFieldMappers smartNameFieldMappers = parseContext.smartFieldMappers(field);
+Hole 10:
+[SCond,SLoop,SCond]: if (smartNameFieldMappers != null && smartNameFieldMappers.hasMapper())
+{
+  nullFilter = smartNameFieldMappers.mapper().nullValueFilter();
+}
+
+Edit A:
+Hole 1:
+[]: final FieldMappers fieldNamesMappers = parseContext.mapperService().fullName(FieldNamesFieldMapper.NAME);
+Hole 2:
+[]: final FieldNamesFieldMapper fieldNamesMapper = (FieldNamesFieldMapper) fieldNamesMappers.mapper();
+Hole 3:
+[]: Query existenceFilter = null;
+Hole 4:
+[SLoop,SCond]: MapperService.SmartNameFieldMappers smartNameFieldMappers = parseContext.smartFieldMappers(field);
+Hole 5:
+[SCond,SCond,SLoop,SCond]: if (smartNameFieldMappers != null && smartNameFieldMappers.hasMapper())
+{
+  f = smartNameFieldMappers.mapper().names().indexName();
+}
+else
+{
+  f = field;
+}
+Hole 6:
+[SCond,SLoop,SCond]: if ((filter == null && smartNameFieldMappers) != null && smartNameFieldMappers.hasMapper())
+{
+  filter = smartNameFieldMappers.mapper().rangeQuery(null, null, true, true, parseContext);
+}
+Hole 7:
+[SCond]: existenceFilter = boolFilter;
+Hole 8:
+[SCond]: existenceFilter = Queries.not(existenceFilter);
+Hole 9:
+[SLoop,SCond]: MapperService.SmartNameFieldMappers smartNameFieldMappers = parseContext.smartFieldMappers(field);
+Hole 10:
+[SCond,SLoop,SCond]: if (smartNameFieldMappers != null && smartNameFieldMappers.hasMapper())
+{
+  nullFilter = smartNameFieldMappers.mapper().nullValueFilter();
+}
+
+Edit B:
+Hole 1:
+[]: final FieldNamesFieldMapper fieldNamesMapper = (FieldNamesFieldMapper) parseContext.mapperService().fullName(FieldNamesFieldMapper.NAME);
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: Filter existenceFilter = null;
+Hole 4:
+[SLoop,SCond]: FieldMapper mapper = parseContext.fieldMapper(field);
+Hole 5:
+[SCond,SCond,SLoop,SCond]: if (mapper != null)
+{
+  f = mapper.names().indexName();
+}
+else
+{
+  f = field;
+}
+Hole 6:
+[SCond,SLoop,SCond]: if ((filter == null && mapper) != null)
+{
+  filter = mapper.rangeQuery(null, null, true, true, parseContext);
+}
+Hole 7:
+[SCond]: existenceFilter = new QueryWrapperFilter(boolFilter);
+Hole 8:
+[SCond]: existenceFilter = new QueryWrapperFilter(Queries.not(existenceFilter));
+Hole 9:
+[SLoop,SCond]: FieldMapper mapper = parseContext.fieldMapper(field);
+Hole 10:
+[SCond,SLoop,SCond]: if (mapper != null)
+{
+  nullFilter = mapper.nullValueFilter();
+}
+
+Edit M:
+Hole 1:
+[]: final FieldNamesFieldMapper fieldNamesMapper = (FieldNamesFieldMapper) parseContext.mapperService().fullName(FieldNamesFieldMapper.NAME);
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: Query existenceFilter = null;
+Hole 4:
+[SLoop,SCond]: FieldMapper mapper = parseContext.fieldMapper(field);
+Hole 5:
+[SCond,SLoop,SCond]: if (mapper != null)
+{
+  f = mapper.names().indexName();
+}
+else
+{
+  f = field;
+}
+Hole 6:
+[SLoop,SCond]: if ((filter == null && mapper) != null)
+{
+  filter = mapper.rangeQuery(null, null, true, true, parseContext);
+}
+Hole 7:
+[SCond]: existenceFilter = boolFilter;
+Hole 8:
+[SCond]: existenceFilter = Queries.not(existenceFilter);
+Hole 9:
+[SLoop,SCond]: FieldMapper mapper = parseContext.fieldMapper(field);
+Hole 10:
+[SLoop,SCond]: if (mapper != null)
+{
+  nullFilter = mapper.nullValueFilter();
+}
+

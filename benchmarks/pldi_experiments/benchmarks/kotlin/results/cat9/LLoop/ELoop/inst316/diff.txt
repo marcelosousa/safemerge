@@ -1,0 +1,99 @@
+Merge Instance for method (Ident "FunctionCodegen",Ident "generatedMethod",[RefType (ClassRefType (ClassType [(Ident "JetExpression",[])])),RefType (ClassRefType (ClassType [(Ident "Method",[])])),RefType (ClassRefType (ClassType [(Ident "ClassContext",[])])),RefType (ClassRefType (ClassType [(Ident "FunctionDescriptor",[])]))])
+private void generatedMethod (JetExpression bodyExpressions, Method jvmSignature, ClassContext context, FunctionDescriptor functionDescriptor)
+{
+  List<ValueParameterDescriptor> paramDescrs = functionDescriptor.getValueParameters();
+  List<TypeParameterDescriptor> typeParameters = functionDescriptor.getTypeParameters();
+  int flags = Opcodes.ACC_PUBLIC;
+  OwnerKind kind = context.getContextKind();
+  boolean isStatic = kind == OwnerKind.NAMESPACE;
+  if (isStatic)
+    flags |= Opcodes.ACC_STATIC;
+  boolean isAbstract = (kind == OwnerKind.INTERFACE || bodyExpressions) == null;
+  if (isAbstract)
+    flags |= Opcodes.ACC_ABSTRACT;
+  if (isAbstract && (kind == OwnerKind.IMPLEMENTATION || kind) == OwnerKind.DELEGATING_IMPLEMENTATION)
+  {
+    return;
+  }
+  final MethodVisitor mv = v.visitMethod(flags, jvmSignature.getName(), jvmSignature.getDescriptor(), null, null);
+  if (kind != OwnerKind.INTERFACE)
+  {
+    mv.visitCode();
+    FrameMap frameMap = context.prepareFrame();
+    ExpressionCodegen codegen = new ExpressionCodegen(mv, frameMap, jvmSignature.getReturnType(), context, state);
+    Type[] argTypes = jvmSignature.getArgumentTypes();
+    for (int i = 0 ; i < paramDescrs.size() ; i++)
+    {
+      ValueParameterDescriptor parameter = paramDescrs.get(i);
+      frameMap.enter(parameter, argTypes[i].getSize());
+    }
+    for (final TypeParameterDescriptor typeParameterDescriptor : typeParameters) {
+                                                                                   int slot = frameMap.enterTemp();
+                                                                                   codegen.addTypeParameter(typeParameterDescriptor, StackValue.local(slot, JetTypeMapper.TYPE_TYPEINFO));
+                                                                                 }
+    if (kind instanceof OwnerKind.DelegateKind)
+    {
+      OwnerKind.DelegateKind dk = (OwnerKind.DelegateKind) kind;
+      InstructionAdapter iv = new InstructionAdapter(mv);
+      iv.load(0, JetTypeMapper.TYPE_OBJECT);
+      dk.getDelegate().put(JetTypeMapper.TYPE_OBJECT, iv);
+      for (int i = 0 ; i < argTypes.length ; i++)
+      {
+        Type argType = argTypes[i];
+        iv.load((i + 1), argType);
+      }
+      iv.invokeinterface(dk.getOwnerClass(), jvmSignature.getName(), jvmSignature.getDescriptor());
+      iv.areturn(jvmSignature.getReturnType());
+    }
+    else
+      if (!isAbstract)
+      {
+        codegen.returnExpression(bodyExpressions);
+      }
+    mv.visitMaxs(0, 0);
+    mv.visitEnd();
+    <?HOLE?>
+    if (overriddenFunctions.size() > 0)
+    {
+      for (FunctionDescriptor overriddenFunction : overriddenFunctions) {
+                                                                          <?HOLE?>
+                                                                        }
+    }
+  }
+}
+Edit Base:
+Hole 1:
+[SCond]: Set<? extends FunctionDescriptor> overriddenFunctions = functionDescriptor.getOverriddenFunctions();
+Hole 2:
+[SCond,SLoop,SCond,SCond]: if (!JetTypeImpl.equalTypes(overriddenFunction.getReturnType(), functionDescriptor.getReturnType(), JetTypeImpl.EMPTY_AXIOMS))
+{
+  generateBridgeMethod(jvmSignature, state.getTypeMapper().mapSignature(overriddenFunction.getName(), overriddenFunction));
+}
+
+Edit A:
+Hole 1:
+[SCond]: Set<? extends FunctionDescriptor> overriddenFunctions = functionDescriptor.getOverriddenDescriptors();
+Hole 2:
+[SCond,SLoop,SCond,SCond]: if (!JetTypeImpl.equalTypes(overriddenFunction.getReturnType(), functionDescriptor.getReturnType(), JetTypeImpl.EMPTY_AXIOMS))
+{
+  generateBridgeMethod(jvmSignature, state.getTypeMapper().mapSignature(overriddenFunction.getName(), overriddenFunction));
+}
+
+Edit B:
+Hole 1:
+[SCond]: Set<? extends FunctionDescriptor> overriddenFunctions = functionDescriptor.getOverriddenFunctions();
+Hole 2:
+[SCond,SLoop,SCond,SCond]: if (!TypeUtils.equalClasses(overriddenFunction.getOriginal().getReturnType(), functionDescriptor.getReturnType()))
+{
+  generateBridgeMethod(jvmSignature, state.getTypeMapper().mapSignature(overriddenFunction.getName(), overriddenFunction.getOriginal()));
+}
+
+Edit M:
+Hole 1:
+[SCond]: Set<? extends FunctionDescriptor> overriddenFunctions = functionDescriptor.getOverriddenDescriptors();
+Hole 2:
+[SLoop,SCond,SCond]: if (!TypeUtils.equalClasses(overriddenFunction.getOriginal().getReturnType(), functionDescriptor.getReturnType()))
+{
+  generateBridgeMethod(jvmSignature, state.getTypeMapper().mapSignature(overriddenFunction.getName(), overriddenFunction.getOriginal()));
+}
+

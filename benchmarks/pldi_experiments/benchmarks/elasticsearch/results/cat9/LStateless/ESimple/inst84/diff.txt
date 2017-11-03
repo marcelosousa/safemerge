@@ -1,0 +1,33 @@
+Merge Instance for method (Ident "HunspellServiceIT",Ident "testDicWithNoAff",[])
+public void testDicWithNoAff () throws Exception
+{
+  <?HOLE?>
+  Dictionary dictionary = null;
+  try
+  {
+    internalCluster().startNode(settings);
+    dictionary = internalCluster().getInstance(HunspellService.class).getDictionary("en_US");
+    fail("Missing affix file didn't throw an error");
+  }
+  catch (Throwable t)
+  {
+    assertNull(dictionary);
+    assertThat(ExceptionsHelper.unwrap(t, ElasticsearchException.class).toString(), Matchers.containsString("Missing affix file"));
+  }
+}
+Edit Base:
+Hole 1:
+[]: Settings settings = Settings.settingsBuilder().put("path.conf", getDataPath("/indices/analyze/no_aff_conf_dir")).put(HUNSPELL_LAZY_LOAD, randomBoolean()).build();
+
+Edit A:
+Hole 1:
+[]: Settings settings = Settings.settingsBuilder().put("path.conf", getDataPath("/indices/analyze/no_aff_conf_dir")).put(HUNSPELL_LAZY_LOAD.getKey(), randomBoolean()).build();
+
+Edit B:
+Hole 1:
+[]: Settings settings = Settings.settingsBuilder().put(Environment.PATH_CONF_SETTING.getKey(), getDataPath("/indices/analyze/no_aff_conf_dir")).put(HUNSPELL_LAZY_LOAD, randomBoolean()).build();
+
+Edit M:
+Hole 1:
+[]: Settings settings = Settings.settingsBuilder().put(Environment.PATH_CONF_SETTING.getKey(), getDataPath("/indices/analyze/no_aff_conf_dir")).put(HUNSPELL_LAZY_LOAD.getKey(), randomBoolean()).build();
+

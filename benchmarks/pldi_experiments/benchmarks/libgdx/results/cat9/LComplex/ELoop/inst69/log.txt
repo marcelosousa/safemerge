@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 69
+File: gdx/src/com/badlogic/gdx/graphics/g3d/loader/G3dModelLoader.java
+Orig: dc80fa15df562b2a03869fb568ecd6bcd5335819
+VarA: 7880fe3e9b3b073cbe26f606d0e34dd1b17345bf
+VarB: 0a5c1025d1f147746db4f92bfd3c1ba4abea58b9
+Merg: a19b9a3fefd575b8d683569b3911bad5f56fbec1

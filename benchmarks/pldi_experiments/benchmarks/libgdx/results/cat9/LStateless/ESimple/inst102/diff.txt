@@ -1,0 +1,185 @@
+Merge Instance for method (Ident "OisTest",Ident "main",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "String",[])]))))])
+public static void main (String[] args) throws Exception
+{
+  DesktopControllersBuild.main(null);
+  new SharedLibraryLoader("libs/gdx-controllers-desktop-natives.jar").load("gdx-controllers-desktop");
+  <?HOLE?>
+  new LwjglApplication(app);
+}
+Edit Base:
+Hole 1:
+[]: ApplicationAdapter app = new ApplicationAdapter()
+                         {
+                           Ois ois;
+                           @Override
+                           public void create ()
+                           {
+                             this.ois = new Ois();
+                             ois.getJoysticks().get(0).setCallback(new OisCallback()
+                                                                   {
+                                                                     @Override
+                                                                     public void sliderMoved (OisJoystick joystick, int slider, boolean x, boolean y)
+                                                                     {
+                                                                       System.out.println(("slider " + slider + " moved, " + x + ", " + y));
+                                                                     }
+                                                                     @Override
+                                                                     public void povMoved (OisJoystick joystick, int pov, OisPov direction)
+                                                                     {
+                                                                       System.out.println(("pov " + pov + " moved, " + direction));
+                                                                     }
+                                                                     @Override
+                                                                     public void buttonReleased (OisJoystick joystick, int button)
+                                                                     {
+                                                                       System.out.println(("button " + button + " released"));
+                                                                     }
+                                                                     @Override
+                                                                     public void buttonPressed (OisJoystick joystick, int button)
+                                                                     {
+                                                                       System.out.println(("button " + button + " pressed"));
+                                                                     }
+                                                                     @Override
+                                                                     public void axisMoved (OisJoystick joystick, int axis, float value)
+                                                                     {
+                                                                       System.out.println(("axis " + axis + " moved, " + value));
+                                                                     }
+                                                                   });
+                           }
+                           public void render ()
+                           {
+                             ois.update();
+                           }
+                         };
+
+Edit A:
+Hole 1:
+[]: ApplicationAdapter app = new ApplicationAdapter()
+                         {
+                           Ois ois;
+                           @Override
+                           public void create ()
+                           {
+                             this.ois = new Ois();
+                             if (ois.getJoysticks().size > 0)
+                             {
+                               ois.getJoysticks().get(0).setCallback(new OisCallback()
+                                                                     {
+                                                                       @Override
+                                                                       public void sliderMoved (OisJoystick joystick, int slider, boolean x, boolean y)
+                                                                       {
+                                                                         System.out.println(("slider " + slider + " moved, " + x + ", " + y));
+                                                                       }
+                                                                       @Override
+                                                                       public void povMoved (OisJoystick joystick, int pov, OisPov direction)
+                                                                       {
+                                                                         System.out.println(("pov " + pov + " moved, " + direction));
+                                                                       }
+                                                                       @Override
+                                                                       public void buttonReleased (OisJoystick joystick, int button)
+                                                                       {
+                                                                         System.out.println(("button " + button + " released"));
+                                                                       }
+                                                                       @Override
+                                                                       public void buttonPressed (OisJoystick joystick, int button)
+                                                                       {
+                                                                         System.out.println(("button " + button + " pressed"));
+                                                                       }
+                                                                       @Override
+                                                                       public void axisMoved (OisJoystick joystick, int axis, float value)
+                                                                       {
+                                                                         System.out.println(("axis " + axis + " moved, " + value));
+                                                                       }
+                                                                     });
+                             }
+                           }
+                           public void render ()
+                           {
+                             ois.update();
+                           }
+                         };
+
+Edit B:
+Hole 1:
+[]: ApplicationAdapter app = new ApplicationAdapter()
+                         {
+                           Ois ois;
+                           @Override
+                           public void create ()
+                           {
+                             this.ois = new Ois();
+                             ois.getJoysticks().get(0).setListener(new OisListener()
+                                                                   {
+                                                                     @Override
+                                                                     public void sliderMoved (OisJoystick joystick, int slider, boolean x, boolean y)
+                                                                     {
+                                                                       System.out.println(("slider " + slider + " moved, " + x + ", " + y));
+                                                                     }
+                                                                     @Override
+                                                                     public void povMoved (OisJoystick joystick, int pov, OisPov direction)
+                                                                     {
+                                                                       System.out.println(("pov " + pov + " moved, " + direction));
+                                                                     }
+                                                                     @Override
+                                                                     public void buttonReleased (OisJoystick joystick, int button)
+                                                                     {
+                                                                       System.out.println(("button " + button + " released"));
+                                                                     }
+                                                                     @Override
+                                                                     public void buttonPressed (OisJoystick joystick, int button)
+                                                                     {
+                                                                       System.out.println(("button " + button + " pressed"));
+                                                                     }
+                                                                     @Override
+                                                                     public void axisMoved (OisJoystick joystick, int axis, float value)
+                                                                     {
+                                                                       System.out.println(("axis " + axis + " moved, " + value));
+                                                                     }
+                                                                   });
+                           }
+                           public void render ()
+                           {
+                             ois.update();
+                           }
+                         };
+
+Edit M:
+Hole 1:
+[]: ApplicationAdapter app = new ApplicationAdapter()
+                         {
+                           Ois ois;
+                           @Override
+                           public void create ()
+                           {
+                             this.ois = new Ois();
+                             if (ois.getJoysticks().size() > 0)
+                             {
+                               ois.getJoysticks().get(0).setListener(new OisListener()
+                                                                     {
+                                                                       @Override
+                                                                       public void sliderMoved (OisJoystick joystick, int slider, boolean x, boolean y)
+                                                                       {
+                                                                       }
+                                                                       @Override
+                                                                       public void povMoved (OisJoystick joystick, int pov, OisPov direction)
+                                                                       {
+                                                                       }
+                                                                       @Override
+                                                                       public void buttonReleased (OisJoystick joystick, int button)
+                                                                       {
+                                                                       }
+                                                                       @Override
+                                                                       public void buttonPressed (OisJoystick joystick, int button)
+                                                                       {
+                                                                       }
+                                                                       @Override
+                                                                       public void axisMoved (OisJoystick joystick, int axis, float value)
+                                                                       {
+                                                                       }
+                                                                     });
+                             }
+                           }
+                           public void render ()
+                           {
+                             ois.update();
+                           }
+                         };
+

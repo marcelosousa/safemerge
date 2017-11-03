@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 20
+File: retrofit/src/main/java/retrofit/http/RestMethodInfo.java
+Orig: 6824525a728ce9f5054e50b7d599000f5c02ba6a
+VarA: 2ef7ca064584f60416581b0793557eb4277136a1
+VarB: 941ae858bc7bc1d03887df36590bd7c9ec8cb184
+Merg: 8f5138693fb8dba2635995edc236b0b168363f09

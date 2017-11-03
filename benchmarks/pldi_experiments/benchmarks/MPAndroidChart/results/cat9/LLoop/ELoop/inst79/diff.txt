@@ -1,0 +1,143 @@
+Merge Instance for method (Ident "BarChartActivitySinus",Ident "setData",[PrimType IntT])
+private void setData (int count)
+{
+  <?HOLE?>
+  ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
+  for (int i = 0 ; i < count ; i++)
+  {
+    <?HOLE?>
+    entries.add(mSinusData.get(i));
+    <?HOLE?>
+  }
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: ArrayList<String> xVals = new ArrayList<String>();
+Hole 2:
+[SLoop]: xVals.add((i + ""));
+Hole 3:
+[SLoop]: <SKIP>
+Hole 4:
+[]: BarDataSet set = new BarDataSet(entries, "Sinus Function");
+Hole 5:
+[]: set.setBarSpacePercent(40.0F);
+Hole 6:
+[]: set.setColor(Color.rgb(240, 120, 124));
+Hole 7:
+[]: BarData data = new BarData(xVals, set);
+Hole 8:
+[]: data.setValueTextSize(10.0F);
+Hole 9:
+[]: data.setValueTypeface(mTf);
+Hole 10:
+[]: data.setDrawValues(false);
+Hole 11:
+[]: mChart.setData(data);
+
+Edit A:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[SLoop]: <SKIP>
+Hole 3:
+[SLoop]: <SKIP>
+Hole 4:
+[]: BarDataSet set = new BarDataSet(entries, "Sinus Function");
+Hole 5:
+[]: set.setBarSpacePercent(40.0F);
+Hole 6:
+[]: set.setColor(Color.rgb(240, 120, 124));
+Hole 7:
+[]: BarData data = new BarData(set);
+Hole 8:
+[]: data.setValueTextSize(10.0F);
+Hole 9:
+[]: data.setValueTypeface(mTf);
+Hole 10:
+[]: data.setDrawValues(false);
+Hole 11:
+[]: mChart.setData(data);
+
+Edit B:
+Hole 1:
+[]: ArrayList<String> xVals = new ArrayList<String>();
+Hole 2:
+[SLoop]: xVals.add((i + ""));
+Hole 3:
+[SLoop]: <SKIP>
+Hole 4:
+[]: BarDataSet set;
+Hole 5:
+[]: if ((mChart.getData() != null && mChart.getData().getDataSetCount()) > 0)
+{
+  set = (BarDataSet) mChart.getData().getDataSetByIndex(0);
+  set.setYVals(entries);
+  mChart.notifyDataSetChanged();
+}
+else
+{
+  set = new BarDataSet(entries, "Sinus Function");
+  set.setBarSpacePercent(40.0F);
+  set.setColor(Color.rgb(240, 120, 124));
+  BarData data = new BarData(xVals, set);
+  data.setValueTextSize(10.0F);
+  data.setValueTypeface(mTf);
+  data.setDrawValues(false);
+  mChart.setData(data);
+}
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+Hole 10:
+[]: <SKIP>
+Hole 11:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: List<XAxisValue> xVals = new ArrayList<XAxisValue>();
+Hole 2:
+[SLoop]: <SKIP>
+Hole 3:
+[SLoop]: xVals.add(new XAxisValue(i, (i + "")));
+Hole 4:
+[]: BarDataSet set;
+Hole 5:
+[]: if ((mChart.getData() != null && mChart.getData().getDataSetCount()) > 0)
+{
+  set = (BarDataSet) mChart.getData().getDataSetByIndex(0);
+  set.setYVals(entries);
+  mChart.notifyDataSetChanged();
+}
+else
+{
+  set = new BarDataSet(entries, "Sinus Function");
+  set.setBarSpacePercent(40.0F);
+  set.setColor(Color.rgb(240, 120, 124));
+}
+Hole 6:
+[]: BarData data = new BarData(xVals, set);
+Hole 7:
+[]: data.setValueTextSize(10.0F);
+Hole 8:
+[]: data.setValueTypeface(mTf);
+Hole 9:
+[]: data.setDrawValues(false);
+Hole 10:
+[]: mChart.setData(data);
+Hole 11:
+[]: <SKIP>
+

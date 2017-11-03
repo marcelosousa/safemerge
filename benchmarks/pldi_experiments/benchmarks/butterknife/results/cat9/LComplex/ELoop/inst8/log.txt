@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 8
+File: butterknife/src/main/java/butterknife/internal/ButterKnifeProcessor.java
+Orig: 13c6f90856216729792524c80d65c4c63ada7a41
+VarA: 582040deb3dc368c2aeb416a009bf422f46cbcb8
+VarB: d1025dcc8c34d4a6bf510b427f3fb826dc28a4bb
+Merg: 1770c70cd0a42d6aa9cadd766bac85c016addd6b

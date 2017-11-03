@@ -1,0 +1,85 @@
+Merge Instance for method (Ident "DuelScrollIT",Ident "create",[RefType (ClassRefType (ClassType [(Ident "SearchType",[])]))])
+private TestContext create (SearchType... searchTypes) throws Exception
+{
+  <?HOLE?>
+  int numDocs = 2 + randomInt(512);
+  int scrollRequestSize = randomIntBetween(1, (rarely() ? numDocs : numDocs / 2));
+  boolean unevenRouting = randomBoolean();
+  int numMissingDocs = scaledRandomIntBetween(0, (numDocs / 100));
+  IntHashSet missingDocs = new IntHashSet(numMissingDocs);
+  for (int i = 0 ; i < numMissingDocs ; i++)
+  {
+    while (!missingDocs.add(randomInt(numDocs)))
+    {
+    }
+  }
+  for (int i = 1 ; i <= numDocs ; i++)
+  {
+    IndexRequestBuilder indexRequestBuilder = client().prepareIndex("index", "type", String.valueOf(i));
+    if (missingDocs.contains(i))
+    {
+      indexRequestBuilder.setSource("x", "y");
+    }
+    else
+    {
+      indexRequestBuilder.setSource(jsonBuilder().startObject().field("field1", i).field("field2", String.valueOf(i)).startObject("nested").field("field3", i).field("field4", String.valueOf(i)).endObject().endObject());
+    }
+    if ((unevenRouting && randomInt(3)) <= 2)
+    {
+      indexRequestBuilder.setRouting("a");
+    }
+    indexRandom(false, indexRequestBuilder);
+  }
+  refresh();
+  final SortBuilder sort;
+  if (randomBoolean())
+  {
+    if (randomBoolean())
+    {
+      sort = SortBuilders.fieldSort("field1").missing(1);
+    }
+    else
+    {
+      sort = SortBuilders.fieldSort("field2").missing("1");
+    }
+  }
+  else
+  {
+    if (randomBoolean())
+    {
+      sort = SortBuilders.fieldSort("nested.field3").missing(1);
+    }
+    else
+    {
+      sort = SortBuilders.fieldSort("nested.field4").missing("1");
+    }
+  }
+  sort.order((randomBoolean() ? SortOrder.ASC : SortOrder.DESC));
+  <?HOLE?>
+  logger.info("numDocs={}, scrollRequestSize={}, sort={}, searchType={}", numDocs, scrollRequestSize, sort, searchType);
+  return new TestContext(numDocs, scrollRequestSize, sort, searchType);
+}
+Edit Base:
+Hole 1:
+[]: assertAcked(prepareCreate("index").addMapping("type", jsonBuilder().startObject().startObject("type").startObject("properties").startObject("field1").field("type", "long").endObject().startObject("field2").field("type", "text").endObject().startObject("nested").field("type", "nested").startObject("properties").startObject("field3").field("type", "long").endObject().startObject("field4").field("type", "text").endObject().endObject().endObject().endObject().endObject().endObject()));
+Hole 2:
+[]: SearchType searchType = RandomPicks.randomFrom(getRandom(), Arrays.asList(searchTypes));
+
+Edit A:
+Hole 1:
+[]: assertAcked(prepareCreate("index").addMapping("type", jsonBuilder().startObject().startObject("type").startObject("properties").startObject("field1").field("type", "long").endObject().startObject("field2").field("type", "keyword").endObject().startObject("nested").field("type", "nested").startObject("properties").startObject("field3").field("type", "long").endObject().startObject("field4").field("type", "keyword").endObject().endObject().endObject().endObject().endObject().endObject()));
+Hole 2:
+[]: SearchType searchType = RandomPicks.randomFrom(getRandom(), Arrays.asList(searchTypes));
+
+Edit B:
+Hole 1:
+[]: assertAcked(prepareCreate("index").addMapping("type", jsonBuilder().startObject().startObject("type").startObject("properties").startObject("field1").field("type", "long").endObject().startObject("field2").field("type", "text").endObject().startObject("nested").field("type", "nested").startObject("properties").startObject("field3").field("type", "long").endObject().startObject("field4").field("type", "text").endObject().endObject().endObject().endObject().endObject().endObject()));
+Hole 2:
+[]: SearchType searchType = RandomPicks.randomFrom(random(), Arrays.asList(searchTypes));
+
+Edit M:
+Hole 1:
+[]: assertAcked(prepareCreate("index").addMapping("type", jsonBuilder().startObject().startObject("type").startObject("properties").startObject("field1").field("type", "long").endObject().startObject("field2").field("type", "keyword").endObject().startObject("nested").field("type", "nested").startObject("properties").startObject("field3").field("type", "long").endObject().startObject("field4").field("type", "keyword").endObject().endObject().endObject().endObject().endObject().endObject()));
+Hole 2:
+[]: SearchType searchType = RandomPicks.randomFrom(random(), Arrays.asList(searchTypes));
+

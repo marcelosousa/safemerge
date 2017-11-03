@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 102
+File: extensions/gdx-controllers/gdx-controllers-desktop/src/com/badlogic/gdx/controllers/desktop/ois/OisTest.java
+Orig: 81dee64616e6de17521aa5a5ab76e3b2c692fe0f
+VarA: 50e465277177aaead9cda1b193f5b81eff9b5a46
+VarB: d2af59ed89d60a5f1f46ee5c39991e134ff09585
+Merg: 1ae3414c07159ef1b058247bec72c68698fa5206

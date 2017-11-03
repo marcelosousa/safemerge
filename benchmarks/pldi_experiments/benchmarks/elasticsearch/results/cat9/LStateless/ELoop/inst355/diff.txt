@@ -1,0 +1,35 @@
+Merge Instance for method (Ident "AckTests",Ident "testUpdateSettingsAcknowledgement",[])
+@Test
+ public void testUpdateSettingsAcknowledgement ()
+{
+  createIndex("test");
+  <?HOLE?>
+  for (Client client : clients()) {
+                                    String refreshInterval = getLocalClusterState(client).metaData().index("test").settings().get("index.refresh_interval");
+                                    <?HOLE?>
+                                  }
+}
+Edit Base:
+Hole 1:
+[]: assertAcked(client().admin().indices().prepareUpdateSettings("test").setSettings(ImmutableSettings.builder().put("refresh_interval", 9999)));
+Hole 2:
+[SLoop]: assertThat(refreshInterval, equalTo("9999"));
+
+Edit A:
+Hole 1:
+[]: assertAcked(client().admin().indices().prepareUpdateSettings("test").setSettings(ImmutableSettings.builder().put("refresh_interval", 9999, TimeUnit.MILLISECONDS)));
+Hole 2:
+[SLoop]: assertThat(refreshInterval, equalTo("9999ms"));
+
+Edit B:
+Hole 1:
+[]: assertAcked(client().admin().indices().prepareUpdateSettings("test").setSettings(Settings.builder().put("refresh_interval", 9999)));
+Hole 2:
+[SLoop]: assertThat(refreshInterval, equalTo("9999"));
+
+Edit M:
+Hole 1:
+[]: assertAcked(client().admin().indices().prepareUpdateSettings("test").setSettings(Settings.builder().put("refresh_interval", 9999, TimeUnit.MILLISECONDS)));
+Hole 2:
+[SLoop]: assertThat(refreshInterval, equalTo("9999ms"));
+

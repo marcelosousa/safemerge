@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 196
+File: jps-plugin/src/org/jetbrains/jet/jps/build/KotlinBuilder.java
+Orig: 9fea2895853e34dde07a8d2a3047f311ff240c11
+VarA: b9624d568eac0c0da340f118bdcd600cd8e2a861
+VarB: 04a5e905dfb3ee366ff954896e315e39d891f315
+Merg: 78d847c5f9e12eec9a4cc4db283a63439097cd85

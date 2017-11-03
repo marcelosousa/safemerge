@@ -1,0 +1,71 @@
+Merge Instance for method (Ident "ChangeableUrls",Ident "getUrlsFromClassPathOfJarManifestIfPossible",[RefType (ClassRefType (ClassType [(Ident "URL",[])]))])
+private static List<URL> getUrlsFromClassPathOfJarManifestIfPossible (URL url)
+{
+  JarFile jarFile = getJarFileIfPossible(url);
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[SCond]: if (jarFile != null)
+{
+  try
+  {
+    return getUrlsFromClassPathAttribute(url, jarFile.getManifest());
+  }
+  catch (IOException ex)
+  {
+    throw new IllegalStateException("Failed to read Class-Path attribute from manifest of jar " + url);
+  }
+}
+Hole 2:
+[]: return Collections.<URL>emptyList();
+
+Edit A:
+Hole 1:
+[SCond]: if (jarFile == null)
+{
+  return Collections.<URL>emptyList();
+}
+Hole 2:
+[]: try
+{
+  return getUrlsFromClassPathAttribute(url, jarFile.getManifest());
+}
+catch (IOException ex)
+{
+  throw new IllegalStateException("Failed to read Class-Path attribute from manifest of jar " + url);
+}
+
+Edit B:
+Hole 1:
+[]: if (jarFile != null)
+{
+  try
+  {
+    return getUrlsFromClassPathAttribute(url, jarFile.getManifest());
+  }
+  catch (IOException ex)
+  {
+    throw new IllegalStateException("Failed to read Class-Path attribute from manifest of jar " + url, ex);
+  }
+}
+Hole 2:
+[]: return Collections.<URL>emptyList();
+
+Edit M:
+Hole 1:
+[]: if (jarFile == null)
+{
+  return Collections.<URL>emptyList();
+}
+Hole 2:
+[]: try
+{
+  return getUrlsFromClassPathAttribute(url, jarFile.getManifest());
+}
+catch (IOException ex)
+{
+  throw new IllegalStateException("Failed to read Class-Path attribute from manifest of jar " + url, ex);
+}
+

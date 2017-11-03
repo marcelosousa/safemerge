@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 3
+File: picasso/src/test/java/com/squareup/picasso/TargetActionTest.java
+Orig: afb00987f755ecef81ff66edcc305638fb882c0a
+VarA: 9e2f6cbe14afdfb6ec8ca0328ebe1551f9db66d8
+VarB: 5f72c6c266e1ef5978936240183032480b539dd7
+Merg: 28caafe7d7a83a35398eabd625a2bc1ab601a1a5

@@ -1,0 +1,130 @@
+Merge Instance for method (Ident "TomcatEmbeddedServletContainer",Ident "start",[])
+@Override
+ public void start () throws EmbeddedServletContainerException
+{
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: try
+{
+  addPreviouslyRemovedConnectors();
+  Connector connector = this.tomcat.getConnector();
+  if (connector != null && this.autoStart)
+  {
+    startConnector(connector);
+  }
+  checkThatConnectorsHaveStarted();
+  TomcatEmbeddedServletContainer.logger.info(("Tomcat started on port(s): " + getPortsDescription(true)));
+}
+catch (ConnectorStartFailedException ex)
+{
+  stopSilently();
+  throw ex;
+}
+catch (Exception ex)
+{
+  throw new EmbeddedServletContainerException("Unable to start embedded Tomcat servlet container", ex);
+}
+finally {
+          Context context = findContext();
+          ContextBindings.unbindClassLoader(context, getNamingToken(context), getClass().getClassLoader());
+        }
+
+Edit A:
+Hole 1:
+[]: try
+{
+  addPreviouslyRemovedConnectors();
+  Connector connector = this.tomcat.getConnector();
+  if (connector != null && this.autoStart)
+  {
+    startConnector(connector);
+  }
+  checkThatConnectorsHaveStarted();
+  TomcatEmbeddedServletContainer.logger.info(("Tomcat started on port(s): " + getPortsDescription(true)));
+}
+catch (ConnectorStartFailedException ex)
+{
+  stopSilently();
+  throw ex;
+}
+catch (Exception ex)
+{
+  throw new EmbeddedServletContainerException("Unable to start embedded Tomcat servlet container", ex);
+}
+finally {
+          Context context = findContext();
+          ContextBindings.unbindClassLoader(context, context.getNamingToken(), getClass().getClassLoader());
+        }
+
+Edit B:
+Hole 1:
+[]: synchronized (this.monitor)
+{
+  if (this.started)
+  {
+    return;
+  }
+  try
+  {
+    addPreviouslyRemovedConnectors();
+    Connector connector = this.tomcat.getConnector();
+    if (connector != null && this.autoStart)
+    {
+      startConnector(connector);
+    }
+    checkThatConnectorsHaveStarted();
+    this.started = true;
+    TomcatEmbeddedServletContainer.logger.info(("Tomcat started on port(s): " + getPortsDescription(true)));
+  }
+  catch (ConnectorStartFailedException ex)
+  {
+    stopSilently();
+    throw ex;
+  }
+  catch (Exception ex)
+  {
+    throw new EmbeddedServletContainerException("Unable to start embedded Tomcat servlet container", ex);
+  }
+  finally {
+            Context context = findContext();
+            ContextBindings.unbindClassLoader(context, getNamingToken(context), getClass().getClassLoader());
+          }
+}
+
+Edit M:
+Hole 1:
+[]: synchronized (this.monitor)
+{
+  if (this.started)
+  {
+    return;
+  }
+  try
+  {
+    addPreviouslyRemovedConnectors();
+    Connector connector = this.tomcat.getConnector();
+    if (connector != null && this.autoStart)
+    {
+      startConnector(connector);
+    }
+    checkThatConnectorsHaveStarted();
+    this.started = true;
+    TomcatEmbeddedServletContainer.logger.info(("Tomcat started on port(s): " + getPortsDescription(true)));
+  }
+  catch (ConnectorStartFailedException ex)
+  {
+    stopSilently();
+    throw ex;
+  }
+  catch (Exception ex)
+  {
+    throw new EmbeddedServletContainerException("Unable to start embedded Tomcat servlet container", ex);
+  }
+  finally {
+            Context context = findContext();
+            ContextBindings.unbindClassLoader(context, context.getNamingToken(), getClass().getClassLoader());
+          }
+}
+

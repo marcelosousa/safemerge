@@ -1,0 +1,31 @@
+Merge Instance for method (Ident "ExplodedArchive",Ident "getUrl",[])
+@Override
+ public URL getUrl () throws MalformedURLException
+{
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: FilteredURLStreamHandler handler = this.filtered ? new FilteredURLStreamHandler() : null;
+Hole 2:
+[]: return new URL("file", "", -1, this.root.toURI().getPath(), handler);
+
+Edit A:
+Hole 1:
+[]: return new URL("file", "", -1, this.root.toURI().getPath());
+Hole 2:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: FilteredURLStreamHandler handler = this.filtered ? new FilteredURLStreamHandler() : null;
+Hole 2:
+[]: return new URL("file", "", -1, this.root.toURI().toURL().getPath(), handler);
+
+Edit M:
+Hole 1:
+[]: return this.root.toURI().toURL();
+Hole 2:
+[]: <SKIP>
+

@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 8
+File: singleton/src/main/java/com/iluwatar/App.java
+Orig: 70fffc5ca37a9327cc122a39595b536db1efdab1
+VarA: 3e42a100601015e1d6dd4a6b356e92e532d92230
+VarB: c06c05757e0f01a0100d5b04d2d5b4cb5cba5b82
+Merg: 5646937d528b7801f45433632d66d0f43b969dce

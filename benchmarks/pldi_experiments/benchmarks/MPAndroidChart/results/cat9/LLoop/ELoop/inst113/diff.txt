@@ -1,0 +1,53 @@
+Merge Instance for method (Ident "PieChartRenderer",Ident "drawHighlighted",[RefType (ClassRefType (ClassType [(Ident "Canvas",[])])),RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "Highlight",[])]))))])
+@Override
+ public void drawHighlighted (Canvas c, Highlight[] indices)
+{
+  float rotationAngle = mChart.getRotationAngle();
+  float angle = 0.0F;
+  float[] drawAngles = mChart.getDrawAngles();
+  float[] absoluteAngles = mChart.getAbsoluteAngles();
+  for (int i = 0 ; i < indices.length ; i++)
+  {
+    int xIndex = indices[i].getXIndex();
+    if (xIndex >= drawAngles.length)
+      continue;
+    <?HOLE?>
+    if (set == null || !set.isHighlightEnabled())
+      continue;
+    if (xIndex == 0)
+      angle = rotationAngle;
+    else
+      angle = rotationAngle + absoluteAngles[(xIndex - 1)];
+    <?HOLE?>
+    float sliceDegrees = drawAngles[xIndex];
+    float shift = set.getSelectionShift();
+    RectF circleBox = mChart.getCircleBox();
+    RectF highlighted = new RectF(circleBox.left - shift, circleBox.top - shift, circleBox.right + shift, circleBox.bottom + shift);
+    mRenderPaint.setColor(set.getColor(xIndex));
+    mBitmapCanvas.drawArc(highlighted, ((angle + set.getSliceSpace()) / 2.0F), ((sliceDegrees * mAnimator.getPhaseY() - set.getSliceSpace()) / 2.0F), true, mRenderPaint);
+  }
+}
+Edit Base:
+Hole 1:
+[SLoop]: PieDataSet set = mChart.getData().getDataSetByIndex(indices[i].getDataSetIndex());
+Hole 2:
+[SLoop]: angle *= mAnimator.getPhaseY();
+
+Edit A:
+Hole 1:
+[SLoop]: IPieDataSet set = mChart.getData().getDataSetByIndex(indices[i].getDataSetIndex());
+Hole 2:
+[SLoop]: angle *= mAnimator.getPhaseY();
+
+Edit B:
+Hole 1:
+[SLoop]: PieDataSet set = mChart.getData().getDataSetByIndex(indices[i].getDataSetIndex());
+Hole 2:
+[SLoop]: angle *= mAnimator.getPhaseX();
+
+Edit M:
+Hole 1:
+[SLoop]: IPieDataSet set = mChart.getData().getDataSetByIndex(indices[i].getDataSetIndex());
+Hole 2:
+[SLoop]: angle *= mAnimator.getPhaseX();
+

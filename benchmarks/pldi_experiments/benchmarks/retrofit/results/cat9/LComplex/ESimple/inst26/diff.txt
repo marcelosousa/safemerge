@@ -1,0 +1,45 @@
+Merge Instance for method (Ident "RestAdapter",Ident "create",[RefType (ClassRefType (ClassType [(Ident "Class",[ActualType (ClassRefType (ClassType [(Ident "T",[])]))])]))])
+@SuppressWarnings("unchecked")
+ public <T> T create (Class<T> type)
+{
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: return (T) Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] {
+                                                                          type,
+                                                                        }, new RestHandler(type));
+
+Edit A:
+Hole 1:
+[]: if (!type.isInterface())
+{
+  throw new IllegalArgumentException("Only interface endpoint definitions are supported.");
+}
+Hole 2:
+[]: return (T) Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] {
+                                                                          type,
+                                                                        }, new RestHandler(type));
+
+Edit B:
+Hole 1:
+[]: return (T) Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] {
+                                                                          type,
+                                                                        }, new RestHandler());
+Hole 2:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: if (!type.isInterface())
+{
+  throw new IllegalArgumentException("Only interface endpoint definitions are supported.");
+}
+Hole 2:
+[]: return (T) Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] {
+                                                                          type,
+                                                                        }, new RestHandler());
+

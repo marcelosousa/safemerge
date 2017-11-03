@@ -1,0 +1,188 @@
+Merge Instance for method (Ident "StreamOutput",Ident "writeGenericValue",[RefType (ClassRefType (ClassType [(Ident "Object",[])]))])
+public void writeGenericValue (@Nullable
+                               Object value) throws IOException
+{
+  if (value == null)
+  {
+    writeByte(((byte) -1));
+    return;
+  }
+  Class type = value.getClass();
+  if (type == String.class)
+  {
+    writeByte(((byte) 0));
+    writeString(((String) value));
+  }
+  else
+    if (type == Integer.class)
+    {
+      writeByte(((byte) 1));
+      writeInt(((Integer) value));
+    }
+    else
+      if (type == Long.class)
+      {
+        writeByte(((byte) 2));
+        writeLong(((Long) value));
+      }
+      else
+        if (type == Float.class)
+        {
+          writeByte(((byte) 3));
+          writeFloat(((Float) value));
+        }
+        else
+          if (type == Double.class)
+          {
+            writeByte(((byte) 4));
+            writeDouble(((Double) value));
+          }
+          else
+            if (type == Boolean.class)
+            {
+              writeByte(((byte) 5));
+              writeBoolean(((Boolean) value));
+            }
+            else
+              if (type == byte[].class)
+              {
+                writeByte(((byte) 6));
+                writeVInt(((byte[]) value).length);
+                writeBytes(((byte[]) value));
+              }
+              else
+                if (value instanceof List)
+                {
+                  writeByte(((byte) 7));
+                  List list = (List) value;
+                  writeVInt(list.size());
+                  for (Object o : list) {
+                                          writeGenericValue(o);
+                                        }
+                }
+                else
+                  if (value instanceof Object[])
+                  {
+                    writeByte(((byte) 8));
+                    Object[] list = (Object[]) value;
+                    writeVInt(list.length);
+                    for (Object o : list) {
+                                            writeGenericValue(o);
+                                          }
+                  }
+                  else
+                    if (value instanceof Map)
+                    {
+                      if (value instanceof LinkedHashMap)
+                      {
+                        writeByte(((byte) 9));
+                      }
+                      else
+                      {
+                        writeByte(((byte) 10));
+                      }
+                      <?HOLE?>
+                      writeVInt(map.size());
+                      for (Map.Entry<String, Object> entry : map.entrySet()) {
+                                                                               writeString(entry.getKey());
+                                                                               writeGenericValue(entry.getValue());
+                                                                             }
+                    }
+                    else
+                      if (type == Byte.class)
+                      {
+                        writeByte(((byte) 11));
+                        writeByte(((Byte) value));
+                      }
+                      else
+                        if (type == Date.class)
+                        {
+                          writeByte(((byte) 12));
+                          writeLong(((Date) value).getTime());
+                        }
+                        else
+                          if (value instanceof ReadableInstant)
+                          {
+                            writeByte(((byte) 13));
+                            <?HOLE?>
+                            writeLong(((ReadableInstant) value).getMillis());
+                          }
+                          else
+                            if (value instanceof BytesReference)
+                            {
+                              writeByte(((byte) 14));
+                              writeBytesReference(((BytesReference) value));
+                            }
+                            else
+                              if (value instanceof Text)
+                              {
+                                writeByte(((byte) 15));
+                                writeText(((Text) value));
+                              }
+                              else
+                                if (type == Short.class)
+                                {
+                                  writeByte(((byte) 16));
+                                  writeShort(((Short) value));
+                                }
+                                else
+                                  if (type == int[].class)
+                                  {
+                                    writeByte(((byte) 17));
+                                    writeIntArray(((int[]) value));
+                                  }
+                                  else
+                                    if (type == long[].class)
+                                    {
+                                      writeByte(((byte) 18));
+                                      writeLongArray(((long[]) value));
+                                    }
+                                    else
+                                      if (type == float[].class)
+                                      {
+                                        writeByte(((byte) 19));
+                                        writeFloatArray(((float[]) value));
+                                      }
+                                      else
+                                        if (type == double[].class)
+                                        {
+                                          writeByte(((byte) 20));
+                                          writeDoubleArray(((double[]) value));
+                                        }
+                                        else
+                                          if (value instanceof BytesRef)
+                                          {
+                                            writeByte(((byte) 21));
+                                            writeBytesRef(((BytesRef) value));
+                                          }
+                                          else
+                                          {
+                                            throw new IOException("Can't write type [" + type + "]");
+                                          }
+}
+Edit Base:
+Hole 1:
+[SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond]: Map<String, Object> map = (Map<String, Object>) value;
+Hole 2:
+[SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond]: <SKIP>
+
+Edit A:
+Hole 1:
+[SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond]: @SuppressWarnings("unchecked")
+ Map<String, Object> map = (Map<String, Object>) value;
+Hole 2:
+[SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond]: <SKIP>
+
+Edit B:
+Hole 1:
+[SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond]: Map<String, Object> map = (Map<String, Object>) value;
+Hole 2:
+[SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond]: writeString(((ReadableInstant) value).getZone().getID());
+
+Edit M:
+Hole 1:
+[SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond]: @SuppressWarnings("unchecked")
+ Map<String, Object> map = (Map<String, Object>) value;
+Hole 2:
+[SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond,SCond]: writeString(((ReadableInstant) value).getZone().getID());
+

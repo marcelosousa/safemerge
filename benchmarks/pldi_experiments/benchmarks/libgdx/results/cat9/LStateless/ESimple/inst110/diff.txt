@@ -1,0 +1,45 @@
+Merge Instance for method (Ident "LwjglDebugStarter",Ident "main",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "String",[])]))))])
+public static void main (String[] argv)
+{
+  <?HOLE?>
+  new SharedLibraryLoader("../../extensions/gdx-audio/libs/gdx-audio-natives.jar").load("gdx-audio");
+  new SharedLibraryLoader("../../extensions/gdx-image/libs/gdx-image-natives.jar").load("gdx-image");
+  new SharedLibraryLoader("../../extensions/gdx-freetype/libs/gdx-freetype-natives.jar").load("gdx-freetype");
+  <?HOLE?>
+  <?HOLE?>
+  LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+  config.useGL20 = test.needsGL20();
+  new LwjglApplication(test, config);
+}
+Edit Base:
+Hole 1:
+[]: new SharedLibraryLoader("../../gdx/libs/gdx-natives.jar").load("gdx");
+Hole 2:
+[]: GdxTest test = new SpriteBatchShaderTest();
+Hole 3:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: new SharedLibraryLoader("../../gdx/libs/gdx-natives.jar").load("gdx");
+Hole 2:
+[]: GdxTest test = new MeshShaderTest();
+Hole 3:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: new SharedLibraryLoader("../../gdx/libs/gdx-natives.jar").load("gdx");
+Hole 3:
+[]: GdxTest test = new Mpg123Test();
+
+Edit M:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: new SharedLibraryLoader("../../gdx/libs/gdx-natives.jar").load("gdx");
+Hole 3:
+[]: GdxTest test = new MeshShaderTest();
+

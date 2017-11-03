@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 260
+File: core/src/test/java/org/elasticsearch/discovery/zen/ping/unicast/UnicastZenPingTests.java
+Orig: 90f32d4d32cde5ae28fbc6a3e725afafbdf1c58f
+VarA: faa4e98aa5ffc3abe5e8ea2542c6d7273b1a857a
+VarB: 13602a591f3d8b5b2077a56b17780d5af858b52c
+Merg: d225a8f56c4445228d8b1fb7d50e4f9fd5a0f8d1

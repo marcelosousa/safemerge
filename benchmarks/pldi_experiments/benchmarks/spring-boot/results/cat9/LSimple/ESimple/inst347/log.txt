@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 347
+File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/integration/IntegrationAutoConfigurationTests.java
+Orig: 33634157122393e81743024ad8b837f0aee89b50
+VarA: 87b963b3966ac73e5bb81ef46eeb2a3b3af40fb5
+VarB: ae095b2c1bdb24f6f67ce357653184f0ef1300d1
+Merg: abd86e50e0aee17d12d1f4505995402829a2aae4

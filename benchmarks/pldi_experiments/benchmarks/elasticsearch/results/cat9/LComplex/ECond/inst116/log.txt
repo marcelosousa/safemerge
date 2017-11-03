@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 116
+File: plugins/discovery-ec2/src/main/java/org/elasticsearch/cloud/aws/AwsEc2ServiceImpl.java
+Orig: 84fda97bb61c986734367427972829a7b649f206
+VarA: 1b98e1b1ad65374ff72211baad6f4fefb680faa4
+VarB: 33341600037bc72464ef56d6be5650ca99ac2069
+Merg: 77521560ed76686d09d8d7d9017bba6a4be6eb3f

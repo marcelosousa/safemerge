@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 59
+File: core/src/test/java/org/elasticsearch/plugins/PluginCliTests.java
+Orig: d079830f10ca161dbf0280c845df33de5425be72
+VarA: 687aadef00b87b369ca935a1514e37a7b679609c
+VarB: 0b0a2513436c8a4bdec5b238fe360a66e0825319
+Merg: 7a49cd1287454dd3a7e7f8fce24f8d9cca9ef585

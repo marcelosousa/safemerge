@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 11
+File: picasso/src/main/java/com/squareup/picasso/RequestCreator.java
+Orig: afb00987f755ecef81ff66edcc305638fb882c0a
+VarA: 3921b0cc75669d38b9a1f0e1620c23c985c52789
+VarB: 9ba3040ca7307bef27a151b2455d082e2175a7db
+Merg: 9e2f6cbe14afdfb6ec8ca0328ebe1551f9db66d8

@@ -1,0 +1,177 @@
+Merge Instance for method (Ident "ScriptQueryParser",Ident "parse",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])]))])
+@Override
+ public Query parse (QueryParseContext parseContext) throws IOException, QueryParsingException
+{
+  XContentParser parser = parseContext.parser();
+  ScriptParameterParser scriptParameterParser = new ScriptParameterParser();
+  XContentParser.Token token;
+  Script script = null;
+  Map<String, Object> params = null;
+  <?HOLE?>
+  String queryName = null;
+  String currentFieldName = null;
+  while (token = parser.nextToken() != XContentParser.Token.END_OBJECT)
+  {
+    if (token == XContentParser.Token.FIELD_NAME)
+    {
+      currentFieldName = parser.currentName();
+    }
+    else
+      if (parseContext.isDeprecatedSetting(currentFieldName))
+      {
+      }
+      else
+        if (token == XContentParser.Token.START_OBJECT)
+        {
+          <?HOLE?>
+        }
+        else
+          if (token.isValue())
+          {
+            if ("_name".equals(currentFieldName))
+            {
+              queryName = parser.text();
+            }
+            else
+              <?HOLE?>
+          }
+  }
+  if (script == null)
+  {
+    ScriptParameterValue scriptValue = scriptParameterParser.getDefaultScriptParameterValue();
+    if (scriptValue != null)
+    {
+      if (params == null)
+      {
+        params = newHashMap();
+      }
+      script = new Script(scriptValue.script(), scriptValue.scriptType(), scriptParameterParser.lang(), params);
+    }
+  }
+  else
+    if (params != null)
+    {
+      throw new QueryParsingException(parseContext, "script params must be specified inside script object in a [script] filter");
+    }
+  if (script == null)
+  {
+    throw new QueryParsingException(parseContext, "script must be provided with a [script] filter");
+  }
+  Query query = new ScriptQuery(script, parseContext.scriptService(), parseContext.lookup());
+  if (queryName != null)
+  {
+    parseContext.addNamedQuery(queryName, query);
+  }
+  <?HOLE?>
+  return query;
+}
+Edit Base:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[SCond,SCond,SCond,SCond,SLoop]: if (ScriptField.SCRIPT.match(currentFieldName))
+{
+  script = Script.parse(parser);
+}
+else
+  if ("params".equals(currentFieldName))
+  {
+    params = parser.map();
+  }
+  else
+  {
+    throw new QueryParsingException(parseContext, "[script] query does not support [" + currentFieldName + "]");
+  }
+Hole 3:
+[SCond,SCond,SCond,SCond,SCond,SLoop]: if (!scriptParameterParser.token(currentFieldName, token, parser))
+{
+  throw new QueryParsingException(parseContext, "[script] query does not support [" + currentFieldName + "]");
+}
+Hole 4:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: float boost = AbstractQueryBuilder.DEFAULT_BOOST;
+Hole 2:
+[SCond,SCond,SCond,SCond,SLoop]: if (ScriptField.SCRIPT.match(currentFieldName))
+{
+  script = Script.parse(parser);
+}
+else
+  if ("params".equals(currentFieldName))
+  {
+    params = parser.map();
+  }
+  else
+  {
+    throw new QueryParsingException(parseContext, "[script] query does not support [" + currentFieldName + "]");
+  }
+Hole 3:
+[SCond,SCond,SCond,SCond,SCond,SLoop]: if ("boost".equals(currentFieldName))
+{
+  boost = parser.floatValue();
+}
+else
+  if (!scriptParameterParser.token(currentFieldName, token, parser))
+  {
+    throw new QueryParsingException(parseContext, "[script] query does not support [" + currentFieldName + "]");
+  }
+Hole 4:
+[]: query.setBoost(boost);
+
+Edit B:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[SCond,SCond,SCond,SCond,SLoop]: if (parseContext.parseFieldMatcher().match(currentFieldName, ScriptField.SCRIPT))
+{
+  script = Script.parse(parser, parseContext.parseFieldMatcher());
+}
+else
+  if ("params".equals(currentFieldName))
+  {
+    params = parser.map();
+  }
+  else
+  {
+    throw new QueryParsingException(parseContext, "[script] query does not support [" + currentFieldName + "]");
+  }
+Hole 3:
+[SCond,SCond,SCond,SCond,SCond,SLoop]: if (!scriptParameterParser.token(currentFieldName, token, parser, parseContext.parseFieldMatcher()))
+{
+  throw new QueryParsingException(parseContext, "[script] query does not support [" + currentFieldName + "]");
+}
+Hole 4:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: float boost = AbstractQueryBuilder.DEFAULT_BOOST;
+Hole 2:
+[SCond,SCond,SCond,SLoop]: if (parseContext.parseFieldMatcher().match(currentFieldName, ScriptField.SCRIPT))
+{
+  script = Script.parse(parser, parseContext.parseFieldMatcher());
+}
+else
+  if ("params".equals(currentFieldName))
+  {
+    params = parser.map();
+  }
+  else
+  {
+    throw new QueryParsingException(parseContext, "[script] query does not support [" + currentFieldName + "]");
+  }
+Hole 3:
+[SCond,SCond,SCond,SCond,SCond,SLoop]: if ("boost".equals(currentFieldName))
+{
+  boost = parser.floatValue();
+}
+else
+  if (!scriptParameterParser.token(currentFieldName, token, parser, parseContext.parseFieldMatcher()))
+  {
+    throw new QueryParsingException(parseContext, "[script] query does not support [" + currentFieldName + "]");
+  }
+Hole 4:
+[]: query.setBoost(boost);
+

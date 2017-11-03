@@ -1,0 +1,37 @@
+Merge Instance for method (Ident "Restarter",Ident "prepare",[RefType (ClassRefType (ClassType [(Ident "ConfigurableApplicationContext",[])]))])
+void prepare (ConfigurableApplicationContext applicationContext)
+{
+  if ((applicationContext != null && applicationContext.getParent()) != null)
+  {
+    return;
+  }
+  if (applicationContext instanceof GenericApplicationContext)
+  {
+    <?HOLE?>
+  }
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[SCond]: ((GenericApplicationContext) applicationContext).setResourceLoader(new ClassLoaderFilesResourcePatternResolver(this.classLoaderFiles));
+Hole 2:
+[]: this.rootContext = applicationContext;
+
+Edit A:
+Hole 1:
+[SCond]: ((GenericApplicationContext) applicationContext).setResourceLoader(new ClassLoaderFilesResourcePatternResolver(this.classLoaderFiles));
+Hole 2:
+[]: this.rootContexts.add(applicationContext);
+
+Edit B:
+Hole 1:
+[SCond]: prepare(((GenericApplicationContext) applicationContext));
+Hole 2:
+[]: this.rootContext = applicationContext;
+
+Edit M:
+Hole 1:
+[SCond]: prepare(((GenericApplicationContext) applicationContext));
+Hole 2:
+[]: this.rootContexts.add(applicationContext);
+

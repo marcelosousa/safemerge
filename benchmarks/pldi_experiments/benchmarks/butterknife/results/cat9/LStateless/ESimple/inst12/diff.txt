@@ -1,0 +1,90 @@
+Merge Instance for method (Ident "SimpleActivityTest",Ident "verifyContentViewInjection",[])
+@Test
+ public void verifyContentViewInjection ()
+{
+  <?HOLE?>
+  <?HOLE?>
+  assertThat(activity.title).hasId(R.id.title);
+  assertThat(activity.subtitle).hasId(R.id.subtitle);
+  assertThat(activity.hello).hasId(R.id.hello);
+  assertThat(activity.listOfThings).hasId(R.id.list_of_things);
+  assertThat(activity.footer).hasId(R.id.footer);
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: SimpleActivity activity = new SimpleActivity();
+Hole 2:
+[]: shadowOf(activity).callOnCreate(null);
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: SimpleActivity activity = Robolectric.buildActivity(SimpleActivity.class).create().get();
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: SimpleActivity activity = new SimpleActivity();
+Hole 2:
+[]: shadowOf(activity).callOnCreate(null);
+Hole 3:
+[]: Views.reset(activity);
+Hole 4:
+[]: assertThat(activity.title).isNull();
+Hole 5:
+[]: assertThat(activity.subtitle).isNull();
+Hole 6:
+[]: assertThat(activity.hello).isNull();
+Hole 7:
+[]: assertThat(activity.listOfThings).isNull();
+Hole 8:
+[]: assertThat(activity.footer).isNull();
+
+Edit M:
+Hole 1:
+[]: SimpleActivity activity = Robolectric.buildActivity(SimpleActivity.class).create().get();
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: Views.reset(activity);
+Hole 4:
+[]: assertThat(activity.title).isNull();
+Hole 5:
+[]: assertThat(activity.subtitle).isNull();
+Hole 6:
+[]: assertThat(activity.hello).isNull();
+Hole 7:
+[]: assertThat(activity.listOfThings).isNull();
+Hole 8:
+[]: assertThat(activity.footer).isNull();
+

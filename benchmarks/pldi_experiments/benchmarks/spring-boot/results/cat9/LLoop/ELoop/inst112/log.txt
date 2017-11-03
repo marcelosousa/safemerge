@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 112
+File: spring-boot-actuator/src/main/java/org/springframework/boot/actuate/endpoint/ConfigurationPropertiesReportEndpoint.java
+Orig: 05dbc15a9d14964a24a7d81a6175aa5f60cbe255
+VarA: 7d247a71e4ed07dcfc9d4d0323d2f25eb0a85676
+VarB: f27bb39af9d4fb5bbef07ef0e70f39281ceee758
+Merg: d02a9c10588788e5b865c2efbdf4b3c88393cc3b

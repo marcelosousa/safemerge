@@ -1,0 +1,185 @@
+Merge Instance for method (Ident "PrimaryElectionRoutingTests",Ident "testBackupElectionToPrimaryWhenPrimaryCanBeAllocatedToAnotherNode",[])
+public void testBackupElectionToPrimaryWhenPrimaryCanBeAllocatedToAnotherNode ()
+{
+  AllocationService strategy = createAllocationService(settingsBuilder().put("cluster.routing.allocation.concurrent_recoveries", 10).build());
+  logger.info("Building initial routing table");
+  MetaData metaData = MetaData.builder().put(IndexMetaData.builder("test").settings(settings(Version.CURRENT)).numberOfShards(1).numberOfReplicas(1)).build();
+  RoutingTable routingTable = RoutingTable.builder().addAsNew(metaData.index("test")).build();
+  ClusterState clusterState = ClusterState.builder(org.elasticsearch.cluster.ClusterName.DEFAULT).metaData(metaData).routingTable(routingTable).build();
+  logger.info("Adding two nodes and performing rerouting");
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  logger.info("Start the primary shard (on node1)");
+  RoutingNodes routingNodes = clusterState.getRoutingNodes();
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  logger.info("Start the backup shard (on node2)");
+  routingNodes = clusterState.getRoutingNodes();
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  logger.info("Adding third node and reroute and kill first node");
+  clusterState = ClusterState.builder(clusterState).nodes(DiscoveryNodes.builder(clusterState.nodes()).put(newNode("node3")).remove("node1")).build();
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  routingNodes = clusterState.getRoutingNodes();
+  <?HOLE?>
+  assertThat((prevRoutingTable != routingTable), equalTo(true));
+  assertThat(routingTable.index("test").shards().size(), equalTo(1));
+  assertThat(routingNodes.node("node1"), nullValue());
+  assertThat(routingNodes.node("node2").numberOfShardsWithState(STARTED), equalTo(1));
+  assertThat(routingNodes.node("node3").numberOfShardsWithState(INITIALIZING), equalTo(1));
+  assertThat(routingTable.index("test").shard(0).primaryShard().currentNodeId(), equalTo("node2"));
+  <?HOLE?>
+  assertThat(routingTable.index("test").shard(0).replicaShards().get(0).currentNodeId(), equalTo("node3"));
+}
+Edit Base:
+Hole 1:
+[]: clusterState = ClusterState.builder(clusterState).nodes(DiscoveryNodes.builder().put(newNode("node1")).put(newNode("node2"))).build();
+Hole 2:
+[]: RoutingTable prevRoutingTable = routingTable;
+Hole 3:
+[]: routingTable = strategy.reroute(clusterState).routingTable();
+Hole 4:
+[]: clusterState = ClusterState.builder(clusterState).routingTable(routingTable).build();
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: prevRoutingTable = routingTable;
+Hole 8:
+[]: routingTable = strategy.applyStartedShards(clusterState, routingNodes.node("node1").shardsWithState(INITIALIZING)).routingTable();
+Hole 9:
+[]: clusterState = ClusterState.builder(clusterState).routingTable(routingTable).build();
+Hole 10:
+[]: prevRoutingTable = routingTable;
+Hole 11:
+[]: routingTable = strategy.applyStartedShards(clusterState, routingNodes.node("node2").shardsWithState(INITIALIZING)).routingTable();
+Hole 12:
+[]: clusterState = ClusterState.builder(clusterState).routingTable(routingTable).build();
+Hole 13:
+[]: prevRoutingTable = routingTable;
+Hole 14:
+[]: routingTable = strategy.reroute(clusterState).routingTable();
+Hole 15:
+[]: clusterState = ClusterState.builder(clusterState).routingTable(routingTable).build();
+Hole 16:
+[]: <SKIP>
+Hole 17:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: clusterState = ClusterState.builder(clusterState).nodes(DiscoveryNodes.builder().put(newNode("node1"))).build();
+Hole 2:
+[]: RoutingAllocation.Result result = strategy.reroute(clusterState);
+Hole 3:
+[]: clusterState = ClusterState.builder(clusterState).routingResult(result).build();
+Hole 4:
+[]: clusterState = ClusterState.builder(clusterState).nodes(DiscoveryNodes.builder(clusterState.nodes()).put(newNode("node2"))).build();
+Hole 5:
+[]: result = strategy.reroute(clusterState);
+Hole 6:
+[]: clusterState = ClusterState.builder(clusterState).routingResult(result).build();
+Hole 7:
+[]: result = strategy.applyStartedShards(clusterState, routingNodes.node("node1").shardsWithState(INITIALIZING));
+Hole 8:
+[]: clusterState = ClusterState.builder(clusterState).routingResult(result).build();
+Hole 9:
+[]: <SKIP>
+Hole 10:
+[]: result = strategy.applyStartedShards(clusterState, routingNodes.node("node2").shardsWithState(INITIALIZING));
+Hole 11:
+[]: clusterState = ClusterState.builder(clusterState).routingResult(result).build();
+Hole 12:
+[]: <SKIP>
+Hole 13:
+[]: RoutingTable prevRoutingTable = clusterState.routingTable();
+Hole 14:
+[]: result = strategy.reroute(clusterState);
+Hole 15:
+[]: clusterState = ClusterState.builder(clusterState).routingResult(result).build();
+Hole 16:
+[]: routingTable = clusterState.routingTable();
+Hole 17:
+[]: assertThat(routingTable.index("test").shard(0).primaryShard().primaryTerm(), equalTo(2L));
+
+Edit B:
+Hole 1:
+[]: clusterState = ClusterState.builder(clusterState).nodes(DiscoveryNodes.builder().put(newNode("node1")).put(newNode("node2"))).build();
+Hole 2:
+[]: RoutingTable prevRoutingTable = routingTable;
+Hole 3:
+[]: routingTable = strategy.reroute(clusterState, "reroute").routingTable();
+Hole 4:
+[]: clusterState = ClusterState.builder(clusterState).routingTable(routingTable).build();
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: prevRoutingTable = routingTable;
+Hole 8:
+[]: routingTable = strategy.applyStartedShards(clusterState, routingNodes.node("node1").shardsWithState(INITIALIZING)).routingTable();
+Hole 9:
+[]: clusterState = ClusterState.builder(clusterState).routingTable(routingTable).build();
+Hole 10:
+[]: prevRoutingTable = routingTable;
+Hole 11:
+[]: routingTable = strategy.applyStartedShards(clusterState, routingNodes.node("node2").shardsWithState(INITIALIZING)).routingTable();
+Hole 12:
+[]: clusterState = ClusterState.builder(clusterState).routingTable(routingTable).build();
+Hole 13:
+[]: prevRoutingTable = routingTable;
+Hole 14:
+[]: routingTable = strategy.reroute(clusterState, "reroute").routingTable();
+Hole 15:
+[]: clusterState = ClusterState.builder(clusterState).routingTable(routingTable).build();
+Hole 16:
+[]: <SKIP>
+Hole 17:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: clusterState = ClusterState.builder(clusterState).nodes(DiscoveryNodes.builder().put(newNode("node1"))).build();
+Hole 2:
+[]: RoutingAllocation.Result result = strategy.reroute(clusterState, "reroute");
+Hole 3:
+[]: clusterState = ClusterState.builder(clusterState).routingResult(result).build();
+Hole 4:
+[]: clusterState = ClusterState.builder(clusterState).nodes(DiscoveryNodes.builder(clusterState.nodes()).put(newNode("node2"))).build();
+Hole 5:
+[]: result = strategy.reroute(clusterState, "reroute");
+Hole 6:
+[]: clusterState = ClusterState.builder(clusterState).routingResult(result).build();
+Hole 7:
+[]: result = strategy.applyStartedShards(clusterState, routingNodes.node("node1").shardsWithState(INITIALIZING));
+Hole 8:
+[]: clusterState = ClusterState.builder(clusterState).routingResult(result).build();
+Hole 9:
+[]: <SKIP>
+Hole 10:
+[]: result = strategy.applyStartedShards(clusterState, routingNodes.node("node2").shardsWithState(INITIALIZING));
+Hole 11:
+[]: clusterState = ClusterState.builder(clusterState).routingResult(result).build();
+Hole 12:
+[]: <SKIP>
+Hole 13:
+[]: RoutingTable prevRoutingTable = clusterState.routingTable();
+Hole 14:
+[]: result = strategy.reroute(clusterState, "reroute");
+Hole 15:
+[]: clusterState = ClusterState.builder(clusterState).routingResult(result).build();
+Hole 16:
+[]: routingTable = clusterState.routingTable();
+Hole 17:
+[]: assertThat(routingTable.index("test").shard(0).primaryShard().primaryTerm(), equalTo(2L));
+

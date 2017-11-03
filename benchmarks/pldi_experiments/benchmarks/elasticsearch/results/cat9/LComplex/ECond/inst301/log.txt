@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 301
+File: core/src/main/java/org/elasticsearch/common/io/stream/StreamOutput.java
+Orig: f4a143d1387f9b4de841aa2460483157fc9baa5a
+VarA: 42049276dc18e8b42a5501ad728b8eb06f1d0538
+VarB: 792a545633f577a8ccc331a7590824c18e5b1958
+Merg: cccc71f1e4adbb25c2563e1afb971fac95337777

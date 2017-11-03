@@ -1,0 +1,133 @@
+Merge Instance for method (Ident "PluginCliTests",Ident "testHelpWorks",[])
+public void testHelpWorks () throws Exception
+{
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: CliToolTestCase.CaptureOutputTerminal terminal = new CliToolTestCase.CaptureOutputTerminal();
+Hole 2:
+[]: assertThat(new PluginCli(terminal).execute(args("--help")), is(OK_AND_EXIT));
+Hole 3:
+[]: assertTerminalOutputContainsHelpFile(terminal, "/org/elasticsearch/plugins/plugin.help");
+Hole 4:
+[]: terminal.getTerminalOutput().clear();
+Hole 5:
+[]: assertThat(new PluginCli(terminal).execute(args("install -h")), is(OK_AND_EXIT));
+Hole 6:
+[]: assertTerminalOutputContainsHelpFile(terminal, "/org/elasticsearch/plugins/plugin-install.help");
+Hole 7:
+[]: for (String plugin : InstallPluginCommand.OFFICIAL_PLUGINS) {
+                                                              assertThat(terminal.getTerminalOutput(), hasItem(containsString(plugin)));
+                                                            }
+Hole 8:
+[]: terminal.getTerminalOutput().clear();
+Hole 9:
+[]: assertThat(new PluginCli(terminal).execute(args("remove --help")), is(OK_AND_EXIT));
+Hole 10:
+[]: assertTerminalOutputContainsHelpFile(terminal, "/org/elasticsearch/plugins/plugin-remove.help");
+Hole 11:
+[]: terminal.getTerminalOutput().clear();
+Hole 12:
+[]: assertThat(new PluginCli(terminal).execute(args("list -h")), is(OK_AND_EXIT));
+Hole 13:
+[]: assertTerminalOutputContainsHelpFile(terminal, "/org/elasticsearch/plugins/plugin-list.help");
+
+Edit A:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+Hole 10:
+[]: <SKIP>
+Hole 11:
+[]: <SKIP>
+Hole 12:
+[]: <SKIP>
+Hole 13:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: MockTerminal terminal = new MockTerminal();
+Hole 2:
+[]: assertThat(new PluginCli(terminal).execute(args("--help")), is(OK_AND_EXIT));
+Hole 3:
+[]: assertTerminalOutputContainsHelpFile(terminal, "/org/elasticsearch/plugins/plugin.help");
+Hole 4:
+[]: terminal.resetOutput();
+Hole 5:
+[]: assertThat(new PluginCli(terminal).execute(args("install -h")), is(OK_AND_EXIT));
+Hole 6:
+[]: assertTerminalOutputContainsHelpFile(terminal, "/org/elasticsearch/plugins/plugin-install.help");
+Hole 7:
+[]: for (String plugin : InstallPluginCommand.OFFICIAL_PLUGINS) {
+                                                              assertThat(terminal.getOutput(), containsString(plugin));
+                                                            }
+Hole 8:
+[]: terminal.resetOutput();
+Hole 9:
+[]: assertThat(new PluginCli(terminal).execute(args("remove --help")), is(OK_AND_EXIT));
+Hole 10:
+[]: assertTerminalOutputContainsHelpFile(terminal, "/org/elasticsearch/plugins/plugin-remove.help");
+Hole 11:
+[]: terminal.resetOutput();
+Hole 12:
+[]: assertThat(new PluginCli(terminal).execute(args("list -h")), is(OK_AND_EXIT));
+Hole 13:
+[]: assertTerminalOutputContainsHelpFile(terminal, "/org/elasticsearch/plugins/plugin-list.help");
+
+Edit M:
+Hole 1:
+[]: MockTerminal terminal = new MockTerminal();
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+Hole 10:
+[]: <SKIP>
+Hole 11:
+[]: <SKIP>
+Hole 12:
+[]: <SKIP>
+Hole 13:
+[]: <SKIP>
+

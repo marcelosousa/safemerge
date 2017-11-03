@@ -1,0 +1,94 @@
+Merge Instance for method (Ident "Bootstrap",Ident "initializeNatives",[PrimType BooleanT,PrimType BooleanT])
+public static void initializeNatives (boolean mlockAll, boolean ctrlHandler)
+{
+  if (mlockAll)
+  {
+    Natives.tryMlockall();
+  }
+  <?HOLE?>
+  if (ctrlHandler)
+  {
+    Natives.addConsoleCtrlHandler(new ConsoleCtrlHandler()
+                                  {
+                                    @Override
+                                    public boolean handle (int code)
+                                    {
+                                      if (CTRL_CLOSE_EVENT == code)
+                                      {
+                                        ESLogger logger = Loggers.getLogger(Bootstrap.class);
+                                        logger.info("running graceful exit on windows");
+                                        Bootstrap.INSTANCE.stop();
+                                        return true;
+                                      }
+                                      return false;
+                                    }
+                                  });
+  }
+  <?HOLE?>
+  try
+  {
+    Sigar.load();
+    Loggers.getLogger(Bootstrap.class).trace("sigar libraries loaded successfully");
+  }
+  catch (Throwable t)
+  {
+    Loggers.getLogger(Bootstrap.class).trace("failed to load sigar libraries", t);
+  }
+  StringHelper.randomId();
+}
+Edit Base:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: Kernel32Library.getInstance();
+
+Edit A:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: try
+{
+  Kernel32Library.getInstance();
+}
+catch (Throwable ignored)
+{
+}
+
+Edit B:
+Hole 1:
+[]: if (Natives.definitelyRunningAsRoot())
+{
+  if (Boolean.parseBoolean(System.getProperty("es.insecure.allow.root")))
+  {
+    Loggers.getLogger(Bootstrap.class).warn("running as ROOT user. this is a bad idea!");
+  }
+  else
+  {
+    throw new RuntimeException("don't run elasticsearch as root.");
+  }
+}
+Hole 2:
+[]: Kernel32Library.getInstance();
+
+Edit M:
+Hole 1:
+[]: if (Natives.definitelyRunningAsRoot())
+{
+  if (Boolean.parseBoolean(System.getProperty("es.insecure.allow.root")))
+  {
+    Loggers.getLogger(Bootstrap.class).warn("running as ROOT user. this is a bad idea!");
+  }
+  else
+  {
+    throw new RuntimeException("don't run elasticsearch as root.");
+  }
+}
+Hole 2:
+[]: try
+{
+  Kernel32Library.getInstance();
+}
+catch (Throwable ignored)
+{
+}
+

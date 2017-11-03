@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 2
+File: gdx/src/com/badlogic/gdx/maps/tiled/renderers/HexagonalTiledMapRenderer.java
+Orig: 0eb005b5d59a775b938eb97400394e1687802d6f
+VarA: 8a97dd0a3a5950e64856a8a9b151b1a196d9e636
+VarB: 19f10aeb658af5ae526d75eefa514a7d2f392e92
+Merg: 1faff82f3c3a2f4b311d048bf55dd4fad6f14867

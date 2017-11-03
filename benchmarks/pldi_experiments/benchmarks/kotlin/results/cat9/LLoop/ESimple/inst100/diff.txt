@@ -1,0 +1,155 @@
+Merge Instance for method (Ident "AbstractJetFindUsagesTest",Ident "doTest",[RefType (ClassRefType (ClassType [(Ident "String",[])]))])
+protected <T extends PsiElement> void doTest (@NotNull
+                                              String path) throws Exception
+{
+  File mainFile = new File(path);
+  final String mainFileName = mainFile.getName();
+  String mainFileText = FileUtil.loadFile(mainFile, true);
+  final String prefix = mainFileName.substring(0, (mainFileName.indexOf('.') + 1));
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  OptionsParser parser = OptionsParser.getParserByPsiElementClass(caretElementClass);
+  String rootPath = path.substring(0, (path.lastIndexOf("/") + 1));
+  File rootDir = new File(rootPath);
+  <?HOLE?>
+  assert extraFiles != null;
+  for (File file : extraFiles) {
+                                 myFixture.configureByFile((rootPath + file.getName()));
+                               }
+  myFixture.configureByFile(path);
+  <?HOLE?>
+  assertNotNull(caretElement);
+  assertInstanceOf(caretElement, caretElementClass);
+  PsiFile containingFile = caretElement.getContainingFile();
+  boolean isLibraryElement = containingFile != null && ProjectRootsUtil.isLibraryFile(getProject(), containingFile.getVirtualFile());
+  FindUsagesOptions options = parser != null ? parser.parse(mainFileText, getProject()) : null;
+  if (isLibraryElement)
+  {
+    PsiElement originalElement = caretElement.getOriginalElement();
+    findUsagesAndCheckResults(mainFileText, prefix, rootPath, originalElement, options);
+    PsiElement navigationElement = caretElement.getNavigationElement();
+    if (navigationElement != originalElement)
+    {
+      findUsagesAndCheckResults(mainFileText, prefix, rootPath, navigationElement, options);
+    }
+  }
+  else
+  {
+    findUsagesAndCheckResults(mainFileText, prefix, rootPath, caretElement, options);
+  }
+}
+Edit Base:
+Hole 1:
+[]: List<String> caretElementClassNames = InTextDirectivesUtils.findLinesWithPrefixesRemoved(mainFileText, "// PSI_ELEMENT: ");
+Hole 2:
+[]: assert caretElementClassNames.size() == 1;
+Hole 3:
+[]: Class<T> caretElementClass = (Class<T>) Class.forName(caretElementClassNames.get(0));
+Hole 4:
+[]: File[] extraFiles = rootDir.listFiles(new FilenameFilter()
+                                      {
+                                        @Override
+                                        public boolean accept (@NotNull
+                                                               File dir, @NotNull
+                                                                         String name)
+                                        {
+                                          if (!name.startsWith(prefix) || name.equals(mainFileName))
+                                            return false;
+                                          String ext = FileUtilRt.getExtension(name);
+                                          return (ext.equals("kt") || ext.equals("java") || ext.equals("xml") || ext.equals("txt") && !name.endsWith(".results.txt"));
+                                        }
+                                      });
+Hole 5:
+[]: PsiElement caretElement = InTextDirectivesUtils.isDirectiveDefined(mainFileText, "// FIND_BY_REF") ? TargetElementUtilBase.findTargetElement(myFixture.getEditor(), (TargetElementUtilBase.REFERENCED_ELEMENT_ACCEPTED | JavaTargetElementEvaluator.NEW_AS_CONSTRUCTOR)) : myFixture.getElementAtCaret();
+
+Edit A:
+Hole 1:
+[]: List<String> caretElementClassNames = InTextDirectivesUtils.findLinesWithPrefixesRemoved(mainFileText, "// PSI_ELEMENT: ");
+Hole 2:
+[]: assert caretElementClassNames.size() == 1;
+Hole 3:
+[]: Class<T> caretElementClass = (Class<T>) Class.forName(caretElementClassNames.get(0));
+Hole 4:
+[]: File[] extraFiles = rootDir.listFiles(new FilenameFilter()
+                                      {
+                                        @Override
+                                        public boolean accept (@NotNull
+                                                               File dir, @NotNull
+                                                                         String name)
+                                        {
+                                          if (!name.startsWith(prefix) || name.equals(mainFileName))
+                                            return false;
+                                          String ext = FileUtilRt.getExtension(name);
+                                          return (ext.equals("kt") || ext.equals("java") || ext.equals("xml") || ext.equals("txt") && !name.endsWith(".results.txt"));
+                                        }
+                                      });
+Hole 5:
+[]: PsiElement caretElement = InTextDirectivesUtils.isDirectiveDefined(mainFileText, "// FIND_BY_REF") ? TargetElementUtilBase.findTargetElement(myFixture.getEditor(), (TargetElementUtilBase.REFERENCED_ELEMENT_ACCEPTED | TargetElementUtil.NEW_AS_CONSTRUCTOR)) : myFixture.getElementAtCaret();
+
+Edit B:
+Hole 1:
+[]: boolean isPropertiesFile = FileUtilRt.getExtension(path).equals("properties");
+Hole 2:
+[]: Class<T> caretElementClass;
+Hole 3:
+[]: if (!isPropertiesFile)
+{
+  List<String> caretElementClassNames = InTextDirectivesUtils.findLinesWithPrefixesRemoved(mainFileText, "// PSI_ELEMENT: ");
+  assert caretElementClassNames.size() == 1;
+  caretElementClass = (Class<T>) Class.forName(caretElementClassNames.get(0));
+}
+else
+{
+  caretElementClass = (Class<T>) (InTextDirectivesUtils.isDirectiveDefined(mainFileText, "## FIND_FILE_USAGES") ? PropertiesFile.class : Property.class);
+}
+Hole 4:
+[]: File[] extraFiles = rootDir.listFiles(new FilenameFilter()
+                                      {
+                                        @Override
+                                        public boolean accept (@NotNull
+                                                               File dir, @NotNull
+                                                                         String name)
+                                        {
+                                          if (!name.startsWith(prefix) || name.equals(mainFileName))
+                                            return false;
+                                          String ext = FileUtilRt.getExtension(name);
+                                          return (ext.equals("kt") || ext.equals("java") || ext.equals("xml") || ext.equals("properties") || ext.equals("txt") && !name.endsWith(".results.txt"));
+                                        }
+                                      });
+Hole 5:
+[]: PsiElement caretElement = InTextDirectivesUtils.isDirectiveDefined(mainFileText, "// FIND_BY_REF") ? TargetElementUtilBase.findTargetElement(myFixture.getEditor(), (TargetElementUtilBase.REFERENCED_ELEMENT_ACCEPTED | JavaTargetElementEvaluator.NEW_AS_CONSTRUCTOR)) : myFixture.getElementAtCaret();
+
+Edit M:
+Hole 1:
+[]: boolean isPropertiesFile = FileUtilRt.getExtension(path).equals("properties");
+Hole 2:
+[]: Class<T> caretElementClass;
+Hole 3:
+[]: if (!isPropertiesFile)
+{
+  List<String> caretElementClassNames = InTextDirectivesUtils.findLinesWithPrefixesRemoved(mainFileText, "// PSI_ELEMENT: ");
+  assert caretElementClassNames.size() == 1;
+  caretElementClass = (Class<T>) Class.forName(caretElementClassNames.get(0));
+}
+else
+{
+  caretElementClass = (Class<T>) (InTextDirectivesUtils.isDirectiveDefined(mainFileText, "## FIND_FILE_USAGES") ? PropertiesFile.class : Property.class);
+}
+Hole 4:
+[]: File[] extraFiles = rootDir.listFiles(new FilenameFilter()
+                                      {
+                                        @Override
+                                        public boolean accept (@NotNull
+                                                               File dir, @NotNull
+                                                                         String name)
+                                        {
+                                          if (!name.startsWith(prefix) || name.equals(mainFileName))
+                                            return false;
+                                          String ext = FileUtilRt.getExtension(name);
+                                          return (ext.equals("kt") || ext.equals("java") || ext.equals("xml") || ext.equals("properties") || ext.equals("txt") && !name.endsWith(".results.txt"));
+                                        }
+                                      });
+Hole 5:
+[]: PsiElement caretElement = InTextDirectivesUtils.isDirectiveDefined(mainFileText, "// FIND_BY_REF") ? TargetElementUtilBase.findTargetElement(myFixture.getEditor(), (TargetElementUtilBase.REFERENCED_ELEMENT_ACCEPTED | TargetElementUtil.NEW_AS_CONSTRUCTOR)) : myFixture.getElementAtCaret();
+

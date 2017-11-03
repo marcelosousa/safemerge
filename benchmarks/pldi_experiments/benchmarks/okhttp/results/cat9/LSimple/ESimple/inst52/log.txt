@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 52
+File: okhttp/src/main/java/com/squareup/okhttp/OkHttpClient.java
+Orig: 46ea47b8f959249d7d79791385696a9b0294b950
+VarA: 60e5bc087187e53947bcdc6518de814c96d101f2
+VarB: 870ae218c705eedc90a1e6e5e8b3ec83c67a6320
+Merg: 35166168529bd27281685e56a0a122eff44460e9

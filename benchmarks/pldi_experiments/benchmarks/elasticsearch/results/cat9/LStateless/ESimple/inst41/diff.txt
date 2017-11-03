@@ -1,0 +1,116 @@
+Merge Instance for method (Ident "FilterFieldDataTests",Ident "testFilterByFrequency",[])
+public void testFilterByFrequency () throws Exception
+{
+  <?HOLE?>
+  for (int i = 0 ; i < 1000 ; i++)
+  {
+    Document d = new Document();
+    d.add(new StringField("id", ("" + i), Field.Store.NO));
+    if (i % 100 == 0)
+    {
+      d.add(new StringField("high_freq", "100", Field.Store.NO));
+      d.add(new StringField("low_freq", "100", Field.Store.NO));
+      d.add(new StringField("med_freq", "100", Field.Store.NO));
+    }
+    if (i % 10 == 0)
+    {
+      d.add(new StringField("high_freq", "10", Field.Store.NO));
+      d.add(new StringField("med_freq", "10", Field.Store.NO));
+    }
+    if (i % 5 == 0)
+    {
+      d.add(new StringField("high_freq", "5", Field.Store.NO));
+    }
+    writer.addDocument(d);
+  }
+  writer.forceMerge(1, true);
+  LeafReaderContext context = refreshReader();
+  final BuilderContext builderCtx = new BuilderContext(indexService.getIndexSettings().getSettings(), new ContentPath(1));
+  {
+    ifdService.clear();
+    <?HOLE?>
+    IndexOrdinalsFieldData fieldData = ifdService.getForField(ft);
+    AtomicOrdinalsFieldData loadDirect = fieldData.loadDirect(context);
+    RandomAccessOrds bytesValues = loadDirect.getOrdinalsValues();
+    assertThat(2L, equalTo(bytesValues.getValueCount()));
+    assertThat(bytesValues.lookupOrd(0).utf8ToString(), equalTo("10"));
+    assertThat(bytesValues.lookupOrd(1).utf8ToString(), equalTo("100"));
+  }
+  {
+    ifdService.clear();
+    <?HOLE?>
+    IndexOrdinalsFieldData fieldData = ifdService.getForField(ft);
+    AtomicOrdinalsFieldData loadDirect = fieldData.loadDirect(context);
+    RandomAccessOrds bytesValues = loadDirect.getOrdinalsValues();
+    assertThat(1L, equalTo(bytesValues.getValueCount()));
+    assertThat(bytesValues.lookupOrd(0).utf8ToString(), equalTo("5"));
+  }
+  {
+    ifdService.clear();
+    <?HOLE?>
+    IndexOrdinalsFieldData fieldData = ifdService.getForField(ft);
+    AtomicOrdinalsFieldData loadDirect = fieldData.loadDirect(context);
+    RandomAccessOrds bytesValues = loadDirect.getOrdinalsValues();
+    assertThat(2L, equalTo(bytesValues.getValueCount()));
+    assertThat(bytesValues.lookupOrd(0).utf8ToString(), equalTo("10"));
+    assertThat(bytesValues.lookupOrd(1).utf8ToString(), equalTo("100"));
+  }
+  {
+    ifdService.clear();
+    <?HOLE?>
+    IndexOrdinalsFieldData fieldData = ifdService.getForField(ft);
+    AtomicOrdinalsFieldData loadDirect = fieldData.loadDirect(context);
+    RandomAccessOrds bytesValues = loadDirect.getOrdinalsValues();
+    assertThat(2L, equalTo(bytesValues.getValueCount()));
+    assertThat(bytesValues.lookupOrd(0).utf8ToString(), equalTo("10"));
+    assertThat(bytesValues.lookupOrd(1).utf8ToString(), equalTo("100"));
+  }
+}
+Edit Base:
+Hole 1:
+[]: Random random = getRandom();
+Hole 2:
+[]: MappedFieldType ft = new TextFieldMapper.Builder("high_freq").fielddataFrequencyFilter(0, (random.nextBoolean() ? 100 : 0.5), 0).build(builderCtx).fieldType();
+Hole 3:
+[]: MappedFieldType ft = new TextFieldMapper.Builder("high_freq").fielddataFrequencyFilter((random.nextBoolean() ? 101 : 101.0 / 200.0), 201, 100).build(builderCtx).fieldType();
+Hole 4:
+[]: MappedFieldType ft = new TextFieldMapper.Builder("med_freq").fielddataFrequencyFilter((random.nextBoolean() ? 101 : 101.0 / 200.0), Integer.MAX_VALUE, 101).build(builderCtx).fieldType();
+Hole 5:
+[]: MappedFieldType ft = new TextFieldMapper.Builder("med_freq").fielddataFrequencyFilter((random.nextBoolean() ? 101 : 101.0 / 200.0), Integer.MAX_VALUE, 101).build(builderCtx).fieldType();
+
+Edit A:
+Hole 1:
+[]: Random random = getRandom();
+Hole 2:
+[]: MappedFieldType ft = new TextFieldMapper.Builder("high_freq").fielddata(true).fielddataFrequencyFilter(0, (random.nextBoolean() ? 100 : 0.5), 0).build(builderCtx).fieldType();
+Hole 3:
+[]: MappedFieldType ft = new TextFieldMapper.Builder("high_freq").fielddata(true).fielddataFrequencyFilter((random.nextBoolean() ? 101 : 101.0 / 200.0), 201, 100).build(builderCtx).fieldType();
+Hole 4:
+[]: MappedFieldType ft = new TextFieldMapper.Builder("med_freq").fielddata(true).fielddataFrequencyFilter((random.nextBoolean() ? 101 : 101.0 / 200.0), Integer.MAX_VALUE, 101).build(builderCtx).fieldType();
+Hole 5:
+[]: MappedFieldType ft = new TextFieldMapper.Builder("med_freq").fielddata(true).fielddataFrequencyFilter((random.nextBoolean() ? 101 : 101.0 / 200.0), Integer.MAX_VALUE, 101).build(builderCtx).fieldType();
+
+Edit B:
+Hole 1:
+[]: Random random = random();
+Hole 2:
+[]: MappedFieldType ft = new TextFieldMapper.Builder("high_freq").fielddataFrequencyFilter(0, (random.nextBoolean() ? 100 : 0.5), 0).build(builderCtx).fieldType();
+Hole 3:
+[]: MappedFieldType ft = new TextFieldMapper.Builder("high_freq").fielddataFrequencyFilter((random.nextBoolean() ? 101 : 101.0 / 200.0), 201, 100).build(builderCtx).fieldType();
+Hole 4:
+[]: MappedFieldType ft = new TextFieldMapper.Builder("med_freq").fielddataFrequencyFilter((random.nextBoolean() ? 101 : 101.0 / 200.0), Integer.MAX_VALUE, 101).build(builderCtx).fieldType();
+Hole 5:
+[]: MappedFieldType ft = new TextFieldMapper.Builder("med_freq").fielddataFrequencyFilter((random.nextBoolean() ? 101 : 101.0 / 200.0), Integer.MAX_VALUE, 101).build(builderCtx).fieldType();
+
+Edit M:
+Hole 1:
+[]: Random random = random();
+Hole 2:
+[]: MappedFieldType ft = new TextFieldMapper.Builder("high_freq").fielddata(true).fielddataFrequencyFilter(0, (random.nextBoolean() ? 100 : 0.5), 0).build(builderCtx).fieldType();
+Hole 3:
+[]: MappedFieldType ft = new TextFieldMapper.Builder("high_freq").fielddata(true).fielddataFrequencyFilter((random.nextBoolean() ? 101 : 101.0 / 200.0), 201, 100).build(builderCtx).fieldType();
+Hole 4:
+[]: MappedFieldType ft = new TextFieldMapper.Builder("med_freq").fielddata(true).fielddataFrequencyFilter((random.nextBoolean() ? 101 : 101.0 / 200.0), Integer.MAX_VALUE, 101).build(builderCtx).fieldType();
+Hole 5:
+[]: MappedFieldType ft = new TextFieldMapper.Builder("med_freq").fielddata(true).fielddataFrequencyFilter((random.nextBoolean() ? 101 : 101.0 / 200.0), Integer.MAX_VALUE, 101).build(builderCtx).fieldType();
+

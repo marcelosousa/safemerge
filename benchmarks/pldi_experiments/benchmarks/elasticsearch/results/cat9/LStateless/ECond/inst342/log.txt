@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 342
+File: src/test/java/org/elasticsearch/gateway/RecoveryFromGatewayTests.java
+Orig: 862cec5634686ac70f358d0c81f6f79181a1208a
+VarA: 6f002ffca822baca8a4ba741cce0574986e43186
+VarB: 37bdbe074a6f89c1da9e0b58013dad79872580fe
+Merg: 87a0c76e9c844072c0495b830a835f38c501294e

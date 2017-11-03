@@ -1,0 +1,58 @@
+Merge Instance for method (Ident "RequestCreator",Ident "into",[RefType (ClassRefType (ClassType [(Ident "RemoteViews",[])])),PrimType IntT,PrimType IntT,RefType (ClassRefType (ClassType [(Ident "Notification",[])]))])
+public void into (RemoteViews remoteViews, int viewId, int notificationId, Notification notification)
+{
+  long started = System.nanoTime();
+  <?HOLE?>
+  if (remoteViews == null)
+  {
+    throw new IllegalArgumentException("RemoteViews must not be null.");
+  }
+  if (notification == null)
+  {
+    throw new IllegalArgumentException("Notification must not be null.");
+  }
+  if (deferred)
+  {
+    throw new IllegalStateException("Fit cannot be used with RemoteViews.");
+  }
+  if (((placeholderDrawable != null || placeholderResId) != 0 || errorDrawable) != null)
+  {
+    throw new IllegalArgumentException("Cannot use placeholder or error drawables with remote views.");
+  }
+  Request request = createRequest(started);
+  <?HOLE?>
+  <?HOLE?>
+  performRemoteViewInto(action);
+}
+Edit Base:
+Hole 1:
+[]: checkMain();
+Hole 2:
+[]: String key = createKey(request);
+Hole 3:
+[]: RemoteViewsAction action = new NotificationAction(picasso, request, remoteViews, viewId, notificationId, notification, skipMemoryCache, errorResId, key, tag);
+
+Edit A:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: String key = createKey(request, new StringBuilder());
+Hole 3:
+[]: RemoteViewsAction action = new NotificationAction(picasso, request, remoteViews, viewId, notificationId, notification, skipMemoryCache, errorResId, key, tag);
+
+Edit B:
+Hole 1:
+[]: checkMain();
+Hole 2:
+[]: String key = createKey(request);
+Hole 3:
+[]: RemoteViewsAction action = new NotificationAction(picasso, request, remoteViews, viewId, notificationId, notification, memoryPolicy, errorResId, key, tag);
+
+Edit M:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: String key = createKey(request, new StringBuilder());
+Hole 3:
+[]: RemoteViewsAction action = new NotificationAction(picasso, request, remoteViews, viewId, notificationId, notification, memoryPolicy, errorResId, key, tag);
+

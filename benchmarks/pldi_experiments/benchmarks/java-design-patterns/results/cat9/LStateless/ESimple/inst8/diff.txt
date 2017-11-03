@@ -1,0 +1,128 @@
+Merge Instance for method (Ident "App",Ident "main",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "String",[])]))))])
+public static void main (String[] args)
+{
+  IvoryTower ivoryTower1 = IvoryTower.getInstance();
+  IvoryTower ivoryTower2 = IvoryTower.getInstance();
+  System.out.println(("ivoryTower1=" + ivoryTower1));
+  System.out.println(("ivoryTower2=" + ivoryTower2));
+  ThreadSafeLazyLoadedIvoryTower threadSafeIvoryTower1 = ThreadSafeLazyLoadedIvoryTower.getInstance();
+  ThreadSafeLazyLoadedIvoryTower threadSafeIvoryTower2 = ThreadSafeLazyLoadedIvoryTower.getInstance();
+  System.out.println(("threadSafeIvoryTower1=" + threadSafeIvoryTower1));
+  System.out.println(("threadSafeIvoryTower2=" + threadSafeIvoryTower2));
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+Hole 10:
+[]: <SKIP>
+Hole 11:
+[]: <SKIP>
+Hole 12:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: EnumIvoryTower enumIvoryTower1 = EnumIvoryTower.INSTANCE;
+Hole 2:
+[]: EnumIvoryTower enumIvoryTower2 = EnumIvoryTower.INSTANCE;
+Hole 3:
+[]: System.out.println(("enumIvoryTower1=" + enumIvoryTower1));
+Hole 4:
+[]: System.out.println(("enumIvoryTower2=" + enumIvoryTower2));
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+Hole 10:
+[]: <SKIP>
+Hole 11:
+[]: <SKIP>
+Hole 12:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: InitializingOnDemandHolderIdiom demandHolderIdiom = InitializingOnDemandHolderIdiom.getInstance();
+Hole 2:
+[]: System.out.println(demandHolderIdiom);
+Hole 3:
+[]: InitializingOnDemandHolderIdiom demandHolderIdiom2 = InitializingOnDemandHolderIdiom.getInstance();
+Hole 4:
+[]: System.out.println(demandHolderIdiom2);
+Hole 5:
+[]: ThreadSafeDoubleCheckLocking dcl1 = ThreadSafeDoubleCheckLocking.getInstance();
+Hole 6:
+[]: System.out.println(dcl1);
+Hole 7:
+[]: ThreadSafeDoubleCheckLocking dcl2 = ThreadSafeDoubleCheckLocking.getInstance();
+Hole 8:
+[]: System.out.println(dcl2);
+Hole 9:
+[]: <SKIP>
+Hole 10:
+[]: <SKIP>
+Hole 11:
+[]: <SKIP>
+Hole 12:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: EnumIvoryTower enumIvoryTower1 = EnumIvoryTower.INSTANCE;
+Hole 2:
+[]: EnumIvoryTower enumIvoryTower2 = EnumIvoryTower.INSTANCE;
+Hole 3:
+[]: System.out.println(("enumIvoryTower1=" + enumIvoryTower1));
+Hole 4:
+[]: System.out.println(("enumIvoryTower2=" + enumIvoryTower2));
+Hole 5:
+[]: InitializingOnDemandHolderIdiom demandHolderIdiom = InitializingOnDemandHolderIdiom.getInstance();
+Hole 6:
+[]: System.out.println(demandHolderIdiom);
+Hole 7:
+[]: InitializingOnDemandHolderIdiom demandHolderIdiom2 = InitializingOnDemandHolderIdiom.getInstance();
+Hole 8:
+[]: System.out.println(demandHolderIdiom2);
+Hole 9:
+[]: ThreadSafeDoubleCheckLocking dcl1 = ThreadSafeDoubleCheckLocking.getInstance();
+Hole 10:
+[]: System.out.println(dcl1);
+Hole 11:
+[]: ThreadSafeDoubleCheckLocking dcl2 = ThreadSafeDoubleCheckLocking.getInstance();
+Hole 12:
+[]: System.out.println(dcl2);
+

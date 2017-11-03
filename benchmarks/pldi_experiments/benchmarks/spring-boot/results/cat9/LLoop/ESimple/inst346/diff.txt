@@ -1,0 +1,49 @@
+Merge Instance for method (Ident "IntegrationAutoConfigurationTests",Ident "integrationIsAvailable",[])
+@Test
+ public void integrationIsAvailable ()
+{
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: this.context.register(IntegrationAutoConfiguration.class);
+Hole 2:
+[]: this.context.refresh();
+Hole 3:
+[]: assertNotNull(this.context.getBean(HeaderChannelRegistry.class));
+Hole 4:
+[]: this.context.close();
+
+Edit A:
+Hole 1:
+[]: this.context.register(IntegrationAutoConfiguration.class);
+Hole 2:
+[]: this.context.refresh();
+Hole 3:
+[]: assertThat(this.context.getBean(HeaderChannelRegistry.class)).isNotNull();
+Hole 4:
+[]: this.context.close();
+
+Edit B:
+Hole 1:
+[]: load();
+Hole 2:
+[]: MBeanServer mBeanServer = this.context.getBean(MBeanServer.class);
+Hole 3:
+[]: assertDomains(mBeanServer, true, "org.springframework.integration", "org.springframework.integration.monitor");
+Hole 4:
+[]: assertNotNull(this.context.getBean(HeaderChannelRegistry.class));
+
+Edit M:
+Hole 1:
+[]: load();
+Hole 2:
+[]: MBeanServer mBeanServer = this.context.getBean(MBeanServer.class);
+Hole 3:
+[]: assertDomains(mBeanServer, true, "org.springframework.integration", "org.springframework.integration.monitor");
+Hole 4:
+[]: assertThat(this.context.getBean(HeaderChannelRegistry.class)).isNotNull();
+

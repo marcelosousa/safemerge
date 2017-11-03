@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 348
+File: src/test/java/org/elasticsearch/stresstest/get/GetStressTest.java
+Orig: 4d27d751fb08b9853e996c04070bd356ff8420bd
+VarA: 5aaebb6d8303c1b99d509676f560cd40b078fdb3
+VarB: e97353e84a45c79ba3795ad82b60ab9345831fc1
+Merg: b03d7584b46d6e09a78b8d78e5b08d5e9956526e

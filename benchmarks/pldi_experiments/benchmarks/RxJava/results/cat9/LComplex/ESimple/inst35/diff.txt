@@ -1,0 +1,178 @@
+Merge Instance for method (Ident "OperatorOnBackpressureDrop",Ident "call",[RefType (ClassRefType (ClassType [(Ident "Subscriber",[Wildcard (Just (SuperBound (ClassRefType (ClassType [(Ident "T",[])]))))])]))])
+@Override
+ public Subscriber<? super T> call (final Subscriber<? super T> child)
+{
+  final AtomicLong requested = new AtomicLong();
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: child.setProducer(new Producer()
+                  {
+                    @Override
+                    public void request (long n)
+                    {
+                      requested.getAndAdd(n);
+                    }
+                  });
+Hole 2:
+[]: return new Subscriber<T>(child)
+       {
+         @Override
+         public void onStart ()
+         {
+           request(Long.MAX_VALUE);
+         }
+         @Override
+         public void onCompleted ()
+         {
+           child.onCompleted();
+         }
+         @Override
+         public void onError (Throwable e)
+         {
+           child.onError(e);
+         }
+         @Override
+         public void onNext (T t)
+         {
+           if (requested.get() > 0)
+           {
+             child.onNext(t);
+             requested.decrementAndGet();
+           }
+         }
+       };
+
+Edit A:
+Hole 1:
+[]: child.setProducer(new Producer()
+                  {
+                    @Override
+                    public void request (long n)
+                    {
+                      BackpressureUtils.getAndAddRequest(requested, n);
+                    }
+                  });
+Hole 2:
+[]: return new Subscriber<T>(child)
+       {
+         @Override
+         public void onStart ()
+         {
+           request(Long.MAX_VALUE);
+         }
+         @Override
+         public void onCompleted ()
+         {
+           child.onCompleted();
+         }
+         @Override
+         public void onError (Throwable e)
+         {
+           child.onError(e);
+         }
+         @Override
+         public void onNext (T t)
+         {
+           if (requested.get() > 0)
+           {
+             child.onNext(t);
+             requested.decrementAndGet();
+           }
+         }
+       };
+
+Edit B:
+Hole 1:
+[]: child.setProducer(new Producer()
+                  {
+                    @Override
+                    public void request (long n)
+                    {
+                      requested.getAndAdd(n);
+                    }
+                  });
+Hole 2:
+[]: return new Subscriber<T>(child)
+       {
+         @Override
+         public void onStart ()
+         {
+           request(Long.MAX_VALUE);
+         }
+         @Override
+         public void onCompleted ()
+         {
+           child.onCompleted();
+         }
+         @Override
+         public void onError (Throwable e)
+         {
+           child.onError(e);
+         }
+         @Override
+         public void onNext (T t)
+         {
+           if (requested.get() > 0)
+           {
+             child.onNext(t);
+             requested.decrementAndGet();
+           }
+           else
+           {
+             if (onDrop != null)
+             {
+               onDrop.call(t);
+             }
+           }
+         }
+       };
+
+Edit M:
+Hole 1:
+[]: child.setProducer(new Producer()
+                  {
+                    @Override
+                    public void request (long n)
+                    {
+                      BackpressureUtils.getAndAddRequest(requested, n);
+                    }
+                  });
+Hole 2:
+[]: return new Subscriber<T>(child)
+       {
+         @Override
+         public void onStart ()
+         {
+           request(Long.MAX_VALUE);
+         }
+         @Override
+         public void onCompleted ()
+         {
+           child.onCompleted();
+         }
+         @Override
+         public void onError (Throwable e)
+         {
+           child.onError(e);
+         }
+         @Override
+         public void onNext (T t)
+         {
+           if (requested.get() > 0)
+           {
+             child.onNext(t);
+             requested.decrementAndGet();
+           }
+           else
+           {
+             if (onDrop != null)
+             {
+               onDrop.call(t);
+             }
+           }
+         }
+       };
+

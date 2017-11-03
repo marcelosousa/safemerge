@@ -1,2 +1,3 @@
-druid                          git@github.com:alibaba/druid.git
-MaterialDrawer                 git@github.com:mikepenz/MaterialDrawer.git 
+EventBus                       git@github.com:greenrobot/EventBus.git
+fresco                         git@github.com:facebook/fresco.git
+libgdx                         git@github.com:libgdx/libgdx.git

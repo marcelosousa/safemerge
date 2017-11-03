@@ -1,0 +1,70 @@
+Merge Instance for method (Ident "IndexQueryParserFilterDateRangeTimezoneTests",Ident "testDateRangeFilterTimezone",[])
+@Test
+ public void testDateRangeFilterTimezone () throws IOException
+{
+  IndexQueryParserService queryParser = queryParser();
+  String query = copyToStringFromClasspath("/org/elasticsearch/index/query/date_range_filter_timezone.json");
+  queryParser.parse(query).query();
+  query = copyToStringFromClasspath("/org/elasticsearch/index/query/date_range_filter_timezone_numeric_field.json");
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: try
+{
+  SearchContext.setCurrent(new TestSearchContext());
+  queryParser.parse(query).query();
+  fail("A Range Filter on a numeric field with a TimeZone should raise a QueryParsingException");
+}
+catch (QueryParsingException e)
+{
+}
+finally {
+          SearchContext.removeCurrent();
+        }
+
+Edit A:
+Hole 1:
+[]: try
+{
+  SearchContext.setCurrent(new TestSearchContext());
+  queryParser.parse(query).query();
+  fail("A Range Filter on a numeric field with a TimeZone should raise a QueryParsingException");
+}
+catch (QueryShardException e)
+{
+}
+finally {
+          SearchContext.removeCurrent();
+        }
+
+Edit B:
+Hole 1:
+[]: try
+{
+  SearchContext.setCurrent(new TestSearchContext());
+  queryParser.parse(query).query();
+  fail("A Range Filter on a numeric field with a TimeZone should raise a QueryParsingException");
+}
+catch (ParsingException e)
+{
+}
+finally {
+          SearchContext.removeCurrent();
+        }
+
+Edit M:
+Hole 1:
+[]: try
+{
+  SearchContext.setCurrent(new TestSearchContext());
+  queryParser.parse(query).query();
+  fail("A Range Filter on a numeric field with a TimeZone should raise a ParsingException");
+}
+catch (QueryShardException e)
+{
+}
+finally {
+          SearchContext.removeCurrent();
+        }
+

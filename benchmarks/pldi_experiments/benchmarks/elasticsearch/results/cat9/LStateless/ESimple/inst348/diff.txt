@@ -1,0 +1,75 @@
+Merge Instance for method (Ident "GetStressTest",Ident "main",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "String",[])]))))])
+public static void main (String[] args) throws Exception
+{
+  <?HOLE?>
+  final int NUMBER_OF_NODES = 2;
+  final int NUMBER_OF_THREADS = 50;
+  <?HOLE?>
+  Node[] nodes = new Node[NUMBER_OF_NODES];
+  for (int i = 0 ; i < nodes.length ; i++)
+  {
+    nodes[i] = NodeBuilder.nodeBuilder().settings(settings).node();
+  }
+  final Node client = NodeBuilder.nodeBuilder().settings(settings).client(true).node();
+  client.client().admin().indices().prepareCreate("test").execute().actionGet();
+  final AtomicBoolean done = new AtomicBoolean();
+  final AtomicLong idGenerator = new AtomicLong();
+  final AtomicLong counter = new AtomicLong();
+  Thread[] threads = new Thread[NUMBER_OF_THREADS];
+  for (int i = 0 ; i < threads.length ; i++)
+  {
+    threads[i] = new Thread(new Runnable()
+                            {
+                              @Override
+                              public void run ()
+                              {
+                                ThreadLocalRandom random = ThreadLocalRandom.current();
+                                while (!done.get())
+                                {
+                                  String id = String.valueOf(idGenerator.incrementAndGet());
+                                  client.client().prepareIndex("test", "type1", id).setSource("field", random.nextInt(100)).execute().actionGet();
+                                  GetResponse getResponse = client.client().prepareGet("test", "type1", id).execute().actionGet();
+                                  if (!getResponse.isExists())
+                                  {
+                                    System.err.println(("Failed to find " + id));
+                                  }
+                                  long count = counter.incrementAndGet();
+                                  if (count % 10000 == 0)
+                                  {
+                                    System.out.println(("Executed " + count));
+                                  }
+                                }
+                              }
+                            });
+  }
+  for (Thread thread : threads) {
+                                  thread.start();
+                                }
+  Thread.sleep(TEST_TIME.millis());
+  System.out.println("test done.");
+  done.set(true);
+}
+Edit Base:
+Hole 1:
+[]: Settings settings = ImmutableSettings.settingsBuilder().put("index.number_of_shards", 2).put("index.number_of_replicas", 1).build();
+Hole 2:
+[]: final TimeValue TEST_TIME = TimeValue.parseTimeValue("10m", null);
+
+Edit A:
+Hole 1:
+[]: Settings settings = ImmutableSettings.settingsBuilder().put("index.number_of_shards", 2).put("index.number_of_replicas", 1).build();
+Hole 2:
+[]: final TimeValue TEST_TIME = TimeValue.parseTimeValue("10m", null, "TEST_TIME");
+
+Edit B:
+Hole 1:
+[]: Settings settings = Settings.settingsBuilder().put("index.number_of_shards", 2).put("index.number_of_replicas", 1).build();
+Hole 2:
+[]: final TimeValue TEST_TIME = TimeValue.parseTimeValue("10m", null);
+
+Edit M:
+Hole 1:
+[]: Settings settings = Settings.settingsBuilder().put("index.number_of_shards", 2).put("index.number_of_replicas", 1).build();
+Hole 2:
+[]: final TimeValue TEST_TIME = TimeValue.parseTimeValue("10m", null, "TEST_TIME");
+

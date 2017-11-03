@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 7
+File: extensions/gdx-freetype/src/com/badlogic/gdx/graphics/g2d/freetype/FreeTypeFontGenerator.java
+Orig: 0ecdb05e941e0934da6f4b8a7c26374773ecc1ba
+VarA: da27e2dae56be0a159e82231e5c3a5b83b099063
+VarB: ad8b71b5888039062aebd35d648a8523622d33d4
+Merg: 0edda60f5bca60b71326f37a6d5fcd964c462841

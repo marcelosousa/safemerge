@@ -1,0 +1,270 @@
+Merge Instance for method (Ident "OperatorMulticast",Ident "connect",[RefType (ClassRefType (ClassType [(Ident "Action1",[Wildcard (Just (SuperBound (ClassRefType (ClassType [(Ident "Subscription",[])]))))])]))])
+@Override
+ public void connect (Action1<? super Subscription> connection)
+{
+  <?HOLE?>
+  connection.call(guardedSubscription);
+  Subscriber<T> sub;
+  synchronized (guard)
+  {
+    sub = subscription;
+  }
+  if (sub != null)
+    source.subscribe(sub);
+}
+Edit Base:
+Hole 1:
+[]: synchronized (guard)
+{
+  if (subscription != null)
+  {
+    connection.call(guardedSubscription);
+    return;
+  }
+  else
+  {
+    final Subject<? super T, ? extends R> subject = subjectFactory.call();
+    subscription = new Subscriber<T>()
+                   {
+                     @Override
+                     public void onCompleted ()
+                     {
+                       subject.onCompleted();
+                     }
+                     @Override
+                     public void onError (Throwable e)
+                     {
+                       subject.onError(e);
+                     }
+                     @Override
+                     public void onNext (T args)
+                     {
+                       subject.onNext(args);
+                     }
+                   };
+    final AtomicReference<Subscription> gs = new AtomicReference<Subscription>();
+    gs.set(Subscriptions.create(new Action0()
+                                {
+                                  @Override
+                                  public void call ()
+                                  {
+                                    Subscription s;
+                                    synchronized (guard)
+                                    {
+                                      if ((guardedSubscription == gs.get()))
+                                      {
+                                        s = subscription;
+                                        subscription = null;
+                                        guardedSubscription = null;
+                                        connectedSubject.set(null);
+                                      }
+                                      else
+                                        return;
+                                    }
+                                    if (s != null)
+                                    {
+                                      s.unsubscribe();
+                                    }
+                                  }
+                                }));
+    guardedSubscription = gs.get();
+    for (Subscriber<? super R> s : waitingForConnect) {
+                                                        subject.unsafeSubscribe(s);
+                                                      }
+    waitingForConnect.clear();
+    connectedSubject.set(subject);
+  }
+}
+
+Edit A:
+Hole 1:
+[]: synchronized (guard)
+{
+  if (subscription != null)
+  {
+    connection.call(guardedSubscription);
+    return;
+  }
+  else
+  {
+    final Subject<? super T, ? extends R> subject = subjectFactory.call();
+    subscription = Subscribers.from(subject);
+    final AtomicReference<Subscription> gs = new AtomicReference<Subscription>();
+    gs.set(Subscriptions.create(new Action0()
+                                {
+                                  @Override
+                                  public void call ()
+                                  {
+                                    Subscription s;
+                                    synchronized (guard)
+                                    {
+                                      if ((guardedSubscription == gs.get()))
+                                      {
+                                        s = subscription;
+                                        subscription = null;
+                                        guardedSubscription = null;
+                                        connectedSubject.set(null);
+                                      }
+                                      else
+                                        return;
+                                    }
+                                    if (s != null)
+                                    {
+                                      s.unsubscribe();
+                                    }
+                                  }
+                                }));
+    guardedSubscription = gs.get();
+    for (Subscriber<? super R> s : waitingForConnect) {
+                                                        subject.unsafeSubscribe(s);
+                                                      }
+    waitingForConnect.clear();
+    connectedSubject.set(subject);
+  }
+}
+
+Edit B:
+Hole 1:
+[]: synchronized (guard)
+{
+  if (subscription != null)
+  {
+    connection.call(guardedSubscription);
+    return;
+  }
+  else
+  {
+    final Subject<? super T, ? extends R> subject = subjectFactory.call();
+    subscription = new Subscriber<T>()
+                   {
+                     @Override
+                     public void onCompleted ()
+                     {
+                       subject.onCompleted();
+                     }
+                     @Override
+                     public void onError (Throwable e)
+                     {
+                       subject.onError(e);
+                     }
+                     @Override
+                     public void onNext (T args)
+                     {
+                       subject.onNext(args);
+                     }
+                   };
+    final AtomicReference<Subscription> gs = new AtomicReference<Subscription>();
+    gs.set(Subscriptions.create(new Action0()
+                                {
+                                  @Override
+                                  public void call ()
+                                  {
+                                    Subscription s;
+                                    synchronized (guard)
+                                    {
+                                      if ((guardedSubscription == gs.get()))
+                                      {
+                                        s = subscription;
+                                        subscription = null;
+                                        guardedSubscription = null;
+                                        connectedSubject.set(null);
+                                      }
+                                      else
+                                        return;
+                                    }
+                                    if (s != null)
+                                    {
+                                      s.unsubscribe();
+                                    }
+                                  }
+                                }));
+    guardedSubscription = gs.get();
+    for (final Subscriber<? super R> s : waitingForConnect) {
+                                                              subject.unsafeSubscribe(new Subscriber<R>(s)
+                                                                                      {
+                                                                                        @Override
+                                                                                        public void onNext (R t)
+                                                                                        {
+                                                                                          s.onNext(t);
+                                                                                        }
+                                                                                        @Override
+                                                                                        public void onError (Throwable e)
+                                                                                        {
+                                                                                          s.onError(e);
+                                                                                        }
+                                                                                        @Override
+                                                                                        public void onCompleted ()
+                                                                                        {
+                                                                                          s.onCompleted();
+                                                                                        }
+                                                                                      });
+                                                            }
+    waitingForConnect.clear();
+    connectedSubject.set(subject);
+  }
+}
+
+Edit M:
+Hole 1:
+[]: synchronized (guard)
+{
+  if (subscription != null)
+  {
+    connection.call(guardedSubscription);
+    return;
+  }
+  else
+  {
+    final Subject<? super T, ? extends R> subject = subjectFactory.call();
+    subscription = Subscribers.from(subject);
+    final AtomicReference<Subscription> gs = new AtomicReference<Subscription>();
+    gs.set(Subscriptions.create(new Action0()
+                                {
+                                  @Override
+                                  public void call ()
+                                  {
+                                    Subscription s;
+                                    synchronized (guard)
+                                    {
+                                      if ((guardedSubscription == gs.get()))
+                                      {
+                                        s = subscription;
+                                        subscription = null;
+                                        guardedSubscription = null;
+                                        connectedSubject.set(null);
+                                      }
+                                      else
+                                        return;
+                                    }
+                                    if (s != null)
+                                    {
+                                      s.unsubscribe();
+                                    }
+                                  }
+                                }));
+    guardedSubscription = gs.get();
+    for (final Subscriber<? super R> s : waitingForConnect) {
+                                                              subject.unsafeSubscribe(new Subscriber<R>(s)
+                                                                                      {
+                                                                                        @Override
+                                                                                        public void onNext (R t)
+                                                                                        {
+                                                                                          s.onNext(t);
+                                                                                        }
+                                                                                        @Override
+                                                                                        public void onError (Throwable e)
+                                                                                        {
+                                                                                          s.onError(e);
+                                                                                        }
+                                                                                        @Override
+                                                                                        public void onCompleted ()
+                                                                                        {
+                                                                                          s.onCompleted();
+                                                                                        }
+                                                                                      });
+                                                            }
+    waitingForConnect.clear();
+    connectedSubject.set(subject);
+  }
+}
+

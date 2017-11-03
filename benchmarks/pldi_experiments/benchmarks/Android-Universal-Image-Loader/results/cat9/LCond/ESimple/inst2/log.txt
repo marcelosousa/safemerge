@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 2
+File: library/src/com/nostra13/universalimageloader/core/download/BaseImageDownloader.java
+Orig: aa1cde8c20f6ef57de994ce8f72f772a14800706
+VarA: b1a2f1fa1c595587831a6568933e389d2e457408
+VarB: 07029efed4cec6d9a37ca22c2310bee4b6da8382
+Merg: 05a01236be471fc5b214d41dac1b2e4271ca664d

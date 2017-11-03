@@ -1,0 +1,29 @@
+Merge Instance for method (Ident "LoggingApplicationListenerTests",Ident "shutdownHookCanBeRegistered",[])
+@Test
+ public void shutdownHookCanBeRegistered () throws Exception
+{
+  TestLoggingApplicationListener listener = new TestLoggingApplicationListener();
+  System.setProperty(LoggingSystem.class.getName(), TestShutdownHandlerLoggingSystem.class.getName());
+  TestPropertySourceUtils.addInlinedPropertiesToEnvironment(this.context, "logging.register_shutdown_hook=true");
+  <?HOLE?>
+  listener.initialize(this.context.getEnvironment(), this.context.getClassLoader());
+  assertThat(listener.shutdownHook).isNotNull();
+  listener.shutdownHook.start();
+  assertThat(TestShutdownHandlerLoggingSystem.shutdownLatch.await(30, TimeUnit.SECONDS)).isTrue();
+}
+Edit Base:
+Hole 1:
+[]: listener.onApplicationEvent(new ApplicationStartedEvent(new SpringApplication(), NO_ARGS));
+
+Edit A:
+Hole 1:
+[]: listener.onApplicationEvent(new ApplicationStartingEvent(new SpringApplication(), NO_ARGS));
+
+Edit B:
+Hole 1:
+[]: multicastEvent(listener, new ApplicationStartedEvent(new SpringApplication(), NO_ARGS));
+
+Edit M:
+Hole 1:
+[]: multicastEvent(listener, new ApplicationStartingEvent(new SpringApplication(), NO_ARGS));
+

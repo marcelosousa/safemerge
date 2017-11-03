@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 55
+File: okhttp/src/main/java/com/squareup/okhttp/internal/DiskLruCache.java
+Orig: 595b9a750cd798a464f1202f536982268c20dbc9
+VarA: fe280d5813a823629353be979637d04ca19ce378
+VarB: e1d6d3d03009e683afb2d34fbedc3a1020513b62
+Merg: 30cb962d9d925a20e05c8efeb2f863eabe0d746e

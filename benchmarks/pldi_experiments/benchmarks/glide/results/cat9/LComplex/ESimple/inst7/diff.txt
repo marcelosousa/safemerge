@@ -1,0 +1,129 @@
+Merge Instance for method (Ident "DiskLruCacheWrapper",Ident "put",[RefType (ClassRefType (ClassType [(Ident "String",[])])),RefType (ClassRefType (ClassType [(Ident "Writer",[])]))])
+@Override
+ public void put (String key, Writer writer)
+{
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: try
+{
+  DiskLruCache.Editor editor = diskLruCache.edit(key);
+  if (editor != null)
+  {
+    OutputStream os = null;
+    try
+    {
+      os = editor.newOutputStream(0);
+      writer.write(os);
+    }
+    finally {
+              if (os != null)
+              {
+                os.close();
+              }
+            }
+    editor.commit();
+  }
+}
+catch (IOException e)
+{
+  e.printStackTrace();
+}
+Hole 2:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: String safeKey = safeKeyGenerator.getSafeKey(key);
+Hole 2:
+[]: try
+{
+  DiskLruCache.Editor editor = diskLruCache.edit(safeKey);
+  if (editor != null)
+  {
+    OutputStream os = null;
+    try
+    {
+      os = editor.newOutputStream(0);
+      writer.write(os);
+    }
+    finally {
+              if (os != null)
+              {
+                os.close();
+              }
+            }
+    editor.commit();
+  }
+}
+catch (IOException e)
+{
+  e.printStackTrace();
+}
+
+Edit B:
+Hole 1:
+[]: try
+{
+  DiskLruCache.Editor editor = getDiskCache().edit(key);
+  if (editor != null)
+  {
+    OutputStream os = null;
+    try
+    {
+      os = editor.newOutputStream(0);
+      writer.write(os);
+    }
+    finally {
+              if (os != null)
+              {
+                os.close();
+              }
+            }
+    editor.commit();
+  }
+}
+catch (IOException e)
+{
+  if (Log.isLoggable(TAG, Log.WARN))
+  {
+    Log.w(TAG, "Unable to put to disk cache", e);
+  }
+}
+Hole 2:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: String safeKey = safeKeyGenerator.getSafeKey(key);
+Hole 2:
+[]: try
+{
+  DiskLruCache.Editor editor = getDiskCache().edit(safeKey);
+  if (editor != null)
+  {
+    OutputStream os = null;
+    try
+    {
+      os = editor.newOutputStream(0);
+      writer.write(os);
+    }
+    finally {
+              if (os != null)
+              {
+                os.close();
+              }
+            }
+    editor.commit();
+  }
+}
+catch (IOException e)
+{
+  if (Log.isLoggable(TAG, Log.WARN))
+  {
+    Log.w(TAG, "Unable to put to disk cache", e);
+  }
+}
+

@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 33
+File: modules/lang-painless/src/main/java/org/elasticsearch/painless/node/LField.java
+Orig: ef435d00994e85c2ea5d65558a50024a7cbcf6de
+VarA: a56a9cb8186e4c2d9dd19a17d79e7b98fbde2ccd
+VarB: f6074d383b7cb62dc31b2ea017a84ec83cce1e4e
+Merg: 0a9c036c3e34a63b21002c86fcfc8528e61b03bf

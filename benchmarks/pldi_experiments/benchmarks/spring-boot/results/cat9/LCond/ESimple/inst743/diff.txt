@@ -1,0 +1,48 @@
+Merge Instance for method (Ident "AbstractTemplateViewResolverProperties",Ident "applyToViewResolver",[RefType (ClassRefType (ClassType [(Ident "Object",[])]))])
+public void applyToViewResolver (Object viewResolver)
+{
+  Assert.isInstanceOf(AbstractTemplateViewResolver.class, viewResolver, ("ViewResolver is not an instance of AbstractTemplateViewResolver :" + viewResolver));
+  AbstractTemplateViewResolver resolver = (AbstractTemplateViewResolver) viewResolver;
+  resolver.setPrefix(getPrefix());
+  resolver.setSuffix(getSuffix());
+  resolver.setCache(isCache());
+  <?HOLE?>
+  resolver.setViewNames(getViewNames());
+  resolver.setExposeRequestAttributes(isExposeRequestAttributes());
+  resolver.setAllowRequestOverride(isAllowRequestOverride());
+  <?HOLE?>
+  resolver.setExposeSessionAttributes(isExposeSessionAttributes());
+  resolver.setExposeSpringMacroHelpers(isExposeSpringMacroHelpers());
+  resolver.setRequestContextAttribute(getRequestContextAttribute());
+  resolver.setOrder((Ordered.LOWEST_PRECEDENCE - 5));
+}
+Edit Base:
+Hole 1:
+[]: resolver.setContentType(getContentType());
+Hole 2:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: if (getContentType() != null)
+{
+  resolver.setContentType(getContentType().toString());
+}
+Hole 2:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: resolver.setContentType(getContentType());
+Hole 2:
+[]: resolver.setAllowSessionOverride(isAllowSessionOverride());
+
+Edit M:
+Hole 1:
+[]: if (getContentType() != null)
+{
+  resolver.setContentType(getContentType().toString());
+}
+Hole 2:
+[]: resolver.setAllowSessionOverride(isAllowSessionOverride());
+

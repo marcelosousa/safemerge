@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 1
+File: leakcanary-android/src/main/java/com/squareup/leakcanary/LeakCanary.java
+Orig: 6c5f2c729ea950046b78ee2d71c74a5eee480cba
+VarA: 33a5ac61e8bcd20451832df7bb01f555680dbc25
+VarB: acfc8fbb7e64645967344475cdc757ff836b0a5b
+Merg: 70b7506e59c1fc6b187627d94020beb45474cd35

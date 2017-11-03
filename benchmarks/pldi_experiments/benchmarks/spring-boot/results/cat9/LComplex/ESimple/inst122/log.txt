@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 122
+File: spring-boot/src/main/java/org/springframework/boot/context/embedded/tomcat/TomcatEmbeddedServletContainer.java
+Orig: cd5124005b9531d1c2da1621d32cf4afdaef2d06
+VarA: a7f148091eb9acab2270fa6d510027d7a5510d88
+VarB: 6f195380283d4e298779875aaf78c3729ee170eb
+Merg: 17451c5e7ad3df7aad9b2bf61dabb8a54c4f7cb7

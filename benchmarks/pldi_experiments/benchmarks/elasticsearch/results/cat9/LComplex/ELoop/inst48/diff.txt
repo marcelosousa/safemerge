@@ -1,0 +1,234 @@
+Merge Instance for method (Ident "FieldSortBuilder",Ident "fromXContent",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])])),RefType (ClassRefType (ClassType [(Ident "String",[])]))])
+@Override
+ public FieldSortBuilder fromXContent (QueryParseContext context, String fieldName) throws IOException
+{
+  XContentParser parser = context.parser();
+  QueryBuilder<?> nestedFilter = null;
+  String nestedPath = null;
+  Object missing = null;
+  SortOrder order = null;
+  SortMode sortMode = null;
+  String unmappedType = null;
+  String currentFieldName = null;
+  XContentParser.Token token;
+  while (token = parser.nextToken() != XContentParser.Token.END_OBJECT)
+  {
+    if (token == XContentParser.Token.FIELD_NAME)
+    {
+      currentFieldName = parser.currentName();
+    }
+    else
+      if (token == XContentParser.Token.START_OBJECT)
+      {
+        if (context.parseFieldMatcher().match(currentFieldName, NESTED_FILTER))
+        {
+          nestedFilter = context.parseInnerQueryBuilder();
+        }
+        else
+        {
+          throw new ParsingException(parser.getTokenLocation(), "Expected " + NESTED_FILTER.getPreferredName() + " element.");
+        }
+      }
+      else
+        if (token.isValue())
+        {
+          if (context.parseFieldMatcher().match(currentFieldName, NESTED_PATH))
+          {
+            nestedPath = parser.text();
+          }
+          else
+            if (context.parseFieldMatcher().match(currentFieldName, MISSING))
+            {
+              <?HOLE?>
+            }
+            else
+              <?HOLE?>
+        }
+  }
+  FieldSortBuilder builder = new FieldSortBuilder(fieldName);
+  if (nestedFilter != null)
+  {
+    builder.setNestedFilter(nestedFilter);
+  }
+  if (nestedPath != null)
+  {
+    builder.setNestedPath(nestedPath);
+  }
+  if (missing != null)
+  {
+    builder.missing(missing);
+  }
+  if (order != null)
+  {
+    builder.order(order);
+  }
+  if (sortMode != null)
+  {
+    builder.sortMode(sortMode);
+  }
+  if (unmappedType != null)
+  {
+    builder.unmappedType(unmappedType);
+  }
+  return builder;
+}
+Edit Base:
+Hole 1:
+[SCond,SCond,SCond,SCond,SCond,SLoop]: missing = parser.objectBytes();
+Hole 2:
+[SCond,SCond,SCond,SCond,SCond,SCond,SLoop]: if (context.parseFieldMatcher().match(currentFieldName, REVERSE))
+{
+  if (parser.booleanValue())
+  {
+    order = SortOrder.DESC;
+  }
+}
+else
+  if (context.parseFieldMatcher().match(currentFieldName, ORDER))
+  {
+    String sortOrder = parser.text();
+    if ("asc".equals(sortOrder))
+    {
+      order = SortOrder.ASC;
+    }
+    else
+      if ("desc".equals(sortOrder))
+      {
+        order = SortOrder.DESC;
+      }
+      else
+      {
+        throw new IllegalStateException("Sort order " + sortOrder + " not supported.");
+      }
+  }
+  else
+    if (context.parseFieldMatcher().match(currentFieldName, SORT_MODE))
+    {
+      sortMode = SortMode.fromString(parser.text());
+    }
+    else
+      if (context.parseFieldMatcher().match(currentFieldName, UNMAPPED_TYPE))
+      {
+        unmappedType = parser.text();
+      }
+      else
+      {
+        throw new IllegalArgumentException("Option " + currentFieldName + " not supported.");
+      }
+
+Edit A:
+Hole 1:
+[SCond,SCond,SCond,SCond,SCond,SLoop]: missing = parser.objectBytes();
+Hole 2:
+[SCond,SCond,SCond,SCond,SCond,SCond,SLoop]: if (context.parseFieldMatcher().match(currentFieldName, ORDER))
+{
+  String sortOrder = parser.text();
+  if ("asc".equals(sortOrder))
+  {
+    order = SortOrder.ASC;
+  }
+  else
+    if ("desc".equals(sortOrder))
+    {
+      order = SortOrder.DESC;
+    }
+    else
+    {
+      throw new IllegalStateException("Sort order " + sortOrder + " not supported.");
+    }
+}
+else
+  if (context.parseFieldMatcher().match(currentFieldName, SORT_MODE))
+  {
+    sortMode = SortMode.fromString(parser.text());
+  }
+  else
+    if (context.parseFieldMatcher().match(currentFieldName, UNMAPPED_TYPE))
+    {
+      unmappedType = parser.text();
+    }
+    else
+    {
+      throw new IllegalArgumentException("Option " + currentFieldName + " not supported.");
+    }
+
+Edit B:
+Hole 1:
+[SCond,SCond,SCond,SCond,SCond,SLoop]: missing = parser.objectText();
+Hole 2:
+[SCond,SCond,SCond,SCond,SCond,SLoop]: if (context.parseFieldMatcher().match(currentFieldName, REVERSE))
+{
+  if (parser.booleanValue())
+  {
+    order = SortOrder.DESC;
+  }
+}
+else
+  if (context.parseFieldMatcher().match(currentFieldName, ORDER))
+  {
+    String sortOrder = parser.text();
+    if ("asc".equals(sortOrder))
+    {
+      order = SortOrder.ASC;
+    }
+    else
+      if ("desc".equals(sortOrder))
+      {
+        order = SortOrder.DESC;
+      }
+      else
+      {
+        throw new IllegalStateException("Sort order " + sortOrder + " not supported.");
+      }
+  }
+  else
+    if (context.parseFieldMatcher().match(currentFieldName, SORT_MODE))
+    {
+      sortMode = SortMode.fromString(parser.text());
+    }
+    else
+      if (context.parseFieldMatcher().match(currentFieldName, UNMAPPED_TYPE))
+      {
+        unmappedType = parser.text();
+      }
+      else
+      {
+        throw new IllegalArgumentException("Option " + currentFieldName + " not supported.");
+      }
+
+Edit M:
+Hole 1:
+[SCond,SCond,SCond,SCond,SCond,SLoop]: missing = parser.objectText();
+Hole 2:
+[SCond,SCond,SCond,SCond,SCond,SLoop]: if (context.parseFieldMatcher().match(currentFieldName, ORDER))
+{
+  String sortOrder = parser.text();
+  if ("asc".equals(sortOrder))
+  {
+    order = SortOrder.ASC;
+  }
+  else
+    if ("desc".equals(sortOrder))
+    {
+      order = SortOrder.DESC;
+    }
+    else
+    {
+      throw new IllegalStateException("Sort order " + sortOrder + " not supported.");
+    }
+}
+else
+  if (context.parseFieldMatcher().match(currentFieldName, SORT_MODE))
+  {
+    sortMode = SortMode.fromString(parser.text());
+  }
+  else
+    if (context.parseFieldMatcher().match(currentFieldName, UNMAPPED_TYPE))
+    {
+      unmappedType = parser.text();
+    }
+    else
+    {
+      throw new IllegalArgumentException("Option " + currentFieldName + " not supported.");
+    }
+

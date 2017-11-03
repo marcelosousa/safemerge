@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 228
+File: spring-boot-actuator/src/test/java/org/springframework/boot/actuate/health/JmsHealthIndicatorTests.java
+Orig: b88cb35ea231fffa807a9f1d97b6b38e412bb34b
+VarA: d87d60f746fb25dcc48a03c7a6402dbefebbcad2
+VarB: 6eb0449aa9566a4952c8c187af35d543f2694752
+Merg: c66298662821d0330413ae688a2c3545446ae97c

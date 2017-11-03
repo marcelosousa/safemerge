@@ -1,0 +1,53 @@
+Merge Instance for method (Ident "FileSystemWatcherTests",Ident "waitsForPollingInterval",[])
+@Test
+ public void waitsForPollingInterval () throws Exception
+{
+  <?HOLE?>
+  <?HOLE?>
+  File folder = startWithNewFolder();
+  touch(new File(folder, "test1.txt"));
+  <?HOLE?>
+  touch(new File(folder, "test2.txt"));
+  this.watcher.stopAfter(1);
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: this.changes.clear();
+Hole 2:
+[]: setupWatcher(100, 1);
+Hole 3:
+[]: Thread.sleep(200);
+Hole 4:
+[]: assertThat(this.changes.size(), equalTo(2));
+
+Edit A:
+Hole 1:
+[]: this.changes.clear();
+Hole 2:
+[]: setupWatcher(200, 1);
+Hole 3:
+[]: Thread.sleep(400);
+Hole 4:
+[]: assertThat(this.changes.size()).isEqualTo(2);
+
+Edit B:
+Hole 1:
+[]: setupWatcher(100, 1);
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: Thread.sleep(200);
+Hole 4:
+[]: assertThat(this.changes.size(), equalTo(2));
+
+Edit M:
+Hole 1:
+[]: setupWatcher(100, 1);
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: Thread.sleep(200);
+Hole 4:
+[]: assertThat(this.changes.size()).isEqualTo(2);
+

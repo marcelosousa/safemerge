@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 246
+File: core/src/main/java/org/elasticsearch/index/query/RegexpQueryParser.java
+Orig: a6c00073256cff58ccf83ec6699166bedd34a6f7
+VarA: 76e9a171534fd8ea681328a3e5494bff03864cef
+VarB: f303a1d4ebaeb3c06565298867edb88d4c806e09
+Merg: dda11e16a717dc1cbeb6a2dce909d66c3df5133d

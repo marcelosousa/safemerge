@@ -1,0 +1,93 @@
+Merge Instance for method (Ident "ControlStructureTypingVisitor",Ident "visitForExpression",[RefType (ClassRefType (ClassType [(Ident "JetForExpression",[])])),RefType (ClassRefType (ClassType [(Ident "ExpressionTypingContext",[])]))])
+@Override
+ public JetType visitForExpression (JetForExpression expression, ExpressionTypingContext contextWithExpectedType)
+{
+  ExpressionTypingContext context = contextWithExpectedType.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE);
+  JetParameter loopParameter = expression.getLoopParameter();
+  JetExpression loopRange = expression.getLoopRange();
+  JetType expectedParameterType = null;
+  if (loopRange != null)
+  {
+    ExpressionReceiver loopRangeReceiver = getExpressionReceiver(facade, loopRange, context.replaceScope(context.scope));
+    if (loopRangeReceiver != null)
+    {
+      expectedParameterType = checkIterableConvention(loopRangeReceiver, context);
+    }
+  }
+  WritableScope loopScope = newWritableScopeImpl(context).setDebugName("Scope with for-loop index");
+  if (loopParameter != null)
+  {
+    JetTypeReference typeReference = loopParameter.getTypeReference();
+    VariableDescriptor variableDescriptor;
+    if (typeReference != null)
+    {
+      variableDescriptor = context.getDescriptorResolver().resolveLocalVariableDescriptor(context.scope.getContainingDeclaration(), context.scope, loopParameter);
+      JetType actualParameterType = variableDescriptor.getOutType();
+      if ((expectedParameterType != null && actualParameterType) != null && !context.semanticServices.getTypeChecker().isSubtypeOf(expectedParameterType, actualParameterType))
+      {
+        context.trace.report(TYPE_MISMATCH_IN_FOR_LOOP.on(typeReference, expectedParameterType, actualParameterType));
+      }
+    }
+    else
+    {
+      if (expectedParameterType == null)
+      {
+        expectedParameterType = ErrorUtils.createErrorType("Error");
+      }
+      variableDescriptor = context.getDescriptorResolver().resolveLocalVariableDescriptor(context.scope.getContainingDeclaration(), loopParameter, expectedParameterType);
+    }
+    <?HOLE?>
+    loopScope.addVariableDescriptor(variableDescriptor);
+  }
+  JetExpression body = expression.getBody();
+  if (body != null)
+  {
+    <?HOLE?>
+    <?HOLE?>
+  }
+  return DataFlowUtils.checkType(JetStandardClasses.getUnitType(), expression, contextWithExpectedType);
+}
+Edit Base:
+Hole 1:
+[SCond]: <SKIP>
+Hole 2:
+[SCond]: facade.getType(body, context.replaceScope(loopScope));
+Hole 3:
+[SCond]: <SKIP>
+
+Edit A:
+Hole 1:
+[SCond]: <SKIP>
+Hole 2:
+[SCond]: context.getServices().getBlockReturnedTypeWithWritableScope(loopScope, Collections.singletonList(body), CoercionStrategy.NO_COERCION, context);
+Hole 3:
+[SCond]: <SKIP>
+
+Edit B:
+Hole 1:
+[SCond]: {
+  VariableDescriptor olderVariable = context.scope.getVariable(variableDescriptor.getName());
+  if (olderVariable != null && DescriptorUtils.isLocal(context.scope.getContainingDeclaration(), olderVariable))
+  {
+    context.trace.report(Errors.NAME_SHADOWING.on(variableDescriptor, context.trace.getBindingContext()));
+  }
+}
+Hole 2:
+[SCond]: ExpressionTypingInternals blockLevelVisitor = ExpressionTypingVisitorDispatcher.createForBlock(loopScope);
+Hole 3:
+[SCond]: blockLevelVisitor.getType(body, context.replaceScope(loopScope));
+
+Edit M:
+Hole 1:
+[SCond]: {
+  VariableDescriptor olderVariable = context.scope.getVariable(variableDescriptor.getName());
+  if (olderVariable != null && DescriptorUtils.isLocal(context.scope.getContainingDeclaration(), olderVariable))
+  {
+    context.trace.report(Errors.NAME_SHADOWING.on(variableDescriptor, context.trace.getBindingContext()));
+  }
+}
+Hole 2:
+[SCond]: context.getServices().getBlockReturnedTypeWithWritableScope(loopScope, Collections.singletonList(body), CoercionStrategy.NO_COERCION, context);
+Hole 3:
+[SCond]: <SKIP>
+

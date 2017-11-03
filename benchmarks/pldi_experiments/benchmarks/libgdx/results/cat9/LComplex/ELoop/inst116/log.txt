@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 116
+File: backends/gdx-backends-gwt/src/com/badlogic/gdx/backends/gwt/preloader/PreloaderBundleGenerator.java
+Orig: 594662cc9d754ba5e344160420e30e51e9bde712
+VarA: 43c81c4e19e6d75d7847827c1a8ac87943873e71
+VarB: 0f1af31db5ebecfb453a9f7c403fb242ff449fef
+Merg: b6e312471289899eb3ee353ae278e0bb19c81bef

@@ -1,0 +1,110 @@
+Merge Instance for method (Ident "KotlinDebuggerTestCase",Ident "setUp",[])
+@Override
+ protected void setUp () throws Exception
+{
+  super.setUp();
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: VfsRootAccess.allowRootAccess(JetTestCaseBuilder.getHomeDirectory());
+Hole 2:
+[]: UsefulTestCase.edt(new Runnable()
+                   {
+                     @Override
+                     public void run ()
+                     {
+                       ApplicationManager.getApplication().runWriteAction(new Runnable()
+                                                                          {
+                                                                            @Override
+                                                                            public void run ()
+                                                                            {
+                                                                              ModifiableRootModel model = ModuleRootManager.getInstance(getModule()).getModifiableModel();
+                                                                              projectDescriptor.configureModule(getModule(), model, null);
+                                                                              VirtualFile customLibrarySources = VfsUtil.findFileByIoFile(CUSTOM_LIBRARY_SOURCES, false);
+                                                                              assert (customLibrarySources != null) :"VirtualFile for customLibrary sources should be found";
+                                                                              model.getContentEntries()[0].addExcludeFolder(customLibrarySources);
+                                                                              configureCustomLibrary(model);
+                                                                              model.commit();
+                                                                            }
+                                                                          });
+                     }
+                   });
+
+Edit A:
+Hole 1:
+[]: VirtualDirectoryImpl.allowRootAccess(JetTestCaseBuilder.getHomeDirectory());
+Hole 2:
+[]: UsefulTestCase.edt(new Runnable()
+                   {
+                     @Override
+                     public void run ()
+                     {
+                       ApplicationManager.getApplication().runWriteAction(new Runnable()
+                                                                          {
+                                                                            @Override
+                                                                            public void run ()
+                                                                            {
+                                                                              ModifiableRootModel model = ModuleRootManager.getInstance(getModule()).getModifiableModel();
+                                                                              projectDescriptor.configureModule(getModule(), model, null);
+                                                                              VirtualFile customLibrarySources = VfsUtil.findFileByIoFile(CUSTOM_LIBRARY_SOURCES, false);
+                                                                              assert (customLibrarySources != null) :"VirtualFile for customLibrary sources should be found";
+                                                                              model.getContentEntries()[0].addExcludeFolder(customLibrarySources);
+                                                                              configureCustomLibrary(model);
+                                                                              model.commit();
+                                                                            }
+                                                                          });
+                     }
+                   });
+
+Edit B:
+Hole 1:
+[]: VfsRootAccess.allowRootAccess(JetTestCaseBuilder.getHomeDirectory());
+Hole 2:
+[]: UsefulTestCase.edt(new Runnable()
+                   {
+                     @Override
+                     public void run ()
+                     {
+                       ApplicationManager.getApplication().runWriteAction(new Runnable()
+                                                                          {
+                                                                            @Override
+                                                                            public void run ()
+                                                                            {
+                                                                              ModifiableRootModel model = ModuleRootManager.getInstance(getModule()).getModifiableModel();
+                                                                              projectDescriptor.configureModule(getModule(), model, null);
+                                                                              VirtualFile customLibrarySources = VfsUtil.findFileByIoFile(CUSTOM_LIBRARY_SOURCES, false);
+                                                                              assert (customLibrarySources != null) :"VirtualFile for customLibrary sources should be found";
+                                                                              configureCustomLibrary(model, customLibrarySources);
+                                                                              model.commit();
+                                                                            }
+                                                                          });
+                     }
+                   });
+
+Edit M:
+Hole 1:
+[]: VirtualDirectoryImpl.allowRootAccess(JetTestCaseBuilder.getHomeDirectory());
+Hole 2:
+[]: UsefulTestCase.edt(new Runnable()
+                   {
+                     @Override
+                     public void run ()
+                     {
+                       ApplicationManager.getApplication().runWriteAction(new Runnable()
+                                                                          {
+                                                                            @Override
+                                                                            public void run ()
+                                                                            {
+                                                                              ModifiableRootModel model = ModuleRootManager.getInstance(getModule()).getModifiableModel();
+                                                                              projectDescriptor.configureModule(getModule(), model, null);
+                                                                              VirtualFile customLibrarySources = VfsUtil.findFileByIoFile(CUSTOM_LIBRARY_SOURCES, false);
+                                                                              assert (customLibrarySources != null) :"VirtualFile for customLibrary sources should be found";
+                                                                              configureCustomLibrary(model, customLibrarySources);
+                                                                              model.commit();
+                                                                            }
+                                                                          });
+                     }
+                   });
+

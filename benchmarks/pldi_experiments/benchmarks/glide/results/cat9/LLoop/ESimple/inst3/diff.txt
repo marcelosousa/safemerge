@@ -1,0 +1,135 @@
+Merge Instance for method (Ident "FlickrSearchActivity",Ident "onCreate",[RefType (ClassRefType (ClassType [(Ident "Bundle",[])]))])
+@Override
+ public void onCreate (Bundle savedInstanceState)
+{
+  super.onCreate(savedInstanceState);
+  setContentView(R.layout.flickr_search_activity);
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  searching = findViewById(R.id.searching);
+  searchLoading = findViewById(R.id.search_loading);
+  searchTerm = (TextView) findViewById(R.id.search_term);
+  searchText = (EditText) findViewById(R.id.search_text);
+  searchText.setOnEditorActionListener(new TextView.OnEditorActionListener()
+                                       {
+                                         @Override
+                                         public boolean onEditorAction (TextView textView, int actionId, KeyEvent keyEvent)
+                                         {
+                                           if (actionId == EditorInfo.IME_ACTION_SEARCH)
+                                           {
+                                             executeSearch();
+                                             return true;
+                                           }
+                                           return false;
+                                         }
+                                       });
+  final Button search = (Button) findViewById(R.id.search);
+  search.setOnClickListener(new View.OnClickListener()
+                            {
+                              @Override
+                              public void onClick (View view)
+                              {
+                                executeSearch();
+                              }
+                            });
+  ViewPager pager = (ViewPager) findViewById(R.id.view_pager);
+  pager.setPageMargin(50);
+  pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener()
+                                {
+                                  @Override
+                                  public void onPageScrolled (int i, float v, int i2)
+                                  {
+                                  }
+                                  @Override
+                                  public void onPageSelected (int position)
+                                  {
+                                    getSupportActionBar().getTabAt(position).select();
+                                  }
+                                  @Override
+                                  public void onPageScrollStateChanged (int i)
+                                  {
+                                  }
+                                });
+  final ActionBar actionBar = getSupportActionBar();
+  actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+  for (Page page : Page.values()) {
+                                    final int textId = PAGE_TO_TITLE.get(page);
+                                    actionBar.addTab(actionBar.newTab().setText(textId).setTabListener(new TabListener(pager)));
+                                  }
+  pager.setAdapter(new FlickrPagerAdapter(getSupportFragmentManager()));
+}
+Edit Base:
+Hole 1:
+[]: final Glide glide = Glide.get();
+Hole 2:
+[]: if (!glide.isImageManagerSet())
+{
+  File cacheDir = ImageManager.getPhotoCacheDir(this, CACHE_NAME);
+  DiskCache diskCache;
+  try
+  {
+    diskCache = DiskLruCacheWrapper.get(cacheDir, (50 * 1024 * 1024));
+  }
+  catch (IOException e)
+  {
+    if (Log.isLoggable(TAG, Log.ERROR))
+    {
+      Log.e(TAG, "Exception creating disk cache", e);
+    }
+    diskCache = new DiskCacheAdapter();
+  }
+  final int safeMemCacheSize = ImageManager.getSafeMemoryCacheSize(this);
+  glide.setImageManager(new ImageManager.Builder(this).setBitmapCompressQuality(70).setMemoryCache(new LruMemoryCache((Build.VERSION.SDK_INT >= 11 ? (safeMemCacheSize / 2) : safeMemCacheSize))).setBitmapPool(new LruBitmapPool((Build.VERSION.SDK_INT >= 11 ? Math.round((safeMemCacheSize * 1.5F)) : safeMemCacheSize))).setDiskCache(diskCache));
+}
+Hole 3:
+[]: requestQueue = Volley.newRequestQueue(this);
+Hole 4:
+[]: glide.register(URL.class, new VolleyUrlLoader.Factory(requestQueue));
+Hole 5:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build());
+Hole 2:
+[]: final Glide glide = Glide.get();
+Hole 3:
+[]: if (!glide.isImageManagerSet())
+{
+  File cacheDir = ImageManager.getPhotoCacheDir(this, CACHE_NAME);
+  DiskCache diskCache = DiskLruCacheWrapper.get(cacheDir, (50 * 1024 * 1024));
+  final int safeMemCacheSize = ImageManager.getSafeMemoryCacheSize(this);
+  glide.setImageManager(new ImageManager.Builder(this).setBitmapCompressQuality(70).setMemoryCache(new LruMemoryCache((Build.VERSION.SDK_INT >= 11 ? (safeMemCacheSize / 2) : safeMemCacheSize))).setBitmapPool(new LruBitmapPool((Build.VERSION.SDK_INT >= 11 ? Math.round((safeMemCacheSize * 1.5F)) : safeMemCacheSize))).setDiskCache(diskCache));
+}
+Hole 4:
+[]: requestQueue = Volley.newRequestQueue(this);
+Hole 5:
+[]: glide.register(URL.class, new VolleyUrlLoader.Factory(requestQueue));
+
+Edit M:
+Hole 1:
+[]: StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build());
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: <SKIP>
+

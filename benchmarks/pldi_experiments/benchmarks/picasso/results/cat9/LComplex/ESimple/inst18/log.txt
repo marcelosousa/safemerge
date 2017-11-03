@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 18
+File: picasso/src/main/java/com/squareup/picasso/BitmapHunter.java
+Orig: 034e6f7e5f63dd20146d3591ead4a8cc2d67a385
+VarA: dcd71f4175f995fd992188551b5249e220614ecf
+VarB: 6da61ae19646acc0d351035086daa1f5554e4324
+Merg: cf6c2da95d1e62865d5eac7a114040df4d3a1c95

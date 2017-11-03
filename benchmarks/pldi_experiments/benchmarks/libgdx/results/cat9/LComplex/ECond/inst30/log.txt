@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 30
+File: gdx/src/com/badlogic/gdx/maps/tiled/AtlasTmxMapLoader.java
+Orig: 1ae2d5d1de10548c93be4a61bf3cfc6c452ac937
+VarA: ec08040fcc3bd81cf10119092eb91355fe0f4f50
+VarB: dba69d2c1af4394e24224321d8a4c79c6939e56e
+Merg: 60c84c822f9ebd231e196dcf206df28c4ddc5f04

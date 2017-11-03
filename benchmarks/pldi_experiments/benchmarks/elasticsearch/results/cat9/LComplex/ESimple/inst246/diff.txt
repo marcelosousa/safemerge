@@ -1,0 +1,142 @@
+Merge Instance for method (Ident "RegexpQueryParser",Ident "parse",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])]))])
+@Override
+ public Query parse (QueryParseContext parseContext) throws IOException, QueryParsingException
+{
+  XContentParser parser = parseContext.parser();
+  String fieldName = parser.currentName();
+  String rewriteMethod = null;
+  Object value = null;
+  <?HOLE?>
+  int flagsValue = DEFAULT_FLAGS_VALUE;
+  int maxDeterminizedStates = Operations.DEFAULT_MAX_DETERMINIZED_STATES;
+  String queryName = null;
+  String currentFieldName = null;
+  XContentParser.Token token;
+  while (token = parser.nextToken() != XContentParser.Token.END_OBJECT)
+  {
+    if (token == XContentParser.Token.FIELD_NAME)
+    {
+      currentFieldName = parser.currentName();
+    }
+    else
+      if (parseContext.isDeprecatedSetting(currentFieldName))
+      {
+      }
+      else
+        if (token == XContentParser.Token.START_OBJECT)
+        {
+          fieldName = currentFieldName;
+          while (token = parser.nextToken() != XContentParser.Token.END_OBJECT)
+          {
+            if (token == XContentParser.Token.FIELD_NAME)
+            {
+              currentFieldName = parser.currentName();
+            }
+            else
+            {
+              if ("value".equals(currentFieldName))
+              {
+                value = parser.objectBytes();
+              }
+              else
+                if ("boost".equals(currentFieldName))
+                {
+                  boost = parser.floatValue();
+                }
+                else
+                  if ("rewrite".equals(currentFieldName))
+                  {
+                    rewriteMethod = parser.textOrNull();
+                  }
+                  else
+                    if ("flags".equals(currentFieldName))
+                    {
+                      String flags = parser.textOrNull();
+                      flagsValue = RegexpFlag.resolveValue(flags);
+                    }
+                    else
+                      if ("max_determinized_states".equals(currentFieldName))
+                      {
+                        maxDeterminizedStates = parser.intValue();
+                      }
+                      else
+                        if ("flags_value".equals(currentFieldName))
+                        {
+                          flagsValue = parser.intValue();
+                        }
+                        else
+                          if ("_name".equals(currentFieldName))
+                          {
+                            queryName = parser.text();
+                          }
+                          else
+                          {
+                            throw new QueryParsingException(parseContext, "[regexp] query does not support [" + currentFieldName + "]");
+                          }
+            }
+          }
+        }
+        else
+        {
+          if ("_name".equals(currentFieldName))
+          {
+            queryName = parser.text();
+          }
+          else
+          {
+            fieldName = currentFieldName;
+            value = parser.objectBytes();
+          }
+        }
+  }
+  if (value == null)
+  {
+    throw new QueryParsingException(parseContext, "No value specified for regexp query");
+  }
+  <?HOLE?>
+  Query query = null;
+  MappedFieldType fieldType = parseContext.fieldMapper(fieldName);
+  if (fieldType != null)
+  {
+    query = fieldType.regexpQuery(value, flagsValue, maxDeterminizedStates, method, parseContext);
+  }
+  if (query == null)
+  {
+    RegexpQuery regexpQuery = new RegexpQuery(new Term(fieldName, BytesRefs.toBytesRef(value)), flagsValue, maxDeterminizedStates);
+    if (method != null)
+    {
+      regexpQuery.setRewriteMethod(method);
+    }
+    query = regexpQuery;
+  }
+  query.setBoost(boost);
+  if (queryName != null)
+  {
+    parseContext.addNamedQuery(queryName, query);
+  }
+  return query;
+}
+Edit Base:
+Hole 1:
+[]: float boost = 1.0F;
+Hole 2:
+[]: MultiTermQuery.RewriteMethod method = QueryParsers.parseRewriteMethod(rewriteMethod, null);
+
+Edit A:
+Hole 1:
+[]: float boost = AbstractQueryBuilder.DEFAULT_BOOST;
+Hole 2:
+[]: MultiTermQuery.RewriteMethod method = QueryParsers.parseRewriteMethod(rewriteMethod, null);
+
+Edit B:
+Hole 1:
+[]: float boost = 1.0F;
+Hole 2:
+[]: MultiTermQuery.RewriteMethod method = QueryParsers.parseRewriteMethod(parseContext.parseFieldMatcher(), rewriteMethod, null);
+
+Edit M:
+Hole 1:
+[]: float boost = AbstractQueryBuilder.DEFAULT_BOOST;
+Hole 2:
+[]: MultiTermQuery.RewriteMethod method = QueryParsers.parseRewriteMethod(parseContext.parseFieldMatcher(), rewriteMethod, null);
+

@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 14
+File: android/src/main/java/com/google/samples/apps/iosched/map/MapActivity.java
+Orig: da5a0ae1843a005ae9874c99ea1c4d4baac00d99
+VarA: 17f8d683a353afc049c554762e5be9fd072a8502
+VarB: d937bb222a1130030dfdc49bf2ed1418fa49d3a3
+Merg: c2fc51cc3de319b420118e3934cbb2ace65efe60

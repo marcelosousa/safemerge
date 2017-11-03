@@ -1,0 +1,494 @@
+Merge Instance for method (Ident "BodyResolver",Ident "resolveDelegationSpecifierList",[RefType (ClassRefType (ClassType [(Ident "JetClassOrObject",[])])),RefType (ClassRefType (ClassType [(Ident "MutableClassDescriptor",[])]))])
+private void resolveDelegationSpecifierList (final JetClassOrObject jetClass, final MutableClassDescriptor descriptor)
+{
+  final ConstructorDescriptor primaryConstructor = descriptor.getUnsubstitutedPrimaryConstructor();
+  final JetScope scopeForConstructor = primaryConstructor == null ? null : getInnerScopeForConstructor(primaryConstructor, descriptor.getScopeForMemberResolution(), true);
+  <?HOLE?>
+  final Map<JetTypeReference, JetType> supertypes = Maps.newLinkedHashMap();
+  <?HOLE?>
+  for (JetDelegationSpecifier delegationSpecifier : jetClass.getDelegationSpecifiers()) {
+                                                                                          delegationSpecifier.accept(visitor);
+                                                                                        }
+  Set<TypeConstructor> parentEnum = Collections.emptySet();
+  if (jetClass instanceof JetEnumEntry)
+  {
+    parentEnum = Collections.singleton(((ClassDescriptor) descriptor.getContainingDeclaration().getContainingDeclaration()).getTypeConstructor());
+  }
+  checkSupertypeList(descriptor, supertypes, parentEnum);
+}
+Edit Base:
+Hole 1:
+[]: final JetTypeInferrer.Services typeInferrer = context.getSemanticServices().getTypeInferrerServices(traceForConstructors, JetFlowInformationProvider.NONE);
+Hole 2:
+[]: JetVisitorVoid visitor = new JetVisitorVoid()
+                         {
+                           private void recordSupertype (JetTypeReference typeReference, JetType supertype)
+                           {
+                             if (supertype == null)
+                               return;
+                             supertypes.put(typeReference, supertype);
+                           }
+                           @Override
+                           public void visitDelegationByExpressionSpecifier (JetDelegatorByExpressionSpecifier specifier)
+                           {
+                             if (descriptor.getKind() == ClassKind.TRAIT)
+                             {
+                               context.getTrace().report(DELEGATION_IN_TRAIT.on(specifier));
+                             }
+                             JetType supertype = context.getTrace().getBindingContext().get(BindingContext.TYPE, specifier.getTypeReference());
+                             recordSupertype(specifier.getTypeReference(), supertype);
+                             if (supertype != null)
+                             {
+                               DeclarationDescriptor declarationDescriptor = supertype.getConstructor().getDeclarationDescriptor();
+                               if (declarationDescriptor instanceof ClassDescriptor)
+                               {
+                                 ClassDescriptor classDescriptor = (ClassDescriptor) declarationDescriptor;
+                                 if (classDescriptor.getKind() != ClassKind.TRAIT)
+                                 {
+                                   context.getTrace().report(DELEGATION_NOT_TO_TRAIT.on(specifier.getTypeReference()));
+                                 }
+                               }
+                             }
+                             JetExpression delegateExpression = specifier.getDelegateExpression();
+                             if (delegateExpression != null)
+                             {
+                               JetScope scope = scopeForConstructor == null ? descriptor.getScopeForMemberResolution() : scopeForConstructor;
+                               JetType type = typeInferrer.getType(scope, delegateExpression, NO_EXPECTED_TYPE);
+                               if ((type != null && supertype) != null && !context.getSemanticServices().getTypeChecker().isSubtypeOf(type, supertype))
+                               {
+                                 context.getTrace().report(TYPE_MISMATCH.on(delegateExpression, supertype, type));
+                               }
+                             }
+                           }
+                           @Override
+                           public void visitDelegationToSuperCallSpecifier (JetDelegatorToSuperCall call)
+                           {
+                             JetValueArgumentList valueArgumentList = call.getValueArgumentList();
+                             ASTNode node = valueArgumentList == null ? call.getNode() : valueArgumentList.getNode();
+                             if (descriptor.getKind() == ClassKind.TRAIT)
+                             {
+                               context.getTrace().report(SUPERTYPE_INITIALIZED_IN_TRAIT.on(node));
+                             }
+                             JetTypeReference typeReference = call.getTypeReference();
+                             if (typeReference != null)
+                             {
+                               if (descriptor.getUnsubstitutedPrimaryConstructor() != null)
+                               {
+                                 JetType supertype = typeInferrer.getCallResolver().resolveCall(context.getTrace(), scopeForConstructor, ReceiverDescriptor.NO_RECEIVER, call, NO_EXPECTED_TYPE);
+                                 if (supertype != null)
+                                 {
+                                   recordSupertype(typeReference, supertype);
+                                   ClassDescriptor classDescriptor = TypeUtils.getClassDescriptor(supertype);
+                                   if (classDescriptor != null)
+                                   {
+                                     if (classDescriptor.getKind() == ClassKind.TRAIT)
+                                     {
+                                       context.getTrace().report(CONSTRUCTOR_IN_TRAIT.on(node));
+                                     }
+                                   }
+                                 }
+                                 else
+                                 {
+                                   recordSupertype(typeReference, context.getTrace().getBindingContext().get(BindingContext.TYPE, typeReference));
+                                 }
+                               }
+                               else
+                                 if (descriptor.getKind() != ClassKind.TRAIT)
+                                 {
+                                   JetType supertype = context.getTrace().getBindingContext().get(BindingContext.TYPE, typeReference);
+                                   recordSupertype(typeReference, supertype);
+                                   assert valueArgumentList != null;
+                                   context.getTrace().report(PRIMARY_CONSTRUCTOR_MISSING_SUPER_CONSTRUCTOR_CALL.on(valueArgumentList, jetClass));
+                                 }
+                             }
+                           }
+                           @Override
+                           public void visitDelegationToSuperClassSpecifier (JetDelegatorToSuperClass specifier)
+                           {
+                             JetTypeReference typeReference = specifier.getTypeReference();
+                             JetType supertype = context.getTrace().getBindingContext().get(BindingContext.TYPE, typeReference);
+                             recordSupertype(typeReference, supertype);
+                             if (supertype != null)
+                             {
+                               ClassDescriptor classDescriptor = TypeUtils.getClassDescriptor(supertype);
+                               if (classDescriptor != null)
+                               {
+                                 if (descriptor.getKind() != ClassKind.TRAIT)
+                                 {
+                                   if ((classDescriptor.hasConstructors() && !ErrorUtils.isError(classDescriptor.getTypeConstructor()) && classDescriptor.getKind()) != ClassKind.TRAIT)
+                                   {
+                                     context.getTrace().report(SUPERTYPE_NOT_INITIALIZED.on(specifier));
+                                   }
+                                 }
+                               }
+                             }
+                           }
+                           @Override
+                           public void visitDelegationToThisCall (JetDelegatorToThisCall thisCall)
+                           {
+                             throw new IllegalStateException("This-calls should be prohibited by the parser");
+                           }
+                           @Override
+                           public void visitJetElement (JetElement element)
+                           {
+                             throw new UnsupportedOperationException(element.getText() + " : " + element);
+                           }
+                         };
+
+Edit A:
+Hole 1:
+[]: final JetTypeInferrer.Services typeInferrer = context.getSemanticServices().getTypeInferrerServices(traceForConstructors, JetFlowInformationProvider.NONE);
+Hole 2:
+[]: JetVisitorVoid visitor = new JetVisitorVoid()
+                         {
+                           private void recordSupertype (JetTypeReference typeReference, JetType supertype)
+                           {
+                             if (supertype == null)
+                               return;
+                             supertypes.put(typeReference, supertype);
+                           }
+                           @Override
+                           public void visitDelegationByExpressionSpecifier (JetDelegatorByExpressionSpecifier specifier)
+                           {
+                             if (descriptor.getKind() == ClassKind.TRAIT)
+                             {
+                               context.getTrace().report(DELEGATION_IN_TRAIT.on(specifier));
+                             }
+                             JetType supertype = context.getTrace().getBindingContext().get(BindingContext.TYPE, specifier.getTypeReference());
+                             recordSupertype(specifier.getTypeReference(), supertype);
+                             if (supertype != null)
+                             {
+                               DeclarationDescriptor declarationDescriptor = supertype.getConstructor().getDeclarationDescriptor();
+                               if (declarationDescriptor instanceof ClassDescriptor)
+                               {
+                                 ClassDescriptor classDescriptor = (ClassDescriptor) declarationDescriptor;
+                                 if (classDescriptor.getKind() != ClassKind.TRAIT)
+                                 {
+                                   context.getTrace().report(DELEGATION_NOT_TO_TRAIT.on(specifier.getTypeReference()));
+                                 }
+                               }
+                             }
+                             JetExpression delegateExpression = specifier.getDelegateExpression();
+                             if (delegateExpression != null)
+                             {
+                               JetScope scope = scopeForConstructor == null ? descriptor.getScopeForMemberResolution() : scopeForConstructor;
+                               JetType type = typeInferrer.getType(scope, delegateExpression, NO_EXPECTED_TYPE);
+                               if ((type != null && supertype) != null && !context.getSemanticServices().getTypeChecker().isSubtypeOf(type, supertype))
+                               {
+                                 context.getTrace().report(TYPE_MISMATCH.on(delegateExpression, supertype, type));
+                               }
+                             }
+                           }
+                           @Override
+                           public void visitDelegationToSuperCallSpecifier (JetDelegatorToSuperCall call)
+                           {
+                             JetValueArgumentList valueArgumentList = call.getValueArgumentList();
+                             ASTNode node = valueArgumentList == null ? call.getNode() : valueArgumentList.getNode();
+                             if (descriptor.getKind() == ClassKind.TRAIT)
+                             {
+                               context.getTrace().report(SUPERTYPE_INITIALIZED_IN_TRAIT.on(node));
+                             }
+                             JetTypeReference typeReference = call.getTypeReference();
+                             if (typeReference != null)
+                             {
+                               if (descriptor.getUnsubstitutedPrimaryConstructor() != null)
+                               {
+                                 JetType supertype = typeInferrer.getCallResolver().resolveCall(context.getTrace(), scopeForConstructor, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, call), NO_EXPECTED_TYPE);
+                                 if (supertype != null)
+                                 {
+                                   recordSupertype(typeReference, supertype);
+                                   ClassDescriptor classDescriptor = TypeUtils.getClassDescriptor(supertype);
+                                   if (classDescriptor != null)
+                                   {
+                                     if (classDescriptor.getKind() == ClassKind.TRAIT)
+                                     {
+                                       context.getTrace().report(CONSTRUCTOR_IN_TRAIT.on(node));
+                                     }
+                                   }
+                                 }
+                                 else
+                                 {
+                                   recordSupertype(typeReference, context.getTrace().getBindingContext().get(BindingContext.TYPE, typeReference));
+                                 }
+                               }
+                               else
+                                 if (descriptor.getKind() != ClassKind.TRAIT)
+                                 {
+                                   JetType supertype = context.getTrace().getBindingContext().get(BindingContext.TYPE, typeReference);
+                                   recordSupertype(typeReference, supertype);
+                                   assert valueArgumentList != null;
+                                   context.getTrace().report(PRIMARY_CONSTRUCTOR_MISSING_SUPER_CONSTRUCTOR_CALL.on(valueArgumentList, jetClass));
+                                 }
+                             }
+                           }
+                           @Override
+                           public void visitDelegationToSuperClassSpecifier (JetDelegatorToSuperClass specifier)
+                           {
+                             JetTypeReference typeReference = specifier.getTypeReference();
+                             JetType supertype = context.getTrace().getBindingContext().get(BindingContext.TYPE, typeReference);
+                             recordSupertype(typeReference, supertype);
+                             if (supertype != null)
+                             {
+                               ClassDescriptor classDescriptor = TypeUtils.getClassDescriptor(supertype);
+                               if (classDescriptor != null)
+                               {
+                                 if (descriptor.getKind() != ClassKind.TRAIT)
+                                 {
+                                   if ((classDescriptor.hasConstructors() && !ErrorUtils.isError(classDescriptor.getTypeConstructor()) && classDescriptor.getKind()) != ClassKind.TRAIT)
+                                   {
+                                     context.getTrace().report(SUPERTYPE_NOT_INITIALIZED.on(specifier));
+                                   }
+                                 }
+                               }
+                             }
+                           }
+                           @Override
+                           public void visitDelegationToThisCall (JetDelegatorToThisCall thisCall)
+                           {
+                             throw new IllegalStateException("This-calls should be prohibited by the parser");
+                           }
+                           @Override
+                           public void visitJetElement (JetElement element)
+                           {
+                             throw new UnsupportedOperationException(element.getText() + " : " + element);
+                           }
+                         };
+
+Edit B:
+Hole 1:
+[]: final JetTypeInferrer.Services typeInferrer = context.getSemanticServices().getTypeInferrerServices(traceForConstructors);
+Hole 2:
+[]: JetVisitorVoid visitor = new JetVisitorVoid()
+                         {
+                           private void recordSupertype (JetTypeReference typeReference, JetType supertype)
+                           {
+                             if (supertype == null)
+                               return;
+                             supertypes.put(typeReference, supertype);
+                           }
+                           @Override
+                           public void visitDelegationByExpressionSpecifier (JetDelegatorByExpressionSpecifier specifier)
+                           {
+                             if (descriptor.getKind() == ClassKind.TRAIT)
+                             {
+                               context.getTrace().report(DELEGATION_IN_TRAIT.on(specifier));
+                             }
+                             JetType supertype = context.getTrace().getBindingContext().get(BindingContext.TYPE, specifier.getTypeReference());
+                             recordSupertype(specifier.getTypeReference(), supertype);
+                             if (supertype != null)
+                             {
+                               DeclarationDescriptor declarationDescriptor = supertype.getConstructor().getDeclarationDescriptor();
+                               if (declarationDescriptor instanceof ClassDescriptor)
+                               {
+                                 ClassDescriptor classDescriptor = (ClassDescriptor) declarationDescriptor;
+                                 if (classDescriptor.getKind() != ClassKind.TRAIT)
+                                 {
+                                   context.getTrace().report(DELEGATION_NOT_TO_TRAIT.on(specifier.getTypeReference()));
+                                 }
+                               }
+                             }
+                             JetExpression delegateExpression = specifier.getDelegateExpression();
+                             if (delegateExpression != null)
+                             {
+                               JetScope scope = scopeForConstructor == null ? descriptor.getScopeForMemberResolution() : scopeForConstructor;
+                               JetType type = typeInferrer.getType(scope, delegateExpression, NO_EXPECTED_TYPE);
+                               if ((type != null && supertype) != null && !context.getSemanticServices().getTypeChecker().isSubtypeOf(type, supertype))
+                               {
+                                 context.getTrace().report(TYPE_MISMATCH.on(delegateExpression, supertype, type));
+                               }
+                             }
+                           }
+                           @Override
+                           public void visitDelegationToSuperCallSpecifier (JetDelegatorToSuperCall call)
+                           {
+                             JetValueArgumentList valueArgumentList = call.getValueArgumentList();
+                             ASTNode node = valueArgumentList == null ? call.getNode() : valueArgumentList.getNode();
+                             if (descriptor.getKind() == ClassKind.TRAIT)
+                             {
+                               context.getTrace().report(SUPERTYPE_INITIALIZED_IN_TRAIT.on(node));
+                             }
+                             JetTypeReference typeReference = call.getTypeReference();
+                             if (typeReference != null)
+                             {
+                               if (descriptor.getUnsubstitutedPrimaryConstructor() != null)
+                               {
+                                 JetType supertype = typeInferrer.getCallResolver().resolveCall(context.getTrace(), scopeForConstructor, ReceiverDescriptor.NO_RECEIVER, call, NO_EXPECTED_TYPE);
+                                 if (supertype != null)
+                                 {
+                                   recordSupertype(typeReference, supertype);
+                                   ClassDescriptor classDescriptor = TypeUtils.getClassDescriptor(supertype);
+                                   if (classDescriptor != null)
+                                   {
+                                     if (classDescriptor.getKind() == ClassKind.TRAIT)
+                                     {
+                                       context.getTrace().report(CONSTRUCTOR_IN_TRAIT.on(node));
+                                     }
+                                   }
+                                 }
+                                 else
+                                 {
+                                   recordSupertype(typeReference, context.getTrace().getBindingContext().get(BindingContext.TYPE, typeReference));
+                                 }
+                               }
+                               else
+                                 if (descriptor.getKind() != ClassKind.TRAIT)
+                                 {
+                                   JetType supertype = context.getTrace().getBindingContext().get(BindingContext.TYPE, typeReference);
+                                   recordSupertype(typeReference, supertype);
+                                   assert valueArgumentList != null;
+                                   context.getTrace().report(PRIMARY_CONSTRUCTOR_MISSING_SUPER_CONSTRUCTOR_CALL.on(valueArgumentList, jetClass));
+                                 }
+                             }
+                           }
+                           @Override
+                           public void visitDelegationToSuperClassSpecifier (JetDelegatorToSuperClass specifier)
+                           {
+                             JetTypeReference typeReference = specifier.getTypeReference();
+                             JetType supertype = context.getTrace().getBindingContext().get(BindingContext.TYPE, typeReference);
+                             recordSupertype(typeReference, supertype);
+                             if (supertype != null)
+                             {
+                               ClassDescriptor classDescriptor = TypeUtils.getClassDescriptor(supertype);
+                               if (classDescriptor != null)
+                               {
+                                 if (descriptor.getKind() != ClassKind.TRAIT)
+                                 {
+                                   if ((classDescriptor.hasConstructors() && !ErrorUtils.isError(classDescriptor.getTypeConstructor()) && classDescriptor.getKind()) != ClassKind.TRAIT)
+                                   {
+                                     context.getTrace().report(SUPERTYPE_NOT_INITIALIZED.on(specifier));
+                                   }
+                                 }
+                               }
+                             }
+                           }
+                           @Override
+                           public void visitDelegationToThisCall (JetDelegatorToThisCall thisCall)
+                           {
+                             throw new IllegalStateException("This-calls should be prohibited by the parser");
+                           }
+                           @Override
+                           public void visitJetElement (JetElement element)
+                           {
+                             throw new UnsupportedOperationException(element.getText() + " : " + element);
+                           }
+                         };
+
+Edit M:
+Hole 1:
+[]: final JetTypeInferrer.Services typeInferrer = context.getSemanticServices().getTypeInferrerServices(traceForConstructors);
+Hole 2:
+[]: JetVisitorVoid visitor = new JetVisitorVoid()
+                         {
+                           private void recordSupertype (JetTypeReference typeReference, JetType supertype)
+                           {
+                             if (supertype == null)
+                               return;
+                             supertypes.put(typeReference, supertype);
+                           }
+                           @Override
+                           public void visitDelegationByExpressionSpecifier (JetDelegatorByExpressionSpecifier specifier)
+                           {
+                             if (descriptor.getKind() == ClassKind.TRAIT)
+                             {
+                               context.getTrace().report(DELEGATION_IN_TRAIT.on(specifier));
+                             }
+                             JetType supertype = context.getTrace().getBindingContext().get(BindingContext.TYPE, specifier.getTypeReference());
+                             recordSupertype(specifier.getTypeReference(), supertype);
+                             if (supertype != null)
+                             {
+                               DeclarationDescriptor declarationDescriptor = supertype.getConstructor().getDeclarationDescriptor();
+                               if (declarationDescriptor instanceof ClassDescriptor)
+                               {
+                                 ClassDescriptor classDescriptor = (ClassDescriptor) declarationDescriptor;
+                                 if (classDescriptor.getKind() != ClassKind.TRAIT)
+                                 {
+                                   context.getTrace().report(DELEGATION_NOT_TO_TRAIT.on(specifier.getTypeReference()));
+                                 }
+                               }
+                             }
+                             JetExpression delegateExpression = specifier.getDelegateExpression();
+                             if (delegateExpression != null)
+                             {
+                               JetScope scope = scopeForConstructor == null ? descriptor.getScopeForMemberResolution() : scopeForConstructor;
+                               JetType type = typeInferrer.getType(scope, delegateExpression, NO_EXPECTED_TYPE);
+                               if ((type != null && supertype) != null && !context.getSemanticServices().getTypeChecker().isSubtypeOf(type, supertype))
+                               {
+                                 context.getTrace().report(TYPE_MISMATCH.on(delegateExpression, supertype, type));
+                               }
+                             }
+                           }
+                           @Override
+                           public void visitDelegationToSuperCallSpecifier (JetDelegatorToSuperCall call)
+                           {
+                             JetValueArgumentList valueArgumentList = call.getValueArgumentList();
+                             ASTNode node = valueArgumentList == null ? call.getNode() : valueArgumentList.getNode();
+                             if (descriptor.getKind() == ClassKind.TRAIT)
+                             {
+                               context.getTrace().report(SUPERTYPE_INITIALIZED_IN_TRAIT.on(node));
+                             }
+                             JetTypeReference typeReference = call.getTypeReference();
+                             if (typeReference != null)
+                             {
+                               if (descriptor.getUnsubstitutedPrimaryConstructor() != null)
+                               {
+                                 JetType supertype = typeInferrer.getCallResolver().resolveCall(context.getTrace(), scopeForConstructor, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, call), NO_EXPECTED_TYPE);
+                                 if (supertype != null)
+                                 {
+                                   recordSupertype(typeReference, supertype);
+                                   ClassDescriptor classDescriptor = TypeUtils.getClassDescriptor(supertype);
+                                   if (classDescriptor != null)
+                                   {
+                                     if (classDescriptor.getKind() == ClassKind.TRAIT)
+                                     {
+                                       context.getTrace().report(CONSTRUCTOR_IN_TRAIT.on(node));
+                                     }
+                                   }
+                                 }
+                                 else
+                                 {
+                                   recordSupertype(typeReference, context.getTrace().getBindingContext().get(BindingContext.TYPE, typeReference));
+                                 }
+                               }
+                               else
+                                 if (descriptor.getKind() != ClassKind.TRAIT)
+                                 {
+                                   JetType supertype = context.getTrace().getBindingContext().get(BindingContext.TYPE, typeReference);
+                                   recordSupertype(typeReference, supertype);
+                                   assert valueArgumentList != null;
+                                   context.getTrace().report(PRIMARY_CONSTRUCTOR_MISSING_SUPER_CONSTRUCTOR_CALL.on(valueArgumentList, jetClass));
+                                 }
+                             }
+                           }
+                           @Override
+                           public void visitDelegationToSuperClassSpecifier (JetDelegatorToSuperClass specifier)
+                           {
+                             JetTypeReference typeReference = specifier.getTypeReference();
+                             JetType supertype = context.getTrace().getBindingContext().get(BindingContext.TYPE, typeReference);
+                             recordSupertype(typeReference, supertype);
+                             if (supertype != null)
+                             {
+                               ClassDescriptor classDescriptor = TypeUtils.getClassDescriptor(supertype);
+                               if (classDescriptor != null)
+                               {
+                                 if (descriptor.getKind() != ClassKind.TRAIT)
+                                 {
+                                   if ((classDescriptor.hasConstructors() && !ErrorUtils.isError(classDescriptor.getTypeConstructor()) && classDescriptor.getKind()) != ClassKind.TRAIT)
+                                   {
+                                     context.getTrace().report(SUPERTYPE_NOT_INITIALIZED.on(specifier));
+                                   }
+                                 }
+                               }
+                             }
+                           }
+                           @Override
+                           public void visitDelegationToThisCall (JetDelegatorToThisCall thisCall)
+                           {
+                             throw new IllegalStateException("This-calls should be prohibited by the parser");
+                           }
+                           @Override
+                           public void visitJetElement (JetElement element)
+                           {
+                             throw new UnsupportedOperationException(element.getText() + " : " + element);
+                           }
+                         };
+

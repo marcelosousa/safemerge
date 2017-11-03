@@ -1,0 +1,450 @@
+Merge Instance for method (Ident "RestMethodInfo",Ident "parseParameters",[])
+private void parseParameters ()
+{
+  Class<?>[] parameterTypes = method.getParameterTypes();
+  Annotation[][] parameterAnnotationArrays = method.getParameterAnnotations();
+  int count = parameterAnnotationArrays.length;
+  if (!isSynchronous)
+  {
+    count -= 1;
+  }
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: String[] namedParams = new String[count];
+Hole 2:
+[]: for (int i = 0 ; i < count ; i++)
+{
+  Class<?> parameterType = parameterTypes[i];
+  Annotation[] parameterAnnotations = parameterAnnotationArrays[i];
+  if ((parameterAnnotations == null || parameterAnnotations.length) == 0)
+  {
+    throw new IllegalStateException("Argument " + i + " lacks annotation.");
+  }
+  for (Annotation parameterAnnotation : parameterAnnotations) {
+                                                                Class<? extends Annotation> annotationType = parameterAnnotation.annotationType();
+                                                                if (annotationType == Name.class)
+                                                                {
+                                                                  String name = ((Name) parameterAnnotation).value();
+                                                                  namedParams[i] = name;
+                                                                  boolean isPathParam = pathParams.contains(name);
+                                                                  if (parameterType == TypedOutput.class && (isPathParam || !restMethod.hasBody()))
+                                                                  {
+                                                                    throw new IllegalStateException("TypedOutput cannot be used as URL parameter.");
+                                                                  }
+                                                                  if (!isPathParam && !isMultipart && restMethod.hasBody())
+                                                                  {
+                                                                    throw new IllegalStateException("Non-path params can only be used in multipart request.");
+                                                                  }
+                                                                }
+                                                                else
+                                                                  if (annotationType == SingleEntity.class)
+                                                                  {
+                                                                    if (isMultipart)
+                                                                    {
+                                                                      throw new IllegalStateException("SingleEntity cannot be used with multipart request.");
+                                                                    }
+                                                                    if (singleEntityArgumentIndex != NO_SINGLE_ENTITY)
+                                                                    {
+                                                                      throw new IllegalStateException("Method annotated with multiple SingleEntity method annotations: " + method);
+                                                                    }
+                                                                    singleEntityArgumentIndex = i;
+                                                                  }
+                                                                  else
+                                                                  {
+                                                                    throw new IllegalStateException("Argument " + i + " has invalid annotation " + annotationType + ": " + method);
+                                                                  }
+                                                              }
+}
+Hole 3:
+[]: if (singleEntityArgumentIndex != NO_SINGLE_ENTITY)
+{
+  for (String namedParam : namedParams) {
+                                          if (namedParam != null && !pathParams.contains(namedParam))
+                                          {
+                                            throw new IllegalStateException("Single entity and non-path parameters cannot both be present.");
+                                          }
+                                        }
+}
+Hole 4:
+[]: if (!restMethod.hasBody() && (isMultipart || singleEntityArgumentIndex) != NO_SINGLE_ENTITY)
+{
+  throw new IllegalStateException("Non-body HTTP method cannot contain @SingleEntity or @TypedOutput.");
+}
+Hole 5:
+[]: this.namedParams = namedParams;
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+Hole 10:
+[]: <SKIP>
+Hole 11:
+[]: <SKIP>
+Hole 12:
+[]: <SKIP>
+Hole 13:
+[]: <SKIP>
+Hole 14:
+[]: <SKIP>
+Hole 15:
+[]: <SKIP>
+Hole 16:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: String[] urlParam = new String[count];
+Hole 2:
+[]: String[] queryName = new String[count];
+Hole 3:
+[]: String[] formValue = new String[count];
+Hole 4:
+[]: String[] multipartPart = new String[count];
+Hole 5:
+[]: boolean gotPair = false;
+Hole 6:
+[]: boolean gotPart = false;
+Hole 7:
+[]: for (int i = 0 ; i < count ; i++)
+{
+  boolean hasRetrofitAnnotation = false;
+  Class<?> paramaterType = parameterTypes[i];
+  Annotation[] parameterAnnotations = parameterAnnotationArrays[i];
+  if (parameterAnnotations != null)
+  {
+    for (Annotation parameterAnnotation : parameterAnnotations) {
+                                                                  Class<? extends Annotation> annotationType = parameterAnnotation.annotationType();
+                                                                  if (annotationType == Path.class)
+                                                                  {
+                                                                    hasRetrofitAnnotation = true;
+                                                                    String name = ((Path) parameterAnnotation).value();
+                                                                    if (!requestUrlParamNames.contains(name))
+                                                                    {
+                                                                      throw new IllegalStateException("Method path \"" + requestUrl + "\" does not contain {" + name + "}.");
+                                                                    }
+                                                                    urlParam[i] = name;
+                                                                  }
+                                                                  else
+                                                                    if (annotationType == Query.class)
+                                                                    {
+                                                                      hasRetrofitAnnotation = true;
+                                                                      hasQueryParams = true;
+                                                                      String name = ((Query) parameterAnnotation).value();
+                                                                      queryName[i] = name;
+                                                                    }
+                                                                    else
+                                                                      if (annotationType == Pair.class)
+                                                                      {
+                                                                        if (requestType != RequestType.FORM_ENCODED)
+                                                                        {
+                                                                          throw new IllegalStateException("@Pair parameters can only be used with form encoding.");
+                                                                        }
+                                                                        gotPair = true;
+                                                                        hasRetrofitAnnotation = true;
+                                                                        String name = ((Pair) parameterAnnotation).value();
+                                                                        formValue[i] = name;
+                                                                      }
+                                                                      else
+                                                                        if (annotationType == Part.class)
+                                                                        {
+                                                                          if (requestType != RequestType.MULTIPART)
+                                                                          {
+                                                                            throw new IllegalStateException("@Part parameters can only be used with multipart encoding.");
+                                                                          }
+                                                                          gotPart = true;
+                                                                          hasRetrofitAnnotation = true;
+                                                                          String name = ((Part) parameterAnnotation).value();
+                                                                          multipartPart[i] = name;
+                                                                        }
+                                                                        else
+                                                                          if (annotationType == Body.class)
+                                                                          {
+                                                                            if (requestType != RequestType.SIMPLE)
+                                                                            {
+                                                                              throw new IllegalStateException("@Body parameters cannot be used with form or multi-part encoding.");
+                                                                            }
+                                                                            if (bodyIndex != NO_BODY)
+                                                                            {
+                                                                              throw new IllegalStateException("Method annotated with multiple Body method annotations: " + method);
+                                                                            }
+                                                                            hasRetrofitAnnotation = true;
+                                                                            bodyIndex = i;
+                                                                          }
+                                                                }
+  }
+  if (!hasRetrofitAnnotation)
+  {
+    throw new IllegalStateException("No annotations found on parameter " + i + 1 + " of " + method.getName());
+  }
+}
+Hole 8:
+[]: if ((requestType == RequestType.SIMPLE && !requestHasBody && bodyIndex) != NO_BODY)
+{
+  throw new IllegalStateException("Non-body HTTP method cannot contain @Body or @TypedOutput.");
+}
+Hole 9:
+[]: if (requestType == RequestType.FORM_ENCODED && !gotPair)
+{
+  throw new IllegalStateException("Form-encoded method must contain at least one @Pair.");
+}
+Hole 10:
+[]: if (requestType == RequestType.MULTIPART && !gotPart)
+{
+  throw new IllegalStateException("Multipart method must contain at least one @Part.");
+}
+Hole 11:
+[]: requestUrlParam = urlParam;
+Hole 12:
+[]: requestQueryName = queryName;
+Hole 13:
+[]: requestFormPair = formValue;
+Hole 14:
+[]: requestMultipartPart = multipartPart;
+Hole 15:
+[]: <SKIP>
+Hole 16:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: String[] namedParams = new String[count];
+Hole 2:
+[]: String[] headerParams = new String[count];
+Hole 3:
+[]: for (int i = 0 ; i < count ; i++)
+{
+  Class<?> parameterType = parameterTypes[i];
+  Annotation[] parameterAnnotations = parameterAnnotationArrays[i];
+  if ((parameterAnnotations == null || parameterAnnotations.length) == 0)
+  {
+    throw new IllegalStateException("Argument " + i + " lacks annotation.");
+  }
+  for (Annotation parameterAnnotation : parameterAnnotations) {
+                                                                Class<? extends Annotation> annotationType = parameterAnnotation.annotationType();
+                                                                if (annotationType == Name.class)
+                                                                {
+                                                                  String name = ((Name) parameterAnnotation).value();
+                                                                  namedParams[i] = name;
+                                                                  boolean isPathParam = pathParams.contains(name);
+                                                                  if (parameterType == TypedOutput.class && (isPathParam || !restMethod.hasBody()))
+                                                                  {
+                                                                    throw new IllegalStateException("TypedOutput cannot be used as URL parameter.");
+                                                                  }
+                                                                  if (!isPathParam && !isMultipart && restMethod.hasBody())
+                                                                  {
+                                                                    throw new IllegalStateException("Non-path params can only be used in multipart request.");
+                                                                  }
+                                                                }
+                                                                else
+                                                                  if (annotationType == Header.class)
+                                                                  {
+                                                                    String header = ((Header) parameterAnnotation).value();
+                                                                    headerParams[i] = header;
+                                                                    if (parameterType != String.class)
+                                                                    {
+                                                                      throw new IllegalStateException("Expected @Header parameter type to be String: " + header);
+                                                                    }
+                                                                  }
+                                                                  else
+                                                                    if (annotationType == SingleEntity.class)
+                                                                    {
+                                                                      if (isMultipart)
+                                                                      {
+                                                                        throw new IllegalStateException("SingleEntity cannot be used with multipart request.");
+                                                                      }
+                                                                      if (singleEntityArgumentIndex != NO_SINGLE_ENTITY)
+                                                                      {
+                                                                        throw new IllegalStateException("Method annotated with multiple SingleEntity method annotations: " + method);
+                                                                      }
+                                                                      singleEntityArgumentIndex = i;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                      throw new IllegalStateException("Argument " + i + " has invalid annotation " + annotationType + ": " + method);
+                                                                    }
+                                                              }
+}
+Hole 4:
+[]: if (singleEntityArgumentIndex != NO_SINGLE_ENTITY)
+{
+  for (String namedParam : namedParams) {
+                                          if (namedParam != null && !pathParams.contains(namedParam))
+                                          {
+                                            throw new IllegalStateException("Single entity and non-path parameters cannot both be present.");
+                                          }
+                                        }
+}
+Hole 5:
+[]: if (!restMethod.hasBody() && (isMultipart || singleEntityArgumentIndex) != NO_SINGLE_ENTITY)
+{
+  throw new IllegalStateException("Non-body HTTP method cannot contain @SingleEntity or @TypedOutput.");
+}
+Hole 6:
+[]: this.namedParams = namedParams;
+Hole 7:
+[]: this.headerParams = headerParams;
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+Hole 10:
+[]: <SKIP>
+Hole 11:
+[]: <SKIP>
+Hole 12:
+[]: <SKIP>
+Hole 13:
+[]: <SKIP>
+Hole 14:
+[]: <SKIP>
+Hole 15:
+[]: <SKIP>
+Hole 16:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: String[] urlParam = new String[count];
+Hole 2:
+[]: String[] queryName = new String[count];
+Hole 3:
+[]: String[] formValue = new String[count];
+Hole 4:
+[]: String[] multipartPart = new String[count];
+Hole 5:
+[]: String[] paramHeader = new String[count];
+Hole 6:
+[]: boolean gotPair = false;
+Hole 7:
+[]: boolean gotPart = false;
+Hole 8:
+[]: for (int i = 0 ; i < count ; i++)
+{
+  boolean hasRetrofitAnnotation = false;
+  Class<?> parameterType = parameterTypes[i];
+  Annotation[] parameterAnnotations = parameterAnnotationArrays[i];
+  if (parameterAnnotations != null)
+  {
+    for (Annotation parameterAnnotation : parameterAnnotations) {
+                                                                  Class<? extends Annotation> annotationType = parameterAnnotation.annotationType();
+                                                                  if (annotationType == Path.class)
+                                                                  {
+                                                                    hasRetrofitAnnotation = true;
+                                                                    String name = ((Path) parameterAnnotation).value();
+                                                                    if (!requestUrlParamNames.contains(name))
+                                                                    {
+                                                                      throw new IllegalStateException("Method path \"" + requestUrl + "\" does not contain {" + name + "}.");
+                                                                    }
+                                                                    urlParam[i] = name;
+                                                                  }
+                                                                  else
+                                                                    if (annotationType == Query.class)
+                                                                    {
+                                                                      hasRetrofitAnnotation = true;
+                                                                      hasQueryParams = true;
+                                                                      String name = ((Query) parameterAnnotation).value();
+                                                                      queryName[i] = name;
+                                                                    }
+                                                                    else
+                                                                      if (annotationType == Header.class)
+                                                                      {
+                                                                        String name = ((Header) parameterAnnotation).value();
+                                                                        if (parameterType != String.class)
+                                                                        {
+                                                                          throw new IllegalStateException("@Header parameter type must be String: " + name);
+                                                                        }
+                                                                        hasRetrofitAnnotation = true;
+                                                                        paramHeader[i] = name;
+                                                                      }
+                                                                      else
+                                                                        if (annotationType == Pair.class)
+                                                                        {
+                                                                          if (requestType != RequestType.FORM_ENCODED)
+                                                                          {
+                                                                            throw new IllegalStateException("@Pair parameters can only be used with form encoding.");
+                                                                          }
+                                                                          gotPair = true;
+                                                                          hasRetrofitAnnotation = true;
+                                                                          String name = ((Pair) parameterAnnotation).value();
+                                                                          formValue[i] = name;
+                                                                        }
+                                                                        else
+                                                                          if (annotationType == Part.class)
+                                                                          {
+                                                                            if (requestType != RequestType.MULTIPART)
+                                                                            {
+                                                                              throw new IllegalStateException("@Part parameters can only be used with multipart encoding.");
+                                                                            }
+                                                                            gotPart = true;
+                                                                            hasRetrofitAnnotation = true;
+                                                                            String name = ((Part) parameterAnnotation).value();
+                                                                            multipartPart[i] = name;
+                                                                          }
+                                                                          else
+                                                                            if (annotationType == Body.class)
+                                                                            {
+                                                                              if (requestType != RequestType.SIMPLE)
+                                                                              {
+                                                                                throw new IllegalStateException("@Body parameters cannot be used with form or multi-part encoding.");
+                                                                              }
+                                                                              if (bodyIndex != NO_BODY)
+                                                                              {
+                                                                                throw new IllegalStateException("Method annotated with multiple Body method annotations: " + method);
+                                                                              }
+                                                                              hasRetrofitAnnotation = true;
+                                                                              bodyIndex = i;
+                                                                            }
+                                                                }
+  }
+  if (!hasRetrofitAnnotation)
+  {
+    throw new IllegalStateException("No annotations found on parameter " + i + 1 + " of " + method.getName());
+  }
+}
+Hole 9:
+[]: if ((requestType == RequestType.SIMPLE && !requestHasBody && bodyIndex) != NO_BODY)
+{
+  throw new IllegalStateException("Non-body HTTP method cannot contain @Body or @TypedOutput.");
+}
+Hole 10:
+[]: if (requestType == RequestType.FORM_ENCODED && !gotPair)
+{
+  throw new IllegalStateException("Form-encoded method must contain at least one @Pair.");
+}
+Hole 11:
+[]: if (requestType == RequestType.MULTIPART && !gotPart)
+{
+  throw new IllegalStateException("Multipart method must contain at least one @Part.");
+}
+Hole 12:
+[]: requestUrlParam = urlParam;
+Hole 13:
+[]: requestQueryName = queryName;
+Hole 14:
+[]: requestFormPair = formValue;
+Hole 15:
+[]: requestMultipartPart = multipartPart;
+Hole 16:
+[]: requestParamHeader = paramHeader;
+

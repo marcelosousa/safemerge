@@ -1,0 +1,83 @@
+Merge Instance for method (Ident "RxJava2CallAdapterFactory",Ident "get",[RefType (ClassRefType (ClassType [(Ident "Type",[])])),RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "Annotation",[])])))),RefType (ClassRefType (ClassType [(Ident "Retrofit",[])]))])
+@Override
+ public CallAdapter<?, ?> get (Type returnType, Annotation[] annotations, Retrofit retrofit)
+{
+  Class<?> rawType = getRawType(returnType);
+  if (rawType == Completable.class)
+  {
+    <?HOLE?>
+  }
+  boolean isFlowable = rawType == Flowable.class;
+  boolean isSingle = rawType == Single.class;
+  boolean isMaybe = rawType == Maybe.class;
+  if (rawType != Observable.class && !isFlowable && !isSingle && !isMaybe)
+  {
+    return null;
+  }
+  boolean isResult = false;
+  boolean isBody = false;
+  Type responseType;
+  if (!(returnType instanceof ParameterizedType))
+  {
+    <?HOLE?>
+    throw new IllegalStateException(name + " return type must be parameterized" + " as " + name + "<Foo> or " + name + "<? extends Foo>");
+  }
+  Type observableType = getParameterUpperBound(0, ((ParameterizedType) returnType));
+  Class<?> rawObservableType = getRawType(observableType);
+  if (rawObservableType == Response.class)
+  {
+    if (!(observableType instanceof ParameterizedType))
+    {
+      throw new IllegalStateException("Response must be parameterized" + " as Response<Foo> or Response<? extends Foo>");
+    }
+    responseType = getParameterUpperBound(0, ((ParameterizedType) observableType));
+  }
+  else
+    if (rawObservableType == Result.class)
+    {
+      if (!(observableType instanceof ParameterizedType))
+      {
+        throw new IllegalStateException("Result must be parameterized" + " as Result<Foo> or Result<? extends Foo>");
+      }
+      responseType = getParameterUpperBound(0, ((ParameterizedType) observableType));
+      isResult = true;
+    }
+    else
+    {
+      responseType = observableType;
+      isBody = true;
+    }
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[SCond]: return new RxJava2CallAdapter(Void.class, scheduler, false, true, false, false, false, true);
+Hole 2:
+[SCond]: String name = isFlowable ? "Flowable" : isSingle ? "Single" : "Observable";
+Hole 3:
+[]: return new RxJava2CallAdapter(responseType, scheduler, isResult, isBody, isFlowable, isSingle, isMaybe, false);
+
+Edit A:
+Hole 1:
+[SCond]: return new RxJava2CallAdapter(Void.class, scheduler, false, true, false, false, false, true);
+Hole 2:
+[SCond]: String name = isFlowable ? "Flowable" : isSingle ? "Single" : isMaybe ? "Maybe" : "Observable";
+Hole 3:
+[]: return new RxJava2CallAdapter(responseType, scheduler, isResult, isBody, isFlowable, isSingle, isMaybe, false);
+
+Edit B:
+Hole 1:
+[SCond]: return new RxJava2CallAdapter(Void.class, scheduler, isAsync, false, true, false, false, false, true);
+Hole 2:
+[SCond]: String name = isFlowable ? "Flowable" : isSingle ? "Single" : "Observable";
+Hole 3:
+[]: return new RxJava2CallAdapter(responseType, scheduler, isAsync, isResult, isBody, isFlowable, isSingle, isMaybe, false);
+
+Edit M:
+Hole 1:
+[SCond]: return new RxJava2CallAdapter(Void.class, scheduler, isAsync, false, true, false, false, false, true);
+Hole 2:
+[SCond]: String name = isFlowable ? "Flowable" : isSingle ? "Single" : isMaybe ? "Maybe" : "Observable";
+Hole 3:
+[]: return new RxJava2CallAdapter(responseType, scheduler, isAsync, isResult, isBody, isFlowable, isSingle, isMaybe, false);
+

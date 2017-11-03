@@ -1,0 +1,42 @@
+Merge Instance for method (Ident "JetLightCodeInsightFixtureTestCase",Ident "setUp",[])
+@Override
+ protected void setUp () throws Exception
+{
+  super.setUp();
+  ((StartupManagerImpl) StartupManager.getInstance(getProject())).runPostStartupActivities();
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: VfsRootAccess.allowRootAccess(JetTestCaseBuilder.getHomeDirectory());
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: VirtualDirectoryImpl.allowRootAccess(JetTestCaseBuilder.getHomeDirectory());
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: VfsRootAccess.allowRootAccess(JetTestCaseBuilder.getHomeDirectory());
+Hole 2:
+[]: kotlinInternalModeOriginalValue = KotlinInternalMode.OBJECT$.getEnabled();
+Hole 3:
+[]: KotlinInternalMode.OBJECT$.setEnabled(true);
+
+Edit M:
+Hole 1:
+[]: VirtualDirectoryImpl.allowRootAccess(JetTestCaseBuilder.getHomeDirectory());
+Hole 2:
+[]: kotlinInternalModeOriginalValue = KotlinInternalMode.OBJECT$.getEnabled();
+Hole 3:
+[]: KotlinInternalMode.OBJECT$.setEnabled(true);
+

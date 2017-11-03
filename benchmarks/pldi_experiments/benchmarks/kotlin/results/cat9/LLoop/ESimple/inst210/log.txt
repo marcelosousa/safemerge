@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 210
+File: compiler/cli/src/org/jetbrains/jet/cli/js/K2JSCompiler.java
+Orig: 9b2e28c76e898f7c556876142fa7b4f783f55ae9
+VarA: cbf83c14bd0729e81df6dce738798392d26c4288
+VarB: 1c7b3d895803c91e3e4988076596110f03ff8145
+Merg: 92231d2eae2304ba4853df91532206b428be787d

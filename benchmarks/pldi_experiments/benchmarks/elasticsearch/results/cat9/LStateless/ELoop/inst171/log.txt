@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 171
+File: core/src/test/java/org/elasticsearch/benchmark/search/child/ChildSearchBenchmark.java
+Orig: 73d84e4797441670c259c3916a5e3b42552725b0
+VarA: 8d2a2f8d664c495b2cc69eb7f9a8eaab903f125a
+VarB: c10f116a8421e4e168f8a243aca920b0621c6a47
+Merg: 56b3db6ba3463d244ea777b527b7a786caa5042c

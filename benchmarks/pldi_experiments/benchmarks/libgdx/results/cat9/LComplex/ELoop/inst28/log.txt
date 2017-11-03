@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 28
+File: gdx/src/com/badlogic/gdx/graphics/g3d/loader/ObjLoader.java
+Orig: aab90d207dfe819e851a3f097a8e1bb679875d61
+VarA: 599e8ea1686dad5089ee10d12abe9322d75f8da0
+VarB: eee29d638744a095acb8b05d437ef306d133b149
+Merg: 854cad719290c5cb80ecdd573a16cf9bf73a6589

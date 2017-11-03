@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 45
+File: rxjava-core/src/test/java/rx/ObservableTests.java
+Orig: 2144fe465b58d788b889cf650feaf27df07c786b
+VarA: e7a8e0b9780366bb55b23ce173002b7969ae88ab
+VarB: d71b76459b88b5a14d18bd60e77498cdecc5f6f0
+Merg: fa49293938898842d36fd8b0f6ec0ca19f90c7b3

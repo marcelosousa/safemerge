@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 30
+File: src/main/java/rx/internal/operators/OperatorMulticast.java
+Orig: eccc8c45728df705707b77e91f8db72f44313d71
+VarA: 4350f841258b6f2293e48201dd3bbad06e3ca684
+VarB: fd9b6bcbc332c9bbf8354e6d3318209c0fc19957
+Merg: a40a4130edcdadc2340da5787ca30353018173f2

@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 228
+File: core/src/test/java/org/elasticsearch/search/query/SimpleQueryStringIT.java
+Orig: 03e15056c7a5af40a22c0f513cb265626032076e
+VarA: 6071db89ea1e75d1aee387a0260a54a0ca4ad3f9
+VarB: 9c6ed8c23842cd3f9e4a8c48411bbeb46c4b3a36
+Merg: e2181990c439138f5fce28c7ba3e8cd5e07d2b2c

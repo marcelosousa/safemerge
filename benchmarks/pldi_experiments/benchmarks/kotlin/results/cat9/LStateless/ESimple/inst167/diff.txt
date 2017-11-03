@@ -1,0 +1,38 @@
+Merge Instance for method (Ident "JetLightCodeInsightFixtureTestCase",Ident "tearDown",[])
+@Override
+ protected void tearDown () throws Exception
+{
+  <?HOLE?>
+  <?HOLE?>
+  Set<JetFile> builtInsSources = getProject().getComponent(BuiltInsReferenceResolver.class).getBuiltInsSources();
+  FileManager fileManager = ((PsiManagerEx) PsiManager.getInstance(getProject())).getFileManager();
+  super.tearDown();
+  for (JetFile source : builtInsSources) {
+                                           FileViewProvider provider = source.getViewProvider();
+                                           fileManager.setViewProvider(provider.getVirtualFile(), provider);
+                                         }
+}
+Edit Base:
+Hole 1:
+[]: VfsRootAccess.disallowRootAccess(JetTestCaseBuilder.getHomeDirectory());
+Hole 2:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: VirtualDirectoryImpl.disallowRootAccess(JetTestCaseBuilder.getHomeDirectory());
+Hole 2:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: KotlinInternalMode.OBJECT$.setEnabled(kotlinInternalModeOriginalValue);
+Hole 2:
+[]: VfsRootAccess.disallowRootAccess(JetTestCaseBuilder.getHomeDirectory());
+
+Edit M:
+Hole 1:
+[]: KotlinInternalMode.OBJECT$.setEnabled(kotlinInternalModeOriginalValue);
+Hole 2:
+[]: VirtualDirectoryImpl.disallowRootAccess(JetTestCaseBuilder.getHomeDirectory());
+

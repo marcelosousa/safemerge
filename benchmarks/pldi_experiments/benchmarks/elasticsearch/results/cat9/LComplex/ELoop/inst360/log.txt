@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 360
+File: src/main/java/org/elasticsearch/index/query/MissingQueryParser.java
+Orig: 0105b651607b1587521184ac4508440349db1fe5
+VarA: 5fbb6a714d24cb9f2e3b03c171ab59673da64e51
+VarB: e95097c33cc782a3ca83b7ea6cafedc3d6793fd3
+Merg: 4dd4f48a2f16970480df617a670ee4ee788438fb

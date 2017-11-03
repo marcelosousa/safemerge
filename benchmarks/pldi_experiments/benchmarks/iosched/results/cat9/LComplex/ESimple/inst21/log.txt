@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 21
+File: android/src/main/java/com/google/samples/apps/iosched/AppApplication.java
+Orig: 6d726e7b014f892ce214105eca8e7a2857cc41df
+VarA: 11784d13befe8a2d047443ca5f3dff8899dd9fe5
+VarB: cc8b859dc30b68679e89a711e7046178e2221579
+Merg: 30af51cac7b728d1ad099452ceac10b6aee3402a

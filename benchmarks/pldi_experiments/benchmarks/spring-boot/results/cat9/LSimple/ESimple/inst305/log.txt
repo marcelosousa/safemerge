@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 305
+File: spring-boot-devtools/src/test/java/org/springframework/boot/devtools/filewatch/FileSystemWatcherTests.java
+Orig: a98d1a41a4638c3b24cfafe76256d397ce30cbbd
+VarA: ac5afb142c55c031cbe651af9e6e889bd252ec3a
+VarB: 9f425343ae6c19e30673b4a696a7db93783de577
+Merg: bda2e766ace2457aaf48f646af4fd2e345633cea

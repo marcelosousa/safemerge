@@ -1,0 +1,78 @@
+Merge Instance for method (Ident "LeakCanary",Ident "leakInfo",[RefType (ClassRefType (ClassType [(Ident "Context",[])])),RefType (ClassRefType (ClassType [(Ident "HeapDump",[])])),RefType (ClassRefType (ClassType [(Ident "AnalysisResult",[])])),PrimType BooleanT])
+public static String leakInfo (Context context, HeapDump heapDump, AnalysisResult result, boolean detailed)
+{
+  PackageManager packageManager = context.getPackageManager();
+  String packageName = context.getPackageName();
+  PackageInfo packageInfo;
+  try
+  {
+    packageInfo = packageManager.getPackageInfo(packageName, 0);
+  }
+  catch (PackageManager.NameNotFoundException e)
+  {
+    throw new RuntimeException(e);
+  }
+  String versionName = packageInfo.versionName;
+  int versionCode = packageInfo.versionCode;
+  String info = "In " + packageName + ":" + versionName + ":" + versionCode + ".\n";
+  String detailedString = "";
+  if (result.leakFound)
+  {
+    if (result.excludedLeak)
+    {
+      info += "* LEAK CAN BE IGNORED.\n";
+    }
+    info += "* " + result.className;
+    if (!heapDump.referenceName.equals(""))
+    {
+      info += " (" + heapDump.referenceName + ")";
+    }
+    info += " has leaked:\n" + result.leakTrace.toString() + "\n";
+    if (detailed)
+    {
+      detailedString = "\n* Details:\n" + result.leakTrace.toDetailedString();
+    }
+  }
+  else
+    if (result.failure != null)
+    {
+      info += "* FAILURE:\n" + Log.getStackTraceString(result.failure) + "\n";
+    }
+    else
+    {
+      info += "* NO LEAK FOUND.\n\n";
+    }
+  <?HOLE?>
+  <?HOLE?>
+  return info;
+}
+Edit Base:
+Hole 1:
+[]: info += "* Reference Key: " + heapDump.referenceKey + "\n" + "* Device: " + Build.MANUFACTURER + " " + Build.BRAND + " " + Build.MODEL + " " + Build.PRODUCT + "\n" + "* Android Version: " + Build.VERSION.RELEASE + " API: " + Build.VERSION.SDK_INT + " LeakCanary: " + BuildConfig.LIBRARY_VERSION + "\n" + "* Durations: watch=" + heapDump.watchDurationMs + "ms, gc=" + heapDump.gcDurationMs + "ms, heap dump=" + heapDump.heapDumpDurationMs + "ms, analysis=" + result.analysisDurationMs + "ms" + "\n" + detailedString;
+Hole 2:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: info += "* Reference Key: " + heapDump.referenceKey + "\n" + "* Device: " + Build.MANUFACTURER + " " + Build.BRAND + " " + Build.MODEL + " " + Build.PRODUCT + "\n" + "* Android Version: " + Build.VERSION.RELEASE + " API: " + Build.VERSION.SDK_INT + " LeakCanary: " + BuildConfig.LIBRARY_VERSION + " " + BuildConfig.GIT_SHA + "\n" + "* Durations: watch=" + heapDump.watchDurationMs + "ms, gc=" + heapDump.gcDurationMs + "ms, heap dump=" + heapDump.heapDumpDurationMs + "ms, analysis=" + result.analysisDurationMs + "ms" + "\n" + detailedString;
+Hole 2:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: if (detailed)
+{
+  detailedString += "* Excluded Refs:\n" + heapDump.excludedRefs;
+}
+Hole 2:
+[]: info += "* Reference Key: " + heapDump.referenceKey + "\n" + "* Device: " + Build.MANUFACTURER + " " + Build.BRAND + " " + Build.MODEL + " " + Build.PRODUCT + "\n" + "* Android Version: " + Build.VERSION.RELEASE + " API: " + Build.VERSION.SDK_INT + " LeakCanary: " + BuildConfig.LIBRARY_VERSION + "\n" + "* Durations: watch=" + heapDump.watchDurationMs + "ms, gc=" + heapDump.gcDurationMs + "ms, heap dump=" + heapDump.heapDumpDurationMs + "ms, analysis=" + result.analysisDurationMs + "ms" + "\n" + detailedString;
+
+Edit M:
+Hole 1:
+[]: if (detailed)
+{
+  detailedString += "* Excluded Refs:\n" + heapDump.excludedRefs;
+}
+Hole 2:
+[]: info += "* Reference Key: " + heapDump.referenceKey + "\n" + "* Device: " + Build.MANUFACTURER + " " + Build.BRAND + " " + Build.MODEL + " " + Build.PRODUCT + "\n" + "* Android Version: " + Build.VERSION.RELEASE + " API: " + Build.VERSION.SDK_INT + " LeakCanary: " + BuildConfig.LIBRARY_VERSION + " " + BuildConfig.GIT_SHA + "\n" + "* Durations: watch=" + heapDump.watchDurationMs + "ms, gc=" + heapDump.gcDurationMs + "ms, heap dump=" + heapDump.heapDumpDurationMs + "ms, analysis=" + result.analysisDurationMs + "ms" + "\n" + detailedString;
+

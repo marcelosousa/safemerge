@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 48
+File: core/src/main/java/org/elasticsearch/search/sort/FieldSortBuilder.java
+Orig: 4826782b377475171441bd8bfde24965d1a6f1db
+VarA: 801d178ade45da6e444007235322df5c4b02c0cf
+VarB: 63b754aa22c7a712fe40bd7f8e232b0775a4f203
+Merg: 08d989d9b61a5c4a526b64e9b3d80ad4c4a3cb8d

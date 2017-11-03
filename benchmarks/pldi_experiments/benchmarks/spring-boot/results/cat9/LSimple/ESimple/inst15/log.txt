@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 15
+File: spring-boot-samples/spring-boot-sample-actuator/src/test/java/sample/actuator/CorsSampleActuatorApplicationTests.java
+Orig: 9c28637185c4a1fb82ae2683b8368d191efb58b6
+VarA: 10bcf6080348ea2c6e5231c3c8b4c36b3eba2cea
+VarB: 68910f2b8fc14b483009cbf793425823c85e9d2e
+Merg: 9db72450da81dfc6c3d6316af1a101defe67971a

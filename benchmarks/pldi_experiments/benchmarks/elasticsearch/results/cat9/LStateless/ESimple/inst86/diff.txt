@@ -1,0 +1,28 @@
+Merge Instance for method (Ident "HunspellServiceIT",Ident "testLocaleDirectoryWithLocaleSpecificConfig",[])
+public void testLocaleDirectoryWithLocaleSpecificConfig () throws Exception
+{
+  <?HOLE?>
+  internalCluster().startNode(settings);
+  Dictionary dictionary = internalCluster().getInstance(HunspellService.class).getDictionary("en_US");
+  assertThat(dictionary, notNullValue());
+  assertIgnoreCase(false, dictionary);
+  dictionary = internalCluster().getInstance(HunspellService.class).getDictionary("en_US_custom");
+  assertThat(dictionary, notNullValue());
+  assertIgnoreCase(true, dictionary);
+}
+Edit Base:
+Hole 1:
+[]: Settings settings = Settings.settingsBuilder().put("path.conf", getDataPath("/indices/analyze/conf_dir")).put(HUNSPELL_LAZY_LOAD, randomBoolean()).put(HUNSPELL_IGNORE_CASE, true).put("indices.analysis.hunspell.dictionary.en_US.strict_affix_parsing", false).put("indices.analysis.hunspell.dictionary.en_US.ignore_case", false).build();
+
+Edit A:
+Hole 1:
+[]: Settings settings = Settings.settingsBuilder().put("path.conf", getDataPath("/indices/analyze/conf_dir")).put(HUNSPELL_LAZY_LOAD.getKey(), randomBoolean()).put(HUNSPELL_IGNORE_CASE.getKey(), true).put("indices.analysis.hunspell.dictionary.en_US.strict_affix_parsing", false).put("indices.analysis.hunspell.dictionary.en_US.ignore_case", false).build();
+
+Edit B:
+Hole 1:
+[]: Settings settings = Settings.settingsBuilder().put(Environment.PATH_CONF_SETTING.getKey(), getDataPath("/indices/analyze/conf_dir")).put(HUNSPELL_LAZY_LOAD, randomBoolean()).put(HUNSPELL_IGNORE_CASE, true).put("indices.analysis.hunspell.dictionary.en_US.strict_affix_parsing", false).put("indices.analysis.hunspell.dictionary.en_US.ignore_case", false).build();
+
+Edit M:
+Hole 1:
+[]: Settings settings = Settings.settingsBuilder().put(Environment.PATH_CONF_SETTING.getKey(), getDataPath("/indices/analyze/conf_dir")).put(HUNSPELL_LAZY_LOAD.getKey(), randomBoolean()).put(HUNSPELL_IGNORE_CASE.getKey(), true).put("indices.analysis.hunspell.dictionary.en_US.strict_affix_parsing", false).put("indices.analysis.hunspell.dictionary.en_US.ignore_case", false).build();
+

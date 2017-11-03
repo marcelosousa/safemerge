@@ -1,0 +1,43 @@
+Merge Instance for method (Ident "ResourceServerTokenServicesConfigurationTests",Ident "switchToJwt",[])
+@Test
+ public void switchToJwt ()
+{
+  EnvironmentTestUtils.addEnvironment(this.environment, "security.oauth2.resource.jwt.keyValue=FOOBAR");
+  <?HOLE?>
+  DefaultTokenServices services = this.context.getBean(DefaultTokenServices.class);
+  assertThat(services).isNotNull();
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: this.context = new SpringApplicationBuilder(ResourceConfiguration.class).environment(this.environment).web(false).run();
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: this.context = new SpringApplicationBuilder(ResourceConfiguration.class).environment(this.environment).web(WebApplicationType.NONE).run();
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: this.context = new SpringApplicationBuilder(ResourceConfiguration.class).environment(this.environment).web(false).run();
+Hole 2:
+[]: this.thrown.expect(NoSuchBeanDefinitionException.class);
+Hole 3:
+[]: this.context.getBean(RemoteTokenServices.class);
+
+Edit M:
+Hole 1:
+[]: this.context = new SpringApplicationBuilder(ResourceConfiguration.class).environment(this.environment).web(WebApplicationType.NONE).run();
+Hole 2:
+[]: this.thrown.expect(NoSuchBeanDefinitionException.class);
+Hole 3:
+[]: this.context.getBean(RemoteTokenServices.class);
+

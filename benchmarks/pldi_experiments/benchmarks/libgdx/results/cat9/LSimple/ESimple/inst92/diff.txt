@@ -1,0 +1,21 @@
+Merge Instance for method (Ident "JglfwGL10",Ident "glGenTextures",[PrimType IntT,RefType (ClassRefType (ClassType [(Ident "IntBuffer",[])]))])
+public void glGenTextures (int n, IntBuffer textures)
+{
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: GL.glGenTexturesEXT(n, textures, Memory.getPosition(textures));
+
+Edit A:
+Hole 1:
+[]: GL.glGenTexturesEXT(n, textures, getPosition(textures));
+
+Edit B:
+Hole 1:
+[]: GL.glGenTextures(n, textures, Memory.getPosition(textures));
+
+Edit M:
+Hole 1:
+[]: GL.glGenTextures(n, textures, getPosition(textures));
+

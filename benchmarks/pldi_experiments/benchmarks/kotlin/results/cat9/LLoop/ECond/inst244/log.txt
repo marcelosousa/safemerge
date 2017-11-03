@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 244
+File: compiler/frontend.java/src/org/jetbrains/jet/lang/resolve/java/JavaDescriptorResolver.java
+Orig: 5c819cb77e5d48a7fbe2b0bebdd3d3e4f1f4497e
+VarA: 3551b44c07738f80a2fe5de81e21c23a01557e08
+VarB: e153d97734fa4370966542b8110c2d43096c3692
+Merg: acc83d38141738dd3042a8d5bba5a01c7a241521

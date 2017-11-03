@@ -1,0 +1,37 @@
+Merge Instance for method (Ident "ImageViewActionTest",Ident "invokesTargetAndCallbackSuccessIfTargetIsNotNull",[])
+@Test
+ public void invokesTargetAndCallbackSuccessIfTargetIsNotNull () throws Exception
+{
+  Bitmap bitmap = makeBitmap();
+  <?HOLE?>
+  ImageView target = mockImageViewTarget();
+  Callback callback = mockCallback();
+  <?HOLE?>
+  request.complete(bitmap, MEMORY);
+  verify(target).setImageDrawable(any(PicassoDrawable.class));
+  verify(callback).onSuccess();
+}
+Edit Base:
+Hole 1:
+[]: Picasso picasso = new Picasso(Robolectric.application, mock(Dispatcher.class), Cache.NONE, null, IDENTITY, null, mock(Stats.class), false, false);
+Hole 2:
+[]: ImageViewAction request = new ImageViewAction(picasso, target, null, false, false, 0, null, URI_KEY_1, null, callback);
+
+Edit A:
+Hole 1:
+[]: Picasso picasso = new Picasso(Robolectric.application, mock(Dispatcher.class), Cache.NONE, null, IDENTITY, null, mock(Stats.class), false, false);
+Hole 2:
+[]: ImageViewAction request = new ImageViewAction(picasso, target, null, 0, false, 0, null, URI_KEY_1, null, callback);
+
+Edit B:
+Hole 1:
+[]: Picasso picasso = new Picasso(Robolectric.application, mock(Dispatcher.class), Cache.NONE, null, IDENTITY, null, mock(Stats.class), Bitmap.Config.ARGB_8888, false, false);
+Hole 2:
+[]: ImageViewAction request = new ImageViewAction(picasso, target, null, false, false, 0, null, URI_KEY_1, null, callback);
+
+Edit M:
+Hole 1:
+[]: Picasso picasso = new Picasso(Robolectric.application, mock(Dispatcher.class), Cache.NONE, null, IDENTITY, null, mock(Stats.class), Bitmap.Config.ARGB_8888, false, false);
+Hole 2:
+[]: ImageViewAction request = new ImageViewAction(picasso, target, null, 0, false, 0, null, URI_KEY_1, null, callback);
+

@@ -1,0 +1,106 @@
+Merge Instance for method (Ident "AbstractJetFindUsagesTest",Ident "doTest",[RefType (ClassRefType (ClassType [(Ident "String",[])]))])
+protected <T extends PsiElement> void doTest (@NotNull
+                                              String path) throws Exception
+{
+  File mainFile = new File(path);
+  final String mainFileName = mainFile.getName();
+  <?HOLE?>
+  final String prefix = mainFileName.substring(0, (mainFileName.indexOf('.') + 1));
+  List<String> caretElementClassNames = InTextDirectivesUtils.findLinesWithPrefixesRemoved(mainFileText, "// PSI_ELEMENT: ");
+  assert caretElementClassNames.size() == 1;
+  Class<T> caretElementClass = (Class<T>) Class.forName(caretElementClassNames.get(0));
+  OptionsParser parser = OptionsParser.getParserByPsiElementClass(caretElementClass);
+  String rootPath = path.substring(0, (path.lastIndexOf("/") + 1));
+  File rootDir = new File(rootPath);
+  File[] extraFiles = rootDir.listFiles(new FilenameFilter()
+                                        {
+                                          @Override
+                                          public boolean accept (@NotNull
+                                                                 File dir, @NotNull
+                                                                           String name)
+                                          {
+                                            if (!name.startsWith(prefix) || name.equals(mainFileName))
+                                              return false;
+                                            String ext = name.substring((name.lastIndexOf('.') + 1));
+                                            return (ext.equals("kt") || ext.equals("java"));
+                                          }
+                                        });
+  assert extraFiles != null;
+  for (File file : extraFiles) {
+                                 myFixture.configureByFile((rootPath + file.getName()));
+                               }
+  myFixture.configureByFile(path);
+  T caretElement = PsiTreeUtil.getParentOfType(myFixture.getElementAtCaret(), caretElementClass, false);
+  assertNotNull(String.format("Element with type '%s' wasn't found at caret position", caretElementClass), caretElement);
+  FindUsagesOptions options = parser != null ? parser.parse(mainFileText, getProject()) : null;
+  Collection<UsageInfo> usageInfos = findUsages(caretElement, options);
+  Collection<UsageInfo2UsageAdapter> filteredUsages = getUsageAdapters(getTestFilteringRules(mainFileText, "// FILTERING_RULES: "), usageInfos);
+  <?HOLE?>
+  Collection<String> finalUsages = Ordering.natural().sortedCopy(Collections2.transform(filteredUsages, convertToString));
+  String expectedText = FileUtil.loadFile(new File(rootPath, (prefix + "results.txt")), true);
+  assertOrderedEquals(finalUsages, Ordering.natural().sortedCopy(StringUtil.split(expectedText, "\n")));
+}
+Edit Base:
+Hole 1:
+[]: String mainFileText = FileUtil.loadFile(mainFile);
+Hole 2:
+[]: Function<UsageInfo2UsageAdapter, String> convertToString = new Function<UsageInfo2UsageAdapter, String>()
+                                                           {
+                                                             @Override
+                                                             public String apply (@Nullable
+                                                                                  UsageInfo2UsageAdapter usageAdapter)
+                                                             {
+                                                               assert usageAdapter != null;
+                                                               UsageType usageType = getUsageType(usageAdapter.getElement());
+                                                               String usageTypeAsString = usageType == null ? "null" : usageType.toString(USAGE_VIEW_PRESENTATION);
+                                                               return usageTypeAsString + " " + Joiner.on("").join(Arrays.asList(usageAdapter.getPresentation().getText()));
+                                                             }
+                                                           };
+
+Edit A:
+Hole 1:
+[]: String mainFileText = FileUtil.loadFile(mainFile);
+Hole 2:
+[]: Function<UsageInfo2UsageAdapter, String> convertToString = new Function<UsageInfo2UsageAdapter, String>()
+                                                           {
+                                                             @Override
+                                                             public String apply (@Nullable
+                                                                                  UsageInfo2UsageAdapter usageAdapter)
+                                                             {
+                                                               assert usageAdapter != null;
+                                                               return getUsageType(usageAdapter.getElement()) + " " + Joiner.on("").join(Arrays.asList(usageAdapter.getPresentation().getText()));
+                                                             }
+                                                           };
+
+Edit B:
+Hole 1:
+[]: String mainFileText = FileUtil.loadFile(mainFile, true);
+Hole 2:
+[]: Function<UsageInfo2UsageAdapter, String> convertToString = new Function<UsageInfo2UsageAdapter, String>()
+                                                           {
+                                                             @Override
+                                                             public String apply (@Nullable
+                                                                                  UsageInfo2UsageAdapter usageAdapter)
+                                                             {
+                                                               assert usageAdapter != null;
+                                                               UsageType usageType = getUsageType(usageAdapter.getElement());
+                                                               String usageTypeAsString = usageType == null ? "null" : usageType.toString(USAGE_VIEW_PRESENTATION);
+                                                               return usageTypeAsString + " " + Joiner.on("").join(Arrays.asList(usageAdapter.getPresentation().getText()));
+                                                             }
+                                                           };
+
+Edit M:
+Hole 1:
+[]: String mainFileText = FileUtil.loadFile(mainFile, true);
+Hole 2:
+[]: Function<UsageInfo2UsageAdapter, String> convertToString = new Function<UsageInfo2UsageAdapter, String>()
+                                                           {
+                                                             @Override
+                                                             public String apply (@Nullable
+                                                                                  UsageInfo2UsageAdapter usageAdapter)
+                                                             {
+                                                               assert usageAdapter != null;
+                                                               return getUsageType(usageAdapter.getElement()) + " " + Joiner.on("").join(Arrays.asList(usageAdapter.getPresentation().getText()));
+                                                             }
+                                                           };
+

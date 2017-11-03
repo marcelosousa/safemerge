@@ -1,0 +1,124 @@
+Merge Instance for method (Ident "PrefixQueryParser",Ident "parse",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])]))])
+@Override
+ public Query parse (QueryParseContext parseContext) throws IOException, QueryParsingException
+{
+  XContentParser parser = parseContext.parser();
+  String fieldName = parser.currentName();
+  String rewriteMethod = null;
+  String queryName = null;
+  Object value = null;
+  <?HOLE?>
+  String currentFieldName = null;
+  XContentParser.Token token;
+  while (token = parser.nextToken() != XContentParser.Token.END_OBJECT)
+  {
+    if (token == XContentParser.Token.FIELD_NAME)
+    {
+      currentFieldName = parser.currentName();
+    }
+    else
+      if (parseContext.isDeprecatedSetting(currentFieldName))
+      {
+      }
+      else
+        if (token == XContentParser.Token.START_OBJECT)
+        {
+          fieldName = currentFieldName;
+          while (token = parser.nextToken() != XContentParser.Token.END_OBJECT)
+          {
+            if (token == XContentParser.Token.FIELD_NAME)
+            {
+              currentFieldName = parser.currentName();
+            }
+            else
+            {
+              if ("_name".equals(currentFieldName))
+              {
+                queryName = parser.text();
+              }
+              else
+                if ("value".equals(currentFieldName) || "prefix".equals(currentFieldName))
+                {
+                  value = parser.objectBytes();
+                }
+                else
+                  if ("boost".equals(currentFieldName))
+                  {
+                    boost = parser.floatValue();
+                  }
+                  else
+                    if ("rewrite".equals(currentFieldName))
+                    {
+                      rewriteMethod = parser.textOrNull();
+                    }
+                    else
+                    {
+                      throw new QueryParsingException(parseContext, "[regexp] query does not support [" + currentFieldName + "]");
+                    }
+            }
+          }
+        }
+        else
+        {
+          if ("_name".equals(currentFieldName))
+          {
+            queryName = parser.text();
+          }
+          else
+          {
+            fieldName = currentFieldName;
+            value = parser.objectBytes();
+          }
+        }
+  }
+  if (value == null)
+  {
+    throw new QueryParsingException(parseContext, "No value specified for prefix query");
+  }
+  <?HOLE?>
+  Query query = null;
+  MappedFieldType fieldType = parseContext.fieldMapper(fieldName);
+  if (fieldType != null)
+  {
+    query = fieldType.prefixQuery(value, method, parseContext);
+  }
+  if (query == null)
+  {
+    PrefixQuery prefixQuery = new PrefixQuery(new Term(fieldName, BytesRefs.toBytesRef(value)));
+    if (method != null)
+    {
+      prefixQuery.setRewriteMethod(method);
+    }
+    query = prefixQuery;
+  }
+  query.setBoost(boost);
+  if (queryName != null)
+  {
+    parseContext.addNamedQuery(queryName, query);
+  }
+  return query;
+}
+Edit Base:
+Hole 1:
+[]: float boost = 1.0F;
+Hole 2:
+[]: MultiTermQuery.RewriteMethod method = QueryParsers.parseRewriteMethod(rewriteMethod, null);
+
+Edit A:
+Hole 1:
+[]: float boost = AbstractQueryBuilder.DEFAULT_BOOST;
+Hole 2:
+[]: MultiTermQuery.RewriteMethod method = QueryParsers.parseRewriteMethod(rewriteMethod, null);
+
+Edit B:
+Hole 1:
+[]: float boost = 1.0F;
+Hole 2:
+[]: MultiTermQuery.RewriteMethod method = QueryParsers.parseRewriteMethod(parseContext.parseFieldMatcher(), rewriteMethod, null);
+
+Edit M:
+Hole 1:
+[]: float boost = AbstractQueryBuilder.DEFAULT_BOOST;
+Hole 2:
+[]: MultiTermQuery.RewriteMethod method = QueryParsers.parseRewriteMethod(parseContext.parseFieldMatcher(), rewriteMethod, null);
+
