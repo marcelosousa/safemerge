@@ -23,8 +23,6 @@ type Params = Map Ident [(AST,Sort)]
 type Res    = [AST]
 type Fields = Map Ident FuncDecl
 type Prop   = (Params, Res, Fields) -> Z3 (AST, AST)
--- VId - Version Identifier
-type VId    = Int 
 
 -- SSA map to build a simple SSA representation on the fly
 -- | Model of a SSA Variable
@@ -70,7 +68,7 @@ data Env = Env
   , _e_fnmap   :: FunctMap  -- function map
   , _e_pre     :: AST
   , _e_classes :: [ClassSum]
-  , _e_edits   :: [AnnEdit]
+  , _e_edits   :: AnnEdits
   , _e_debug   :: Bool
   , _e_numret  :: Int
   , _e_vids    :: [VId] 

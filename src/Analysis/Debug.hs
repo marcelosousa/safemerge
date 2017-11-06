@@ -20,6 +20,8 @@ import Language.Java.Syntax
 import System.Console.ANSI
 import Z3.Monad
 
+import qualified Data.Map as M
+
 breaker :: String
 breaker = "=========================================="
 header  = "=============ANALYSER STATE==============="
@@ -94,7 +96,7 @@ printProg b stmts = do
 printEdits :: EnvOp ()
 printEdits = do
   env@Env{..} <- get
-  let holes       = transpose _e_edits
+  let holes       = transpose $ M.elems _e_edits
       h_holes     = zip holes [1..]
       edits     h = zip h     [1..]
       h_edit    1 = "Edit Base:      "

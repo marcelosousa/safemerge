@@ -12,6 +12,7 @@ module Analysis.Model.ArrayList (arrayListInit,arrayListModel,arrayListAxioms,ar
 import Analysis.API
 import Analysis.Debug
 import Analysis.Types
+import Edit.Types
 import Analysis.Util
 import Control.Monad.State.Strict
 import Language.Java.Syntax

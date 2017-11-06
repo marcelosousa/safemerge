@@ -119,7 +119,7 @@ flatten_switch_block (AnnSwitchBlock pid l b) =
 
 --
 -- | Whole product construction
-wholeProduct :: MemberDecl -> [Edit] -> (AnnMemberDecl,[AnnEdit]) 
+wholeProduct :: MemberDecl -> [Edit] -> (AnnMemberDecl,AnnEdits) 
 wholeProduct _mth _es = 
   let _n_es = map (\(vId,_e) -> toAnn [vId] $ fst $ apply_edit_member _mth _e) $ zip [1,2,3,4] _es 
       _n_bs = map ann_mth_body _n_es
@@ -128,4 +128,4 @@ wholeProduct _mth _es =
       body = miniproduct _n_ss 
       AnnMethodDecl _1 _2 _3 _4 _5 _6 _ = head _n_es
       n_o = AnnMethodDecl _1 _2 _3 _4 _5 _6 (AnnMethodBody (Just (AnnBlock body)))
-  in (n_o,[])
+  in (n_o,M.empty)

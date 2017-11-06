@@ -19,12 +19,15 @@ import qualified Debug.Trace as T
 
 data Scope = SLoop | SCond 
   deriving (Eq,Ord,Show)
-type SEdit = (BlockStmt,[Scope])
-type Edit = [SEdit]
-type Edits = [(Edit,Edit,Edit,Edit)]
-type AnnEdit = [AnnBlockStmt] 
-type AnnAnnEdits = [(AnnEdit,AnnEdit,AnnEdit,AnnEdit)]
-type Method = ([FormalParam],Block) 
+type SEdit    = (BlockStmt,[Scope])
+type Edit     = [SEdit]
+type Edits    = [(Edit,Edit,Edit,Edit)]
+type AnnEdit  = [AnnBlockStmt] 
+type AnnEdits = Map VId AnnEdit -- [(AnnEdit,AnnEdit,AnnEdit,AnnEdit)]
+type Method   = ([FormalParam],Block) 
+
+-- VId - Version Identifier
+type VId    = Int 
 
 -- First filter: Get loop changes
 loop_scope :: Edit -> Bool

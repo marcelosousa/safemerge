@@ -177,18 +177,23 @@ updatePre pre = do
   put s{ _e_pre = pre }
 
 -- | Replace Edit Scripts 
-updateEdits :: [AnnEdit] -> EnvOp ()
+updateEdits :: AnnEdits -> EnvOp ()
 updateEdits edits = do
   s@Env{..} <- get
   put s{ _e_edits = edits }
 
 -- | Pop Edits
-popEdits :: EnvOp [AnnBlockStmt]
-popEdits = do
+popEdits :: [AnnBlockStmt] ->  VId -> EnvOp [AnnBlockStmt]
+popEdits ed vId = do
   s@Env{..} <- get
-  let (res,edits) = unzip $ map (\e -> (head e, tail e)) _e_edits 
-  put s { _e_edits = edits }
-  return res 
+  wizPrint $ "popEdits: vId = " ++ show vId ++ ", |Edit| = " ++ show _e_edits
+  case M.lookup vId _e_edits of
+    Nothing -> error $ "popEdits: no entry for vId = " ++ show vId
+    Just e  -> do 
+      let res  = head e
+          edits = M.insert vId (tail e) _e_edits 
+      put s { _e_edits = edits }
+      return (res:ed) 
 
 -- | Increment Return Counter
 updateNumRet :: EnvOp ()

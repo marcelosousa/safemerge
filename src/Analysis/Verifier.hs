@@ -48,7 +48,7 @@ wiz_meth mode diff@MInst{..} (mth_id,mth,e_o,e_a,e_b,e_m) = do
       (f_mth,f_edits) = case mode of
         Prod -> wholeProduct _mth _es 
         _ -> let f_mth = toAnn [1,2,3,4] _mth
-                 f_es  = map (\(vId,_e) -> map (toAnn [vId]) _e) $ zip [1,2,3,4] _es 
+                 f_es  = M.fromList $ map (\(vId,_e) -> (vId, map (toAnn [vId]) _e)) $ zip [1,2,3,4] _es 
              in (f_mth,f_es)
       classes = map (findClass mth_id) [_o_info,_a_info,_b_info,_m_info]
   res <- evalZ3 $ verify mode m_mth (mth_id,f_mth) classes f_edits 
@@ -59,7 +59,7 @@ wiz_meth mode diff@MInst{..} (mth_id,mth,e_o,e_a,e_b,e_m) = do
       putStrLn str    
 
 -- The main verification function
-verify :: WMode -> MemberDecl -> (MIdent,AnnMemberDecl) -> [ClassSum]-> [AnnEdit] -> Z3 (Maybe String)
+verify :: WMode -> MemberDecl -> (MIdent,AnnMemberDecl) -> [ClassSum]-> AnnEdits -> Z3 (Maybe String)
 verify mode m (mid,mth) classes edits = do 
  -- compute the set of inputs 
  -- i. union the fields of all classes
@@ -190,14 +190,14 @@ analyseExp vIds _exp rest =
 -- | The analysis of a hole
 --   Assume that there are no nested holes
 analyseHole :: [VId] -> ProdProgram -> EnvOp () 
-analyseHole vId rest =
- if every vId 
- then do
+analyseHole vId rest = do
+-- if every vId 
+-- then do
   -- Get the edit statements for this hole.
-  edits <- popEdits
+  edits <- foldM popEdits [] vId
   let prod_prog = miniproduct edits
   analyse $ prod_prog ++ rest
- else error $ "analyse_hole: vIds = " ++ show vId
+-- else error $ "analyse_hole: vIds = " ++ show vId
 
 -- Analyse If Then Else
 -- Call the analyse over both branches to obtain the VCs 
@@ -226,44 +226,32 @@ analyseIf vId cond s1 s2 cont = do
   condAst <- lift $ mkAnd condSmt
   ncondSmt <- lift $ mapM mkNot condSmt
   ncondAst <- lift $ mkAnd ncondSmt
- -- (rThen,_)   <- lift $ local $ helper (_e_pre env) condAst 
- -- (rElse,_)   <- lift $ local $ helper (_e_pre env) ncondAst 
- -- if rThen == Unsat && rElse == Unsat 
- -- then do 
+  (rThen,_)   <- lift $ local $ helper (_e_pre env) condAst 
+  (rElse,_)   <- lift $ local $ helper (_e_pre env) ncondAst 
+  if rThen == Unsat || rElse == Unsat 
+  then do 
   -- then branch
-  preThen  <- lift $ mkAnd ((_e_pre env):condSmt)
-  updatePre preThen
-  _        <- analyse [AnnBlockStmt s1] 
-  env_then <- get
-  --env_then <- do
-  --  rThen <- lift $ checkSAT preThen
-  --  case rThen of 
-  --    Unsat -> return env
-  --    Sat   -> do
-  --     updatePre preThen
-  --     _        <- analyse [AnnBlockStmt s1] 
-  --     get
-  -- else branch
-  put env
-  updateEdits (_e_edits env_then)
-  updateConsts (_e_consts env_then)
-  ncondSmt <- lift $ mapM mkNot condSmt
-  preElse  <- lift $ mkAnd ((_e_pre env):ncondSmt)
-  updatePre preElse
-  _        <- analyse [AnnBlockStmt s2]
-  env_else <- get
-  --env_else <- do
-  --  rElse <- lift $ checkSAT preElse 
-  --  case rElse of 
-  --    Unsat -> get 
-  --    Sat   -> do
-  --     updatePre preElse
-  --     _        <- analyse [AnnBlockStmt s2]
-  --     get
-  new_env  <- joinEnv env env_then env_else
-  put new_env
-  analyse cont
- -- else error $ "analyseIf: not all variants are taking the same path"
+    preThen  <- lift $ mkAnd ((_e_pre env):condSmt)
+    updatePre preThen
+    _        <- analyse [AnnBlockStmt s1] 
+    env_then <- get
+    -- else branch
+    put env
+    updateEdits (_e_edits env_then)
+    updateConsts (_e_consts env_then)
+    ncondSmt <- lift $ mapM mkNot condSmt
+    preElse  <- lift $ mkAnd ((_e_pre env):ncondSmt)
+    updatePre preElse
+    _        <- analyse [AnnBlockStmt s2]
+    env_else <- get
+    new_env  <- joinEnv env env_then env_else
+    put new_env
+    analyse cont
+  else do
+    --error $ "analyseIf: not all variants are taking the same path"
+    let ifs = map (\i -> AnnBlockStmt $ AnnIfThenElse [i] cond (toAnn [i] ((fromAnn s1)::Stmt)) (toAnn [i] ((fromAnn s2)::Stmt))) vId
+    analyse $ ifs ++ cont  
+
 
 -- Analyse Loops
 --  Houdini style loop invariant generation

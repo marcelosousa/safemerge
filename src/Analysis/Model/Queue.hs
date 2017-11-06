@@ -11,6 +11,7 @@ module Analysis.Model.Queue (queueInit,queueModel,queueAxioms) where
 
 import Analysis.API
 import Analysis.Types
+import Edit.Types
 import Analysis.Util
 import Control.Monad.State.Strict
 import Language.Java.Syntax

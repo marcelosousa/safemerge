@@ -19,6 +19,7 @@ import Data.Char
 import Data.List
 import Data.Map (Map)
 import Data.Maybe
+import Edit.Types
 import Language.Java.Pretty
 import Language.Java.Syntax
 import Util
