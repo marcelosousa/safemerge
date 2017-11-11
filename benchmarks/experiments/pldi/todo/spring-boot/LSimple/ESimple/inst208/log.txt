@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 208
+File: spring-boot-tools/spring-boot-configuration-processor/src/main/java/org/springframework/boot/configurationprocessor/ConfigurationMetadataAnnotationProcessor.java
+Orig: 6a68c8f7e06a455efd8e3dde19d47fb3f813e7b2
+VarA: e97b703a207bb9517f4215313d28cfe999481446
+VarB: 7f8849c62be829cdef5e5124097bd5c985135e14
+Merg: f6959ccbcd9692cda861e6f105456b8159d9a7b7

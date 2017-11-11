@@ -1,0 +1,106 @@
+verify: relational VC
+(and (= savedInstanceState_4_0!3 savedInstanceState_3_0!2)
+     (= savedInstanceState_3_0!2 savedInstanceState_2_0!1)
+     (= savedInstanceState_2_0!1 savedInstanceState_1_0!0)
+     (= SCREEN_LABEL_4_0!7 SCREEN_LABEL_3_0!6)
+     (= SCREEN_LABEL_3_0!6 SCREEN_LABEL_2_0!5)
+     (= SCREEN_LABEL_2_0!5 SCREEN_LABEL_1_0!4)
+     (= mDatabaseReference_4_0!11 mDatabaseReference_3_0!10)
+     (= mDatabaseReference_3_0!10 mDatabaseReference_2_0!9)
+     (= mDatabaseReference_2_0!9 mDatabaseReference_1_0!8)
+     (= mPresenter_4_0!15 mPresenter_3_0!14)
+     (= mPresenter_3_0!14 mPresenter_2_0!13)
+     (= mPresenter_2_0!13 mPresenter_1_0!12)
+     (= feedFragment_1_1!40
+        (getSupportFragmentManager.findFragmentById.FeedFragment!42
+          id.main_content.R!41))
+     (= feedFragment_2_1!43
+        (getSupportFragmentManager.findFragmentById.FeedFragment!42
+          id.main_content.R!41))
+     (= feedFragment_3_1!44
+        (getSupportFragmentManager.findFragmentById.FeedFragment!42
+          id.main_content.R!41))
+     (= feedFragment_4_1!45
+        (getSupportFragmentManager.findFragmentById.FeedFragment!42
+          id.main_content.R!41))
+     (= feedFragment_4_2!47 (setRetainInstance!46 feedFragment_4_1!45 true))
+     (= feedFragment_3_2!48 (setRetainInstance!46 feedFragment_3_1!44 true))
+     (= mPresenter_1_1!50
+        (Anonymous0!49 feedFragment_1_1!40 mPresenter_1_0!12 mPresenter_1_0!12))
+     (= mPresenter_2_1!51
+        (Anonymous0!49 feedFragment_2_1!43 mPresenter_2_0!13 mPresenter_2_0!13))
+     (= mPresenter_3_1!52
+        (Anonymous0!49 feedFragment_3_2!48 mPresenter_3_0!14 mPresenter_3_0!14))
+     (= mPresenter_4_1!53
+        (Anonymous0!49 feedFragment_4_2!47 mPresenter_4_0!15 mPresenter_4_0!15))
+     (= feedFragment_1_2!55
+        (Anonymous1!54 feedFragment_1_1!40 mPresenter_1_1!50 mPresenter_1_1!50))
+     (= feedFragment_2_2!56
+        (Anonymous1!54 feedFragment_2_1!43 mPresenter_2_1!51 mPresenter_2_1!51))
+     (= feedFragment_3_3!57
+        (Anonymous1!54 feedFragment_3_2!48 mPresenter_3_1!52 mPresenter_3_1!52))
+     (= feedFragment_4_3!58
+        (Anonymous1!54 feedFragment_4_2!47 mPresenter_4_1!53 mPresenter_4_1!53))
+     (= mPresenter_1_2!60
+        (Anonymous2!59 feedFragment_1_2!55 mPresenter_1_1!50 mPresenter_1_1!50))
+     (= mPresenter_2_2!61
+        (Anonymous2!59 feedFragment_2_2!56 mPresenter_2_1!51 mPresenter_2_1!51))
+     (= mPresenter_3_2!62
+        (Anonymous2!59 feedFragment_3_3!57 mPresenter_3_1!52 mPresenter_3_1!52))
+     (= mPresenter_4_2!63
+        (Anonymous2!59 feedFragment_4_3!58 mPresenter_4_1!53 mPresenter_4_1!53))
+     (= mDatabaseReference_2_1!64
+        (child!67 getInstance.getReference.FirebaseDatabase!66
+                  _STR_CONST_feed!65))
+     (= mDatabaseReference_1_1!68
+        (child!67 getInstance.getReference.FirebaseDatabase!66
+                  _STR_CONST_feed!65))
+     (= mPresenter_2_3!70
+        (initializeDataListener!69 mPresenter_2_2!61 mDatabaseReference_2_1!64))
+     (= mPresenter_1_3!71
+        (initializeDataListener!69 mPresenter_1_2!60 mDatabaseReference_1_1!68))
+     (= ret_SCREEN_LABEL_1_0!16 SCREEN_LABEL_1_0!4)
+     (= ret_mDatabaseReference_1_0!20 mDatabaseReference_1_1!68)
+     (= ret_mPresenter_1_0!24 mPresenter_1_3!71)
+     (= ret_SCREEN_LABEL_2_0!17 SCREEN_LABEL_2_0!5)
+     (= ret_mDatabaseReference_2_0!21 mDatabaseReference_2_1!64)
+     (= ret_mPresenter_2_0!25 mPresenter_2_3!70)
+     (= ret_SCREEN_LABEL_3_0!18 SCREEN_LABEL_3_0!6)
+     (= ret_mDatabaseReference_3_0!22 mDatabaseReference_3_0!10)
+     (= ret_mPresenter_3_0!26 mPresenter_3_2!62)
+     (= ret_SCREEN_LABEL_4_0!19 SCREEN_LABEL_4_0!7)
+     (= ret_mDatabaseReference_4_0!23 mDatabaseReference_4_0!11)
+     (= ret_mPresenter_4_0!27 mPresenter_4_2!63))
+verify: semantic conflict VC
+(let ((a!1 (=> (not (and (= ret_mPresenter_1_0!24 ret_mPresenter_2_0!25)))
+               (and (= ret_mPresenter_4_0!27 ret_mPresenter_2_0!25))))
+      (a!2 (=> (not (and (= ret_mPresenter_1_0!24 ret_mPresenter_3_0!26)))
+               (and (= ret_mPresenter_4_0!27 ret_mPresenter_3_0!26))))
+      (a!4 (=> (not (and (= ret_mDatabaseReference_1_0!20
+                            ret_mDatabaseReference_2_0!21)))
+               (and (= ret_mDatabaseReference_4_0!23
+                       ret_mDatabaseReference_2_0!21))))
+      (a!5 (=> (not (and (= ret_mDatabaseReference_1_0!20
+                            ret_mDatabaseReference_3_0!22)))
+               (and (= ret_mDatabaseReference_4_0!23
+                       ret_mDatabaseReference_3_0!22))))
+      (a!7 (=> (not (and (= ret_SCREEN_LABEL_1_0!16 ret_SCREEN_LABEL_2_0!17)))
+               (and (= ret_SCREEN_LABEL_4_0!19 ret_SCREEN_LABEL_2_0!17))))
+      (a!8 (=> (not (and (= ret_SCREEN_LABEL_1_0!16 ret_SCREEN_LABEL_3_0!18)))
+               (and (= ret_SCREEN_LABEL_4_0!19 ret_SCREEN_LABEL_3_0!18)))))
+(let ((a!3 (or (and (and (= ret_mPresenter_4_0!27 ret_mPresenter_2_0!25))
+                    (and (= ret_mPresenter_4_0!27 ret_mPresenter_3_0!26))
+                    (= ret_mPresenter_1_0!24 ret_mPresenter_4_0!27))
+               (and a!1 a!2)))
+      (a!6 (or (and (and (= ret_mDatabaseReference_4_0!23
+                            ret_mDatabaseReference_2_0!21))
+                    (and (= ret_mDatabaseReference_4_0!23
+                            ret_mDatabaseReference_3_0!22))
+                    (= ret_mDatabaseReference_1_0!20
+                       ret_mDatabaseReference_4_0!23))
+               (and a!4 a!5)))
+      (a!9 (or (and (and (= ret_SCREEN_LABEL_4_0!19 ret_SCREEN_LABEL_2_0!17))
+                    (and (= ret_SCREEN_LABEL_4_0!19 ret_SCREEN_LABEL_3_0!18))
+                    (= ret_SCREEN_LABEL_1_0!16 ret_SCREEN_LABEL_4_0!19))
+               (and a!7 a!8))))
+  (and a!3 a!6 a!9)))

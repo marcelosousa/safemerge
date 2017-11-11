@@ -1,0 +1,85 @@
+Merge Instance for method (Ident "RestAdapter",Ident "logAndReplaceRequest",[RefType (ClassRefType (ClassType [(Ident "Request",[])]))])
+private Request logAndReplaceRequest (Request request) throws IOException
+{
+  log.log(String.format("---> HTTP %s %s", request.getMethod(), request.getUrl()));
+  if (logLevel.ordinal() >= LogLevel.HEADERS.ordinal())
+  {
+    for (Header header : request.getHeaders()) {
+                                                 <?HOLE?>
+                                               }
+    long bodySize = 0;
+    TypedOutput body = request.getBody();
+    if (body != null)
+    {
+      bodySize = body.length();
+      String bodyMime = body.mimeType();
+      if (bodyMime != null)
+      {
+        log.log(("Content-Type: " + bodyMime));
+      }
+      if (bodySize != -1)
+      {
+        log.log(("Content-Length: " + bodySize));
+      }
+      if (logLevel.ordinal() >= LogLevel.FULL.ordinal())
+      {
+        if (!request.getHeaders().isEmpty())
+        {
+          log.log("");
+        }
+        if (!(body instanceof TypedByteArray))
+        {
+          request = Utils.readBodyToBytesIfNecessary(request);
+          body = request.getBody();
+        }
+        byte[] bodyBytes = ((TypedByteArray) body).getBytes();
+        bodySize = bodyBytes.length;
+        String bodyCharset = MimeUtil.parseCharset(bodyMime);
+        <?HOLE?>
+        <?HOLE?>
+      }
+    }
+    log.log(String.format("---> END HTTP (%s-byte body)", bodySize));
+  }
+  return request;
+}
+Edit Base:
+Hole 1:
+[SLoop,SCond]: log.log((header.getName() + ": " + header.getValue()));
+Hole 2:
+[SCond,SCond,SCond]: String bodyString = new String(bodyBytes, bodyCharset);
+Hole 3:
+[SCond,SCond,SCond]: for (int i = 0, len = bodyString.length() ; i < len ; i += LOG_CHUNK_SIZE)
+{
+  int end = Math.min(len, (i + LOG_CHUNK_SIZE));
+  log.log(bodyString.substring(i, end));
+}
+
+Edit A:
+Hole 1:
+[SLoop,SCond]: log.log((header.getName() + ": " + header.getValue()));
+Hole 2:
+[SCond,SCond,SCond]: log.log(new String(bodyBytes, bodyCharset));
+Hole 3:
+[SCond,SCond,SCond]: <SKIP>
+
+Edit B:
+Hole 1:
+[SLoop,SCond]: log.log(header.toString());
+Hole 2:
+[SCond,SCond,SCond]: String bodyString = new String(bodyBytes, bodyCharset);
+Hole 3:
+[SCond,SCond,SCond]: for (int i = 0, len = bodyString.length() ; i < len ; i += LOG_CHUNK_SIZE)
+{
+  int end = Math.min(len, (i + LOG_CHUNK_SIZE));
+  log.log(bodyString.substring(i, end));
+}
+
+Edit M:
+Hole 1:
+[SLoop,SCond]: log.log(header.toString());
+Hole 2:
+[SCond,SCond,SCond]: log.log(new String(bodyBytes, bodyCharset));
+Hole 3:
+[SCond,SCond,SCond]: <SKIP>
+

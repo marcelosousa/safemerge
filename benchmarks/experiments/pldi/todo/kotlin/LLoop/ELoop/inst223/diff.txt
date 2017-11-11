@@ -1,0 +1,121 @@
+Merge Instance for method (Ident "JetFunctionParameterInfoHandler",Ident "findCall",[RefType (ClassRefType (ClassType [(Ident "CreateParameterInfoContext",[])]))])
+private static JetValueArgumentList findCall (CreateParameterInfoContext context)
+{
+  PsiFile file = context.getFile();
+  if (!(file instanceof JetFile))
+    return null;
+  PsiElement element = file.findElementAt(context.getOffset());
+  while (element != null && !(element instanceof JetValueArgumentList))
+  {
+    element = element.getParent();
+  }
+  if (element == null)
+    return null;
+  JetValueArgumentList argumentList = (JetValueArgumentList) element;
+  JetCallElement callExpression;
+  if (element.getParent() instanceof JetCallElement)
+  {
+    callExpression = (JetCallElement) element.getParent();
+  }
+  else
+    <?HOLE?>
+  <?HOLE?>
+  JetExpression calleeExpression = callExpression.getCalleeExpression();
+  if (calleeExpression == null)
+    return null;
+  JetSimpleNameExpression refExpression = null;
+  if (calleeExpression instanceof JetSimpleNameExpression)
+  {
+    refExpression = (JetSimpleNameExpression) calleeExpression;
+  }
+  else
+    if (calleeExpression instanceof JetConstructorCalleeExpression)
+    {
+      JetConstructorCalleeExpression constructorCalleeExpression = (JetConstructorCalleeExpression) calleeExpression;
+      if (constructorCalleeExpression.getConstructorReferenceExpression() instanceof JetSimpleNameExpression)
+      {
+        refExpression = (JetSimpleNameExpression) constructorCalleeExpression.getConstructorReferenceExpression();
+      }
+    }
+  if (refExpression != null)
+  {
+    JetScope scope = bindingContext.get(BindingContext.RESOLUTION_SCOPE, refExpression);
+    DeclarationDescriptor placeDescriptor = null;
+    if (scope != null)
+    {
+      placeDescriptor = scope.getContainingDeclaration();
+    }
+    Collection<DeclarationDescriptor> variants = TipsManager.getReferenceVariants(refExpression, bindingContext);
+    String refName = refExpression.getReferencedName();
+    PsiReference[] references = refExpression.getReferences();
+    if (references.length == 0)
+      return null;
+    ArrayList<DeclarationDescriptor> itemsToShow = new ArrayList<DeclarationDescriptor>();
+    for (DeclarationDescriptor variant : variants) {
+                                                     if (variant instanceof FunctionDescriptor)
+                                                     {
+                                                       FunctionDescriptor functionDescriptor = (FunctionDescriptor) variant;
+                                                       if (functionDescriptor.getName().equals(refName))
+                                                       {
+                                                         if (placeDescriptor != null && !JetVisibilityChecker.isVisible(placeDescriptor, functionDescriptor))
+                                                           continue;
+                                                         itemsToShow.add(functionDescriptor);
+                                                       }
+                                                     }
+                                                     else
+                                                       if (variant instanceof ClassDescriptor)
+                                                       {
+                                                         ClassDescriptor classDescriptor = (ClassDescriptor) variant;
+                                                         if (classDescriptor.getName().equals(refName))
+                                                         {
+                                                           for (ConstructorDescriptor constructorDescriptor : classDescriptor.getConstructors()) {
+                                                                                                                                                   if (placeDescriptor != null && !JetVisibilityChecker.isVisible(placeDescriptor, constructorDescriptor))
+                                                                                                                                                     <?HOLE?>
+                                                                                                                                                   itemsToShow.add(constructorDescriptor);
+                                                                                                                                                 }
+                                                         }
+                                                       }
+                                                   }
+    context.setItemsToShow(ArrayUtil.toObjectArray(itemsToShow));
+    return argumentList;
+  }
+  return null;
+}
+Edit Base:
+Hole 1:
+[SCond]: return null;
+Hole 2:
+[]: BindingContext bindingContext = AnalyzerFacadeForJVM.analyzeFileWithCache(((JetFile) file), AnalyzerFacadeForJVM.SINGLE_DECLARATION_PROVIDER).getBindingContext();
+Hole 3:
+[SCond,SLoop,SCond,SCond,SCond,SLoop,SCond]: continue;
+
+Edit A:
+Hole 1:
+[SCond]: return null;
+Hole 2:
+[]: BindingContext bindingContext = AnalyzerFacadeForJVM.analyzeFileWithCache(((JetFile) file), AnalyzerFacadeForJVM.SINGLE_DECLARATION_PROVIDER, CompilerSpecialMode.REGULAR, CompilerDependencies.compilerDependenciesForProduction(CompilerSpecialMode.REGULAR)).getBindingContext();
+Hole 3:
+[SCond,SLoop,SCond,SCond,SCond,SLoop,SCond]: continue;
+
+Edit B:
+Hole 1:
+[SCond]: {
+  return null;
+}
+Hole 2:
+[]: BindingContext bindingContext = AnalyzeSingleFileUtil.getContextForSingleFile(((JetFile) file));
+Hole 3:
+[SCond,SLoop,SCond,SCond,SCond,SLoop,SCond]: {
+  continue;
+}
+
+Edit M:
+Hole 1:
+[SCond]: {
+  return null;
+}
+Hole 2:
+[]: BindingContext bindingContext = AnalyzeSingleFileUtil.getContextForSingleFile(((JetFile) file));
+Hole 3:
+[SCond,SLoop,SCond,SCond,SCond,SLoop,SCond]: continue;
+

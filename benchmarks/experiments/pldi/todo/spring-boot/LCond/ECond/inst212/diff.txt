@@ -1,0 +1,53 @@
+Merge Instance for method (Ident "ConfigurationMetadataAnnotationProcessor",Ident "processExecutableElement",[RefType (ClassRefType (ClassType [(Ident "String",[])])),RefType (ClassRefType (ClassType [(Ident "ExecutableElement",[])]))])
+private void processExecutableElement (String prefix, ExecutableElement element)
+{
+  if (element.getModifiers().contains(Modifier.PUBLIC) && TypeKind.VOID != element.getReturnType().getKind())
+  {
+    Element returns = this.processingEnv.getTypeUtils().asElement(element.getReturnType());
+    if (returns instanceof TypeElement)
+    {
+      <?HOLE?>
+      <?HOLE?>
+    }
+  }
+}
+Edit Base:
+Hole 1:
+[SCond,SCond]: this.metadataCollector.add(ItemMetadata.newGroup(prefix, this.typeUtils.getType(returns), this.typeUtils.getType(element.getEnclosingElement()), element.toString()));
+Hole 2:
+[SCond,SCond]: processTypeElement(prefix, ((TypeElement) returns));
+
+Edit A:
+Hole 1:
+[SCond,SCond]: ItemMetadata group = ItemMetadata.newGroup(prefix, this.typeUtils.getType(returns), this.typeUtils.getType(element.getEnclosingElement()), element.toString());
+Hole 2:
+[SCond,SCond]: if (this.metadataCollector.hasSimilarGroup(group))
+{
+  this.processingEnv.getMessager().printMessage(Kind.ERROR, ("Duplicate `@ConfigurationProperties` definition for prefix '" + prefix + "'"), element);
+}
+else
+{
+  this.metadataCollector.add(group);
+  processTypeElement(prefix, ((TypeElement) returns));
+}
+
+Edit B:
+Hole 1:
+[SCond,SCond]: this.metadataCollector.add(ItemMetadata.newGroup(prefix, this.typeUtils.getQualifiedName(returns), this.typeUtils.getQualifiedName(element.getEnclosingElement()), element.toString()));
+Hole 2:
+[SCond,SCond]: processTypeElement(prefix, ((TypeElement) returns));
+
+Edit M:
+Hole 1:
+[SCond,SCond]: ItemMetadata group = ItemMetadata.newGroup(prefix, this.typeUtils.getQualifiedName(returns), this.typeUtils.getQualifiedName(element.getEnclosingElement()), element.toString());
+Hole 2:
+[SCond,SCond]: if (this.metadataCollector.hasSimilarGroup(group))
+{
+  this.processingEnv.getMessager().printMessage(Kind.ERROR, ("Duplicate `@ConfigurationProperties` definition for prefix '" + prefix + "'"), element);
+}
+else
+{
+  this.metadataCollector.add(group);
+  processTypeElement(prefix, ((TypeElement) returns));
+}
+

@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 144
-File: MPChartLib/src/com/github/mikephil/charting/charts/HorizontalBarChart.java
-Orig: 16685844fff86ccf6e551eb28aae1441199130ec
-VarA: 3e4ff0be58692142055ad40d5ba32c879cc666ae
-VarB: 1ee9fa7978de06b4e0465b3f51ed3897585e8d7a
-Merg: ea80c0bf81a115a1d70d4d958869a811a317edde

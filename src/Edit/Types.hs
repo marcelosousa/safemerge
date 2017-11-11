@@ -26,6 +26,10 @@ type AnnEdit  = [AnnBlockStmt]
 type AnnEdits = Map VId AnnEdit -- [(AnnEdit,AnnEdit,AnnEdit,AnnEdit)]
 type Method   = ([FormalParam],Block) 
 
+loc_of :: Edit -> Int
+loc_of e = 
+  foldr (\(b,_) n -> length (lines $ prettyPrint b) + n) 0 e
+
 -- VId - Version Identifier
 type VId    = Int 
 

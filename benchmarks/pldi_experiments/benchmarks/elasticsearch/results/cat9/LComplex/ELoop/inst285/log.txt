@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 285
-File: core/src/main/java/org/elasticsearch/index/query/GeoBoundingBoxQueryParser.java
-Orig: bbaf4710cbf056134ec789ed3d6fe7ea2af1a05d
-VarA: 4b071f8d2c2bbca6b7067bce502634079c8fada8
-VarB: 6765635067564840f0696671d60571624e335ffd
-Merg: d7187238a21cdf5aaee75e2820855893a36a7e16

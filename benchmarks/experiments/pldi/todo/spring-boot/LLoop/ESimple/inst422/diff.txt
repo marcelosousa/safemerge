@@ -1,0 +1,83 @@
+Merge Instance for method (Ident "UndertowEmbeddedServletContainerFactory",Ident "createDeploymentManager",[RefType (ClassRefType (ClassType [(Ident "ServletContextInitializer",[])]))])
+private DeploymentManager createDeploymentManager (ServletContextInitializer... initializers)
+{
+  DeploymentInfo deployment = Servlets.deployment();
+  registerServletContainerInitializerToDriveServletContextInitializers(deployment, initializers);
+  deployment.setClassLoader(getServletClassLoader());
+  deployment.setContextPath(getContextPath());
+  <?HOLE?>
+  deployment.setDeploymentName("spring-boot");
+  if (isRegisterDefaultServlet())
+  {
+    deployment.addServlet(Servlets.servlet("default", DefaultServlet.class));
+  }
+  configureErrorPages(deployment);
+  deployment.setServletStackTraces(ServletStackTraces.NONE);
+  deployment.setResourceManager(getDocumentRootResourceManager());
+  configureMimeMappings(deployment);
+  for (UndertowDeploymentInfoCustomizer customizer : this.deploymentInfoCustomizers) {
+                                                                                       customizer.customize(deployment);
+                                                                                     }
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  manager.deploy();
+  SessionManager sessionManager = manager.getDeployment().getSessionManager();
+  int sessionTimeout = getSessionTimeout() > 0 ? getSessionTimeout() : -1;
+  sessionManager.setDefaultSessionTimeout(sessionTimeout);
+  return manager;
+}
+Edit Base:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: DeploymentManager manager = Servlets.defaultContainer().addDeployment(deployment);
+
+Edit A:
+Hole 1:
+[]: deployment.setDisplayName(getDisplayName());
+Hole 2:
+[]: if (isAccessLogEnabled())
+{
+  configureAccessLog(deployment);
+}
+Hole 3:
+[]: if (isPersistSession())
+{
+  File dir = getValidSessionStoreDir();
+  deployment.setSessionPersistenceManager(new FileSessionPersistence(dir));
+}
+Hole 4:
+[]: DeploymentManager manager = Servlets.defaultContainer().addDeployment(deployment);
+
+Edit B:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: DeploymentManager manager = Servlets.newContainer().addDeployment(deployment);
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: deployment.setDisplayName(getDisplayName());
+Hole 2:
+[]: if (isAccessLogEnabled())
+{
+  configureAccessLog(deployment);
+}
+Hole 3:
+[]: if (isPersistSession())
+{
+  File dir = getValidSessionStoreDir();
+  deployment.setSessionPersistenceManager(new FileSessionPersistence(dir));
+}
+Hole 4:
+[]: DeploymentManager manager = Servlets.newContainer().addDeployment(deployment);
+

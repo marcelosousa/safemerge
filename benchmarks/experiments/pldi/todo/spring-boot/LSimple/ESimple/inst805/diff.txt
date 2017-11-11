@@ -1,0 +1,49 @@
+Merge Instance for method (Ident "LogbackLoggingSystem",Ident "beforeInitialize",[])
+@Override
+ public void beforeInitialize ()
+{
+  super.beforeInitialize();
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: try
+{
+  if (ClassUtils.isPresent("org.slf4j.bridge.SLF4JBridgeHandler", getClassLoader()))
+  {
+    try
+    {
+      SLF4JBridgeHandler.removeHandlersForRootLogger();
+    }
+    catch (NoSuchMethodError ex)
+    {
+      SLF4JBridgeHandler.uninstall();
+    }
+    SLF4JBridgeHandler.install();
+  }
+}
+catch (Throwable ex)
+{
+}
+Hole 2:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: getLogger(null).getLoggerContext().getTurboFilterList().add(FILTER);
+Hole 2:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: configureJdkLoggingBridgeHandler();
+Hole 2:
+[]: configureJBossLoggingToUseSlf4j();
+
+Edit M:
+Hole 1:
+[]: getLogger(null).getLoggerContext().getTurboFilterList().add(FILTER);
+Hole 2:
+[]: configureJBossLoggingToUseSlf4j();
+

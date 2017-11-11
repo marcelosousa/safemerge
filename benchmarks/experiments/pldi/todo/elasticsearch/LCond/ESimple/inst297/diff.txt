@@ -1,0 +1,69 @@
+Merge Instance for method (Ident "GeoShapeQueryBuilder",Ident "doXContent",[RefType (ClassRefType (ClassType [(Ident "XContentBuilder",[])])),RefType (ClassRefType (ClassType [(Ident "Params",[])]))])
+@Override
+ protected void doXContent (XContentBuilder builder, Params params) throws IOException
+{
+  <?HOLE?>
+  builder.startObject(name);
+  if (strategy != null)
+  {
+    builder.field("strategy", strategy.getStrategyName());
+  }
+  if (shape != null)
+  {
+    builder.field("shape", shape);
+  }
+  else
+  {
+    builder.startObject("indexed_shape").field("id", indexedShapeId).field("type", indexedShapeType);
+    if (indexedShapeIndex != null)
+    {
+      builder.field("index", indexedShapeIndex);
+    }
+    if (indexedShapePath != null)
+    {
+      builder.field("path", indexedShapePath);
+    }
+    builder.endObject();
+  }
+  if (relation != null)
+  {
+    builder.field("relation", relation.getRelationName());
+  }
+  builder.endObject();
+  <?HOLE?>
+  if (name != null)
+  {
+    builder.field("_name", queryName);
+  }
+  builder.endObject();
+}
+Edit Base:
+Hole 1:
+[]: builder.startObject(GeoShapeQueryParser.NAME);
+Hole 2:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: builder.startObject(NAME);
+Hole 2:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: builder.startObject(GeoShapeQueryParser.NAME);
+Hole 2:
+[]: if (boost != -1)
+{
+  builder.field("boost", boost);
+}
+
+Edit M:
+Hole 1:
+[]: builder.startObject(NAME);
+Hole 2:
+[]: if (boost != -1)
+{
+  builder.field("boost", boost);
+}
+

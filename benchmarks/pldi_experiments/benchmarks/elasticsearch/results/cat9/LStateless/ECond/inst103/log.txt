@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 103
-File: core/src/test/java/org/elasticsearch/gateway/RecoveryFromGatewayIT.java
-Orig: bc8745dcc27caca6d66e646e759017514a021b55
-VarA: 161cabbef41133e47ab5462d94e67e9aa1f91168
-VarB: 709740efd2dac87f58888c7ef00937a7b2e20776
-Merg: 71b204ea49ea6c8edd2ca79abf0eaf0e3cf6c362

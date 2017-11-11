@@ -1,0 +1,36 @@
+Merge Instance for method (Ident "DocWriteResponse",Ident "writeTo",[RefType (ClassRefType (ClassType [(Ident "StreamOutput",[])]))])
+@Override
+ public void writeTo (StreamOutput out) throws IOException
+{
+  super.writeTo(out);
+  shardId.writeTo(out);
+  out.writeString(type);
+  out.writeString(id);
+  out.writeZLong(version);
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: out.writeZLong(seqNo);
+Hole 2:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: out.writeBoolean(forcedRefresh);
+Hole 2:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: out.writeZLong(seqNo);
+Hole 2:
+[]: out.writeBoolean(forcedRefresh);
+

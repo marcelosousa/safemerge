@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 10
-File: idea/tests/org/jetbrains/kotlin/findUsages/AbstractFindUsagesTest.java
-Orig: 30e447648ca203af78e6b5d6a4385479fea19bf1
-VarA: 6707af93faa1b61e2f13c47c165257f3f6ebffdc
-VarB: d160f63dad4268652ce228c60e59cfdfb297441b
-Merg: 76de32863aa37f1f33c982373c7557424308744a

@@ -1,0 +1,123 @@
+Merge Instance for method (Ident "TermsQueryBuilder",Ident "doXContent",[RefType (ClassRefType (ClassType [(Ident "XContentBuilder",[])])),RefType (ClassRefType (ClassType [(Ident "Params",[])]))])
+@Override
+ public void doXContent (XContentBuilder builder, Params params) throws IOException
+{
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  if (minimumShouldMatch != null)
+  {
+    builder.field("minimum_should_match", minimumShouldMatch);
+  }
+  if (disableCoord != null)
+  {
+    builder.field("disable_coord", disableCoord);
+  }
+  <?HOLE?>
+  <?HOLE?>
+  builder.endObject();
+}
+Edit Base:
+Hole 1:
+[]: builder.startObject(TermsQueryParser.NAME);
+Hole 2:
+[]: builder.field(name, values);
+Hole 3:
+[]: if (execution != null)
+{
+  builder.field("execution", execution);
+}
+Hole 4:
+[]: if (boost != -1)
+{
+  builder.field("boost", boost);
+}
+Hole 5:
+[]: if (queryName != null)
+{
+  builder.field("_name", queryName);
+}
+
+Edit A:
+Hole 1:
+[]: builder.startObject(NAME);
+Hole 2:
+[]: if (values == null)
+{
+  builder.startObject(name);
+  if (lookupIndex != null)
+  {
+    builder.field("index", lookupIndex);
+  }
+  builder.field("type", lookupType);
+  builder.field("id", lookupId);
+  if (lookupRouting != null)
+  {
+    builder.field("routing", lookupRouting);
+  }
+  builder.field("path", lookupPath);
+  builder.endObject();
+}
+else
+{
+  builder.field(name, values);
+}
+Hole 3:
+[]: if (execution != null)
+{
+  builder.field("execution", execution);
+}
+Hole 4:
+[]: printBoostAndQueryName(builder);
+Hole 5:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: builder.startObject(TermsQueryParser.NAME);
+Hole 2:
+[]: builder.field(name, values);
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: if (boost != -1)
+{
+  builder.field("boost", boost);
+}
+Hole 5:
+[]: if (queryName != null)
+{
+  builder.field("_name", queryName);
+}
+
+Edit M:
+Hole 1:
+[]: builder.startObject(NAME);
+Hole 2:
+[]: if (values == null)
+{
+  builder.startObject(name);
+  if (lookupIndex != null)
+  {
+    builder.field("index", lookupIndex);
+  }
+  builder.field("type", lookupType);
+  builder.field("id", lookupId);
+  if (lookupRouting != null)
+  {
+    builder.field("routing", lookupRouting);
+  }
+  builder.field("path", lookupPath);
+  builder.endObject();
+}
+else
+{
+  builder.field(name, values);
+}
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: printBoostAndQueryName(builder);
+Hole 5:
+[]: <SKIP>
+

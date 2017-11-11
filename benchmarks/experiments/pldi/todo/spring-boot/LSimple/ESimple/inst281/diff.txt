@@ -1,0 +1,37 @@
+Merge Instance for method (Ident "SpringApplicationTests",Ident "customBeanNameGeneratorWithNonWebApplication",[])
+@Test
+ public void customBeanNameGeneratorWithNonWebApplication () throws Exception
+{
+  TestSpringApplication application = new TestSpringApplication(ExampleWebConfig.class);
+  application.setWebEnvironment(false);
+  BeanNameGenerator beanNameGenerator = new DefaultBeanNameGenerator();
+  application.setBeanNameGenerator(beanNameGenerator);
+  this.context = application.run();
+  verify(application.getLoader()).setBeanNameGenerator(beanNameGenerator);
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: assertThat(this.context.getBean(AnnotationConfigUtils.CONFIGURATION_BEAN_NAME_GENERATOR), sameInstance(((Object) beanNameGenerator)));
+Hole 2:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: Object bean = this.context.getBean(AnnotationConfigUtils.CONFIGURATION_BEAN_NAME_GENERATOR);
+Hole 2:
+[]: assertThat(bean).isSameAs(beanNameGenerator);
+
+Edit B:
+Hole 1:
+[]: Object actualGenerator = this.context.getBean(AnnotationConfigUtils.CONFIGURATION_BEAN_NAME_GENERATOR);
+Hole 2:
+[]: assertThat(actualGenerator, sameInstance(((Object) beanNameGenerator)));
+
+Edit M:
+Hole 1:
+[]: Object actualGenerator = this.context.getBean(AnnotationConfigUtils.CONFIGURATION_BEAN_NAME_GENERATOR);
+Hole 2:
+[]: assertThat(actualGenerator).isSameAs(beanNameGenerator);
+

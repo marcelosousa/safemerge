@@ -52,6 +52,8 @@ wiz_meth mode diff@MInst{..} (mth_id,mth,e_o,e_a,e_b,e_m) = do
              in (f_mth,f_es)
       classes = map (findClass mth_id) [_o_info,_a_info,_b_info,_m_info]
   res <- evalZ3 $ verify mode m_mth (mth_id,f_mth) classes f_edits 
+  putStrLn $ "wiz: |HOLE|   = " ++ show (length e_m)
+  putStrLn $ "wiz: LOC HOLE = " ++ show (loc_of e_m)
   case res of
     Nothing  -> putStrLn "No semantic conflict found"
     Just str -> do
@@ -87,15 +89,16 @@ verify mode m (mid,mth) classes edits = do
  -- Generate the relational post & check for semantic conflict freedom
  ((),fEnv)   <- runStateT (analyser body) iEnv
  (res,model) <- local $ helper (_e_pre fEnv) post 
--- liftIO $ putStrLn "verify: relational post condition" 
--- preStr <- astToString (_e_pre fEnv)
--- liftIO $ putStrLn preStr 
--- liftIO $ putStrLn "verify: semantic conflict check" 
--- liftIO $ putStrLn postStr
+ log_pre     <- astToString (_e_pre fEnv)
+ let log_header = "verify: relational VC" 
+     log_check  = "verify: semantic conflict VC" 
+     log_post   = postStr
+     log_out    = unlines [log_header,log_pre,log_check,log_post]
  let sFile = case snd3 mid of
                Ident s -> s
  liftIO $ putStrLn $ "verify: result = " ++ show res 
  liftIO $ writeFile (sFile ++ ".java") (unlines $ map prettyPrint (_e_loc fEnv))
+ liftIO $ writeFile (sFile ++ ".log") log_out 
  case res of 
   Unsat -> return Nothing
   Sat -> do
@@ -111,7 +114,7 @@ analyser prog = do
 -- | Analyser main function
 analyse :: ProdProgram -> EnvOp () 
 analyse prog = do
- --wizPrint "analyzer: press any key to continue..."
+ wizPrint "analyzer: press any key to continue..."
  --wizBreak 
  --debugger prog 
  env@Env{..} <- get
@@ -119,7 +122,9 @@ analyse prog = do
   [] -> wizPrint "analyse: end of program" 
   (bstmt:cont) -> do
     if every (getAnn bstmt) && _e_mode == Dep 
-    then case next_block prog of
+    then do
+      wizPrint "analyse: dependence analysis"
+      case next_block prog of
           (Left [b],cont) -> 
             if isComplex b 
             then analyseBlock prog cont [fromAnn b] 
@@ -166,7 +171,7 @@ analyseStmt stmt cont =
   AnnSkip  vId                  -> analyse cont 
   AnnEmpty vId                  -> analyse cont
   AnnThrow vId expr             -> analyse cont -- ignoring throw statements 
-  _                             -> error $ "analyseStmt: " ++ show stmt
+  _                             -> analyse cont -- error $ "analyseStmt: " ++ show stmt
 
 -- | Analyse Expressions
 --   This function only takes care of assigments and method invocations
@@ -186,26 +191,30 @@ analyseExp vIds _exp rest =
   PostDecrement lhs -> do
    post_op vIds _exp lhs Sub "PostDecrement"
    analyse rest
+  InstanceOf e _ -> 
+   let call = MethodInv $ MethodCall (Name [Ident "instanceOf"]) [e]
+       one  = Lit $ Int 1
+   in analyseExp vIds (BinOp call Equal one) rest
+  _ -> error $ "analyseExp: " ++ show _exp
+ 
 
 -- | The analysis of a hole
 --   Assume that there are no nested holes
 analyseHole :: [VId] -> ProdProgram -> EnvOp () 
 analyseHole vId rest = do
--- if every vId 
--- then do
   -- Get the edit statements for this hole.
   edits <- foldM popEdits [] vId
   let prod_prog = miniproduct edits
   analyse $ prod_prog ++ rest
--- else error $ "analyse_hole: vIds = " ++ show vId
 
 -- Analyse If Then Else
 -- Call the analyse over both branches to obtain the VCs 
--- @TODO: Check that all variants follow the same path
 analyseIf :: [VId] -> Exp -> AnnStmt -> AnnStmt -> ProdProgram -> EnvOp () 
 analyseIf vId cond s1 s2 cont = do
  wizPrint $ "analyseIf: versions " ++ show vId 
  wizPrint $ "analyseIf: condition " ++ prettyPrint cond 
+ --wizBreak 
+ --debugger cont 
  -- bSort <- lift $ mkBoolSort >>= return . Just
  let bSort = Nothing
  if cond == Nondet
@@ -223,12 +232,11 @@ analyseIf vId cond s1 s2 cont = do
   condSmt  <- mapM (\v -> encodeExp bSort v cond) vId 
   env      <- get
   -- check that all variants take the same paths 
-  condAst <- lift $ mkAnd condSmt
+  condAst <- lift $ mapM (uncurry mkIff) (pair condSmt) >>= mkAnd
   ncondSmt <- lift $ mapM mkNot condSmt
   ncondAst <- lift $ mkAnd ncondSmt
-  (rThen,_)   <- lift $ local $ helper (_e_pre env) condAst 
-  (rElse,_)   <- lift $ local $ helper (_e_pre env) ncondAst 
-  if rThen == Unsat || rElse == Unsat 
+  (vCond,_)   <- lift $ local $ helper (_e_pre env) condAst 
+  if vCond == Unsat 
   then do 
   -- then branch
     preThen  <- lift $ mkAnd ((_e_pre env):condSmt)
@@ -248,16 +256,15 @@ analyseIf vId cond s1 s2 cont = do
     put new_env
     analyse cont
   else do
-    --error $ "analyseIf: not all variants are taking the same path"
+    wizPrint "analyseIf: not all variants are taking the same path"
     let ifs = map (\i -> AnnBlockStmt $ AnnIfThenElse [i] cond (toAnn [i] ((fromAnn s1)::Stmt)) (toAnn [i] ((fromAnn s2)::Stmt))) vId
     analyse $ ifs ++ cont  
-
 
 -- Analyse Loops
 --  Houdini style loop invariant generation
 analyseLoop :: [(VId,Exp)] -> AnnStmt -> ProdProgram -> EnvOp () 
 analyseLoop conds body rest = do
- --wizPrint "analyseLoop: press any key to continue..."
+ wizPrint "analyseLoop: press any key to continue..."
  --wizBreak 
  --debugger rest 
  bSort <- lift $ mkBoolSort >>= return . Just
@@ -419,10 +426,12 @@ analyseBlock (bstmt:cont) kont b = do
   isSound <- checkDep rhs 
   if isSound
   then do
-    wizPrint $ "analyseBlock: True"
+    wizPrint $ "analyseBlock: Sound to use dependence info"
     mapM_ analyse_block_dep listDeps 
     analyse kont
-  else analyseBStmt bstmt cont 
+  else do
+    wizPrint $ "analyseBlock: Unsound to use dependence info"
+    analyseBStmt bstmt cont 
  where
    -- | analyse_block_dep: analyses for each dependence graph
    --   the assignments:
@@ -434,6 +443,7 @@ analyseBlock (bstmt:cont) kont b = do
      let id  = Ident $ "Anonymous"++ show num
      mapM_ (\vId -> assign_special vId id out inp) [1..4]
 
+-- Checks if a set of variables is semantic conflict free
 checkDep :: [AbsVar] -> EnvOp Bool
 checkDep inputs = do
   asts <- foldM checkDepInp [] inputs 
@@ -445,6 +455,7 @@ checkDep inputs = do
    (r,_)       <- lift $ local $ helper _e_pre tmp_post
    return (r == Unsat) 
  where
+  -- check if a variable v is semantic conflict free
   checkDepInp :: [AST] -> AbsVar -> EnvOp [AST]
   checkDepInp r v = do
    env@Env{..} <- get
@@ -453,21 +464,47 @@ checkDep inputs = do
      case M.lookup i _e_ssamap of
        Nothing -> error $ "checkDepInp: Field " ++ show i ++ " is not in the SSAMap" 
        Just ve -> do
-        let e  = M.elems ve
-            vs = lin e 
-        asts <- lift $ mapM (uncurry equalVariable) vs 
-        return $ asts ++ r 
-    SName  n  -> do
-     let i = toIdent n
+        -- @ OLD: checks for equality between variables
+        --let e  = M.elems ve
+        --    vs = lin e 
+        --asts <- lift $ mapM (uncurry equalVariable) vs 
+        ast <- lift $ conflict_freedom ve
+        return (ast:r) 
+    _ -> do
+     let i = absVarToIdent v 
      case M.lookup i _e_ssamap of
        Nothing -> return r
        Just ve -> do
-        let e  = M.elems ve
-            vs = lin e 
-        asts <- lift $ mapM (uncurry equalVariable) vs 
-        return $ asts ++ r 
-    SArray ai -> return r -- error "checkDepInp: SArray" 
+        ast <- lift $ conflict_freedom ve
+        return (ast:r) 
 
+conflict_freedom :: SSAVer -> Z3 AST
+conflict_freedom v = do
+  let [r_o,r_a,r_b,r_m] = map getASTSSAVar $ M.elems v 
+  -- Comparison between original and A
+  _oa <- mapM (uncurry mkEq) $ zip r_o r_a
+  oa  <- mkAnd _oa
+  noa <- mkNot oa
+  -- Comparison between original and B
+  _ob <- mapM (uncurry mkEq) $ zip r_o r_b
+  ob  <- mkAnd _ob
+  nob <- mkNot ob
+  -- Comparison between original and M
+  _om <- mapM (uncurry mkEq) $ zip r_o r_m
+  om  <- mkAnd _om
+  -- Comparison between M and A
+  _ma <- mapM (uncurry mkEq) $ zip r_m r_a
+  ma  <- mkAnd _ma
+  -- Comparison between M and B
+  _mb <- mapM (uncurry mkEq) $ zip r_m r_b
+  mb  <- mkAnd _mb
+  -- Remains the same
+  c1 <- mkImplies noa ma
+  c2 <- mkImplies nob mb
+  c3 <- mkAnd [ma,mb,om]
+  c4 <- mkAnd [c1,c2]
+  mkOr [c3,c4]    
+  
 absVarToIdent :: AbsVar -> Ident
 absVarToIdent (SField i) = i
 absVarToIdent (SName n) = toIdent n

@@ -1,0 +1,226 @@
+Merge Instance for method (Ident "AtomikosPropertiesTests",Ident "testProperties",[])
+@Test
+ public void testProperties ()
+{
+  this.properties.setService("service");
+  this.properties.setMaxTimeout(1L);
+  this.properties.setDefaultJtaTimeout(2L);
+  this.properties.setMaxActives(3);
+  this.properties.setEnableLogging(true);
+  this.properties.setTransactionManagerUniqueName("uniqueName");
+  this.properties.setSerialJtaTransactions(true);
+  <?HOLE?>
+  this.properties.setForceShutdownOnVmExit(true);
+  this.properties.setLogBaseName("logBaseName");
+  this.properties.setLogBaseDir("logBaseDir");
+  this.properties.setCheckpointInterval(4);
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  this.properties.setThreadedTwoPhaseCommit(true);
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  assertProperty("com.atomikos.icatch.service", "service");
+  assertProperty("com.atomikos.icatch.max_timeout", "1");
+  assertProperty("com.atomikos.icatch.default_jta_timeout", "2");
+  assertProperty("com.atomikos.icatch.max_actives", "3");
+  assertProperty("com.atomikos.icatch.enable_logging", "true");
+  assertProperty("com.atomikos.icatch.tm_unique_name", "uniqueName");
+  assertProperty("com.atomikos.icatch.serial_jta_transactions", "true");
+  <?HOLE?>
+  assertProperty("com.atomikos.icatch.force_shutdown_on_vm_exit", "true");
+  assertProperty("com.atomikos.icatch.log_base_name", "logBaseName");
+  assertProperty("com.atomikos.icatch.log_base_dir", "logBaseDir");
+  assertProperty("com.atomikos.icatch.checkpoint_interval", "4");
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  assertProperty("com.atomikos.icatch.threaded_2pc", "true");
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: this.properties.setConsoleLogLevel(AtomikosLoggingLevel.WARN);
+Hole 3:
+[]: this.properties.setOutputDir("outputDir");
+Hole 4:
+[]: this.properties.setConsoleFileName("consoleFileName");
+Hole 5:
+[]: this.properties.setConsoleFileCount(5);
+Hole 6:
+[]: this.properties.setConsoleFileLimit(6);
+Hole 7:
+[]: assertThat(this.properties.asProperties().size()).isEqualTo(17);
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+Hole 10:
+[]: <SKIP>
+Hole 11:
+[]: <SKIP>
+Hole 12:
+[]: <SKIP>
+Hole 13:
+[]: assertProperty("com.atomikos.icatch.console_log_level", "WARN");
+Hole 14:
+[]: assertProperty("com.atomikos.icatch.output_dir", "outputDir");
+Hole 15:
+[]: assertProperty("com.atomikos.icatch.console_file_name", "consoleFileName");
+Hole 16:
+[]: assertProperty("com.atomikos.icatch.console_file_count", "5");
+Hole 17:
+[]: assertProperty("com.atomikos.icatch.console_file_limit", "6");
+Hole 18:
+[]: <SKIP>
+Hole 19:
+[]: <SKIP>
+Hole 20:
+[]: <SKIP>
+Hole 21:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: this.properties.setAllowSubTransactions(false);
+Hole 2:
+[]: this.properties.setConsoleLogLevel(AtomikosLoggingLevel.WARN);
+Hole 3:
+[]: this.properties.setOutputDir("outputDir");
+Hole 4:
+[]: this.properties.setConsoleFileName("consoleFileName");
+Hole 5:
+[]: this.properties.setConsoleFileCount(5);
+Hole 6:
+[]: this.properties.setConsoleFileLimit(6);
+Hole 7:
+[]: this.properties.getRecovery().setForgetOrphanedLogEntriesDelay(2000);
+Hole 8:
+[]: this.properties.getRecovery().setDelay(3000);
+Hole 9:
+[]: this.properties.getRecovery().setMaxRetries(10);
+Hole 10:
+[]: this.properties.getRecovery().setRetryInterval(4000);
+Hole 11:
+[]: assertThat(this.properties.asProperties().size()).isEqualTo(22);
+Hole 12:
+[]: assertProperty("com.atomikos.icatch.allow_subtransactions", "false");
+Hole 13:
+[]: assertProperty("com.atomikos.icatch.console_log_level", "WARN");
+Hole 14:
+[]: assertProperty("com.atomikos.icatch.output_dir", "outputDir");
+Hole 15:
+[]: assertProperty("com.atomikos.icatch.console_file_name", "consoleFileName");
+Hole 16:
+[]: assertProperty("com.atomikos.icatch.console_file_count", "5");
+Hole 17:
+[]: assertProperty("com.atomikos.icatch.console_file_limit", "6");
+Hole 18:
+[]: assertProperty("com.atomikos.icatch.forget_orphaned_log_entries_delay", "2000");
+Hole 19:
+[]: assertProperty("com.atomikos.icatch.recovery_delay", "3000");
+Hole 20:
+[]: assertProperty("com.atomikos.icatch.oltp_max_retries", "10");
+Hole 21:
+[]: assertProperty("com.atomikos.icatch.oltp_retry_interval", "4000");
+
+Edit B:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: assertThat(this.properties.asProperties().size()).isEqualTo(12);
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+Hole 10:
+[]: <SKIP>
+Hole 11:
+[]: <SKIP>
+Hole 12:
+[]: <SKIP>
+Hole 13:
+[]: <SKIP>
+Hole 14:
+[]: <SKIP>
+Hole 15:
+[]: <SKIP>
+Hole 16:
+[]: <SKIP>
+Hole 17:
+[]: <SKIP>
+Hole 18:
+[]: <SKIP>
+Hole 19:
+[]: <SKIP>
+Hole 20:
+[]: <SKIP>
+Hole 21:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: this.properties.setAllowSubTransactions(false);
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: this.properties.getRecovery().setForgetOrphanedLogEntriesDelay(2000);
+Hole 8:
+[]: this.properties.getRecovery().setDelay(3000);
+Hole 9:
+[]: this.properties.getRecovery().setMaxRetries(10);
+Hole 10:
+[]: this.properties.getRecovery().setRetryInterval(4000);
+Hole 11:
+[]: assertThat(this.properties.asProperties().size()).isEqualTo(17);
+Hole 12:
+[]: assertProperty("com.atomikos.icatch.allow_subtransactions", "false");
+Hole 13:
+[]: <SKIP>
+Hole 14:
+[]: <SKIP>
+Hole 15:
+[]: <SKIP>
+Hole 16:
+[]: <SKIP>
+Hole 17:
+[]: <SKIP>
+Hole 18:
+[]: assertProperty("com.atomikos.icatch.forget_orphaned_log_entries_delay", "2000");
+Hole 19:
+[]: assertProperty("com.atomikos.icatch.recovery_delay", "3000");
+Hole 20:
+[]: assertProperty("com.atomikos.icatch.oltp_max_retries", "10");
+Hole 21:
+[]: assertProperty("com.atomikos.icatch.oltp_retry_interval", "4000");
+

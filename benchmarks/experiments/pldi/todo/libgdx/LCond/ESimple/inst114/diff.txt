@@ -1,0 +1,80 @@
+Merge Instance for method (Ident "IOSApplication",Ident "FinishedLaunching",[RefType (ClassRefType (ClassType [(Ident "UIApplication",[])])),RefType (ClassRefType (ClassType [(Ident "NSDictionary",[])]))])
+@Override
+ public boolean FinishedLaunching (UIApplication uiApp, NSDictionary options)
+{
+  this.uiApp = uiApp;
+  this.uiWindow = new UIWindow(UIScreen.get_MainScreen().get_Bounds());
+  UIViewController uiViewController = new UIViewController()
+                                      {
+                                        @Override
+                                        public void DidRotate (UIInterfaceOrientation orientation)
+                                        {
+                                          RectangleF bounds = getBounds(this);
+                                          graphics.width = (int) bounds.get_Width();
+                                          graphics.height = (int) bounds.get_Height();
+                                          graphics.MakeCurrent();
+                                          listener.resize(graphics.width, graphics.height);
+                                        }
+                                        @Override
+                                        public boolean ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation orientation)
+                                        {
+                                          switch (orientation.Value)
+                                          {
+                                            case UIInterfaceOrientation.LandscapeLeft:
+                                            case UIInterfaceOrientation.LandscapeRight:
+                                              return config.orientationLandscape;
+                                            default:
+                                              return config.orientationPortrait;
+                                          }
+                                        }
+                                      };
+  this.uiWindow.set_RootViewController(uiViewController);
+  this.input = new IOSInput(config);
+  this.graphics = new IOSGraphics(getBounds(uiViewController), this, input);
+  this.files = new IOSFiles();
+  this.audio = new IOSAudio();
+  <?HOLE?>
+  Gdx.files = this.files;
+  Gdx.graphics = this.graphics;
+  Gdx.audio = this.audio;
+  Gdx.input = this.input;
+  <?HOLE?>
+  this.input.setupPeripherals();
+  uiViewController.set_View(graphics);
+  this.graphics.Run();
+  this.uiWindow.MakeKeyAndVisible();
+  <?HOLE?>
+  return true;
+}
+Edit Base:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: Gdx.app.log("IOSApplication", "created");
+
+Edit A:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: Gdx.app.debug("IOSApplication", "created");
+
+Edit B:
+Hole 1:
+[]: this.net = new IOSNet(this);
+Hole 2:
+[]: Gdx.net = this.net;
+Hole 3:
+[]: Gdx.app.log("IOSApplication", "created");
+
+Edit M:
+Hole 1:
+[]: this.net = new IOSNet(this);
+Hole 2:
+[]: Gdx.net = this.net;
+Hole 3:
+[]: Gdx.app.debug("IOSApplication", "created");
+

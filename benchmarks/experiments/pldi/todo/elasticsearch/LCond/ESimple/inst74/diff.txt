@@ -1,0 +1,50 @@
+Merge Instance for method (Ident "IndexRequest",Ident "writeTo",[RefType (ClassRefType (ClassType [(Ident "StreamOutput",[])]))])
+@Override
+ public void writeTo (StreamOutput out) throws IOException
+{
+  super.writeTo(out);
+  <?HOLE?>
+  out.writeOptionalString(id);
+  out.writeOptionalString(routing);
+  out.writeOptionalString(parent);
+  out.writeOptionalString(timestamp);
+  if (ttl == null)
+  {
+    out.writeBoolean(false);
+  }
+  else
+  {
+    out.writeBoolean(true);
+    ttl.writeTo(out);
+  }
+  out.writeBytesReference(source);
+  out.writeByte(opType.id());
+  out.writeBoolean(refresh);
+  out.writeLong(version);
+  out.writeByte(versionType.getValue());
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: out.writeString(type);
+Hole 2:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: out.writeOptionalString(type);
+Hole 2:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: out.writeString(type);
+Hole 2:
+[]: out.writeOptionalString(pipeline);
+
+Edit M:
+Hole 1:
+[]: out.writeOptionalString(type);
+Hole 2:
+[]: out.writeOptionalString(pipeline);
+

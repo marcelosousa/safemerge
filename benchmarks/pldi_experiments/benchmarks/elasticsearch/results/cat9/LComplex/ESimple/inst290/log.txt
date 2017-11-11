@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 290
-File: core/src/main/java/org/elasticsearch/transport/netty/MessageChannelHandler.java
-Orig: d2f86933cc3afb3553159007a61a59bbf61661bc
-VarA: 53f6bf0625e682ebddc21ff7f3286812d9bdd76c
-VarB: ed561cd434e96accf013dee498970b674946fb32
-Merg: 4406d236de9483a35d4e3b08be8a2558e8f99274

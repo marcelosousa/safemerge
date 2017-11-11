@@ -1,0 +1,81 @@
+Merge Instance for method (Ident "ManagementSecurityAutoConfigurationTests",Ident "testWebConfiguration",[])
+@Test
+ public void testWebConfiguration () throws Exception
+{
+  this.context = new AnnotationConfigWebApplicationContext();
+  this.context.setServletContext(new MockServletContext());
+  this.context.register(SecurityAutoConfiguration.class, ManagementSecurityAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class, EndpointAutoConfiguration.class, EndpointWebMvcAutoConfiguration.class, ManagementServerPropertiesAutoConfiguration.class, PropertyPlaceholderAutoConfiguration.class);
+  <?HOLE?>
+  this.context.refresh();
+  assertNotNull(this.context.getBean(AuthenticationManagerBuilder.class));
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: assertEquals(8, this.context.getBean(FilterChainProxy.class).getFilterChains().size());
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: assertEquals(6, this.context.getBean(FilterChainProxy.class).getFilterChains().size());
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: EnvironmentTestUtils.addEnvironment(this.context, "security.basic.enabled:false");
+Hole 2:
+[]: FilterChainProxy filterChainProxy = this.context.getBean(FilterChainProxy.class);
+Hole 3:
+[]: assertThat(filterChainProxy.getFilterChains(), hasSize(8));
+Hole 4:
+[]: assertThat(filterChainProxy.getFilters("/beans"), hasSize(greaterThan(0)));
+Hole 5:
+[]: assertThat(filterChainProxy.getFilters("/beans/"), hasSize(greaterThan(0)));
+Hole 6:
+[]: assertThat(filterChainProxy.getFilters("/beans.foo"), hasSize(greaterThan(0)));
+Hole 7:
+[]: assertThat(filterChainProxy.getFilters("/beans/foo/bar"), hasSize(greaterThan(0)));
+
+Edit M:
+Hole 1:
+[]: EnvironmentTestUtils.addEnvironment(this.context, "security.basic.enabled:false");
+Hole 2:
+[]: FilterChainProxy filterChainProxy = this.context.getBean(FilterChainProxy.class);
+Hole 3:
+[]: assertThat(filterChainProxy.getFilterChains(), hasSize(6));
+Hole 4:
+[]: assertThat(filterChainProxy.getFilters("/beans"), hasSize(greaterThan(0)));
+Hole 5:
+[]: assertThat(filterChainProxy.getFilters("/beans/"), hasSize(greaterThan(0)));
+Hole 6:
+[]: assertThat(filterChainProxy.getFilters("/beans.foo"), hasSize(greaterThan(0)));
+Hole 7:
+[]: assertThat(filterChainProxy.getFilters("/beans/foo/bar"), hasSize(greaterThan(0)));
+

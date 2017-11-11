@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 76
-File: spring-boot/src/main/java/org/springframework/boot/context/embedded/jetty/JettyEmbeddedServletContainer.java
-Orig: 031c9bf191cfcc1ec1d460e2c1d6414c7845832e
-VarA: 94a14dbcd83e9e18e10ec7cbf927628827a254db
-VarB: 3ee7dae09b31648cebc1ed8042a63ecf6e5f1355
-Merg: 58ac67eb278bffb8698f8c832d66dae2062c1944

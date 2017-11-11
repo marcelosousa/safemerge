@@ -1,0 +1,256 @@
+verify: relational VC
+(let ((a!1 (= ret_4_0!51
+              (NewContentLengthInputStream!106
+                (NewBufferedInputStream!103
+                  (NewFileInputStream!102 filePath_4_1!101)
+                  BUFFER_SIZE_4_0!15)
+                (length!105 (NewFile!104 filePath_4_1!101)))))
+      (a!2 (= ret_3_0!50
+              (NewContentLengthInputStream!106
+                (NewBufferedInputStream!103
+                  (NewFileInputStream!102 filePath_3_1!100)
+                  BUFFER_SIZE_3_0!14)
+                (length!105 (NewFile!104 filePath_3_1!100)))))
+      (a!3 (= ret_2_0!49
+              (NewContentLengthInputStream!106
+                (NewBufferedInputStream!103
+                  (NewFileInputStream!102 filePath_2_1!99)
+                  BUFFER_SIZE_2_0!13)
+                (length!105 (NewFile!104 filePath_2_1!99)))))
+      (a!4 (= ret_1_0!48
+              (NewContentLengthInputStream!106
+                (NewBufferedInputStream!103
+                  (NewFileInputStream!102 filePath_1_1!97)
+                  BUFFER_SIZE_1_0!12)
+                (length!105 (NewFile!104 filePath_1_1!97))))))
+  (and (= imageUri_4_0!3 imageUri_3_0!2)
+       (= imageUri_3_0!2 imageUri_2_0!1)
+       (= imageUri_2_0!1 imageUri_1_0!0)
+       (= extra_4_0!7 extra_3_0!6)
+       (= extra_3_0!6 extra_2_0!5)
+       (= extra_2_0!5 extra_1_0!4)
+       (= ALLOWED_URI_CHARS_4_0!11 ALLOWED_URI_CHARS_3_0!10)
+       (= ALLOWED_URI_CHARS_3_0!10 ALLOWED_URI_CHARS_2_0!9)
+       (= ALLOWED_URI_CHARS_2_0!9 ALLOWED_URI_CHARS_1_0!8)
+       (= BUFFER_SIZE_4_0!15 BUFFER_SIZE_3_0!14)
+       (= BUFFER_SIZE_3_0!14 BUFFER_SIZE_2_0!13)
+       (= BUFFER_SIZE_2_0!13 BUFFER_SIZE_1_0!12)
+       (= DEFAULT_HTTP_CONNECT_TIMEOUT_4_0!19
+          DEFAULT_HTTP_CONNECT_TIMEOUT_3_0!18)
+       (= DEFAULT_HTTP_CONNECT_TIMEOUT_3_0!18
+          DEFAULT_HTTP_CONNECT_TIMEOUT_2_0!17)
+       (= DEFAULT_HTTP_CONNECT_TIMEOUT_2_0!17
+          DEFAULT_HTTP_CONNECT_TIMEOUT_1_0!16)
+       (= DEFAULT_HTTP_READ_TIMEOUT_4_0!23 DEFAULT_HTTP_READ_TIMEOUT_3_0!22)
+       (= DEFAULT_HTTP_READ_TIMEOUT_3_0!22 DEFAULT_HTTP_READ_TIMEOUT_2_0!21)
+       (= DEFAULT_HTTP_READ_TIMEOUT_2_0!21 DEFAULT_HTTP_READ_TIMEOUT_1_0!20)
+       (= ERROR_UNSUPPORTED_SCHEME_4_0!27 ERROR_UNSUPPORTED_SCHEME_3_0!26)
+       (= ERROR_UNSUPPORTED_SCHEME_3_0!26 ERROR_UNSUPPORTED_SCHEME_2_0!25)
+       (= ERROR_UNSUPPORTED_SCHEME_2_0!25 ERROR_UNSUPPORTED_SCHEME_1_0!24)
+       (= MAX_REDIRECT_COUNT_4_0!31 MAX_REDIRECT_COUNT_3_0!30)
+       (= MAX_REDIRECT_COUNT_3_0!30 MAX_REDIRECT_COUNT_2_0!29)
+       (= MAX_REDIRECT_COUNT_2_0!29 MAX_REDIRECT_COUNT_1_0!28)
+       (= connectTimeout_4_0!35 connectTimeout_3_0!34)
+       (= connectTimeout_3_0!34 connectTimeout_2_0!33)
+       (= connectTimeout_2_0!33 connectTimeout_1_0!32)
+       (= context_4_0!39 context_3_0!38)
+       (= context_3_0!38 context_2_0!37)
+       (= context_2_0!37 context_1_0!36)
+       (= readTimeout_4_0!43 readTimeout_3_0!42)
+       (= readTimeout_3_0!42 readTimeout_2_0!41)
+       (= readTimeout_2_0!41 readTimeout_1_0!40)
+       (= CONTENT_CONTACTS_URI_PREFIX_4_0!47 CONTENT_CONTACTS_URI_PREFIX_3_0!46)
+       (= CONTENT_CONTACTS_URI_PREFIX_3_0!46 CONTENT_CONTACTS_URI_PREFIX_2_0!45)
+       (= CONTENT_CONTACTS_URI_PREFIX_2_0!45 CONTENT_CONTACTS_URI_PREFIX_1_0!44)
+       (= filePath_1_1!97 (FILE.crop.Scheme!98 imageUri_1_0!0))
+       (= filePath_2_1!99 (FILE.crop.Scheme!98 imageUri_2_0!1))
+       (= filePath_3_1!100 (FILE.crop.Scheme!98 imageUri_3_0!2))
+       (= filePath_4_1!101 (FILE.crop.Scheme!98 imageUri_4_0!3))
+       a!1
+       (= ret_ALLOWED_URI_CHARS_4_0!55 ALLOWED_URI_CHARS_4_0!11)
+       (= ret_BUFFER_SIZE_4_0!59 BUFFER_SIZE_4_0!15)
+       (= ret_DEFAULT_HTTP_CONNECT_TIMEOUT_4_0!63
+          DEFAULT_HTTP_CONNECT_TIMEOUT_4_0!19)
+       (= ret_DEFAULT_HTTP_READ_TIMEOUT_4_0!67 DEFAULT_HTTP_READ_TIMEOUT_4_0!23)
+       (= ret_ERROR_UNSUPPORTED_SCHEME_4_0!71 ERROR_UNSUPPORTED_SCHEME_4_0!27)
+       (= ret_MAX_REDIRECT_COUNT_4_0!75 MAX_REDIRECT_COUNT_4_0!31)
+       (= ret_connectTimeout_4_0!79 connectTimeout_4_0!35)
+       (= ret_context_4_0!83 context_4_0!39)
+       (= ret_readTimeout_4_0!87 readTimeout_4_0!43)
+       (= ret_CONTENT_CONTACTS_URI_PREFIX_4_0!91
+          CONTENT_CONTACTS_URI_PREFIX_4_0!47)
+       a!2
+       (= ret_ALLOWED_URI_CHARS_3_0!54 ALLOWED_URI_CHARS_3_0!10)
+       (= ret_BUFFER_SIZE_3_0!58 BUFFER_SIZE_3_0!14)
+       (= ret_DEFAULT_HTTP_CONNECT_TIMEOUT_3_0!62
+          DEFAULT_HTTP_CONNECT_TIMEOUT_3_0!18)
+       (= ret_DEFAULT_HTTP_READ_TIMEOUT_3_0!66 DEFAULT_HTTP_READ_TIMEOUT_3_0!22)
+       (= ret_ERROR_UNSUPPORTED_SCHEME_3_0!70 ERROR_UNSUPPORTED_SCHEME_3_0!26)
+       (= ret_MAX_REDIRECT_COUNT_3_0!74 MAX_REDIRECT_COUNT_3_0!30)
+       (= ret_connectTimeout_3_0!78 connectTimeout_3_0!34)
+       (= ret_context_3_0!82 context_3_0!38)
+       (= ret_readTimeout_3_0!86 readTimeout_3_0!42)
+       (= ret_CONTENT_CONTACTS_URI_PREFIX_3_0!90
+          CONTENT_CONTACTS_URI_PREFIX_3_0!46)
+       a!3
+       (= ret_ALLOWED_URI_CHARS_2_0!53 ALLOWED_URI_CHARS_2_0!9)
+       (= ret_BUFFER_SIZE_2_0!57 BUFFER_SIZE_2_0!13)
+       (= ret_DEFAULT_HTTP_CONNECT_TIMEOUT_2_0!61
+          DEFAULT_HTTP_CONNECT_TIMEOUT_2_0!17)
+       (= ret_DEFAULT_HTTP_READ_TIMEOUT_2_0!65 DEFAULT_HTTP_READ_TIMEOUT_2_0!21)
+       (= ret_ERROR_UNSUPPORTED_SCHEME_2_0!69 ERROR_UNSUPPORTED_SCHEME_2_0!25)
+       (= ret_MAX_REDIRECT_COUNT_2_0!73 MAX_REDIRECT_COUNT_2_0!29)
+       (= ret_connectTimeout_2_0!77 connectTimeout_2_0!33)
+       (= ret_context_2_0!81 context_2_0!37)
+       (= ret_readTimeout_2_0!85 readTimeout_2_0!41)
+       (= ret_CONTENT_CONTACTS_URI_PREFIX_2_0!89
+          CONTENT_CONTACTS_URI_PREFIX_2_0!45)
+       a!4
+       (= ret_ALLOWED_URI_CHARS_1_0!52 ALLOWED_URI_CHARS_1_0!8)
+       (= ret_BUFFER_SIZE_1_0!56 BUFFER_SIZE_1_0!12)
+       (= ret_DEFAULT_HTTP_CONNECT_TIMEOUT_1_0!60
+          DEFAULT_HTTP_CONNECT_TIMEOUT_1_0!16)
+       (= ret_DEFAULT_HTTP_READ_TIMEOUT_1_0!64 DEFAULT_HTTP_READ_TIMEOUT_1_0!20)
+       (= ret_ERROR_UNSUPPORTED_SCHEME_1_0!68 ERROR_UNSUPPORTED_SCHEME_1_0!24)
+       (= ret_MAX_REDIRECT_COUNT_1_0!72 MAX_REDIRECT_COUNT_1_0!28)
+       (= ret_connectTimeout_1_0!76 connectTimeout_1_0!32)
+       (= ret_context_1_0!80 context_1_0!36)
+       (= ret_readTimeout_1_0!84 readTimeout_1_0!40)
+       (= ret_CONTENT_CONTACTS_URI_PREFIX_1_0!88
+          CONTENT_CONTACTS_URI_PREFIX_1_0!44)))
+verify: semantic conflict VC
+(let ((a!1 (=> (not (and (= ret_CONTENT_CONTACTS_URI_PREFIX_1_0!88
+                            ret_CONTENT_CONTACTS_URI_PREFIX_2_0!89)))
+               (and (= ret_CONTENT_CONTACTS_URI_PREFIX_4_0!91
+                       ret_CONTENT_CONTACTS_URI_PREFIX_2_0!89))))
+      (a!2 (=> (not (and (= ret_CONTENT_CONTACTS_URI_PREFIX_1_0!88
+                            ret_CONTENT_CONTACTS_URI_PREFIX_3_0!90)))
+               (and (= ret_CONTENT_CONTACTS_URI_PREFIX_4_0!91
+                       ret_CONTENT_CONTACTS_URI_PREFIX_3_0!90))))
+      (a!4 (=> (not (and (= ret_readTimeout_1_0!84 ret_readTimeout_2_0!85)))
+               (and (= ret_readTimeout_4_0!87 ret_readTimeout_2_0!85))))
+      (a!5 (=> (not (and (= ret_readTimeout_1_0!84 ret_readTimeout_3_0!86)))
+               (and (= ret_readTimeout_4_0!87 ret_readTimeout_3_0!86))))
+      (a!7 (=> (not (and (= ret_context_1_0!80 ret_context_2_0!81)))
+               (and (= ret_context_4_0!83 ret_context_2_0!81))))
+      (a!8 (=> (not (and (= ret_context_1_0!80 ret_context_3_0!82)))
+               (and (= ret_context_4_0!83 ret_context_3_0!82))))
+      (a!10 (=> (not (and (= ret_connectTimeout_1_0!76
+                             ret_connectTimeout_2_0!77)))
+                (and (= ret_connectTimeout_4_0!79 ret_connectTimeout_2_0!77))))
+      (a!11 (=> (not (and (= ret_connectTimeout_1_0!76
+                             ret_connectTimeout_3_0!78)))
+                (and (= ret_connectTimeout_4_0!79 ret_connectTimeout_3_0!78))))
+      (a!13 (=> (not (and (= ret_MAX_REDIRECT_COUNT_1_0!72
+                             ret_MAX_REDIRECT_COUNT_2_0!73)))
+                (and (= ret_MAX_REDIRECT_COUNT_4_0!75
+                        ret_MAX_REDIRECT_COUNT_2_0!73))))
+      (a!14 (=> (not (and (= ret_MAX_REDIRECT_COUNT_1_0!72
+                             ret_MAX_REDIRECT_COUNT_3_0!74)))
+                (and (= ret_MAX_REDIRECT_COUNT_4_0!75
+                        ret_MAX_REDIRECT_COUNT_3_0!74))))
+      (a!16 (=> (not (and (= ret_ERROR_UNSUPPORTED_SCHEME_1_0!68
+                             ret_ERROR_UNSUPPORTED_SCHEME_2_0!69)))
+                (and (= ret_ERROR_UNSUPPORTED_SCHEME_4_0!71
+                        ret_ERROR_UNSUPPORTED_SCHEME_2_0!69))))
+      (a!17 (=> (not (and (= ret_ERROR_UNSUPPORTED_SCHEME_1_0!68
+                             ret_ERROR_UNSUPPORTED_SCHEME_3_0!70)))
+                (and (= ret_ERROR_UNSUPPORTED_SCHEME_4_0!71
+                        ret_ERROR_UNSUPPORTED_SCHEME_3_0!70))))
+      (a!19 (=> (not (and (= ret_DEFAULT_HTTP_READ_TIMEOUT_1_0!64
+                             ret_DEFAULT_HTTP_READ_TIMEOUT_2_0!65)))
+                (and (= ret_DEFAULT_HTTP_READ_TIMEOUT_4_0!67
+                        ret_DEFAULT_HTTP_READ_TIMEOUT_2_0!65))))
+      (a!20 (=> (not (and (= ret_DEFAULT_HTTP_READ_TIMEOUT_1_0!64
+                             ret_DEFAULT_HTTP_READ_TIMEOUT_3_0!66)))
+                (and (= ret_DEFAULT_HTTP_READ_TIMEOUT_4_0!67
+                        ret_DEFAULT_HTTP_READ_TIMEOUT_3_0!66))))
+      (a!22 (=> (not (and (= ret_DEFAULT_HTTP_CONNECT_TIMEOUT_1_0!60
+                             ret_DEFAULT_HTTP_CONNECT_TIMEOUT_2_0!61)))
+                (and (= ret_DEFAULT_HTTP_CONNECT_TIMEOUT_4_0!63
+                        ret_DEFAULT_HTTP_CONNECT_TIMEOUT_2_0!61))))
+      (a!23 (=> (not (and (= ret_DEFAULT_HTTP_CONNECT_TIMEOUT_1_0!60
+                             ret_DEFAULT_HTTP_CONNECT_TIMEOUT_3_0!62)))
+                (and (= ret_DEFAULT_HTTP_CONNECT_TIMEOUT_4_0!63
+                        ret_DEFAULT_HTTP_CONNECT_TIMEOUT_3_0!62))))
+      (a!25 (=> (not (and (= ret_BUFFER_SIZE_1_0!56 ret_BUFFER_SIZE_2_0!57)))
+                (and (= ret_BUFFER_SIZE_4_0!59 ret_BUFFER_SIZE_2_0!57))))
+      (a!26 (=> (not (and (= ret_BUFFER_SIZE_1_0!56 ret_BUFFER_SIZE_3_0!58)))
+                (and (= ret_BUFFER_SIZE_4_0!59 ret_BUFFER_SIZE_3_0!58))))
+      (a!28 (=> (not (and (= ret_ALLOWED_URI_CHARS_1_0!52
+                             ret_ALLOWED_URI_CHARS_2_0!53)))
+                (and (= ret_ALLOWED_URI_CHARS_4_0!55
+                        ret_ALLOWED_URI_CHARS_2_0!53))))
+      (a!29 (=> (not (and (= ret_ALLOWED_URI_CHARS_1_0!52
+                             ret_ALLOWED_URI_CHARS_3_0!54)))
+                (and (= ret_ALLOWED_URI_CHARS_4_0!55
+                        ret_ALLOWED_URI_CHARS_3_0!54))))
+      (a!31 (=> (not (and (= ret_1_0!48 ret_2_0!49)))
+                (and (= ret_4_0!51 ret_2_0!49))))
+      (a!32 (=> (not (and (= ret_1_0!48 ret_3_0!50)))
+                (and (= ret_4_0!51 ret_3_0!50)))))
+(let ((a!3 (or (and (and (= ret_CONTENT_CONTACTS_URI_PREFIX_4_0!91
+                            ret_CONTENT_CONTACTS_URI_PREFIX_2_0!89))
+                    (and (= ret_CONTENT_CONTACTS_URI_PREFIX_4_0!91
+                            ret_CONTENT_CONTACTS_URI_PREFIX_3_0!90))
+                    (= ret_CONTENT_CONTACTS_URI_PREFIX_1_0!88
+                       ret_CONTENT_CONTACTS_URI_PREFIX_4_0!91))
+               (and a!1 a!2)))
+      (a!6 (or (and (and (= ret_readTimeout_4_0!87 ret_readTimeout_2_0!85))
+                    (and (= ret_readTimeout_4_0!87 ret_readTimeout_3_0!86))
+                    (= ret_readTimeout_1_0!84 ret_readTimeout_4_0!87))
+               (and a!4 a!5)))
+      (a!9 (or (and (and (= ret_context_4_0!83 ret_context_2_0!81))
+                    (and (= ret_context_4_0!83 ret_context_3_0!82))
+                    (= ret_context_1_0!80 ret_context_4_0!83))
+               (and a!7 a!8)))
+      (a!12 (or (and (and (= ret_connectTimeout_4_0!79
+                             ret_connectTimeout_2_0!77))
+                     (and (= ret_connectTimeout_4_0!79
+                             ret_connectTimeout_3_0!78))
+                     (= ret_connectTimeout_1_0!76 ret_connectTimeout_4_0!79))
+                (and a!10 a!11)))
+      (a!15 (or (and (and (= ret_MAX_REDIRECT_COUNT_4_0!75
+                             ret_MAX_REDIRECT_COUNT_2_0!73))
+                     (and (= ret_MAX_REDIRECT_COUNT_4_0!75
+                             ret_MAX_REDIRECT_COUNT_3_0!74))
+                     (= ret_MAX_REDIRECT_COUNT_1_0!72
+                        ret_MAX_REDIRECT_COUNT_4_0!75))
+                (and a!13 a!14)))
+      (a!18 (or (and (and (= ret_ERROR_UNSUPPORTED_SCHEME_4_0!71
+                             ret_ERROR_UNSUPPORTED_SCHEME_2_0!69))
+                     (and (= ret_ERROR_UNSUPPORTED_SCHEME_4_0!71
+                             ret_ERROR_UNSUPPORTED_SCHEME_3_0!70))
+                     (= ret_ERROR_UNSUPPORTED_SCHEME_1_0!68
+                        ret_ERROR_UNSUPPORTED_SCHEME_4_0!71))
+                (and a!16 a!17)))
+      (a!21 (or (and (and (= ret_DEFAULT_HTTP_READ_TIMEOUT_4_0!67
+                             ret_DEFAULT_HTTP_READ_TIMEOUT_2_0!65))
+                     (and (= ret_DEFAULT_HTTP_READ_TIMEOUT_4_0!67
+                             ret_DEFAULT_HTTP_READ_TIMEOUT_3_0!66))
+                     (= ret_DEFAULT_HTTP_READ_TIMEOUT_1_0!64
+                        ret_DEFAULT_HTTP_READ_TIMEOUT_4_0!67))
+                (and a!19 a!20)))
+      (a!24 (or (and (and (= ret_DEFAULT_HTTP_CONNECT_TIMEOUT_4_0!63
+                             ret_DEFAULT_HTTP_CONNECT_TIMEOUT_2_0!61))
+                     (and (= ret_DEFAULT_HTTP_CONNECT_TIMEOUT_4_0!63
+                             ret_DEFAULT_HTTP_CONNECT_TIMEOUT_3_0!62))
+                     (= ret_DEFAULT_HTTP_CONNECT_TIMEOUT_1_0!60
+                        ret_DEFAULT_HTTP_CONNECT_TIMEOUT_4_0!63))
+                (and a!22 a!23)))
+      (a!27 (or (and (and (= ret_BUFFER_SIZE_4_0!59 ret_BUFFER_SIZE_2_0!57))
+                     (and (= ret_BUFFER_SIZE_4_0!59 ret_BUFFER_SIZE_3_0!58))
+                     (= ret_BUFFER_SIZE_1_0!56 ret_BUFFER_SIZE_4_0!59))
+                (and a!25 a!26)))
+      (a!30 (or (and (and (= ret_ALLOWED_URI_CHARS_4_0!55
+                             ret_ALLOWED_URI_CHARS_2_0!53))
+                     (and (= ret_ALLOWED_URI_CHARS_4_0!55
+                             ret_ALLOWED_URI_CHARS_3_0!54))
+                     (= ret_ALLOWED_URI_CHARS_1_0!52
+                        ret_ALLOWED_URI_CHARS_4_0!55))
+                (and a!28 a!29)))
+      (a!33 (or (and (and (= ret_4_0!51 ret_2_0!49))
+                     (and (= ret_4_0!51 ret_3_0!50))
+                     (= ret_1_0!48 ret_4_0!51))
+                (and a!31 a!32))))
+  (and a!3 a!6 a!9 a!12 a!15 a!18 a!21 a!24 a!27 a!30 a!33)))

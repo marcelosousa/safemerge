@@ -7,6 +7,6 @@ int f (int x)
   }
   else
   {
-    return 3;
+    return 2;
   }
 }

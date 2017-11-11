@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 257
-File: spring-boot/src/main/java/org/springframework/boot/context/embedded/undertow/UndertowEmbeddedServletContainerFactory.java
-Orig: b1dd92881d50f0210cb989ee511273e87f7e9341
-VarA: 041da3b6cd82d2e0d02734aa4e847e024c2636aa
-VarB: af426d08568b7eb8c24bf07a76a62f3ae394da91
-Merg: 9fdef15d50e3eebcf1fde17ddbe8863598d2e031

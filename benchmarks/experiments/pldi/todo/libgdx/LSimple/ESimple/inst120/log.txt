@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 120
+File: extensions/model-loaders/model-loaders/src/com/badlogic/gdx/graphics/g3d/experimental/SkeletonModelGpuSkinningTest.java
+Orig: 04c1e7c23298376aa5f180a957fd71e85afa9003
+VarA: d6f1b7a69a1ebb0c6bc1495e2c7d61a1497a8eed
+VarB: f64df375f17fe8fe6c32fb28d790ccee3bf14098
+Merg: a9820cfba2e451063ddaf62ab8f40ab346ba3676

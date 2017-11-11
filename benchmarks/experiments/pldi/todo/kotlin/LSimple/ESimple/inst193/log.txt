@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 193
+File: idea/src/org/jetbrains/jet/plugin/formatter/JetFormattingModelBuilder.java
+Orig: 12bdf557fa56c79317642f5229caedaeeeee08cb
+VarA: f1cd25a44fa1ff3e2b9e8041fa47f4d5acccd326
+VarB: 9723106d959d0c43f3d6d9f77dca335f33610d8a
+Merg: aa2696ced290b2ab722f8868f778f0504f303cca

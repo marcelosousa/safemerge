@@ -1,0 +1,64 @@
+Merge Instance for method (Ident "MapActivity",Ident "onPostCreate",[RefType (ClassRefType (ClassType [(Ident "Bundle",[])]))])
+@Override
+ protected void onPostCreate (Bundle savedInstanceState)
+{
+  super.onPostCreate(savedInstanceState);
+  if (mDetachedMode)
+  {
+    <?HOLE?>
+    toolbar.setNavigationIcon(R.drawable.ic_up);
+    toolbar.setNavigationOnClickListener(new View.OnClickListener()
+                                         {
+                                           @Override
+                                           public void onClick (View view)
+                                           {
+                                             finish();
+                                           }
+                                         });
+  }
+  if (mMapFragment == null)
+  {
+    if (savedInstanceState != null)
+    {
+      Bundle previousState = savedInstanceState.getBundle(BUNDLE_STATE_MAPVIEW);
+      mMapFragment = MapFragment.newInstance(previousState);
+    }
+    else
+    {
+      final String highlightRoomId = getIntent().hasExtra(EXTRA_ROOM) ? getIntent().getExtras().getString(EXTRA_ROOM) : null;
+      mMapFragment = MapFragment.newInstance(highlightRoomId);
+    }
+    getFragmentManager().beginTransaction().add(R.id.fragment_container_map, mMapFragment, "map").commit();
+  }
+  if (mInfoFragment == null)
+  {
+    mInfoFragment = MapInfoFragment.newInstace(this);
+    getFragmentManager().beginTransaction().add(R.id.fragment_container_map_info, mInfoFragment, "mapsheet").commit();
+  }
+  mDetachedMode = getIntent().getBooleanExtra(EXTRA_DETACHED_MODE, false);
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[SCond]: final Toolbar toolbar = getActionBarToolbar();
+Hole 2:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[SCond]: final Toolbar toolbar = getToolbar();
+Hole 2:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[SCond]: final Toolbar toolbar = getActionBarToolbar();
+Hole 2:
+[]: attemptEnableMyLocation();
+
+Edit M:
+Hole 1:
+[SCond]: final Toolbar toolbar = getToolbar();
+Hole 2:
+[]: attemptEnableMyLocation();
+

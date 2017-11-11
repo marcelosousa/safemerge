@@ -167,14 +167,14 @@ encodeType vId ident ty = do
  case ty of 
   PrimType pty -> do
    sort <- case pty of
-    BooleanT -> mkBoolSort
-    ByteT    -> mkBvSort 8
+    BooleanT -> mkIntSort -- mkBoolSort
+    ByteT    -> mkIntSort -- mkBvSort 8
     ShortT   -> mkIntSort
     IntT     -> mkIntSort
-    LongT    -> mkRealSort
+    LongT    -> mkIntSort -- mkRealSort
     CharT    -> error "enc_ty: CharT"
-    FloatT   -> mkRealSort
-    DoubleT  -> mkRealSort
+    FloatT   -> mkIntSort -- mkRealSort
+    DoubleT  -> mkIntSort -- mkRealSort
    return (sort,M.empty,Primitive)
   RefType rty -> encodeRefType vId ident rty
 
@@ -313,14 +313,13 @@ encodeNew mSort vId t@(ClassType ((Ident cTy,_):_)) args = do
 
 -- | Encode Method Call 
 --  The environment needs to have a list of all the possible methods that it can call 
--- 
 encodeCall :: MethodInvocation -> Maybe Sort -> VId -> EnvOp AST
 encodeCall m mSort vId = do
  wizPrint $ "encodeCall: " ++ show m
  case m of  
   MethodCall (Name name) args -> do
     argsAST <- mapM (encodeExp mSort vId) args
-    encCall mSort name argsAST
+    encCall vId mSort name argsAST
   -- PrimaryMethodCall: fields?
   PrimaryMethodCall e tys name args -> do
    case e of
@@ -330,63 +329,94 @@ encodeCall m mSort vId = do
       wizPrint "encodeCall: warning!"
       argsAST <- mapM (encodeExp mSort vId) args
       arg <- encodeExp mSort vId e
-      encCall mSort [name] (arg:argsAST)
+      encCall vId mSort [name] (arg:argsAST)
   SuperMethodCall _ i args -> do
     argsAST <- mapM (encodeExp mSort vId) args
-    encCall mSort [i] argsAST   
+    encCall vId mSort [i] argsAST   
   _ -> error $ "encodeCall: " ++ show m
- where
-  encCall nSort name args = do
-   wizPrint $ "encCall: " ++ show name 
-   env@Env{..} <- get
-   case name of 
-    [] -> error $ "encCall: name = []"
-    [id@(Ident ident)] -> do 
-     let arity     = length args
-         class_sum = _e_classes !! (vId - 1) 
-         meths     = findMethodGen id arity class_sum
-         cfgs      = map computeGraphMember meths
-         deps  = foldr (\cfg res -> M.union res $ blockDep class_sum cfg) M.empty cfgs
-     wizPrint $ "encCall: Found methods " ++ show meths
-     mapM_ incLoc meths
-     case M.lookup (id,arity) _e_fnmap of
-       Nothing -> do
-         sorts <- lift $ mapM getSort args 
-         rSort <- case nSort of
-                   Nothing -> lift $ mkIntSort
-                   Just s  -> return s 
-         fn    <- lift $ mkFreshFuncDecl ident sorts rSort
-         ast   <- lift $ mkApp fn args
-         let fnmap = M.insert (id,arity) (fn,deps) _e_fnmap 
-         updateFunctMap fnmap 
-         return ast 
-       Just (ast,dep) -> do
-         wizPrint $ "encCall: Found " ++ ident ++ " in function map" 
-         sorts <- lift $ mapM getSort args 
-         str <- lift $ funcDeclToString ast
-         wizPrint $ "encCall: " ++ str
-         --wizBreak
-         lift $ mkApp ast args 
-    (oc@(Ident ident):meth) -> 
-     if isUpper $ head ident
-     then encCall nSort [foldr (\(Ident a) (Ident b) -> Ident (a ++ "." ++ b)) oc meth] args  
-     else do
-      let objVar = getVarSSAMap ("call: " ++ show oc) vId oc _e_ssamap
-      case _e_mode of
-       Model -> 
-        case  _v_mty objVar of
-         Queue -> do 
-          wizPrint $ "encCall: Queue"
-          queueModel oc objVar meth vId 
-         ArrayList -> do 
-          wizPrint $ "encCall: ArrayList"
-          arrayListModel oc objVar meth vId args 
-         -- Call to an object; assume that the object is changed; thus, need to
-         -- update it
+
+-- | One of the most important functions in the verifier
+--   Takes care of encoding method calls using the dependence
+--   analysis.
+--   Applies some heuristics about side effects.
+--   Needs to use the dependence analysis 
+encCall :: VId -> Maybe Sort -> [Ident] -> [AST] -> EnvOp AST
+encCall vId nSort name args = do
+ wizPrint $ "encCall: " ++ show name 
+ env@Env{..} <- get
+ case name of 
+  [] -> error $ "encCall: name = []"
+  [id@(Ident ident)] -> do 
+   let arity     = length args
+       class_sum = _e_classes !! (vId - 1) 
+       meths     = findMethodGen id arity class_sum
+       cfgs      = map computeGraphMember meths
+       -- If there are several callees then ABORT! Not supported yet. 
+       deps      = if length cfgs > 1
+                   then error "encCall: Several potential callees"
+                   else if null cfgs 
+                        then M.empty
+                        else blockDep class_sum $ head cfgs
+   wizPrint $ "encCall: Found methods " ++ show meths
+   mapM_ incLoc meths
+   case M.lookup (id,arity) _e_fnmap of
+     Nothing -> do
+       wizPrint $ "encCall: Adding method with deps: " ++ printDepMap deps
+       sorts <- lift $ mapM getSort args 
+       rSort <- case nSort of
+                 Nothing -> lift $ mkIntSort
+                 Just s  -> return s 
+       fn    <- lift $ mkFreshFuncDecl ident sorts rSort
+       ast   <- lift $ mkApp fn args
+       let fnmap = M.insert (id,arity) (fn,deps) _e_fnmap 
+       updateFunctMap fnmap 
+       return ast 
+     Just (ast,dep) -> do
+       wizPrint $ "encCall: Found " ++ ident ++ " in function map with dep = " ++ printDepMap dep  
+       sorts <- lift $ mapM getSort args 
+       str <- lift $ funcDeclToString ast
+       wizPrint $ "encCall: " ++ str
+       --wizBreak
+       lift $ mkApp ast args 
+  (oc@(Ident ident):meth) -> 
+   if isUpper $ head ident
+   then encCall vId nSort [foldr (\(Ident a) (Ident b) -> Ident (a ++ "." ++ b)) oc meth] args  
+   else do
+    let objVar = getVarSSAMap ("call: " ++ show oc) vId oc _e_ssamap
+    case _e_mode of
+     Model -> 
+      case  _v_mty objVar of
+       Queue -> do 
+        wizPrint $ "encCall: Queue"
+        queueModel oc objVar meth vId 
+       ArrayList -> do 
+        wizPrint $ "encCall: ArrayList"
+        arrayListModel oc objVar meth vId args 
+       -- Call to an object; assume that the object is changed; thus, need to
+       -- update it
+       Object -> do 
+         let ident@(Ident id) = concatIdent meth
+         rhsAst  <- encCall vId (Just (_v_typ objVar)) [ident] ((_v_ast objVar):args)
+         let isReadOrGet = (length id > 5) && ((take 3 id) == "get") || ((take 4 id) == "read")
+         if isReadOrGet
+         then return rhsAst
+         else do
+           wizPrint "HERE!!!!!"
+           env@Env{..} <- get
+           nLhsVar <- lift $ updateVariable vId oc objVar 
+           let ssamap = insertSSAVar vId oc nLhsVar _e_ssamap
+           ass <- lift $ mkEq (_v_ast nLhsVar) rhsAst 
+           pre <- lift $ mkAnd [_e_pre,ass]
+           updatePre pre
+           updateSSAMap ssamap
+           return rhsAst
+       t -> error $ "encCall: unsupported calls to " ++ show t
+     _ -> do 
+       case _v_mty objVar of
          Object -> do 
            let ident@(Ident id) = concatIdent meth
-           rhsAst  <- encCall (Just (_v_typ objVar)) [ident] ((_v_ast objVar):args)
-           let isReadOrGet = (length id > 5) && ((take 3 id) == "get") || ((take 4 id) == "read")
+           rhsAst  <- encCall vId (Just (_v_typ objVar)) [ident] ((_v_ast objVar):args)
+           let isReadOrGet = (length id > 5) && ((take 3 id) == "get") || ((take 4 id) == "read") 
            if isReadOrGet
            then return rhsAst
            else do
@@ -399,26 +429,7 @@ encodeCall m mSort vId = do
              updatePre pre
              updateSSAMap ssamap
              return rhsAst
-         t -> error $ "encCall: unsupported calls to " ++ show t
-       _ -> do 
-         case _v_mty objVar of
-           Object -> do 
-             let ident@(Ident id) = concatIdent meth
-             rhsAst  <- encCall (Just (_v_typ objVar)) [ident] ((_v_ast objVar):args)
-             let isReadOrGet = (length id > 5) && ((take 3 id) == "get") || ((take 4 id) == "read") 
-             if isReadOrGet
-             then return rhsAst
-             else do
-               wizPrint "HERE!!!!!"
-               env@Env{..} <- get
-               nLhsVar <- lift $ updateVariable vId oc objVar 
-               let ssamap = insertSSAVar vId oc nLhsVar _e_ssamap
-               ass <- lift $ mkEq (_v_ast nLhsVar) rhsAst 
-               pre <- lift $ mkAnd [_e_pre,ass]
-               updatePre pre
-               updateSSAMap ssamap
-               return rhsAst
-           _ -> encCall nSort [concatIdent meth] ((_v_ast objVar):args)
+         _ -> encCall vId nSort [concatIdent meth] ((_v_ast objVar):args)
 
 -- Analyse Assign
 assign :: [VId] -> Exp -> Lhs -> AssignOp -> Exp -> EnvOp ()

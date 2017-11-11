@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 28
-File: modules/lang-painless/src/main/java/org/elasticsearch/painless/antlr/PainlessParser.java
-Orig: ad118eb1e5f04e5a3cac6c48fadb34e4b139ea47
-VarA: 23d7cdd043a14367f88f8f74a81d6789bf7bbf40
-VarB: da74323141a69bd06fc19a70bc072143e9f0e986
-Merg: 950b093fc7dc0f0a4bd7affe2ec10b7c6aca8436

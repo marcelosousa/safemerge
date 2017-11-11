@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 56
-File: modules/reindex/src/main/java/org/elasticsearch/index/reindex/RestUpdateByQueryAction.java
-Orig: 69c83b3459f100055c316f364cea3cd58d713b52
-VarA: 7aa29e3f7c4f6959592dcfab5648197a03eb7568
-VarB: 4c1366bb211b2093401c808ea941bd3cf59dd98c
-Merg: 31dcb3e18bc62945d2557cf804c7b2feff8b61ca

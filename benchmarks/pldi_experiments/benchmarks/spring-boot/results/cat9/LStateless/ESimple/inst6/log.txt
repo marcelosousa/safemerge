@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 6
-File: spring-boot-actuator/src/test/java/org/springframework/boot/actuate/endpoint/LiquibaseEndpointTests.java
-Orig: 3bc9718cc4935ce20e203a7d87ac8c96c79c4db8
-VarA: ebbe29cc8528e47a51a1b67bc3bc0a9cd32d6303
-VarB: 5c13b8bf5033b2464b063b1d701b79556d29c3b4
-Merg: b9b284d3d0c8380346ac037a301c310fada3fd42

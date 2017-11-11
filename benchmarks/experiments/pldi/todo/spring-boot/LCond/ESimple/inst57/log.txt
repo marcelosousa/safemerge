@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 57
+File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/data/neo4j/Neo4jDataAutoConfigurationTests.java
+Orig: 751cd6e0b29f3fa150b814749ceba2982adf1112
+VarA: 13e5d985603e455669c0dfa04ea143ecd684344a
+VarB: 0163731043a71b7ca5c78c56a85b7270beca99f4
+Merg: 4c32d6a7ded0696e3ce24e2b8e781943339b71fb

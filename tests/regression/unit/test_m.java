@@ -5,7 +5,7 @@ class UnitTest {
     if (x > 0) {
       return 3;
     } else {
-      return 3;
+      return 2;
     }
   }  
 }

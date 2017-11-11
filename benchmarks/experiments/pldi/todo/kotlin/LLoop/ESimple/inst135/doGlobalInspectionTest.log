@@ -1,0 +1,156 @@
+verify: relational VC
+(and (= wrapper_4_0!3 wrapper_3_0!2)
+     (= wrapper_3_0!2 wrapper_2_0!1)
+     (= wrapper_2_0!1 wrapper_1_0!0)
+     (= globalTestDir_4_0!7 globalTestDir_3_0!6)
+     (= globalTestDir_3_0!6 globalTestDir_2_0!5)
+     (= globalTestDir_2_0!5 globalTestDir_1_0!4)
+     (= scope_4_0!11 scope_3_0!10)
+     (= scope_3_0!10 scope_2_0!9)
+     (= scope_2_0!9 scope_1_0!8)
+     (= kotlinInternalModeOriginalValue_4_0!15
+        kotlinInternalModeOriginalValue_3_0!14)
+     (= kotlinInternalModeOriginalValue_3_0!14
+        kotlinInternalModeOriginalValue_2_0!13)
+     (= kotlinInternalModeOriginalValue_2_0!13
+        kotlinInternalModeOriginalValue_1_0!12)
+     (= myAdditionalModules_4_0!19 myAdditionalModules_3_0!18)
+     (= myAdditionalModules_3_0!18 myAdditionalModules_2_0!17)
+     (= myAdditionalModules_2_0!17 myAdditionalModules_1_0!16)
+     (= myCreateManifest_4_0!23 myCreateManifest_3_0!22)
+     (= myCreateManifest_3_0!22 myCreateManifest_2_0!21)
+     (= myCreateManifest_2_0!21 myCreateManifest_1_0!20)
+     (= myFacet_4_0!27 myFacet_3_0!26)
+     (= myFacet_3_0!26 myFacet_2_0!25)
+     (= myFacet_2_0!25 myFacet_1_0!24)
+     (= myModule_4_0!31 myModule_3_0!30)
+     (= myModule_3_0!30 myModule_2_0!29)
+     (= myModule_2_0!29 myModule_1_0!28)
+     (= inspectionManager_1_1!57
+        (Anonymous0!56 InspectionManager!54 getProject!55))
+     (= inspectionManager_2_1!59
+        (Anonymous0!56 InspectionManager!54 getProject!55))
+     (= inspectionManager_3_1!61
+        (Anonymous0!56 InspectionManager!54 getProject!55))
+     (= inspectionManager_4_1!63
+        (Anonymous0!56 InspectionManager!54 getProject!55))
+     (= myFixture_1_1!66 (Anonymous1!65 wrapper_1_0!0))
+     (= myFixture_2_1!68 (Anonymous1!65 wrapper_2_0!1))
+     (= myFixture_3_1!70 (Anonymous1!65 wrapper_3_0!2))
+     (= myFixture_4_1!72 (Anonymous1!65 wrapper_4_0!3))
+     (= scope_1_1!74 (Anonymous2!73 scope_1_0!8))
+     (= scope_2_1!75 (Anonymous2!73 scope_2_0!9))
+     (= scope_3_1!76 (Anonymous2!73 scope_3_0!10))
+     (= scope_4_1!77 (Anonymous2!73 scope_4_0!11))
+     (= wrapper_1_1!79 (Anonymous3!78 myFixture_1_1!66 wrapper_1_0!0))
+     (= wrapper_2_1!80 (Anonymous3!78 myFixture_2_1!68 wrapper_2_0!1))
+     (= wrapper_3_1!81 (Anonymous3!78 myFixture_3_1!70 wrapper_3_0!2))
+     (= wrapper_4_1!82 (Anonymous3!78 myFixture_4_1!72 wrapper_4_0!3))
+     (= globalContext_4_1!84
+        (createGlobalContextForTool.CodeInsightTestFixtureImpl!86
+          scope_4_1!77
+          getProject!85
+          inspectionManager_4_1!63
+          wrapper_4_1!82))
+     (= globalContext_3_1!88
+        (createGlobalContextForTool.CodeInsightTestFixtureImpl!86
+          scope_3_1!76
+          getProject!85
+          inspectionManager_3_1!61
+          wrapper_3_1!81))
+     (= globalContext_2_1!90
+        (createGlobalContextForTool.CodeInsightTestFixtureImpl!86
+          scope_2_1!75
+          getProject!85
+          inspectionManager_2_1!59
+          wrapper_2_1!80))
+     (= globalContext_1_1!92
+        (createGlobalContextForTool.CodeInsightTestFixtureImpl!86
+          scope_1_1!74
+          getProject!85
+          inspectionManager_1_1!57
+          wrapper_1_1!79))
+     (= ret_kotlinInternalModeOriginalValue_1_0!32
+        kotlinInternalModeOriginalValue_1_0!12)
+     (= ret_myAdditionalModules_1_0!36 myAdditionalModules_1_0!16)
+     (= ret_myCreateManifest_1_0!40 myCreateManifest_1_0!20)
+     (= ret_myFacet_1_0!44 myFacet_1_0!24)
+     (= ret_myModule_1_0!48 myModule_1_0!28)
+     (= ret_kotlinInternalModeOriginalValue_2_0!33
+        kotlinInternalModeOriginalValue_2_0!13)
+     (= ret_myAdditionalModules_2_0!37 myAdditionalModules_2_0!17)
+     (= ret_myCreateManifest_2_0!41 myCreateManifest_2_0!21)
+     (= ret_myFacet_2_0!45 myFacet_2_0!25)
+     (= ret_myModule_2_0!49 myModule_2_0!29)
+     (= ret_kotlinInternalModeOriginalValue_3_0!34
+        kotlinInternalModeOriginalValue_3_0!14)
+     (= ret_myAdditionalModules_3_0!38 myAdditionalModules_3_0!18)
+     (= ret_myCreateManifest_3_0!42 myCreateManifest_3_0!22)
+     (= ret_myFacet_3_0!46 myFacet_3_0!26)
+     (= ret_myModule_3_0!50 myModule_3_0!30)
+     (= ret_kotlinInternalModeOriginalValue_4_0!35
+        kotlinInternalModeOriginalValue_4_0!15)
+     (= ret_myAdditionalModules_4_0!39 myAdditionalModules_4_0!19)
+     (= ret_myCreateManifest_4_0!43 myCreateManifest_4_0!23)
+     (= ret_myFacet_4_0!47 myFacet_4_0!27)
+     (= ret_myModule_4_0!51 myModule_4_0!31))
+verify: semantic conflict VC
+(let ((a!1 (=> (not (and (= ret_myModule_1_0!48 ret_myModule_2_0!49)))
+               (and (= ret_myModule_4_0!51 ret_myModule_2_0!49))))
+      (a!2 (=> (not (and (= ret_myModule_1_0!48 ret_myModule_3_0!50)))
+               (and (= ret_myModule_4_0!51 ret_myModule_3_0!50))))
+      (a!4 (=> (not (and (= ret_myFacet_1_0!44 ret_myFacet_2_0!45)))
+               (and (= ret_myFacet_4_0!47 ret_myFacet_2_0!45))))
+      (a!5 (=> (not (and (= ret_myFacet_1_0!44 ret_myFacet_3_0!46)))
+               (and (= ret_myFacet_4_0!47 ret_myFacet_3_0!46))))
+      (a!7 (=> (not (and (= ret_myCreateManifest_1_0!40
+                            ret_myCreateManifest_2_0!41)))
+               (and (= ret_myCreateManifest_4_0!43 ret_myCreateManifest_2_0!41))))
+      (a!8 (=> (not (and (= ret_myCreateManifest_1_0!40
+                            ret_myCreateManifest_3_0!42)))
+               (and (= ret_myCreateManifest_4_0!43 ret_myCreateManifest_3_0!42))))
+      (a!10 (=> (not (and (= ret_myAdditionalModules_1_0!36
+                             ret_myAdditionalModules_2_0!37)))
+                (and (= ret_myAdditionalModules_4_0!39
+                        ret_myAdditionalModules_2_0!37))))
+      (a!11 (=> (not (and (= ret_myAdditionalModules_1_0!36
+                             ret_myAdditionalModules_3_0!38)))
+                (and (= ret_myAdditionalModules_4_0!39
+                        ret_myAdditionalModules_3_0!38))))
+      (a!13 (=> (not (and (= ret_kotlinInternalModeOriginalValue_1_0!32
+                             ret_kotlinInternalModeOriginalValue_2_0!33)))
+                (and (= ret_kotlinInternalModeOriginalValue_4_0!35
+                        ret_kotlinInternalModeOriginalValue_2_0!33))))
+      (a!14 (=> (not (and (= ret_kotlinInternalModeOriginalValue_1_0!32
+                             ret_kotlinInternalModeOriginalValue_3_0!34)))
+                (and (= ret_kotlinInternalModeOriginalValue_4_0!35
+                        ret_kotlinInternalModeOriginalValue_3_0!34)))))
+(let ((a!3 (or (and (and (= ret_myModule_4_0!51 ret_myModule_2_0!49))
+                    (and (= ret_myModule_4_0!51 ret_myModule_3_0!50))
+                    (= ret_myModule_1_0!48 ret_myModule_4_0!51))
+               (and a!1 a!2)))
+      (a!6 (or (and (and (= ret_myFacet_4_0!47 ret_myFacet_2_0!45))
+                    (and (= ret_myFacet_4_0!47 ret_myFacet_3_0!46))
+                    (= ret_myFacet_1_0!44 ret_myFacet_4_0!47))
+               (and a!4 a!5)))
+      (a!9 (or (and (and (= ret_myCreateManifest_4_0!43
+                            ret_myCreateManifest_2_0!41))
+                    (and (= ret_myCreateManifest_4_0!43
+                            ret_myCreateManifest_3_0!42))
+                    (= ret_myCreateManifest_1_0!40 ret_myCreateManifest_4_0!43))
+               (and a!7 a!8)))
+      (a!12 (or (and (and (= ret_myAdditionalModules_4_0!39
+                             ret_myAdditionalModules_2_0!37))
+                     (and (= ret_myAdditionalModules_4_0!39
+                             ret_myAdditionalModules_3_0!38))
+                     (= ret_myAdditionalModules_1_0!36
+                        ret_myAdditionalModules_4_0!39))
+                (and a!10 a!11)))
+      (a!15 (or (and (and (= ret_kotlinInternalModeOriginalValue_4_0!35
+                             ret_kotlinInternalModeOriginalValue_2_0!33))
+                     (and (= ret_kotlinInternalModeOriginalValue_4_0!35
+                             ret_kotlinInternalModeOriginalValue_3_0!34))
+                     (= ret_kotlinInternalModeOriginalValue_1_0!32
+                        ret_kotlinInternalModeOriginalValue_4_0!35))
+                (and a!13 a!14))))
+  (and a!3 a!6 a!9 a!12 a!15)))

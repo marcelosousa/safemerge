@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 391
-File: spring-boot/src/main/java/org/springframework/boot/logging/logback/LogbackLoggingSystem.java
-Orig: 4cbbd48f18e8e13f3c709aab56f62f60c87230e9
-VarA: f3c622ad89ab2eebbbf2e1b39260ae1197590022
-VarB: ddfadce94d02ff7cc5484fde7acd3478ace6dea2
-Merg: 72928de5182c86a381e349e11df63f3ea6a3168d

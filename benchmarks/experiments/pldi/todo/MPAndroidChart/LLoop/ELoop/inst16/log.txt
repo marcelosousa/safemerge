@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 16
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/PiePolylineChartActivity.java
+Orig: 8bca4c79d3adf8f116d3226a9939badac7534918
+VarA: 2a2cee5d1c3f8c21eb6baa08a0aee65787f2d530
+VarB: 1b9b3da3deaea37114e1fe9423445dac4a97c2a5
+Merg: 7de481bca30ef6ca03c30c89733465333dc12c37

@@ -1,0 +1,40 @@
+Merge Instance for method (Ident "CacheAutoConfigurationTests",Ident "hazelcastCacheExplicit",[])
+@Test
+ public void hazelcastCacheExplicit ()
+{
+  <?HOLE?>
+  HazelcastCacheManager cacheManager = validateCacheManager(HazelcastCacheManager.class);
+  cacheManager.getCache("defaultCache");
+  assertThat(cacheManager.getCacheNames()).containsOnly("defaultCache");
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: load(DefaultCacheConfiguration.class, "spring.cache.type=hazelcast");
+Hole 2:
+[]: assertThat(this.context.getBean(HazelcastInstance.class)).isEqualTo(getHazelcastInstance(cacheManager));
+
+Edit A:
+Hole 1:
+[]: load(DefaultCacheConfiguration.class, "spring.cache.type=hazelcast");
+Hole 2:
+[]: assertThat(this.context.getBean(HazelcastInstance.class)).isEqualTo(cacheManager.getHazelcastInstance());
+
+Edit B:
+Hole 1:
+[]: load(new Class[] {
+                   HazelcastAutoConfiguration.class,
+                   DefaultCacheConfiguration.class,
+                 }, "spring.cache.type=hazelcast");
+Hole 2:
+[]: assertThat(this.context.getBean(HazelcastInstance.class)).isEqualTo(getHazelcastInstance(cacheManager));
+
+Edit M:
+Hole 1:
+[]: load(new Class[] {
+                   HazelcastAutoConfiguration.class,
+                   DefaultCacheConfiguration.class,
+                 }, "spring.cache.type=hazelcast");
+Hole 2:
+[]: assertThat(this.context.getBean(HazelcastInstance.class)).isEqualTo(cacheManager.getHazelcastInstance());
+

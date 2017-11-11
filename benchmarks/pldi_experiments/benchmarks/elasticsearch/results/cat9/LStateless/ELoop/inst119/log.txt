@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 119
-File: core/src/test/java/org/elasticsearch/cluster/ClusterInfoServiceIT.java
-Orig: 7b74f0ddc9e97c3b901e0e6633c1a61417e93ec1
-VarA: 672a54b39a40ea3cbddcd5d861aa71316d9df268
-VarB: 3ab39385016377778a50df1023d1a944304cefa1
-Merg: ba68a8df63f45af12642b0874ac64dd4841fc832

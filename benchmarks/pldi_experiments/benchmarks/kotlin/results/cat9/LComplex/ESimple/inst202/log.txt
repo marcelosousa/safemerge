@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 202
-File: compiler/backend/src/org/jetbrains/jet/codegen/ImplementationBodyCodegen.java
-Orig: bb3bef41cec48ecb80c1ad7f6ec3f8ce053f4058
-VarA: 5855c242f581f5545c8ac9f64bb16c99dc98fe7f
-VarB: d2d5f005be6565ca3a23b8e03674293aface27e9
-Merg: 32f9dcedffc527dfc9fa7cfa8704808c6435ebd0

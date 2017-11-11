@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 224
-File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/condition/AnyNestedConditionTests.java
-Orig: faab9047d6c306bd4c1504b7a4fae336c183431d
-VarA: 49f28b7941cf55d1df0470cc853ac5fc9795d2da
-VarB: 3b52909fc2b1f0dc8a0c9e0c32612229433aa662
-Merg: 825dd0a26c9f58b4c0b308900e8343abaa04deba

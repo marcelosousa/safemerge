@@ -1,0 +1,40 @@
+Merge Instance for method (Ident "CacheAutoConfigurationTests",Ident "hazelcastCacheWithMainHazelcastAutoConfiguration",[])
+@Test
+ public void hazelcastCacheWithMainHazelcastAutoConfiguration () throws IOException
+{
+  String mainConfig = "org/springframework/boot/autoconfigure/hazelcast/hazelcast-specific.xml";
+  AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+  EnvironmentTestUtils.addEnvironment(applicationContext, "spring.cache.type=hazelcast", ("spring.hazelcast.config=" + mainConfig));
+  applicationContext.register(DefaultCacheConfiguration.class);
+  applicationContext.register(HazelcastAndCacheConfiguration.class);
+  applicationContext.refresh();
+  this.context = applicationContext;
+  HazelcastCacheManager cacheManager = validateCacheManager(HazelcastCacheManager.class);
+  HazelcastInstance hazelcastInstance = this.context.getBean(HazelcastInstance.class);
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: assertThat(new DirectFieldAccessor(cacheManager).getPropertyValue("hazelcastInstance"), equalTo(((Object) hazelcastInstance)));
+Hole 2:
+[]: assertThat(hazelcastInstance.getConfig().getConfigurationFile(), equalTo(new ClassPathResource(mainConfig).getFile()));
+
+Edit A:
+Hole 1:
+[]: assertThat(new DirectFieldAccessor(cacheManager).getPropertyValue("hazelcastInstance")).isEqualTo(hazelcastInstance);
+Hole 2:
+[]: assertThat(hazelcastInstance.getConfig().getConfigurationFile()).isEqualTo(new ClassPathResource(mainConfig).getFile());
+
+Edit B:
+Hole 1:
+[]: assertThat(getHazelcastInstance(cacheManager), equalTo(((Object) hazelcastInstance)));
+Hole 2:
+[]: assertThat(hazelcastInstance.getConfig().getConfigurationFile(), equalTo(new ClassPathResource(mainConfig).getFile()));
+
+Edit M:
+Hole 1:
+[]: assertThat(getHazelcastInstance(cacheManager)).isEqualTo(hazelcastInstance);
+Hole 2:
+[]: assertThat(hazelcastInstance.getConfig().getConfigurationFile()).isEqualTo(new ClassPathResource(mainConfig).getFile());
+

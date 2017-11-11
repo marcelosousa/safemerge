@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 87
-File: core/src/test/java/org/elasticsearch/indices/analyze/HunspellServiceIT.java
-Orig: c6956a9dc9a827ba92d8dc16548b50a72c28bfe2
-VarA: ad7fec87b019255d88f01afb02df9088dc280b43
-VarB: e9bb3d31a33f45752de25cd646955d07be345aff
-Merg: 9a1fdb6987feadaf6d433ca0a8e131ead1b6f50c

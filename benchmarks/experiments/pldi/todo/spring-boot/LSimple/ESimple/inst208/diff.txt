@@ -1,0 +1,31 @@
+Merge Instance for method (Ident "ConfigurationMetadataAnnotationProcessor",Ident "processAnnotatedTypeElement",[RefType (ClassRefType (ClassType [(Ident "String",[])])),RefType (ClassRefType (ClassType [(Ident "TypeElement",[])]))])
+private void processAnnotatedTypeElement (String prefix, TypeElement element)
+{
+  <?HOLE?>
+  this.metadataCollector.add(ItemMetadata.newGroup(prefix, type, type, null));
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: String type = this.typeUtils.getType(element);
+Hole 2:
+[]: processTypeElement(prefix, element);
+
+Edit A:
+Hole 1:
+[]: String type = this.typeUtils.getType(element);
+Hole 2:
+[]: processTypeElement(prefix, element, null);
+
+Edit B:
+Hole 1:
+[]: String type = this.typeUtils.getQualifiedName(element);
+Hole 2:
+[]: processTypeElement(prefix, element);
+
+Edit M:
+Hole 1:
+[]: String type = this.typeUtils.getQualifiedName(element);
+Hole 2:
+[]: processTypeElement(prefix, element, null);
+

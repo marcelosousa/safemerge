@@ -83,6 +83,11 @@ is_input tg =
 type AbsVar = SymLoc
 type AbsVarAnn = (SymLoc,Tag)
 
+def_tag :: AbsVar -> AbsVarAnn
+def_tag s = case s of
+  SField i -> (s,Both)
+  _        -> (s,None) 
+
 -- This only works for a flow insensitive analysis
 -- Need a richer domain for flow sensitivity
 -- DepMap is the dependence map
@@ -271,7 +276,7 @@ weak_update node_table node el@(cont,depMap) =
       _ -> error "join_update: more than one state in the list"
 
 transformer :: Stmt -> ClassSum -> AbsElem -> AbsElem 
-transformer stmt class_sum el@(k,dmap) =  -- T.trace ("transformer: " ++ show stmt) $ 
+transformer stmt class_sum el@(k,dmap) = -- trace ("transformer: " ++ show stmt) $ 
   let kvars = nub $ concat k 
   in case stmt of
     Skip -> el 
@@ -319,7 +324,7 @@ transformer_expr class_sum e = case e of
 -- | transformer for a method invocation
 --   need to identify if it is an object method being invoked
 transformer_methInv :: ClassSum -> MethodInvocation -> ([AbsVar], [AbsVarAnn])
-transformer_methInv class_sum m =
+transformer_methInv class_sum m = -- trace ("transformer: invocation " ++ show m) $ 
   let rSet = getReadSetInv class_sum m 
       (mths,args) = case m of
         PrimaryMethodCall This [] i args -> (findMethodGen i (length args) class_sum, args) 
@@ -328,7 +333,7 @@ transformer_methInv class_sum m =
       deps = map (readWriteSet . blockDep class_sum) cfgs
       (r,w) = foldr (\(a,b) (c,d) -> (a++c, b++d)) ([],[]) deps
       -- the objects that are read can also be written
-      wR = map (\a -> (a,None)) $ filter writable (rSet++r) 
+      wR = map def_tag $ filter writable (rSet++r) 
   in (rSet++r, wR++w)
 
 getWrite :: ClassSum -> Lhs -> ([AbsVar],[AbsVarAnn])
@@ -386,11 +391,15 @@ getReadSet class_sum e = case e of
 
 getReadSetInv :: ClassSum -> MethodInvocation -> [AbsVar]
 getReadSetInv class_sum mi = case mi of
-  MethodCall (Name n) args -> (getReadSetName n):(concatMap (getReadSet class_sum) args)
+  MethodCall (Name n) args -> (getReadSetName class_sum n) ++ concatMap (getReadSet class_sum) args
   PrimaryMethodCall e _ _ args -> (getReadSet class_sum) e ++ concatMap (getReadSet class_sum) args
-  SuperMethodCall _ i args -> (getReadSetName [i]):(concatMap (getReadSet class_sum) args)
+  SuperMethodCall _ i args -> (getReadSetName class_sum [i]) ++ concatMap (getReadSet class_sum) args
   _ -> error $ "getReadSetInv: " ++ show mi 
 
-getReadSetName :: [Ident] -> AbsVar
-getReadSetName [] = error "getReadSetInv"
-getReadSetName (Ident i:_) = SName (Name [Ident i])
+-- | Receives the CallSum in case it is a member
+getReadSetName :: ClassSum -> [Ident] -> [AbsVar]
+getReadSetName _ [] = error "getReadSetInv"
+getReadSetName class_sum (i:_) = 
+  case M.lookup i (_cl_fields class_sum) of
+   Nothing -> [SName (Name [i])] 
+   Just m  -> map (\(i,_) -> SField i) $ toMemberSig m 

@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 276
-File: core/src/main/java/org/elasticsearch/index/query/HasChildQueryParser.java
-Orig: 6765635067564840f0696671d60571624e335ffd
-VarA: 88e3d6c4bc27433e793cec349f532b44421cbe16
-VarB: 90f32d4d32cde5ae28fbc6a3e725afafbdf1c58f
-Merg: 63530631f9fe1f63b9677af61019639bd8cb78cf

@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 372
-File: src/main/java/org/elasticsearch/bootstrap/Bootstrap.java
-Orig: d62771ac5d1be9c8dedd152f9fa405202fb9d590
-VarA: e4beda94f996a930b371a6d057c45909f48271a1
-VarB: 6ec6567badf6d2d369f84297aae2fe0657202a4c
-Merg: f613413ce477005a3bfc9bd153eab7d48225e82e

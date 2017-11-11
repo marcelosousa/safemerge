@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 241
-File: core/src/test/java/org/elasticsearch/index/mapper/index/IndexTypeMapperTests.java
-Orig: 47efa5c0589435becdee762f26fa7e88d439075c
-VarA: 8f6398a8f794890c2729b7db2abbdd5bdcf1f301
-VarB: abcf269539be85289600b49668bfe41c5d966adc
-Merg: ededbf0c8b2d238fbeaaeb6c1e9ccbab9ec9e4b7

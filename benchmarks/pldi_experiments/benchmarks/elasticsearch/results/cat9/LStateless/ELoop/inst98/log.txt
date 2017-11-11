@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 98
-File: core/src/test/java/org/elasticsearch/indices/stats/IndexStatsIT.java
-Orig: d0853e92535250dd5fcb71a64da6ccaa6c04c082
-VarA: ea2a8150d3d42a8e5a8c3a357e774020f3266cba
-VarB: 90c2c304b3c4bb4a7baecef6bdd138f66fead4ca
-Merg: bf7e2c333ac2f8c712fcee6b31907e9d1c18e5f7

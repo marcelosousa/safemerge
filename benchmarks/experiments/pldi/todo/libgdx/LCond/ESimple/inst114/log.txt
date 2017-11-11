@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 114
+File: backends/gdx-backend-iosmonotouch/src/com/badlogic/gdx/backends/ios/IOSApplication.java
+Orig: 1054dc4b8138de48f4c3ba8695891e8221faee42
+VarA: d59feada6c1238460ba768cdc47913ac80ec248c
+VarB: 4b92bfa0532125780de8d2712ab0ac7a20eebae1
+Merg: 5ef9a9ef4b9512ce62ef860d4c9c7b49ca609070

@@ -1,0 +1,82 @@
+Merge Instance for method (Ident "JetSimpleNameReference",Ident "collectLookupElements",[RefType (ClassRefType (ClassType [(Ident "BindingContext",[])])),RefType (ClassRefType (ClassType [(Ident "JetScope",[])]))])
+private Object[] collectLookupElements (BindingContext bindingContext, JetScope scope)
+{
+  List<LookupElement> result = Lists.newArrayList();
+  for (final DeclarationDescriptor descriptor : scope.getAllDescriptors()) {
+                                                                             <?HOLE?>
+                                                                             LookupElementBuilder element = LookupElementBuilder.create(descriptor.getName());
+                                                                             String typeText = "";
+                                                                             String tailText = "";
+                                                                             boolean tailTextGrayed = false;
+                                                                             if (descriptor instanceof FunctionDescriptor)
+                                                                             {
+                                                                               FunctionDescriptor functionDescriptor = (FunctionDescriptor) descriptor;
+                                                                               JetType returnType = functionDescriptor.getReturnType();
+                                                                               typeText = DescriptorRenderer.TEXT.renderType(returnType);
+                                                                               tailText = "(" + StringUtil.join(functionDescriptor.getValueParameters(), new Function<ValueParameterDescriptor, String>()
+                                                                                                                                                         {
+                                                                                                                                                           @Override
+                                                                                                                                                           public String fun (ValueParameterDescriptor valueParameterDescriptor)
+                                                                                                                                                           {
+                                                                                                                                                             return (valueParameterDescriptor.getName() + ":" + DescriptorRenderer.TEXT.renderType(valueParameterDescriptor.getOutType()));
+                                                                                                                                                           }
+                                                                                                                                                         }, ",") + ")";
+                                                                             }
+                                                                             else
+                                                                               if (descriptor instanceof VariableDescriptor)
+                                                                               {
+                                                                                 JetType outType = ((VariableDescriptor) descriptor).getOutType();
+                                                                                 typeText = DescriptorRenderer.TEXT.renderType(outType);
+                                                                               }
+                                                                               else
+                                                                                 if (descriptor instanceof ClassDescriptor)
+                                                                                 {
+                                                                                   <?HOLE?>
+                                                                                   tailTextGrayed = true;
+                                                                                 }
+                                                                                 else
+                                                                                 {
+                                                                                   typeText = DescriptorRenderer.TEXT.render(descriptor);
+                                                                                 }
+                                                                             element = element.setTailText(tailText, tailTextGrayed).setTypeText(typeText);
+                                                                             <?HOLE?>
+                                                                             if (declaration != null)
+                                                                             {
+                                                                               element = element.setIcon(declaration.getIcon((Iconable.ICON_FLAG_OPEN | Iconable.ICON_FLAG_VISIBILITY)));
+                                                                             }
+                                                                             result.add(element);
+                                                                           }
+  return result.toArray();
+}
+Edit Base:
+Hole 1:
+[SLoop]: PsiElement declaration = bindingContext.get(BindingContext.DESCRIPTOR_TO_DECLARATION, descriptor.getOriginal());
+Hole 2:
+[SCond,SCond,SCond,SLoop]: tailText = " (" + DescriptorRenderer.getFQName(descriptor.getContainingDeclaration()) + ")";
+Hole 3:
+[SLoop]: <SKIP>
+
+Edit A:
+Hole 1:
+[SLoop]: PsiElement declaration = bindingContext.get(BindingContext.DESCRIPTOR_TO_DECLARATION, descriptor.getOriginal());
+Hole 2:
+[SCond,SCond,SCond,SLoop]: tailText = " (" + DescriptorUtils.getFQName(descriptor.getContainingDeclaration()) + ")";
+Hole 3:
+[SLoop]: <SKIP>
+
+Edit B:
+Hole 1:
+[SLoop]: <SKIP>
+Hole 2:
+[SCond,SCond,SCond,SLoop]: tailText = " (" + DescriptorRenderer.getFQName(descriptor.getContainingDeclaration()) + ")";
+Hole 3:
+[SLoop]: PsiElement declaration = bindingContext.get(BindingContext.DESCRIPTOR_TO_DECLARATION, descriptor.getOriginal());
+
+Edit M:
+Hole 1:
+[SLoop]: <SKIP>
+Hole 2:
+[SCond,SCond,SCond,SLoop]: tailText = " (" + DescriptorUtils.getFQName(descriptor.getContainingDeclaration()) + ")";
+Hole 3:
+[SLoop]: PsiElement declaration = bindingContext.get(BindingContext.DESCRIPTOR_TO_DECLARATION, descriptor.getOriginal());
+

@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 160
+File: MPChartLib/src/com/github/mikephil/charting/charts/LineChart.java
+Orig: 45cdfca994433a0f920bd0d9fe5974f33b506b71
+VarA: e2413a4a9edd4a7588d470fc1acc0d77a9cf222b
+VarB: 0fdf6d57e60bb30bb40e26fd44cb5b118145544d
+Merg: 5fcdda2da1abb879435e98a43df17a8487f668e6

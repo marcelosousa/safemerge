@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 369
-File: src/main/java/org/elasticsearch/indices/store/TransportNodesListShardStoreMetaData.java
-Orig: 8128f398cac25978f2c80ad8aa21697edc2cdb6d
-VarA: 00f8dd60fe0dfa0c6ad374afa58b6aa00e0f724d
-VarB: 852482844c38160a17bbe23473dd00997670ca95
-Merg: 571feec451dc274d72cbd24b114a23ca3987e094

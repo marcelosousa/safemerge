@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 61
-File: core/src/main/java/org/elasticsearch/index/mapper/core/FloatFieldMapper.java
-Orig: 29e3443917b56a5015ca1869af612a48ab306e83
-VarA: bc67205bdfe1526eae277ab7856fc050ecbdb7b2
-VarB: 675d940f013c6589a87440cb8816c6a1e9701c0c
-Merg: eec9c4e5cd11e9c3e0b426f04894bb2a6dae4f21

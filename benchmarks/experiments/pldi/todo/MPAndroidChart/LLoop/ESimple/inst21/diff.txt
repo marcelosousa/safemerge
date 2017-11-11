@@ -1,0 +1,54 @@
+Merge Instance for method (Ident "LineDataSet",Ident "copy",[])
+@Override
+ public DataSet<Entry> copy ()
+{
+  List<Entry> yVals = new ArrayList<Entry>();
+  <?HOLE?>
+  LineDataSet copied = new LineDataSet(yVals, getLabel());
+  copied.mMode = mMode;
+  copied.mColors = mColors;
+  copied.mCircleRadius = mCircleRadius;
+  <?HOLE?>
+  copied.mCircleColors = mCircleColors;
+  copied.mDashPathEffect = mDashPathEffect;
+  copied.mDrawCircles = mDrawCircles;
+  copied.mDrawCircleHole = mDrawCircleHole;
+  copied.mHighLightColor = mHighLightColor;
+  return copied;
+}
+Edit Base:
+Hole 1:
+[SLoop]: for (int i = 0 ; i < mYVals.size() ; i++)
+{
+  yVals.add(mYVals.get(i).copy());
+}
+Hole 2:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[SLoop]: for (int i = 0 ; i < mValues.size() ; i++)
+{
+  yVals.add(mValues.get(i).copy());
+}
+Hole 2:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: for (int i = 0 ; i < mYVals.size() ; i++)
+{
+  yVals.add(mYVals.get(i).copy());
+}
+Hole 2:
+[]: copied.mCircleHoleRadius = mCircleHoleRadius;
+
+Edit M:
+Hole 1:
+[]: for (int i = 0 ; i < mValues.size() ; i++)
+{
+  yVals.add(mValues.get(i).copy());
+}
+Hole 2:
+[]: copied.mCircleHoleRadius = mCircleHoleRadius;
+

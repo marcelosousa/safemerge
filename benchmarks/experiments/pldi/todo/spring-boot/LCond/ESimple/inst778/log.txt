@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 778
+File: spring-boot/src/main/java/org/springframework/boot/logging/LoggingApplicationListener.java
+Orig: d64cc082dbc10076e0256bb3dde1aa4b022b214a
+VarA: 763a735bd57afb85442f0bc6705acaaf8214b9f0
+VarB: 555827cad7dc9fb164ddd867a66d99448bccec45
+Merg: 3328c1369f147bc7a2e5487c749c758b999cd941

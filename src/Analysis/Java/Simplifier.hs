@@ -9,6 +9,7 @@
 -------------------------------------------------------------------------------
 module Analysis.Java.Simplifier where
 
+import Data.List
 import Edit.Types
 import Language.Java.Syntax
 
@@ -23,7 +24,12 @@ simplifyMDecl m = case m of
 simplifyMBody :: MethodBody -> MethodBody
 simplifyMBody (MethodBody m) = case m of
   Nothing -> MethodBody $ Nothing
-  Just b  -> MethodBody $ Just $ simplifyBlock b
+  Just b  -> 
+    if isInfixOf "Return" (show b)
+    then MethodBody $ Just $ simplifyBlock b
+    else 
+      let Block stmts = simplifyBlock b
+      in MethodBody $ Just $ Block $ stmts ++ [BlockStmt $ Return Nothing]
 
 simplifyBlock :: Block -> Block
 simplifyBlock (Block stmts) = Block $ map simplifyBStmt stmts

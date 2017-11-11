@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 5
-File: library/src/com/bumptech/glide/resize/cache/DiskLruCacheWrapper.java
-Orig: a55e2011ddbc4c2bac3789903ec338b892aacf10
-VarA: 809f3b3bc87907085bd86833a29e4998face8211
-VarB: 0b2cafb34c1227d49fe4b0485193bd5531ac4c86
-Merg: 4626911b917568f6c1bd9d93f91ae1c70cb43554

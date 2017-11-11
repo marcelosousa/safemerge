@@ -1,0 +1,52 @@
+Merge Instance for method (Ident "KotlinDebuggerTestCase",Ident "createDebugProcess",[RefType (ClassRefType (ClassType [(Ident "String",[])]))])
+@SuppressWarnings("MethodMayBeStatic")
+ protected void createDebugProcess (@NotNull
+                                   String path) throws Exception
+{
+  <?HOLE?>
+  File file = new File(path);
+  String packageName = file.getName().replace(".kt", "");
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: VfsUtil.markDirty(true, true, VfsUtil.findFileByIoFile(new File(TINY_APP), true));
+Hole 2:
+[]: createLocalProcess(PackageClassUtils.getPackageClassFqName(new FqName(packageName)).asString());
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: createLocalProcess(PackageClassUtils.getPackageClassFqName(new FqName(packageName)).asString());
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: VfsUtil.markDirty(true, true, VfsUtil.findFileByIoFile(new File(TINY_APP), true));
+Hole 2:
+[]: FqName packageFQN = new FqName(packageName);
+Hole 3:
+[]: String mainClassName = PackagePartClassUtils.getPackagePartFqName(packageFQN, file.getName()).asString();
+Hole 4:
+[]: createLocalProcess(mainClassName);
+
+Edit M:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: FqName packageFQN = new FqName(packageName);
+Hole 3:
+[]: String mainClassName = PackagePartClassUtils.getPackagePartFqName(packageFQN, file.getName()).asString();
+Hole 4:
+[]: createLocalProcess(mainClassName);
+

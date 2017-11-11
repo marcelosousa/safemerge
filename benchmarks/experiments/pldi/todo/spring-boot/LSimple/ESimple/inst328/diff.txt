@@ -1,0 +1,50 @@
+Merge Instance for method (Ident "ChangeableUrlsTests",Ident "urlsFromJarClassPathAreConsidered",[])
+@Test
+ public void urlsFromJarClassPathAreConsidered () throws Exception
+{
+  URL projectCore = makeUrl("project-core");
+  URL projectWeb = makeUrl("project-web");
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: ChangeableUrls urls = ChangeableUrls.fromUrlClassLoader(new URLClassLoader(new URL[] {
+                                                                                       makeJarFileWithUrlsInManifestClassPath(projectCore, projectWeb),
+                                                                                     }));
+Hole 2:
+[]: assertThat(urls.toList(), contains(projectCore, projectWeb));
+Hole 3:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: ChangeableUrls urls = ChangeableUrls.fromUrlClassLoader(new URLClassLoader(new URL[] {
+                                                                                       makeJarFileWithUrlsInManifestClassPath(projectCore, projectWeb),
+                                                                                     }));
+Hole 2:
+[]: assertThat(urls.toList()).containsExactly(projectCore, projectWeb);
+Hole 3:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: File relative = this.temporaryFolder.newFolder();
+Hole 2:
+[]: ChangeableUrls urls = ChangeableUrls.fromUrlClassLoader(new URLClassLoader(new URL[] {
+                                                                                       makeJarFileWithUrlsInManifestClassPath(projectCore, projectWeb, (relative.getName() + "/")),
+                                                                                     }));
+Hole 3:
+[]: assertThat(urls.toList(), contains(projectCore, projectWeb, relative.toURI().toURL()));
+
+Edit M:
+Hole 1:
+[]: File relative = this.temporaryFolder.newFolder();
+Hole 2:
+[]: ChangeableUrls urls = ChangeableUrls.fromUrlClassLoader(new URLClassLoader(new URL[] {
+                                                                                       makeJarFileWithUrlsInManifestClassPath(projectCore, projectWeb, (relative.getName() + "/")),
+                                                                                     }));
+Hole 3:
+[]: assertThat(urls.toList()).containsExactly(projectCore, projectWeb, relative.toURI().toURL());
+
