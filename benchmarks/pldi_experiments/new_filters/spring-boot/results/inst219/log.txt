@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 219
+File: spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/mongo/MongoProperties.java
+Orig: 13403a0f723fdf0680b1bff2897c4b47df53397d
+VarA: 33b1f52fa5cc14f0a9d4a3ef7424b2ca42217de5
+VarB: 779537551edfa0c0bc430e0727b1277ec0a8a57e
+Merg: 958a0a45f164601d01cb706c19f22ed3e25eff56

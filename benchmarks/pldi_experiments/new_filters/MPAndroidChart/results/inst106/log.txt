@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 106
+File: MPChartLib/src/com/github/mikephil/charting/renderer/PieChartRenderer.java
+Orig: f30c1c90a45c2d0e621115bd09c351f902a6b034
+VarA: c6e649903d181121c8f21e77b63dfd0fbfb64338
+VarB: dd9aa1ae691e4891f6275e94de5ee9b8c9a5f214
+Merg: bfcfafe32697b18cf126d56c2bc843c202b630b8

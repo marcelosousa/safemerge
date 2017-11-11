@@ -273,7 +273,7 @@ check_edit_soundness	./Edit.hs	132;"	v
 class_diff	./Analysis/Java/Liff.hs	349;"	v
 collapse	./Edit/Gen.hs	174;"	v
 comb	./Analysis/Util.hs	104;"	v
-complexKeywords	./Analysis/Java/Liff.hs	445;"	v
+complexKeywords	./Analysis/Java/Liff.hs	450;"	v
 computeClDefs	./Analysis/Java/Flow.hs	233;"	v
 computeDeclsDefs	./Analysis/Java/Flow.hs	237;"	v
 computeEntry	./Analysis/Java/Flow.hs	228;"	v
@@ -289,7 +289,7 @@ computeMDeclDefs	./Analysis/Java/Flow.hs	246;"	v
 computeSwitchBody	./Analysis/Java/Flow.hs	497;"	v
 computeWhile	./Analysis/Java/Flow.hs	516;"	v
 concatIdent	./Analysis/Util.hs	122;"	v
-condKeywords	./Analysis/Java/Liff.hs	452;"	v
+condKeywords	./Analysis/Java/Liff.hs	457;"	v
 conflict_freedom	./Analysis/Verifier.hs	482;"	v	file:
 current	./Analysis/Java/Flow.hs	38;"	v
 debugger	./Analysis/Debug.hs	52;"	v
@@ -391,12 +391,12 @@ getVarSSAMap	./Analysis/API.hs	229;"	v
 getWrite	./Analysis/Dependence.hs	340;"	v
 get_context	./Analysis/Java/Liff.hs	96;"	v
 get_edge_info	./Analysis/Java/Graph.hs	52;"	v
-get_edit_category	./Analysis/Java/Liff.hs	470;"	v
-get_merge_context	./Analysis/Java/Liff.hs	412;"	v
-get_meth_category	./Analysis/Java/Liff.hs	434;"	v
+get_edit_category	./Analysis/Java/Liff.hs	475;"	v
+get_merge_context	./Analysis/Java/Liff.hs	413;"	v
+get_meth_category	./Analysis/Java/Liff.hs	435;"	v
 get_method	./Analysis/Util.hs	46;"	v
 get_node_info	./Analysis/Java/Graph.hs	57;"	v
-get_stats	./Analysis/Java/Liff.hs	392;"	v
+get_stats	./Analysis/Java/Liff.hs	393;"	v
 graph	./Analysis/Java/Graph.hs	39;"	v
 graphs	./Analysis/Java/Flow.hs	31;"	v
 header	./Analysis/Debug.hs	27;"	v	file:
@@ -432,13 +432,13 @@ insertConst	./Analysis/API.hs	269;"	v
 insertSSAVar	./Analysis/API.hs	247;"	v
 invToStmt	./Analysis/Java/Flow.hs	299;"	v
 isComplex	./Analysis/Verifier.hs	149;"	v	file:
-isField	./Analysis/Java/Liff.hs	384;"	v
-is_code_complex	./Analysis/Java/Liff.hs	442;"	v
-is_code_cond	./Analysis/Java/Liff.hs	449;"	v
-is_code_loop	./Analysis/Java/Liff.hs	455;"	v
-is_code_return	./Analysis/Java/Liff.hs	464;"	v
-is_code_simple	./Analysis/Java/Liff.hs	461;"	v
-is_code_stateless	./Analysis/Java/Liff.hs	467;"	v
+isField	./Analysis/Java/Liff.hs	385;"	v
+is_code_complex	./Analysis/Java/Liff.hs	447;"	v
+is_code_cond	./Analysis/Java/Liff.hs	454;"	v
+is_code_loop	./Analysis/Java/Liff.hs	460;"	v
+is_code_return	./Analysis/Java/Liff.hs	469;"	v
+is_code_simple	./Analysis/Java/Liff.hs	466;"	v
+is_code_stateless	./Analysis/Java/Liff.hs	472;"	v
 is_common	./Analysis/Optimiser.hs	73;"	v
 is_common_block	./Analysis/Optimiser.hs	59;"	v
 is_common_bstmt	./Analysis/Optimiser.hs	62;"	v
@@ -480,13 +480,13 @@ l_meth_stateless	./Analysis/Java/Liff.hs	175;"	v
 l_meth_total	./Analysis/Java/Liff.hs	170;"	v
 lcs	./Edit/Diff.hs	33;"	v
 lhsToExp	./Analysis/Java/Simplifier.hs	139;"	v
-lhsToIdent	./Analysis/Java/Liff.hs	375;"	v
+lhsToIdent	./Analysis/Java/Liff.hs	376;"	v
 liff	./Analysis/Java/Liff.hs	330;"	v
 lin	./Analysis/Util.hs	108;"	v
 lk	./Edit/Diff.hs	22;"	v
 loc_of	./Edit/Types.hs	30;"	v
 localToStmt	./Analysis/Java/Flow.hs	308;"	v
-loopKeywords	./Analysis/Java/Liff.hs	458;"	v
+loopKeywords	./Analysis/Java/Liff.hs	463;"	v
 loop_scope	./Edit/Types.hs	38;"	v
 m	Main.hs	52;"	v
 main	Main.hs	76;"	v
@@ -496,7 +496,7 @@ menuText	./Analysis/Debug.hs	40;"	v
 merge	Main.hs	53;"	v
 mergeMode	Main.hs	64;"	v
 miniproduct	./Calculus.hs	28;"	v
-modFields	./Analysis/Java/Liff.hs	372;"	v
+modFields	./Analysis/Java/Liff.hs	373;"	v
 mth_body	./Analysis/Java/ClassInfo.hs	156;"	v
 newEntry	./Analysis/Java/Flow.hs	254;"	v
 next	./Analysis/Java/Flow.hs	40;"	v

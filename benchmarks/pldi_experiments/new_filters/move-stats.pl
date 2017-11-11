@@ -12,9 +12,7 @@ while(my $line = <$info>) {
   system("rm -rf $words[0]");
   system("mkdir $words[0]");
   system("cp ..\/$words[0]\/gma.log $words[0]\/gma.log");
-  system("cp -r ..\/$words[0]\/results\/cat9\/LSimple $words[0]\/");
-  system("cp -r ..\/$words[0]\/results\/cat9\/LCond $words[0]\/");
-  system("cp -r ..\/$words[0]\/results\/cat9\/LLoop $words[0]\/");
+  system("cp -r ..\/$words[0]\/results $words[0]\/");
 }
 
 close $info;

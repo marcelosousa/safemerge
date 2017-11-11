@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 21
-File: core/src/main/java/org/elasticsearch/action/DocWriteResponse.java
-Orig: 0a8afa2e7269ddbec3755b8f10033e93f55149c2
-VarA: 90ef933404ae1d8aeaab97d9c0ab6925ee22add1
-VarB: be168f528bbffcbc026fe427869c8e458d275156
-Merg: d896886973660785aac45275ddb110c1a6babc57

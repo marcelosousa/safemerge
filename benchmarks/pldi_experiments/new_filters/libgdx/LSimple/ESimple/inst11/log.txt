@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 11
-File: backends/gdx-backend-lwjgl3/src/com/badlogic/gdx/backends/lwjgl3/Lwjgl3Application.java
-Orig: 055b9f762e90303d3d5367b2e974bbaf595a7c64
-VarA: 86e61a315f482c36d1e0380c094d1f35401d4b12
-VarB: 119a96edc5ac590d30e517ddcf3618a1bb3895e2
-Merg: da27e2dae56be0a159e82231e5c3a5b83b099063

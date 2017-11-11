@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 462
+File: spring-boot-actuator/src/test/java/org/springframework/boot/actuate/autoconfigure/EndpointWebMvcAutoConfigurationTests.java
+Orig: 9218d5ad117852eaf948c99635b4eb61150d6e8d
+VarA: 01b23c886f22b83861beb4c8b7a4853cb9a09345
+VarB: e4895f8fdeca321769b52e0d4359f246b80475c1
+Merg: 17fde264e219ded7b73d39308f37ce13779f98a9

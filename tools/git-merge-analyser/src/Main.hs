@@ -102,10 +102,11 @@ getDir ident map i = do
       createDirectoryIfMissing True dir
       return (dir,True) 
     Just s@MSum{..} -> do 
-      let h = "results/cat"++show _m_ctx ++"/" 
+      let h = "results/" -- cat"++show _m_ctx ++"/" 
       case _m_diff of
         Nothing -> do 
-          let dir = h ++ show _m_meth ++ "/" ++ show _m_edit ++ "/inst" ++ show i ++ "/"
+          -- let dir = h ++ show _m_meth ++ "/" ++ show _m_edit ++ "/inst" ++ show i ++ "/"
+          let dir = h ++ "inst" ++ show i ++ "/"
               res = _m_ctx == 9
           if res 
           then do

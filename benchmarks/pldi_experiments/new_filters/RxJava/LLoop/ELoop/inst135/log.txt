@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 135
-File: rxjava-core/src/main/java/rx/concurrency/TestScheduler.java
-Orig: bafd440040db4097205b7105a777c2ab4f5af16f
-VarA: a2f04b0a495f9b8c5ad4ddf2ecbc85d90865992a
-VarB: 2519ef8164d6e3405c40c3f187b5477188d142aa
-Merg: 87e766d898d8cda3095c21577a2280cb390202bb

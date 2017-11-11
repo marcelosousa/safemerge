@@ -357,9 +357,10 @@ class_diff cls_name cl@(cl_o:cls) (stats,r) =
        (Just m_a, Just m_b, Just m_m) ->
          let stats2 = inc_meth_total stats1 
              ctx    = get_merge_context m_o m_a m_b m_m
-             code_m = show m_m 
+             MethodBody m_bdy = mth_body m_m
+             code_m = show m_bdy 
              mcat   = get_meth_category (M.null fields) code_m 
-         in if ctx /= 0 && mcat /= LComplex && mcat /= LStateless && modFields fields (findLhs m_m) 
+         in if ctx /= 0 && mcat /= LComplex && (mcat /= LStateless || modFields fields (findLhs m_m)) 
             -- | This is a potential interesting merge instance
             then let stats3 = inc_m_context ctx $ inc_meth_changed stats2
                      mident = (cls,mi,mty)
@@ -396,11 +397,13 @@ get_stats fields ident ctx o a b m st =
       let sum = i_sum ctx 
       in add_to_map ident sum st
     Just (_,_,e_o,e_a,e_b,e_m) ->
-      let code_m = show m -- prettyPrint m
+      let -- code_m = show m -- prettyPrint m
+          MethodBody m_bdy = mth_body m
+          code_m = show m_bdy 
           st1    = inc_meth_edits st
           mcat   = get_meth_category (M.null fields) code_m 
           ecat   = get_edit_category e_m
-          sum    = MSum ctx Nothing mcat ecat
+          sum    = if mcat == LComplex then error "get_stats" else MSum ctx Nothing mcat ecat
           st'    = inc_meth_size_dist (length $ lines code_m) $ inc_edit_size_dist (length e_m) st 
       in add_to_map ident sum $ inc_meth_edits $ up_meth_cat mcat $ up_edit_cat ecat st'
 
@@ -431,40 +434,44 @@ get_merge_context o a b m
   | otherwise = 0
  
 get_meth_category :: Bool -> String -> MethCategory 
-get_meth_category fields code 
-  | is_code_stateless fields code = LStateless
-  | is_code_complex          code = LComplex
-  | is_code_loop             code = LLoop
-  | is_code_cond             code = LCond
-  | otherwise                     = LSimple
+get_meth_category fields code = 
+  if is_code_stateless fields code 
+  then LStateless
+  else if is_code_complex code
+       then LComplex
+       else if is_code_loop code
+            then LLoop
+            else if is_code_cond code 
+                 then LCond
+                 else LSimple
 
 is_code_complex :: String -> Bool
 is_code_complex str = any (\s -> isInfixOf s str) complexKeywords
 
 complexKeywords :: [String]
-complexKeywords = ["Throw","Try","Catch","Synchronized","MethodDecl","MethodBody"]
+complexKeywords = ["Throw ","Try ","Catch ","Synchronized ","MethodDecl ","MethodBody "]
 -- complexKeywords = ["Throw","Try","Catch","Synchronized","getMethod","getClass"]
 
 is_code_cond :: String -> Bool
 is_code_cond str = any (\s -> isInfixOf s str) condKeywords
 
 condKeywords :: [String]
-condKeywords = ["IfThen","IfThenElse","Switch"]
+condKeywords = ["IfThen ","IfThenElse ","Switch "]
 
 is_code_loop :: String -> Bool
 is_code_loop str = any (\s -> isInfixOf s str) loopKeywords
 
 loopKeywords :: [String]
-loopKeywords = ["While","Do","BasicFor","EnhancedFor"]
+loopKeywords = ["While ","Do ","BasicFor ","EnhancedFor "]
 
 is_code_simple :: String -> Bool
 is_code_simple str = not (is_code_cond str || is_code_loop str)
 
 is_code_return :: String -> Bool
-is_code_return str = isInfixOf "Return" str
+is_code_return str = isInfixOf "Return " str
 
 is_code_stateless :: Bool -> String -> Bool
-is_code_stateless f str = f && (not $ is_code_return str)
+is_code_stateless f str = not $ is_code_return str
 
 get_edit_category :: Edit -> EditCategory
 get_edit_category e

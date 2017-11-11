@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 200
-File: spring-boot-devtools/src/main/java/org/springframework/boot/devtools/restart/Restarter.java
-Orig: b3e0a371970f9585a7e7ba7136e475692c98eeb8
-VarA: 7b742fd7925dccb4d58fedb9bef7dc4178d2c2e4
-VarB: 918e122ddccae7cb1bf245269e49b40822114c42
-Merg: eff0fc0221264a7b7d3d4242f03385f0e3233fee

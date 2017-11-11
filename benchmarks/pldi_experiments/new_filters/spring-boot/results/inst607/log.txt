@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 607
+File: spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/template/AbstractTemplateViewResolverProperties.java
+Orig: f9a775518fab8181844f9fffe94339ac9441d8b2
+VarA: c164065a38498892427ab849ca4b3f214c0a14ce
+VarB: a2f4c1cc4a90ab19c535a3f508d9296ab250cff6
+Merg: 2ae8a021f90b9ef77ca63f59d9c23137b1d65340

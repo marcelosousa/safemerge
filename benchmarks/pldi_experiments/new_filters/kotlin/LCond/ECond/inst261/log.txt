@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 261
-File: compiler/frontend/src/org/jetbrains/jet/lang/types/expressions/ControlStructureTypingVisitor.java
-Orig: 27293562ae1365ee249163b48b9c073bcf018e54
-VarA: fc943049d33e5288e47b06f661311c933a4a1a94
-VarB: ec7c0e861730949534e25c698cf4012c03a5b511
-Merg: f5667874b00cbd5e254ea470249f3cb0ba89f61f

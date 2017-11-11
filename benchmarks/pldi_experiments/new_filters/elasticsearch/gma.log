@@ -14,28 +14,28 @@ Git Merge Statistics
 |Method Analyzed| =	 10240
 |Method Error|    =	 458
 |Method Valid|   =	 9782
-|Method Changed| =	 0
+|Method Changed| =	 349
 Merge Scenario Distribution
 1. |{O,A,M}     {B}| = 0
-2. |{O,B,M}     {A}| = 0
+2. |{O,B,M}     {A}| = 10
 3. |{O,M}  {A}  {B}| = 0
 4. |{O,M}     {A,B}| = 0
-5. |{O}     {A,B,M}| = 0
+5. |{O}     {A,B,M}| = 7
 6. |{O}  {A,B}  {M}| = 0
-7. |{O}  {A,M}  {B}| = 0
-8. |{O}   {A} {M,B}| = 0
-9. |{O} {A} {B} {M}| = 0
+7. |{O}  {A,M}  {B}| = 286
+8. |{O}   {A} {M,B}| = 6
+9. |{O} {A} {B} {M}| = 40
 
-|Method Edit|    =	 0
+|Method Edit|    =	 297
 |Method Unsup|   =	 0
 |Method Stateless|=	 0
-|Method Simple|  =	 0
-|Method Ifs|     =	 0
-|Method Loops|   =	 0
-|Edit Simple|    =	 0
-|Edit Ifs|       =	 0
-|Edit Loop|      =	 0
-Method Sizes     =	 (0,0,0,0)
-Edit Sizes       =	 (0,0,0)
+|Method Simple|  =	 221
+|Method Ifs|     =	 57
+|Method Loops|   =	 19
+|Edit Simple|    =	 281
+|Edit Ifs|       =	 12
+|Edit Loop|      =	 4
+Method Sizes     =	 (297,0,0,0)
+Edit Sizes       =	 (263,27,7)
 
 Done

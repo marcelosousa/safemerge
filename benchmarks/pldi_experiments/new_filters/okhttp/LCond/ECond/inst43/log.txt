@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 43
-File: okhttp-protocols/src/main/java/com/squareup/okhttp/internal/bytes/GzipSource.java
-Orig: 1b25214f59eefa81d40a529fceb85666947937cd
-VarA: 4c8ce7cad57e41fc789883e2d51474ed71edd78b
-VarB: cd16580d2ea22901b8273b22914be9205af5a9f7
-Merg: 1151c9853ccc3c9c3211c613b9b845b925f8c6a6

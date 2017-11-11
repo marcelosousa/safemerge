@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 757
-File: spring-boot/src/main/java/org/springframework/boot/context/web/SpringBootServletInitializer.java
-Orig: 01ba0f75718c0342276cfd7b3c269f9effe5ef56
-VarA: d30dd1fa98f2ab84926ac1c40f6a4a44c39e2f55
-VarB: cd62596e8282b7a91490a7efe527f6deed7e3baa
-Merg: 074771ec125dd407af0282b92960e9e9e3377e84

@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 155
-File: idea/tests/org/jetbrains/jet/plugin/debugger/KotlinDebuggerTestCase.java
-Orig: fb5806f5fba42711879a97645259c91e62e24064
-VarA: 8fa3e8afd08d9ea65044fbdc310224efa416f56b
-VarB: 8c87b242b343df866f7625908734e919dd7c9bd5
-Merg: 050f09d4ce1924aafcffd1a4c566b0a8e6e2eb78

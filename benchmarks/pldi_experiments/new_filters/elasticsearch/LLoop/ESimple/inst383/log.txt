@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 383
-File: src/test/java/org/elasticsearch/cluster/MinimumMasterNodesTests.java
-Orig: 5453c08f50b092185d39cd7e146395a20786f5f1
-VarA: 889db1c824d8c573835e8cbadd0c6f3ba25f8fcd
-VarB: 34f4ca763c5bb16b4fa9fb0b657b89971003fb74
-Merg: 598854dd72d7fb01a7e26a9dad065de3deaa5eb7

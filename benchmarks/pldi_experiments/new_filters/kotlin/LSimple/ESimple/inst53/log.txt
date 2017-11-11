@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 53
-File: idea/tests/org/jetbrains/kotlin/idea/debugger/KotlinDebuggerTestCase.java
-Orig: d06068777503e5e3ab6246a4d006e1edc60a7f9f
-VarA: a7ad17fd6dc1bf5a2c6f419e91e585c913fa9003
-VarB: 23e35ab1128f83ae83cbd1bc8a3e899863e552c3
-Merg: 12447eace17cef22a4952eaaa185b0f0c2f1f291

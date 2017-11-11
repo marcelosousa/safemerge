@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 36
-File: spring-boot/src/main/java/org/springframework/boot/jta/atomikos/AtomikosProperties.java
-Orig: b5709fd6183bb283b7294b77a477528e03483d10
-VarA: 337e6452632827804f661e9695de7ecad6dcaeb3
-VarB: 544d516563a0d449f7a8dabe142362ba6d6f4778
-Merg: 6664ce19d6f2388ebd6cf54763f54fdddd226b9a

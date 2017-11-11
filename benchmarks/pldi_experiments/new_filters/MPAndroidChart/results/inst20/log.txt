@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 20
+File: MPChartLib/src/com/github/mikephil/charting/data/LineDataSet.java
+Orig: 4b3825c68d2c21e61a1f852f054b935d3dbe39a9
+VarA: 3baf89c25d03776f8273c686c49c92e9ed204275
+VarB: 8bca4c79d3adf8f116d3226a9939badac7534918
+Merg: 2a2cee5d1c3f8c21eb6baa08a0aee65787f2d530

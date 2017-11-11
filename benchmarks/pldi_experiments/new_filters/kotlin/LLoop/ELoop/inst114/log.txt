@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 114
-File: idea/src/org/jetbrains/kotlin/idea/refactoring/changeSignature/JetChangeSignatureUsageProcessor.java
-Orig: 77a8eddb2aad5396fa00f2dc31893413d3ffe7d7
-VarA: 57e6873e38b91e860784da5cdf70d38887b1bd5b
-VarB: 6d163a7a8c7d5c66b3228f2ff5919a01c7b650f5
-Merg: b5d9823845d8eb7743a579d435dd75c9888e7d2b

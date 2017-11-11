@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 43
+File: backends/gdx-backends-gwt/src/com/badlogic/gdx/backends/gwt/GwtInput.java
+Orig: 6f8a76d92a73af8d4c332a00e84cc58d0d750a7e
+VarA: 42a4aa7f4a652cf1808d16d9add1c31d48499742
+VarB: f49524014e3048471417f0d33300997adabb4309
+Merg: c314f4f75968280cd4172ca323f960efefc499a8

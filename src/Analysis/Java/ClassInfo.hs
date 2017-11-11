@@ -211,3 +211,4 @@ findLhsExp e = case e of
   PreIncrement  e -> findLhsExp e 
   PreDecrement  e -> findLhsExp e 
   Assign lhs _ _ -> [lhs] 
+  _ -> []

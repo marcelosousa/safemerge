@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 280
-File: spring-boot/src/test/java/org/springframework/boot/SpringApplicationTests.java
-Orig: 9d194c2d437533249f46de983c1f74178216b50e
-VarA: 0c1cf7315a8bfff9887583cf78fe66e346ab7f23
-VarB: 5b97981c87e35876177ee5513fbaedd16b9db9bf
-Merg: c136054e69a1121e9cdaa3c50a621f5274ff2da6

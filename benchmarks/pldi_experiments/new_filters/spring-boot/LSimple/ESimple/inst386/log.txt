@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 386
-File: spring-boot-actuator/src/test/java/org/springframework/boot/actuate/trace/WebRequestTraceFilterTests.java
-Orig: 815da8b845faf12b7699b6853f981efc7e2d4d28
-VarA: 0641d9af4f4d3516e38328938c836c2227746284
-VarB: 607dba97f8e3d69517924431678179b003d3d4a5
-Merg: 11c9068d53a97e79172c7dd790a8c38a2ad2de14

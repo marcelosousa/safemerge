@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 117
+File: spring-boot-test/src/main/java/org/springframework/boot/test/context/SpringBootContextLoader.java
+Orig: 0ad4e0e70f228371a0594ecc9ebbf215c488d13d
+VarA: eb4329fb39f16303bead192ab18a72633a3f6f5f
+VarB: b71baf2c3811f7f613ca7ac6ff3da536ee1b0265
+Merg: fd677af868c9b9663eb1be850a0965d0cc6e5dc3

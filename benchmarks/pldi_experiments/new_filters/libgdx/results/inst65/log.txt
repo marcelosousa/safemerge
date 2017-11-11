@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 65
+File: backends/gdx-backend-jglfw/src/com/badlogic/gdx/backends/jglfw/JglfwGL10.java
+Orig: 52e3e25337f4fecbd4e5dbd9e8ef6f7506658c93
+VarA: c7872282951df7bc72f8d9f84bc55e3da0d2a6a5
+VarB: 4665dcf9ab41c3c61cd42aad296ebfe518bfa003
+Merg: a80f673e4ef201cd0dfffd6f0db29e2c18d84ae6

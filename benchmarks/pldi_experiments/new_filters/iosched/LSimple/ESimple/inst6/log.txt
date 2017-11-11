@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 6
-File: lib/src/main/java/com/google/samples/apps/iosched/feed/FeedActivity.java
-Orig: 216932759d5efaf0d884a7c733f7bd5abf5026f9
-VarA: 71f9a74874e810048c792346664f897bab4fc2b5
-VarB: bd62e1473983460a28cd7e8d523bbaf2fee60709
-Merg: 92bf07bcdb9c57e41ece8d3c21a0822a8395a28a

@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 70
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/StackedBarActivity.java
+Orig: ccced3cc1f383415bdd6e29d547702d5db3a91ef
+VarA: cf463cad069c9c62e3d6dd6d01f7d7c376c35218
+VarB: 493da1d130db6498bde8d6dd486a9993198c7e45
+Merg: bc7ce8d0bd78fac96702db82eb093489845e4820

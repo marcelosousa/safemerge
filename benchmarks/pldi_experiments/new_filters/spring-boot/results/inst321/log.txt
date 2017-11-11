@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 321
+File: spring-boot/src/test/java/org/springframework/boot/builder/SpringApplicationBuilderTests.java
+Orig: c0a2c88da10822cebdbc5e28ff48df1dc4b04295
+VarA: b896de404ea4d4107879734acff31ab36c6b9eb8
+VarB: 29c7b936406a2cc2cab0064d41f01b49619bcaaa
+Merg: f12bb26649b38d629e1b70aa362f0e7727fea586

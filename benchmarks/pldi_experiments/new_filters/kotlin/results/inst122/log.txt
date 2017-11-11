@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 122
+File: idea/tests/org/jetbrains/jet/plugin/JetLightCodeInsightFixtureTestCase.java
+Orig: 3a59465f294c6abe636b115fe554953be4bee747
+VarA: be4a16790092210921fbe1ffa452eeccdff6d767
+VarB: 44084de3be8ec7156dae6dd79bb815dd6b22cc51
+Merg: bc0e0a83f68e50b95eca70a6352d9967d118f209

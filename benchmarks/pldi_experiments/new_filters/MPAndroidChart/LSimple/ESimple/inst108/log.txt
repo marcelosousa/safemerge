@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 108
-File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/LineChartActivity1.java
-Orig: 4c4d25b246df1e5a3b9d95ce2a98e5253f0448a6
-VarA: b47dd6522773f5abc40914e6ed5695ec84d21198
-VarB: 4f5a32d6676b0a2bdc6552ead94d68cfe1e77c55
-Merg: 9297923f09460d0484cd713b0abbeaea9b888ec0

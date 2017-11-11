@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 26
-File: retrofit/src/main/java/retrofit/http/RestAdapter.java
-Orig: f54d6ad8be61ffe53b578b54c52bf09aa86ad158
-VarA: 3418a2becfe4f35b76a1a4f175439a916be54148
-VarB: 4d5081891e0d9f3968251842acdef41a45cc2330
-Merg: 3b7fa254ad8db00a1a2a59d06e18921a0cc9be6c

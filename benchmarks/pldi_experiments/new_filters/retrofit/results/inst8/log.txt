@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 8
+File: retrofit/src/main/java/retrofit/RequestBuilder.java
+Orig: 89a60f7f15a9200e0cf8fe157a61caaeba104f7c
+VarA: e5a6738c3b52d8bcaf4952389dae702c8d6e0cfd
+VarB: 931e29caa3478c546632d29baad3cb250e0c7b52
+Merg: 71f622ce51031b152a0be6ad5facfb27a654bf5a

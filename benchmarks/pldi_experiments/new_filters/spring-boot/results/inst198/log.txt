@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 198
+File: spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/condition/OnBeanCondition.java
+Orig: 75c1e50c5ac1054bd6fbf4db7d9831da1bf41523
+VarA: 6df279d3a15306b3e608850e69ec525340a51e51
+VarB: a5c6b0954d2929578a43be1f844d017e33cd32c3
+Merg: 55f6fb94efd3d8327aef7a8f5541c6c26697fb03

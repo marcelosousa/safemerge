@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 128
+File: core/src/main/java/org/elasticsearch/index/query/MatchQueryBuilder.java
+Orig: 13c1c27d5af84a18bac189a2bc92d748c7dff371
+VarA: 37b2007eb45ade201d419585c917db2560cbac98
+VarB: 2336da1704627c236e6eca214614e748d195794d
+Merg: 8757af2d928355a799290207d9128adae4c78fa1

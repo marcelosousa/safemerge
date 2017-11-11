@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 26
+File: spring-boot-tools/spring-boot-loader/src/test/java/org/springframework/boot/loader/PropertiesLauncherTests.java
+Orig: 6415828693ca0f22c712f22eb944a53294bcedad
+VarA: c22230a418b58212fbbaf3be586fde483b5f8636
+VarB: 5b4f9edc860a699fc2e62fff99dec11d21ec0d11
+Merg: 5c708ae712acd429ab40aefd70ac71f0ebe60468

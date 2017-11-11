@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 187
+File: core/src/main/java/org/elasticsearch/index/query/RegexpQueryBuilder.java
+Orig: cdd13253deee8c4f0cafe5a048161e4efb9ffce7
+VarA: 33668a8df0c47db0390ac91baff206416c9ebc8d
+VarB: f4a143d1387f9b4de841aa2460483157fc9baa5a
+Merg: 9171ff095989646994b5a7ca1a64620ce688dd72

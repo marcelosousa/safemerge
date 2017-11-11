@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 169
+File: spring-boot/src/main/java/org/springframework/boot/logging/logback/DefaultLogbackConfiguration.java
+Orig: 6eedfe40e58d47d8d83f1c4dd903f94e602f7cea
+VarA: 3de98bc29de4c4e5b1f2cb033155800cc8264a23
+VarB: 4a6b49ef00537347fc60f619bdaf9ac6fe63e5d3
+Merg: d8b7d6dfdc35d64942baf415305c4f2ba5a64171
