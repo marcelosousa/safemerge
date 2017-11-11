@@ -1,0 +1,40 @@
+Merge Instance for method (Ident "ExpressionCodegen",Ident "visitFunctionLiteralExpression",[RefType (ClassRefType (ClassType [(Ident "JetFunctionLiteralExpression",[])]))])
+@Override
+ public void visitFunctionLiteralExpression (JetFunctionLiteralExpression expression)
+{
+  if (bindingContext.isBlock(expression))
+  {
+    <?HOLE?>
+  }
+  else
+  {
+    <?HOLE?>
+    v.anew(Type.getObjectType(closure.getClassname()));
+    v.dup();
+    v.invokespecial(closure.getClassname(), "<init>", closure.getConstructor().getDescriptor());
+  }
+}
+Edit Base:
+Hole 1:
+[SCond]: generateBlock(expression.getBody());
+Hole 2:
+[SCond]: final GeneratedClosureDescriptor closure = new ClosureCodegen(bindingContext, typeMapper, factory).gen(expression);
+
+Edit A:
+Hole 1:
+[SCond]: generateBlock(expression.getFunctionLiteral().getBodyExpression().getStatements());
+Hole 2:
+[SCond]: final GeneratedClosureDescriptor closure = new ClosureCodegen(bindingContext, typeMapper, factory).gen(expression);
+
+Edit B:
+Hole 1:
+[SCond]: generateBlock(expression.getBody());
+Hole 2:
+[SCond]: final GeneratedClosureDescriptor closure = new ClosureCodegen(state).gen(expression);
+
+Edit M:
+Hole 1:
+[SCond]: generateBlock(expression.getFunctionLiteral().getBodyExpression().getStatements());
+Hole 2:
+[SCond]: final GeneratedClosureDescriptor closure = new ClosureCodegen(state).gen(expression);
+

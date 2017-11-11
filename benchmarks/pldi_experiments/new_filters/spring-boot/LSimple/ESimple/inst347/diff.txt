@@ -1,0 +1,56 @@
+Merge Instance for method (Ident "IntegrationAutoConfigurationTests",Ident "parentContext",[])
+@Test
+ public void parentContext ()
+{
+  <?HOLE?>
+  <?HOLE?>
+  this.context.refresh();
+  AnnotationConfigApplicationContext parent = this.context;
+  this.context = new AnnotationConfigApplicationContext();
+  this.context.setParent(parent);
+  <?HOLE?>
+  this.context.refresh();
+  <?HOLE?>
+  ((ConfigurableApplicationContext) this.context.getParent()).close();
+  this.context.close();
+}
+Edit Base:
+Hole 1:
+[]: this.context.register(IntegrationAutoConfiguration.class);
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: this.context.register(IntegrationAutoConfiguration.class);
+Hole 4:
+[]: assertNotNull(this.context.getBean(HeaderChannelRegistry.class));
+
+Edit A:
+Hole 1:
+[]: this.context.register(IntegrationAutoConfiguration.class);
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: this.context.register(IntegrationAutoConfiguration.class);
+Hole 4:
+[]: assertThat(this.context.getBean(HeaderChannelRegistry.class)).isNotNull();
+
+Edit B:
+Hole 1:
+[]: this.context = new AnnotationConfigApplicationContext();
+Hole 2:
+[]: this.context.register(JmxAutoConfiguration.class, IntegrationAutoConfiguration.class);
+Hole 3:
+[]: this.context.register(JmxAutoConfiguration.class, IntegrationAutoConfiguration.class);
+Hole 4:
+[]: assertNotNull(this.context.getBean(HeaderChannelRegistry.class));
+
+Edit M:
+Hole 1:
+[]: this.context = new AnnotationConfigApplicationContext();
+Hole 2:
+[]: this.context.register(JmxAutoConfiguration.class, IntegrationAutoConfiguration.class);
+Hole 3:
+[]: this.context.register(JmxAutoConfiguration.class, IntegrationAutoConfiguration.class);
+Hole 4:
+[]: assertThat(this.context.getBean(HeaderChannelRegistry.class)).isNotNull();
+

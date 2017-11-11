@@ -160,3 +160,54 @@ toIdent :: Name -> Ident
 toIdent (Name []) = error $ "nameToIdent: Name []"
 toIdent (Name [x]) = x
 toIdent (Name (x:xs)) = foldr (\(Ident a) (Ident b) -> Ident (a ++ "." ++ b)) x xs
+
+findLhs :: MemberDecl -> [Lhs]
+findLhs m = case m of
+  MethodDecl _ _ _ _ _ _ (MethodBody (Just (Block b))) -> 
+    foldr (\s r -> findLhsBStmt s ++ r) [] b  
+  ConstructorDecl _ _ _ _ _ (ConstructorBody _ b) -> 
+    foldr (\s r -> findLhsBStmt s ++ r) [] b  
+  _ -> []
+
+findLhsBStmt :: BlockStmt -> [Lhs]
+findLhsBStmt (BlockStmt s) = findLhsStmt s
+findLhsBStmt _ = [] 
+
+findLhsStmt :: Stmt -> [Lhs]
+findLhsStmt st = case st of
+  StmtBlock (Block b) -> foldr (\s r -> findLhsBStmt s ++ r) [] b  
+  IfThen c s -> findLhsExp c ++ findLhsStmt s 
+  IfThenElse c s1 s2 -> findLhsExp c ++ findLhsStmt s1 ++ findLhsStmt s2 
+  While c s -> findLhsExp c ++ findLhsStmt s 
+  BasicFor mI me mE s ->
+    let a = case mI of
+              Just (ForInitExps l) -> foldr (\s r -> findLhsExp s ++ r) [] l  
+              _ -> []
+        b = case me of
+              Just e -> findLhsExp e
+              _ -> []
+        c = case mE of
+              Just es -> foldr (\s r -> findLhsExp s ++ r) [] es 
+              _ -> []
+    in a ++ b ++ c ++ findLhsStmt s
+  EnhancedFor _ _ _ e s -> findLhsExp e ++ findLhsStmt s
+  ExpStmt e -> findLhsExp e 
+  Assert e me -> case me of 
+   Nothing -> findLhsExp e
+   Just e' -> findLhsExp e ++ findLhsExp e'
+  Assume e -> findLhsExp e
+  Do s e   -> findLhsStmt s ++ findLhsExp e 
+  Return me -> case me of
+   Nothing -> []
+   Just e  -> findLhsExp e 
+  Labeled _ s -> findLhsStmt s 
+  _ -> []
+
+findLhsExp :: Exp -> [Lhs]
+findLhsExp e = case e of 
+  FieldAccess fa -> [FieldLhs fa] 
+  PostIncrement e -> findLhsExp e 
+  PostDecrement e -> findLhsExp e 
+  PreIncrement  e -> findLhsExp e 
+  PreDecrement  e -> findLhsExp e 
+  Assign lhs _ _ -> [lhs] 

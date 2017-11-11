@@ -1,0 +1,116 @@
+Merge Instance for method (Ident "PrefixQueryBuilder",Ident "doXContent",[RefType (ClassRefType (ClassType [(Ident "XContentBuilder",[])])),RefType (ClassRefType (ClassType [(Ident "Params",[])]))])
+@Override
+ public void doXContent (XContentBuilder builder, Params params) throws IOException
+{
+  <?HOLE?>
+  <?HOLE?>
+  builder.endObject();
+}
+Edit Base:
+Hole 1:
+[]: builder.startObject(PrefixQueryParser.NAME);
+Hole 2:
+[SCond]: if (((boost == -1 && rewrite) == null && queryName) != null)
+{
+  builder.field(name, prefix);
+}
+else
+{
+  builder.startObject(name);
+  builder.field("prefix", prefix);
+  if (boost != -1)
+  {
+    builder.field("boost", boost);
+  }
+  if (rewrite != null)
+  {
+    builder.field("rewrite", rewrite);
+  }
+  if (queryName != null)
+  {
+    builder.field("_name", queryName);
+  }
+  builder.endObject();
+}
+
+Edit A:
+Hole 1:
+[]: builder.startObject(NAME);
+Hole 2:
+[SCond]: if (((boost == -1 && rewrite) == null && queryName) != null)
+{
+  builder.field(name, prefix);
+}
+else
+{
+  builder.startObject(name);
+  builder.field("prefix", prefix);
+  if (boost != -1)
+  {
+    builder.field("boost", boost);
+  }
+  if (rewrite != null)
+  {
+    builder.field("rewrite", rewrite);
+  }
+  if (queryName != null)
+  {
+    builder.field("_name", queryName);
+  }
+  builder.endObject();
+}
+
+Edit B:
+Hole 1:
+[]: builder.startObject(PrefixQueryParser.NAME);
+Hole 2:
+[SCond]: if (((boost == -1 && rewrite) == null && queryName) == null)
+{
+  builder.field(name, prefix);
+}
+else
+{
+  builder.startObject(name);
+  builder.field("prefix", prefix);
+  if (boost != -1)
+  {
+    builder.field("boost", boost);
+  }
+  if (rewrite != null)
+  {
+    builder.field("rewrite", rewrite);
+  }
+  if (queryName != null)
+  {
+    builder.field("_name", queryName);
+  }
+  builder.endObject();
+}
+
+Edit M:
+Hole 1:
+[]: builder.startObject(NAME);
+Hole 2:
+[]: if (((boost == -1 && rewrite) == null && queryName) == null)
+{
+  builder.field(name, prefix);
+}
+else
+{
+  builder.startObject(name);
+  builder.field("prefix", prefix);
+  if (boost != -1)
+  {
+    builder.field("boost", boost);
+  }
+  if (rewrite != null)
+  {
+    builder.field("rewrite", rewrite);
+  }
+  if (queryName != null)
+  {
+    builder.field("_name", queryName);
+  }
+  builder.endObject();
+}
+

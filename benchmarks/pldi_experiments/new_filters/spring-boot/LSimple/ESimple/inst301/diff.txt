@@ -1,0 +1,105 @@
+Merge Instance for method (Ident "JarFileTests",Ident "createEntryUrl",[])
+@Test
+ public void createEntryUrl () throws Exception
+{
+  URL url = new URL(this.jarFile.getUrl(), "1.dat");
+  <?HOLE?>
+  JarURLConnection jarURLConnection = (JarURLConnection) url.openConnection();
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: assertThat(url.toString(), equalTo(("jar:" + this.rootJarFile.toURI() + "!/1.dat")));
+Hole 2:
+[]: assertThat(jarURLConnection.getJarFile(), sameInstance(this.jarFile));
+Hole 3:
+[]: assertThat(jarURLConnection.getJarEntry(), sameInstance(this.jarFile.getJarEntry("1.dat")));
+Hole 4:
+[]: assertThat(jarURLConnection.getContentLength(), equalTo(1));
+Hole 5:
+[]: assertThat(jarURLConnection.getContent(), instanceOf(InputStream.class));
+Hole 6:
+[]: assertThat(jarURLConnection.getContentType(), equalTo("content/unknown"));
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+Hole 10:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: assertThat(url.toString()).isEqualTo(("jar:" + this.rootJarFile.toURI() + "!/1.dat"));
+Hole 2:
+[]: assertThat(jarURLConnection.getJarFile()).isSameAs(this.jarFile);
+Hole 3:
+[]: assertThat(jarURLConnection.getJarEntry()).isSameAs(this.jarFile.getJarEntry("1.dat"));
+Hole 4:
+[]: assertThat(jarURLConnection.getContentLength()).isEqualTo(1);
+Hole 5:
+[]: assertThat(jarURLConnection.getContent()).isInstanceOf(InputStream.class);
+Hole 6:
+[]: assertThat(jarURLConnection.getContentType()).isEqualTo("content/unknown");
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+Hole 10:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: assertThat(url.toString(), equalTo(("jar:" + this.rootJarFile.toURI() + "!/1.dat")));
+Hole 2:
+[]: assertThat(jarURLConnection.getJarFile(), sameInstance(this.jarFile));
+Hole 3:
+[]: assertThat(jarURLConnection.getJarEntry(), sameInstance(this.jarFile.getJarEntry("1.dat")));
+Hole 4:
+[]: assertThat(jarURLConnection.getContentLength(), equalTo(1));
+Hole 5:
+[]: assertThat(jarURLConnection.getContent(), instanceOf(InputStream.class));
+Hole 6:
+[]: assertThat(jarURLConnection.getContentType(), equalTo("content/unknown"));
+Hole 7:
+[]: assertThat(jarURLConnection.getPermission(), is(instanceOf(FilePermission.class)));
+Hole 8:
+[]: FilePermission permission = (FilePermission) jarURLConnection.getPermission();
+Hole 9:
+[]: assertThat(permission.getActions(), equalTo("read"));
+Hole 10:
+[]: assertThat(permission.getName(), equalTo(this.rootJarFile.getPath()));
+
+Edit M:
+Hole 1:
+[]: assertThat(url.toString()).isEqualTo(("jar:" + this.rootJarFile.toURI() + "!/1.dat"));
+Hole 2:
+[]: assertThat(jarURLConnection.getJarFile()).isSameAs(this.jarFile);
+Hole 3:
+[]: assertThat(jarURLConnection.getJarEntry()).isSameAs(this.jarFile.getJarEntry("1.dat"));
+Hole 4:
+[]: assertThat(jarURLConnection.getContentLength()).isEqualTo(1);
+Hole 5:
+[]: assertThat(jarURLConnection.getContent()).isInstanceOf(InputStream.class);
+Hole 6:
+[]: assertThat(jarURLConnection.getContentType()).isEqualTo("content/unknown");
+Hole 7:
+[]: assertThat(jarURLConnection.getPermission()).isInstanceOf(FilePermission.class);
+Hole 8:
+[]: FilePermission permission = (FilePermission) jarURLConnection.getPermission();
+Hole 9:
+[]: assertThat(permission.getActions()).isEqualTo("read");
+Hole 10:
+[]: assertThat(permission.getName()).isEqualTo(this.rootJarFile.getPath());
+

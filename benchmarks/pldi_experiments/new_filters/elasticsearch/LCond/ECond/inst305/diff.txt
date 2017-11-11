@@ -1,0 +1,42 @@
+Merge Instance for method (Ident "SpanFirstQueryBuilder",Ident "doXContent",[RefType (ClassRefType (ClassType [(Ident "XContentBuilder",[])])),RefType (ClassRefType (ClassType [(Ident "Params",[])]))])
+@Override
+ protected void doXContent (XContentBuilder builder, Params params) throws IOException
+{
+  <?HOLE?>
+  builder.field("match");
+  matchBuilder.toXContent(builder, params);
+  builder.field("end", end);
+  if (boost != -1)
+  {
+    builder.field("boost", boost);
+  }
+  if (queryName != null)
+  {
+    <?HOLE?>
+  }
+  builder.endObject();
+}
+Edit Base:
+Hole 1:
+[]: builder.startObject(SpanFirstQueryParser.NAME);
+Hole 2:
+[SCond]: builder.field("name", queryName);
+
+Edit A:
+Hole 1:
+[]: builder.startObject(NAME);
+Hole 2:
+[SCond]: builder.field("name", queryName);
+
+Edit B:
+Hole 1:
+[]: builder.startObject(SpanFirstQueryParser.NAME);
+Hole 2:
+[SCond]: builder.field("_name", queryName);
+
+Edit M:
+Hole 1:
+[]: builder.startObject(NAME);
+Hole 2:
+[SCond]: builder.field("_name", queryName);
+

@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 37
+File: core/src/test/java/org/elasticsearch/search/scroll/DuelScrollIT.java
+Orig: aa583c40649d691c98a8186bb396fa2c0e9153b8
+VarA: 81801451ad803a8ebae3a587a2029a8c4b049a30
+VarB: 7be11a36cdfb87201b205341b28a91872533443c
+Merg: 1c16d63a9a498a555f90291d51d9f415444518f5

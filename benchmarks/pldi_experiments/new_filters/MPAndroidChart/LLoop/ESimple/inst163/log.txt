@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 163
+File: MPChartLib/src/com/github/mikephil/charting/charts/BarLineChartBase.java
+Orig: 460e896586ba14506018c26c63513316d781d57a
+VarA: 06ac484cfb103999e4d3e7a4627e3a1a04563909
+VarB: 4f151cd6d333b06ebe11b743ad2a86314d896063
+Merg: 81b883f7be152fc24187135d21b16583d8df7a00

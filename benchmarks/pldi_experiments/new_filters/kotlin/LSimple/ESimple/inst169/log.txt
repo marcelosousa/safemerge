@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 169
+File: jps-plugin/test/org/jetbrains/jet/jps/build/KotlinJpsBuildTest.java
+Orig: 47f4bbedda9c6206e1ffe0041d0c3360662fa25e
+VarA: b92df2882c5c01499120adac966ff95347c1a177
+VarB: 36f7cc742f095f7dbb6b3a24f82c3b480fbabf6d
+Merg: 465dd45eaeddaccfead17acf3db4b95f72918713

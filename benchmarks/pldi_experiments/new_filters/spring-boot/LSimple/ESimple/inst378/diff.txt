@@ -1,0 +1,24 @@
+Merge Instance for method (Ident "CacheAutoConfigurationTests",Ident "hazelcastCacheWithExistingHazelcastInstance",[])
+@Test
+ public void hazelcastCacheWithExistingHazelcastInstance ()
+{
+  load(HazelcastCustomHazelcastInstance.class, "spring.cache.type=hazelcast");
+  HazelcastCacheManager cacheManager = validateCacheManager(HazelcastCacheManager.class);
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: assertThat(new DirectFieldAccessor(cacheManager).getPropertyValue("hazelcastInstance"), equalTo(this.context.getBean("customHazelcastInstance")));
+
+Edit A:
+Hole 1:
+[]: assertThat(new DirectFieldAccessor(cacheManager).getPropertyValue("hazelcastInstance")).isEqualTo(this.context.getBean("customHazelcastInstance"));
+
+Edit B:
+Hole 1:
+[]: assertThat(getHazelcastInstance(cacheManager), equalTo(this.context.getBean("customHazelcastInstance")));
+
+Edit M:
+Hole 1:
+[]: assertThat(getHazelcastInstance(cacheManager)).isEqualTo(this.context.getBean("customHazelcastInstance"));
+

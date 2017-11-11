@@ -1,0 +1,103 @@
+Merge Instance for method (Ident "SynonymsAnalysisTest",Ident "testSynonymsAnalysis",[])
+@Test
+ public void testSynonymsAnalysis () throws IOException
+{
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  Index index = new Index("test");
+  Injector parentInjector = new ModulesBuilder().add(new SettingsModule(settings), new EnvironmentModule(new Environment(settings)), new IndicesAnalysisModule()).createInjector();
+  Injector injector = new ModulesBuilder().add(new IndexSettingsModule(index, settings), new IndexNameModule(index), new AnalysisModule(settings, parentInjector.getInstance(IndicesAnalysisService.class))).createChildInjector(parentInjector);
+  analysisService = injector.getInstance(AnalysisService.class);
+  match("synonymAnalyzer", "kimchy is the dude abides", "shay is the elasticsearch man!");
+  match("synonymAnalyzer_file", "kimchy is the dude abides", "shay is the elasticsearch man!");
+  match("synonymAnalyzerWordnet", "abstain", "abstain refrain desist");
+  match("synonymAnalyzerWordnet_file", "abstain", "abstain refrain desist");
+  match("synonymAnalyzerWithsettings", "kimchy", "sha hay");
+}
+Edit Base:
+Hole 1:
+[]: Settings settings = settingsBuilder().loadFromClasspath("org/elasticsearch/index/analysis/synonyms/synonyms.json").put("path.home", createTempDir().toString()).put(IndexMetaData.SETTING_VERSION_CREATED, Version.CURRENT).build();
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: InputStream synonyms = getClass().getResourceAsStream("synonyms.txt");
+Hole 2:
+[]: InputStream synonymsWordnet = getClass().getResourceAsStream("synonyms_wordnet.txt");
+Hole 3:
+[]: Path home = createTempDir();
+Hole 4:
+[]: Path config = home.resolve("config");
+Hole 5:
+[]: Files.createDirectory(config);
+Hole 6:
+[]: Files.copy(synonyms, config.resolve("synonyms.txt"));
+Hole 7:
+[]: Files.copy(synonymsWordnet, config.resolve("synonyms_wordnet.txt"));
+Hole 8:
+[]: Settings settings = settingsBuilder().loadFromClasspath("org/elasticsearch/index/analysis/synonyms/synonyms.json").put("path.home", home).put(IndexMetaData.SETTING_VERSION_CREATED, Version.CURRENT).build();
+Hole 9:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: String json = "/org/elasticsearch/index/analysis/synonyms/synonyms.json";
+Hole 2:
+[]: Settings settings = settingsBuilder().loadFromStream(json, getClass().getResourceAsStream(json)).put("path.home", createTempDir().toString()).put(IndexMetaData.SETTING_VERSION_CREATED, Version.CURRENT).build();
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: InputStream synonyms = getClass().getResourceAsStream("synonyms.txt");
+Hole 2:
+[]: InputStream synonymsWordnet = getClass().getResourceAsStream("synonyms_wordnet.txt");
+Hole 3:
+[]: Path home = createTempDir();
+Hole 4:
+[]: Path config = home.resolve("config");
+Hole 5:
+[]: Files.createDirectory(config);
+Hole 6:
+[]: Files.copy(synonyms, config.resolve("synonyms.txt"));
+Hole 7:
+[]: Files.copy(synonymsWordnet, config.resolve("synonyms_wordnet.txt"));
+Hole 8:
+[]: String json = "/org/elasticsearch/index/analysis/synonyms/synonyms.json";
+Hole 9:
+[]: Settings settings = settingsBuilder().loadFromStream(json, getClass().getResourceAsStream(json)).put("path.home", home).put(IndexMetaData.SETTING_VERSION_CREATED, Version.CURRENT).build();
+

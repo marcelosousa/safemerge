@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 180
+File: idea/tests/org/jetbrains/jet/findUsages/AbstractJetFindUsagesTest.java
+Orig: dab6716664985d6fea7de1efbe1c9b874c24f63f
+VarA: 6d67e30945b4267d02c46fb0bcf8f2b1a4ce89ab
+VarB: 209f7e8d51f79c1bb5f593e8223cea09a34f910e
+Merg: e4a00b3fcad35e63b99efba19d94e83a44536bad

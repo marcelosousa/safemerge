@@ -1,0 +1,31 @@
+Merge Instance for method (Ident "ExplodedArchiveTests",Ident "getUrl",[])
+@Test
+ public void getUrl () throws Exception
+{
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: URL url = this.archive.getUrl();
+Hole 2:
+[]: assertThat(new File(URLDecoder.decode(url.getFile(), "UTF-8")), equalTo(this.rootFolder));
+
+Edit A:
+Hole 1:
+[]: URL url = this.archive.getUrl();
+Hole 2:
+[]: assertThat(new File(URLDecoder.decode(url.getFile(), "UTF-8"))).isEqualTo(this.rootFolder);
+
+Edit B:
+Hole 1:
+[]: assertThat(this.archive.getUrl(), equalTo(this.rootFolder.toURI().toURL()));
+Hole 2:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: assertThat(this.archive.getUrl()).isEqualTo(this.rootFolder.toURI().toURL());
+Hole 2:
+[]: <SKIP>
+

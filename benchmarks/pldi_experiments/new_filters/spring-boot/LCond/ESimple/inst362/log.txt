@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 362
+File: spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/cache/RedisCacheConfiguration.java
+Orig: 7ba16e37e812e714425593ea11c66fab3899df92
+VarA: 8b587a87ef76d3a72ddeab14841b1d981fa6565e
+VarB: 4fd778fed8ffba9015803d395a85f9a2ac4615e9
+Merg: c93ea54ea3e08eaa2a17640d5d2b3e60264c1a9c

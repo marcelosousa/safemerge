@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 257
+File: idea/src/org/jetbrains/jet/plugin/references/JetSimpleNameReference.java
+Orig: 47050a11d1da4ec4a4dcb63f6ab22493ed051af4
+VarA: deb8d5ea20ba10998eeed1ad9666608f0d0b168c
+VarB: b9f1ddd14c36d0570db2a01f3929090d85d40c31
+Merg: b182d61a03552ca982a098bb5d8330ab3997487c

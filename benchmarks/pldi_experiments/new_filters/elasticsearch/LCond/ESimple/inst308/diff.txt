@@ -1,0 +1,183 @@
+Merge Instance for method (Ident "RegexpQueryBuilder",Ident "doXContent",[RefType (ClassRefType (ClassType [(Ident "XContentBuilder",[])])),RefType (ClassRefType (ClassType [(Ident "Params",[])]))])
+@Override
+ public void doXContent (XContentBuilder builder, Params params) throws IOException
+{
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  builder.endObject();
+}
+Edit Base:
+Hole 1:
+[]: builder.startObject(RegexpQueryParser.NAME);
+Hole 2:
+[]: if (((boost == -1 && rewrite) == null && queryName) != null)
+{
+  builder.field(name, regexp);
+}
+else
+{
+  builder.startObject(name);
+  builder.field("value", regexp);
+  if (flags != -1)
+  {
+    builder.field("flags_value", flags);
+  }
+  if (maxDetermizedStatesSet)
+  {
+    builder.field("max_determinized_states", maxDeterminizedStates);
+  }
+  if (boost != -1)
+  {
+    builder.field("boost", boost);
+  }
+  if (rewrite != null)
+  {
+    builder.field("rewrite", rewrite);
+  }
+  if (queryName != null)
+  {
+    builder.field("name", queryName);
+  }
+  builder.endObject();
+}
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: builder.startObject(NAME);
+Hole 2:
+[]: if (((boost == -1 && rewrite) == null && queryName) != null)
+{
+  builder.field(name, regexp);
+}
+else
+{
+  builder.startObject(name);
+  builder.field("value", regexp);
+  if (flags != -1)
+  {
+    builder.field("flags_value", flags);
+  }
+  if (maxDetermizedStatesSet)
+  {
+    builder.field("max_determinized_states", maxDeterminizedStates);
+  }
+  if (boost != -1)
+  {
+    builder.field("boost", boost);
+  }
+  if (rewrite != null)
+  {
+    builder.field("rewrite", rewrite);
+  }
+  if (queryName != null)
+  {
+    builder.field("name", queryName);
+  }
+  builder.endObject();
+}
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: builder.startObject(RegexpQueryParser.NAME);
+Hole 2:
+[]: builder.startObject(name);
+Hole 3:
+[]: builder.field("value", regexp);
+Hole 4:
+[]: if (flags != -1)
+{
+  builder.field("flags_value", flags);
+}
+Hole 5:
+[]: if (maxDetermizedStatesSet)
+{
+  builder.field("max_determinized_states", maxDeterminizedStates);
+}
+Hole 6:
+[]: if (boost != -1)
+{
+  builder.field("boost", boost);
+}
+Hole 7:
+[]: if (rewrite != null)
+{
+  builder.field("rewrite", rewrite);
+}
+Hole 8:
+[]: if (queryName != null)
+{
+  builder.field("_name", queryName);
+}
+Hole 9:
+[]: builder.endObject();
+
+Edit M:
+Hole 1:
+[]: builder.startObject(NAME);
+Hole 2:
+[]: builder.startObject(name);
+Hole 3:
+[]: builder.field("value", regexp);
+Hole 4:
+[]: if (flags != -1)
+{
+  builder.field("flags_value", flags);
+}
+Hole 5:
+[]: if (maxDetermizedStatesSet)
+{
+  builder.field("max_determinized_states", maxDeterminizedStates);
+}
+Hole 6:
+[]: if (boost != -1)
+{
+  builder.field("boost", boost);
+}
+Hole 7:
+[]: if (rewrite != null)
+{
+  builder.field("rewrite", rewrite);
+}
+Hole 8:
+[]: if (queryName != null)
+{
+  builder.field("_name", queryName);
+}
+Hole 9:
+[]: builder.endObject();
+

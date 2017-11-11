@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 225
+File: core/src/test/java/org/elasticsearch/index/query/TemplateQueryParserTest.java
+Orig: 9c6ed8c23842cd3f9e4a8c48411bbeb46c4b3a36
+VarA: a1be2d63f937e282d6a5f7f2dedd418bce7d09ae
+VarB: f8b9ede81f1dc66e5ba2c9617815514f50acc60f
+Merg: b7bfcdc5f83e496075a6efd1697afff29ada17c7

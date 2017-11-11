@@ -1,0 +1,84 @@
+Merge Instance for method (Ident "CommonTermsQueryBuilder",Ident "doXContent",[RefType (ClassRefType (ClassType [(Ident "XContentBuilder",[])])),RefType (ClassRefType (ClassType [(Ident "Params",[])]))])
+@Override
+ public void doXContent (XContentBuilder builder, Params params) throws IOException
+{
+  <?HOLE?>
+  builder.startObject(name);
+  builder.field("query", text);
+  <?HOLE?>
+  if (highFreqOperator != null)
+  {
+    builder.field("high_freq_operator", highFreqOperator.toString());
+  }
+  if (lowFreqOperator != null)
+  {
+    builder.field("low_freq_operator", lowFreqOperator.toString());
+  }
+  if (analyzer != null)
+  {
+    builder.field("analyzer", analyzer);
+  }
+  if (boost != null)
+  {
+    builder.field("boost", boost);
+  }
+  if (cutoffFrequency != null)
+  {
+    builder.field("cutoff_frequency", cutoffFrequency);
+  }
+  if ((lowFreqMinimumShouldMatch != null || highFreqMinimumShouldMatch) != null)
+  {
+    builder.startObject("minimum_should_match");
+    if (lowFreqMinimumShouldMatch != null)
+    {
+      builder.field("low_freq", lowFreqMinimumShouldMatch);
+    }
+    if (highFreqMinimumShouldMatch != null)
+    {
+      builder.field("high_freq", highFreqMinimumShouldMatch);
+    }
+    builder.endObject();
+  }
+  if (queryName != null)
+  {
+    builder.field("_name", queryName);
+  }
+  builder.endObject();
+  builder.endObject();
+}
+Edit Base:
+Hole 1:
+[]: builder.startObject(CommonTermsQueryParser.NAME);
+Hole 2:
+[SCond]: if (disableCoords != null)
+{
+  builder.field("disable_coords", disableCoords);
+}
+
+Edit A:
+Hole 1:
+[]: builder.startObject(NAME);
+Hole 2:
+[SCond]: if (disableCoords != null)
+{
+  builder.field("disable_coords", disableCoords);
+}
+
+Edit B:
+Hole 1:
+[]: builder.startObject(CommonTermsQueryParser.NAME);
+Hole 2:
+[SCond]: if (disableCoord != null)
+{
+  builder.field("disable_coord", disableCoord);
+}
+
+Edit M:
+Hole 1:
+[]: builder.startObject(NAME);
+Hole 2:
+[]: if (disableCoord != null)
+{
+  builder.field("disable_coord", disableCoord);
+}
+

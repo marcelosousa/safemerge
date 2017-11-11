@@ -1,0 +1,75 @@
+Merge Instance for method (Ident "CombinedChart",Ident "calcMinMax",[])
+@Override
+ protected void calcMinMax ()
+{
+  super.calcMinMax();
+  if (((getBarData() != null || getCandleData()) != null || getBubbleData()) != null)
+  {
+    mXChartMin = -0.5F;
+    mXChartMax = mData.getXVals().size() - 0.5F;
+    if (getBubbleData() != null)
+    {
+      <?HOLE?>
+    }
+  }
+  mDeltaX = Math.abs((mXChartMax - mXChartMin));
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[SLoop,SCond,SCond]: for (BubbleDataSet set : getBubbleData().getDataSets()) {
+                                                          final float xmin = set.getXMin();
+                                                          final float xmax = set.getXMax();
+                                                          if (xmin < mXChartMin)
+                                                            mXChartMin = xmin;
+                                                          if (xmax > mXChartMax)
+                                                            mXChartMax = xmax;
+                                                        }
+Hole 2:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[SLoop,SCond,SCond]: for (IBubbleDataSet set : getBubbleData().getDataSets()) {
+                                                           final float xmin = set.getXMin();
+                                                           final float xmax = set.getXMax();
+                                                           if (xmin < mXChartMin)
+                                                             mXChartMin = xmin;
+                                                           if (xmax > mXChartMax)
+                                                             mXChartMax = xmax;
+                                                         }
+Hole 2:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[SCond,SCond]: for (BubbleDataSet set : getBubbleData().getDataSets()) {
+                                                          final float xmin = set.getXMin();
+                                                          final float xmax = set.getXMax();
+                                                          if (xmin < mXChartMin)
+                                                            mXChartMin = xmin;
+                                                          if (xmax > mXChartMax)
+                                                            mXChartMax = xmax;
+                                                        }
+Hole 2:
+[]: if (((mDeltaX == 0.0F && getLineData()) != null && getLineData().getYValCount()) > 0)
+{
+  mDeltaX = 1.0F;
+}
+
+Edit M:
+Hole 1:
+[SCond,SCond]: for (IBubbleDataSet set : getBubbleData().getDataSets()) {
+                                                           final float xmin = set.getXMin();
+                                                           final float xmax = set.getXMax();
+                                                           if (xmin < mXChartMin)
+                                                             mXChartMin = xmin;
+                                                           if (xmax > mXChartMax)
+                                                             mXChartMax = xmax;
+                                                         }
+Hole 2:
+[]: if (((mDeltaX == 0.0F && getLineData()) != null && getLineData().getYValCount()) > 0)
+{
+  mDeltaX = 1.0F;
+}
+

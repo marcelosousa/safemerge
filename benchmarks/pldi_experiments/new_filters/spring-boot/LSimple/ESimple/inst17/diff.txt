@@ -1,0 +1,23 @@
+Merge Instance for method (Ident "CorsSampleActuatorApplicationTests",Ident "sensitiveEndpointShouldReturnUnauthorized",[])
+@Test
+ public void sensitiveEndpointShouldReturnUnauthorized () throws Exception
+{
+  <?HOLE?>
+  assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+}
+Edit Base:
+Hole 1:
+[]: ResponseEntity<Map> entity = this.testRestTemplate.getForEntity("/env", Map.class);
+
+Edit A:
+Hole 1:
+[]: ResponseEntity<Map> entity = this.testRestTemplate.getForEntity("/application/env", Map.class);
+
+Edit B:
+Hole 1:
+[]: ResponseEntity<?> entity = this.testRestTemplate.getForEntity("/env", Map.class);
+
+Edit M:
+Hole 1:
+[]: ResponseEntity<?> entity = this.testRestTemplate.getForEntity("/application/env", Map.class);
+

@@ -1,0 +1,128 @@
+Merge Instance for method (Ident "HorizontalBarChartActivity",Ident "setData",[PrimType IntT,PrimType FloatT])
+private void setData (int count, float range)
+{
+  ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+  <?HOLE?>
+  for (int i = 0 ; i < count ; i++)
+  {
+    <?HOLE?>
+    yVals1.add(new BarEntry(((float) (Math.random() * range)), i));
+  }
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: ArrayList<String> xVals = new ArrayList<String>();
+Hole 2:
+[SLoop]: xVals.add(mMonths[(i % 12)]);
+Hole 3:
+[]: BarDataSet set1 = new BarDataSet(yVals1, "DataSet 1");
+Hole 4:
+[]: ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+Hole 5:
+[]: dataSets.add(set1);
+Hole 6:
+[]: BarData data = new BarData(xVals, dataSets);
+Hole 7:
+[]: data.setValueTextSize(10.0F);
+Hole 8:
+[]: data.setValueTypeface(tf);
+Hole 9:
+[]: mChart.setData(data);
+
+Edit A:
+Hole 1:
+[]: ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
+Hole 2:
+[SLoop]: xVals.add(new XAxisValue(i, mMonths[(i % 12)]));
+Hole 3:
+[]: BarDataSet set1 = new BarDataSet(yVals1, "DataSet 1");
+Hole 4:
+[]: ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+Hole 5:
+[]: dataSets.add(set1);
+Hole 6:
+[]: BarData data = new BarData(xVals, dataSets);
+Hole 7:
+[]: data.setValueTextSize(10.0F);
+Hole 8:
+[]: data.setValueTypeface(tf);
+Hole 9:
+[]: mChart.setData(data);
+
+Edit B:
+Hole 1:
+[]: ArrayList<String> xVals = new ArrayList<String>();
+Hole 2:
+[SLoop]: xVals.add(mMonths[(i % 12)]);
+Hole 3:
+[]: BarDataSet set1;
+Hole 4:
+[]: if ((mChart.getData() != null && mChart.getData().getDataSetCount()) > 0)
+{
+  set1 = (BarDataSet) mChart.getData().getDataSetByIndex(0);
+  set1.setYVals(yVals1);
+  mChart.notifyDataSetChanged();
+}
+else
+{
+  set1 = new BarDataSet(yVals1, "DataSet 1");
+  ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+  dataSets.add(set1);
+  BarData data = new BarData(xVals, dataSets);
+  data.setValueTextSize(10.0F);
+  data.setValueTypeface(tf);
+  mChart.setData(data);
+}
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: ArrayList<XAxisValue> xVals = new ArrayList<XAxisValue>();
+Hole 2:
+[SLoop]: xVals.add(new XAxisValue(i, mMonths[(i % 12)]));
+Hole 3:
+[]: BarDataSet set1;
+Hole 4:
+[]: if ((mChart.getData() != null && mChart.getData().getDataSetCount()) > 0)
+{
+  set1 = (BarDataSet) mChart.getData().getDataSetByIndex(0);
+  set1.setYVals(yVals1);
+  mChart.notifyDataSetChanged();
+}
+else
+{
+  set1 = new BarDataSet(yVals1, "DataSet 1");
+  ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+  dataSets.add(set1);
+  BarData data = new BarData(xVals, dataSets);
+  data.setValueTextSize(10.0F);
+  data.setValueTypeface(tf);
+  mChart.setData(data);
+}
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+

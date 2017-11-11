@@ -1,0 +1,94 @@
+Merge Instance for method (Ident "LineChartActivityColored",Ident "getData",[PrimType IntT,PrimType FloatT])
+private LineData getData (int count, float range)
+{
+  <?HOLE?>
+  <?HOLE?>
+  ArrayList<Entry> yVals = new ArrayList<Entry>();
+  for (int i = 0 ; i < count ; i++)
+  {
+    float val = (float) (Math.random() * range) + 3;
+    yVals.add(new Entry(val, i));
+  }
+  LineDataSet set1 = new LineDataSet(yVals, "DataSet 1");
+  set1.setLineWidth(1.75F);
+  set1.setCircleRadius(5.0F);
+  <?HOLE?>
+  set1.setColor(Color.WHITE);
+  <?HOLE?>
+  set1.setHighLightColor(Color.WHITE);
+  set1.setDrawValues(false);
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  return data;
+}
+Edit Base:
+Hole 1:
+[]: ArrayList<String> xVals = new ArrayList<String>();
+Hole 2:
+[]: for (int i = 0 ; i < count ; i++)
+{
+  xVals.add(mMonths[(i % 12)]);
+}
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: set1.setCircleColorHole(Color.WHITE);
+Hole 5:
+[]: ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+Hole 6:
+[]: dataSets.add(set1);
+Hole 7:
+[]: LineData data = new LineData(xVals, dataSets);
+
+Edit A:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: set1.setCircleColorHole(Color.WHITE);
+Hole 5:
+[]: LineData data = new LineData(set1);
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: ArrayList<String> xVals = new ArrayList<String>();
+Hole 2:
+[]: for (int i = 0 ; i < count ; i++)
+{
+  xVals.add(mMonths[(i % 12)]);
+}
+Hole 3:
+[]: set1.setCircleHoleRadius(2.5F);
+Hole 4:
+[]: set1.setCircleColor(Color.WHITE);
+Hole 5:
+[]: ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+Hole 6:
+[]: dataSets.add(set1);
+Hole 7:
+[]: LineData data = new LineData(xVals, dataSets);
+
+Edit M:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: set1.setCircleHoleRadius(2.5F);
+Hole 4:
+[]: set1.setCircleColor(Color.WHITE);
+Hole 5:
+[]: LineData data = new LineData(set1);
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+

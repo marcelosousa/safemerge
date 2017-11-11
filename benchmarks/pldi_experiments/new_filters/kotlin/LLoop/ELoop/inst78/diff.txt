@@ -1,0 +1,65 @@
+Merge Instance for method (Ident "JetChangeSignatureUsageProcessor",Ident "findSAMUsages",[RefType (ClassRefType (ClassType [(Ident "ChangeInfo",[])])),RefType (ClassRefType (ClassType [(Ident "Set",[ActualType (ClassRefType (ClassType [(Ident "UsageInfo",[])]))])]))])
+private static void findSAMUsages (ChangeInfo changeInfo, Set<UsageInfo> result)
+{
+  PsiElement method = changeInfo.getMethod();
+  if (!JetRefactoringUtilKt.isTrueJavaMethod(method))
+    return;
+  if (((PsiMethod) method).getContainingClass() == null)
+    return;
+  FunctionDescriptor methodDescriptor = JavaResolutionUtils.getJavaMethodDescriptor(((PsiMethod) method));
+  assert methodDescriptor != null;
+  DeclarationDescriptor containingDescriptor = methodDescriptor.getContainingDeclaration();
+  if (!(containingDescriptor instanceof JavaClassDescriptor))
+    return;
+  if (((JavaClassDescriptor) containingDescriptor).getFunctionTypeForSamInterface() == null)
+    return;
+  PsiClass samClass = ((PsiMethod) method).getContainingClass();
+  if (samClass == null)
+    return;
+  for (PsiReference ref : ReferencesSearch.search(samClass)) {
+                                                               if (!(ref instanceof KtSimpleNameReference))
+                                                                 continue;
+                                                               KtSimpleNameExpression callee = ((KtSimpleNameReference) ref).getExpression();
+                                                               KtCallExpression callExpression = PsiTreeUtil.getParentOfType(callee, KtCallExpression.class);
+                                                               if ((callExpression == null || callExpression.getCalleeExpression()) != callee)
+                                                                 continue;
+                                                               List<? extends ValueArgument> arguments = callExpression.getValueArguments();
+                                                               if (arguments.size() != 1)
+                                                                 continue;
+                                                               KtExpression argExpression = arguments.get(0).getArgumentExpression();
+                                                               if (!(argExpression instanceof KtFunctionLiteralExpression))
+                                                                 continue;
+                                                               BindingContext context = ResolutionUtils.analyze(callExpression, BodyResolveMode.FULL);
+                                                               KtFunctionLiteral functionLiteral = ((KtFunctionLiteralExpression) argExpression).getFunctionLiteral();
+                                                               FunctionDescriptor functionDescriptor = context.get(BindingContext.FUNCTION, functionLiteral);
+                                                               assert functionDescriptor != null :"No descriptor for " + functionLiteral.getText();
+                                                               <?HOLE?>
+                                                               if (samCallType == null)
+                                                                 continue;
+                                                               <?HOLE?>
+                                                             }
+}
+Edit Base:
+Hole 1:
+[SLoop]: KtType samCallType = context.getType(callExpression);
+Hole 2:
+[SLoop]: result.add(new DeferredJavaMethodOverrideOrSAMUsage(functionLiteral, functionDescriptor, samCallType));
+
+Edit A:
+Hole 1:
+[SLoop]: KtType samCallType = context.getType(callExpression);
+Hole 2:
+[SLoop]: result.add(new DeferredSAMUsage(functionLiteral, functionDescriptor, samCallType));
+
+Edit B:
+Hole 1:
+[SLoop]: KotlinType samCallType = context.getType(callExpression);
+Hole 2:
+[SLoop]: result.add(new DeferredJavaMethodOverrideOrSAMUsage(functionLiteral, functionDescriptor, samCallType));
+
+Edit M:
+Hole 1:
+[SLoop]: KotlinType samCallType = context.getType(callExpression);
+Hole 2:
+[SLoop]: result.add(new DeferredSAMUsage(functionLiteral, functionDescriptor, samCallType));
+

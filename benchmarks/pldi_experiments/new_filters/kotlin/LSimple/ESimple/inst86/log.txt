@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 86
+File: idea/tests/org/jetbrains/kotlin/idea/debugger/KotlinDebuggerTestCase.java
+Orig: b2470a6aad07a5b0a144babcb6652d229a79e8cb
+VarA: b0b8ad2ccb502b310274546b13e81c835bd22c77
+VarB: 452637a94626267d054a2d43030070f93a4a1e16
+Merg: 588812beded482687f4008defca5ac1d56e82c31

@@ -346,30 +346,49 @@ liff o_ast a_ast b_ast m_ast =
 -- | class_diff : Checks the differences in the AST of four classes based on the
 --   information collected in the datatype ClassSum (Class Summary)
 class_diff :: Ident -> [ClassSum] -> (LiffStats,[MIdent]) -> (LiffStats,[MIdent])
-class_diff cls_name (cl_o:cls) (stats,r) =
-  M.foldWithKey (class_diff' (null $ _cl_fields cl_o) (map _cl_meths cls) cls_name) (stats,r) (_cl_meths cl_o)
+class_diff cls_name cl@(cl_o:cls) (stats,r) =
+  M.foldWithKey (class_diff' (M.unions $ map _cl_fields cl) (map _cl_meths cls) cls_name) (stats,r) (_cl_meths cl_o)
  where
    -- | Method level
-   class_diff' :: Bool -> [MemberInfo] -> Ident -> MemberSig -> MemberDecl -> (LiffStats,[MIdent]) -> (LiffStats,[MIdent])
-   class_diff' noFields [mi_a,mi_b,mi_m] cls mth_sig@(mi,mty) m_o (stats,r) =
+   class_diff' :: FieldInfo -> [MemberInfo] -> Ident -> MemberSig -> MemberDecl -> (LiffStats,[MIdent]) -> (LiffStats,[MIdent])
+   class_diff' fields [mi_a,mi_b,mi_m] cls mth_sig@(mi,mty) m_o (stats,r) =
     let stats1 = inc_meth_class stats 
     in case (M.lookup mth_sig mi_a, M.lookup mth_sig mi_b, M.lookup mth_sig mi_m) of
        (Just m_a, Just m_b, Just m_m) ->
          let stats2 = inc_meth_total stats1 
              ctx    = get_merge_context m_o m_a m_b m_m
-         in if ctx /= 0  
+             code_m = show m_m 
+             mcat   = get_meth_category (M.null fields) code_m 
+         in if ctx /= 0 && mcat /= LComplex && mcat /= LStateless && modFields fields (findLhs m_m) 
             -- | This is a potential interesting merge instance
             then let stats3 = inc_m_context ctx $ inc_meth_changed stats2
                      mident = (cls,mi,mty)
                      res    = mident:r
-                 in (get_stats noFields mident ctx m_o m_a m_b m_m stats3, res)
+                 in (get_stats fields mident ctx m_o m_a m_b m_m stats3, res)
             else (stats2,r)
        _ -> (inc_err_meth stats1, r)
+
+modFields :: FieldInfo -> [Lhs] -> Bool
+modFields fields lhs = any (\l -> isField (lhsToIdent l) fields) lhs 
+
+lhsToIdent :: Lhs -> Ident
+lhsToIdent lhs = case lhs of 
+  NameLhs (Name i) -> head i
+  FieldLhs fa -> case fa of 
+    PrimaryFieldAccess _ i -> i 
+    SuperFieldAccess i -> i 
+    ClassFieldAccess _ i -> i
+  ArrayLhs _ -> Ident "" 
+
+isField :: Ident -> FieldInfo -> Bool 
+isField i m = case M.lookup i m of
+  Nothing -> False
+  Just _  -> True
 
 -- | Pre-condition;
 --   The variants are different than the base
 --   Stats already updated the total count of methods 
-get_stats :: Bool -> MIdent -> MContext -> MemberDecl -> MemberDecl -> MemberDecl -> MemberDecl -> LiffStats -> LiffStats
+get_stats :: FieldInfo -> MIdent -> MContext -> MemberDecl -> MemberDecl -> MemberDecl -> MemberDecl -> LiffStats -> LiffStats
 get_stats fields ident ctx o a b m st = 
   -- Check diff result 
   case diff4gen_meth ident o a b m of
@@ -379,7 +398,7 @@ get_stats fields ident ctx o a b m st =
     Just (_,_,e_o,e_a,e_b,e_m) ->
       let code_m = show m -- prettyPrint m
           st1    = inc_meth_edits st
-          mcat   = get_meth_category fields code_m 
+          mcat   = get_meth_category (M.null fields) code_m 
           ecat   = get_edit_category e_m
           sum    = MSum ctx Nothing mcat ecat
           st'    = inc_meth_size_dist (length $ lines code_m) $ inc_edit_size_dist (length e_m) st 
@@ -423,7 +442,7 @@ is_code_complex :: String -> Bool
 is_code_complex str = any (\s -> isInfixOf s str) complexKeywords
 
 complexKeywords :: [String]
-complexKeywords = ["Throw","Try","Catch","Synchronized"]
+complexKeywords = ["Throw","Try","Catch","Synchronized","MethodDecl","MethodBody"]
 -- complexKeywords = ["Throw","Try","Catch","Synchronized","getMethod","getClass"]
 
 is_code_cond :: String -> Bool

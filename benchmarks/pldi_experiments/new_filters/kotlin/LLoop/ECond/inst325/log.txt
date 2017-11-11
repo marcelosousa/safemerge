@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 325
+File: idea/src/org/jetbrains/jet/codegen/ClosureCodegen.java
+Orig: a850ca37aa118cabab9dffdf9c6585c6b00a30d2
+VarA: 33425158925098e4bb624a53674b0ff4649f38d7
+VarB: c327ace32ae275f1349bdb99c0727d0e643c003d
+Merg: f4eab7d53f4e4212feda00c318b541a561a2f5ee

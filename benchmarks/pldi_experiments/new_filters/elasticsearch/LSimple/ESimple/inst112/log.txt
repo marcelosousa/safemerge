@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 112
+File: core/src/test/java/org/elasticsearch/cluster/routing/allocation/PrimaryElectionRoutingTests.java
+Orig: 18a75fb30c9d186dac0c232d9ca85445892ee5ca
+VarA: 1e5af7b6f382b822df5ba188b5fc7ff750ba17cc
+VarB: 6a2fa73fb5309935ed5b42d4cfa8f47b47dacc59
+Merg: d68b8101e1551576122c0e8d4b47d6a9c5475190

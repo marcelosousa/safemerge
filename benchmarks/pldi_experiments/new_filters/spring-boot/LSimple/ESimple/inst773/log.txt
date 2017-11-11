@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 773
+File: spring-boot-actuator/src/test/java/org/springframework/boot/actuate/autoconfigure/ManagementSecurityAutoConfigurationTests.java
+Orig: 6aaa5ee933e9035eee6e9447ced98a9db3a5e135
+VarA: a4b4b850d515095e7ec7c1cc7dea029f9c861628
+VarB: d7ae0f3b067012774cd0dd8ee8b23d6a201492fe
+Merg: a8726c4ae13d740f6f7bbb534c70992e36f17fcc

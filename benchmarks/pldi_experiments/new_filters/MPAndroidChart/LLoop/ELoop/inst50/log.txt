@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 50
+File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/AnotherBarActivity.java
+Orig: 358770cd1301c9227e8c72fdaa5026b8c94572c4
+VarA: b28aae50fc6b0dd48a812831d6ef0c5c98ef8c0f
+VarB: 4b3825c68d2c21e61a1f852f054b935d3dbe39a9
+Merg: 3baf89c25d03776f8273c686c49c92e9ed204275

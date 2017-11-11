@@ -1,0 +1,38 @@
+Merge Instance for method (Ident "SimpleIndexQueryParserTests",Ident "setup",[])
+@Before
+ public void setup () throws IOException
+{
+  <?HOLE?>
+  IndexService indexService = createIndex("test", settings);
+  MapperService mapperService = indexService.mapperService();
+  String mapping = copyToStringFromClasspath("/org/elasticsearch/index/query/mapping.json");
+  mapperService.merge("person", new CompressedString(mapping), true);
+  <?HOLE?>
+  assertNotNull(doc.dynamicMappingsUpdate());
+  client().admin().indices().preparePutMapping("test").setType("person").setSource(doc.dynamicMappingsUpdate().toString()).get();
+  queryParser = indexService.queryParserService();
+}
+Edit Base:
+Hole 1:
+[]: Settings settings = ImmutableSettings.settingsBuilder().put("index.cache.filter.type", "none").put("name", "SimpleIndexQueryParserTests").build();
+Hole 2:
+[]: ParsedDocument doc = mapperService.documentMapper("person").parse(new BytesArray(copyToBytesFromClasspath("/org/elasticsearch/index/query/data.json")));
+
+Edit A:
+Hole 1:
+[]: Settings settings = ImmutableSettings.settingsBuilder().put("index.cache.filter.type", "none").put("name", "SimpleIndexQueryParserTests").build();
+Hole 2:
+[]: ParsedDocument doc = mapperService.documentMapper("person").parse("person", "1", new BytesArray(copyToBytesFromClasspath("/org/elasticsearch/index/query/data.json")));
+
+Edit B:
+Hole 1:
+[]: Settings settings = ImmutableSettings.settingsBuilder().put("index.queryparser.query.dummy.type", DummyQueryParser.class).put("index.cache.filter.type", "none").put("name", "SimpleIndexQueryParserTests").build();
+Hole 2:
+[]: ParsedDocument doc = mapperService.documentMapper("person").parse(new BytesArray(copyToBytesFromClasspath("/org/elasticsearch/index/query/data.json")));
+
+Edit M:
+Hole 1:
+[]: Settings settings = ImmutableSettings.settingsBuilder().put("index.queryparser.query.dummy.type", DummyQueryParser.class).put("index.cache.filter.type", "none").put("name", "SimpleIndexQueryParserTests").build();
+Hole 2:
+[]: ParsedDocument doc = mapperService.documentMapper("person").parse("person", "1", new BytesArray(copyToBytesFromClasspath("/org/elasticsearch/index/query/data.json")));
+

@@ -1,0 +1,10 @@
+RxJava
+elasticsearch
+retrofit
+okhttp
+MPAndroidChart
+kotlin
+spring-boot
+iosched
+picasso
+libgdx
