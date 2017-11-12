@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 132
+File: idea/tests/org/jetbrains/jet/plugin/intentions/CodeTransformationTestGenerated.java
+Orig: 32a2e63ae5e776a0d52d641705e010c12a2d275a
+VarA: 32651ec05ffaf18992dafbafc34a877b53437475
+VarB: 0feb0d35e6ee7af269fcc044e41970ad76e63958
+Merg: f8db72201174ba4f76d5937161d588279c053646

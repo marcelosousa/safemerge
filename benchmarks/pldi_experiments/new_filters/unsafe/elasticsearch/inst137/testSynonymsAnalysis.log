@@ -1,0 +1,178 @@
+verify: relational VC
+(let ((a!1 (build!35 (put!34 (put!34 (loadFromClasspath.settingsBuilder!33
+                                       _STR_CONST_org/elasticsearch/index/analysis/synonyms/synonyms.json!32)
+                                     _STR_CONST_path.home!30
+                                     toString.createTempDir!31)
+                             SETTING_VERSION_CREATED.IndexMetaData!28
+                             CURRENT.Version!29)))
+      (a!2 (put!34 (put!34 (loadFromStream.settingsBuilder!41
+                             json_3_1!22
+                             (getResourceAsStream.getClass!20 json_3_1!22))
+                           _STR_CONST_path.home!30
+                           toString.createTempDir!31)
+                   SETTING_VERSION_CREATED.IndexMetaData!28
+                   CURRENT.Version!29))
+      (a!3 (build!35 (put!34 (put!34 (loadFromClasspath.settingsBuilder!33
+                                       _STR_CONST_org/elasticsearch/index/analysis/synonyms/synonyms.json!32)
+                                     _STR_CONST_path.home!30
+                                     home_2_2!56)
+                             SETTING_VERSION_CREATED.IndexMetaData!28
+                             CURRENT.Version!29)))
+      (a!4 (put!34 (put!34 (loadFromStream.settingsBuilder!41
+                             json_4_1!64
+                             (getResourceAsStream.getClass!20 json_4_1!64))
+                           _STR_CONST_path.home!30
+                           home_4_2!53)
+                   SETTING_VERSION_CREATED.IndexMetaData!28
+                   CURRENT.Version!29))
+      (a!5 (createInjector!90
+             (add!89 NewModulesBuilder!88
+                     (NewSettingsModule!84 settings_1_1!27)
+                     (NewEnvironmentModule!86
+                       (NewEnvironment!85 settings_1_1!27))
+                     NewIndicesAnalysisModule!87)))
+      (a!6 (createInjector!90
+             (add!89 NewModulesBuilder!88
+                     (NewSettingsModule!84 settings_2_1!66)
+                     (NewEnvironmentModule!86
+                       (NewEnvironment!85 settings_2_1!66))
+                     NewIndicesAnalysisModule!87)))
+      (a!7 (createInjector!90
+             (add!89 NewModulesBuilder!88
+                     (NewSettingsModule!84 settings_3_1!40)
+                     (NewEnvironmentModule!86
+                       (NewEnvironment!85 settings_3_1!40))
+                     NewIndicesAnalysisModule!87)))
+      (a!8 (createInjector!90
+             (add!89 NewModulesBuilder!88
+                     (NewSettingsModule!84 settings_4_1!68)
+                     (NewEnvironmentModule!86
+                       (NewEnvironment!85 settings_4_1!68))
+                     NewIndicesAnalysisModule!87)))
+      (a!9 (createChildInjector!104
+             (add!89 NewModulesBuilder!88
+                     (NewIndexSettingsModule!99 index_1_1!73 settings_1_1!27)
+                     (NewIndexNameModule!100 index_1_1!73)
+                     (NewAnalysisModule!103
+                       settings_1_1!27
+                       (getInstance!102 parentInjector_1_1!83
+                                        |Just (RefType (ClassRefType (ClassType [(Ident "IndicesAnalysisService",[])])))!101|)))
+             parentInjector_1_1!83))
+      (a!10 (createChildInjector!104
+              (add!89 NewModulesBuilder!88
+                      (NewIndexSettingsModule!99 index_2_1!76 settings_2_1!66)
+                      (NewIndexNameModule!100 index_2_1!76)
+                      (NewAnalysisModule!103
+                        settings_2_1!66
+                        (getInstance!102 parentInjector_2_1!91
+                                         |Just (RefType (ClassRefType (ClassType [(Ident "IndicesAnalysisService",[])])))!106|)))
+              parentInjector_2_1!91))
+      (a!11 (createChildInjector!104
+              (add!89 NewModulesBuilder!88
+                      (NewIndexSettingsModule!99 index_3_1!77 settings_3_1!40)
+                      (NewIndexNameModule!100 index_3_1!77)
+                      (NewAnalysisModule!103
+                        settings_3_1!40
+                        (getInstance!102 parentInjector_3_1!92
+                                         |Just (RefType (ClassRefType (ClassType [(Ident "IndicesAnalysisService",[])])))!108|)))
+              parentInjector_3_1!92))
+      (a!12 (createChildInjector!104
+              (add!89 NewModulesBuilder!88
+                      (NewIndexSettingsModule!99 index_4_1!78 settings_4_1!68)
+                      (NewIndexNameModule!100 index_4_1!78)
+                      (NewAnalysisModule!103
+                        settings_4_1!68
+                        (getInstance!102 parentInjector_4_1!93
+                                         |Just (RefType (ClassRefType (ClassType [(Ident "IndicesAnalysisService",[])])))!110|)))
+              parentInjector_4_1!93)))
+  (and (= analysisService_4_0!3 analysisService_3_0!2)
+       (= analysisService_3_0!2 analysisService_2_0!1)
+       (= analysisService_2_0!1 analysisService_1_0!0)
+       (= logger_4_0!7 logger_3_0!6)
+       (= logger_3_0!6 logger_2_0!5)
+       (= logger_2_0!5 logger_1_0!4)
+       (= synonyms_4_1!18
+          (getResourceAsStream.getClass!20 _STR_CONST_synonyms.txt!19))
+       (= json_3_1!22
+          _STR_CONST_/org/elasticsearch/index/analysis/synonyms/synonyms.json!23)
+       (= synonyms_2_1!25
+          (getResourceAsStream.getClass!20 _STR_CONST_synonyms.txt!19))
+       (= settings_1_1!27 a!1)
+       (= synonymsWordnet_4_1!37
+          (getResourceAsStream.getClass!20 _STR_CONST_synonyms_wordnet.txt!38))
+       (= settings_3_1!40 (build!35 a!2))
+       (= synonymsWordnet_2_1!43
+          (getResourceAsStream.getClass!20 _STR_CONST_synonyms_wordnet.txt!38))
+       (= home_4_1!45 createTempDir!46)
+       (= home_2_1!48 createTempDir!46)
+       (= home_4_2!53 (resolve!52 home_4_1!45 _STR_CONST_config!51))
+       (= config_4_1!50 (resolve!52 home_4_1!45 _STR_CONST_config!51))
+       (= home_2_2!56 (resolve!52 home_2_1!48 _STR_CONST_config!51))
+       (= config_2_1!55 (resolve!52 home_2_1!48 _STR_CONST_config!51))
+       (= config_4_2!58 (resolve!52 config_4_1!50 _STR_CONST_synonyms.txt!19))
+       (= config_2_2!60 (resolve!52 config_2_1!55 _STR_CONST_synonyms.txt!19))
+       (= config_4_3!61
+          (resolve!52 config_4_2!58 _STR_CONST_synonyms_wordnet.txt!38))
+       (= config_2_3!62
+          (resolve!52 config_2_2!60 _STR_CONST_synonyms_wordnet.txt!38))
+       (= json_4_1!64
+          _STR_CONST_/org/elasticsearch/index/analysis/synonyms/synonyms.json!23)
+       (= settings_2_1!66 a!3)
+       (= settings_4_1!68 (build!35 a!4))
+       (= index_1_1!73 (NewIndex!75 _STR_CONST_test!74))
+       (= index_2_1!76 (NewIndex!75 _STR_CONST_test!74))
+       (= index_3_1!77 (NewIndex!75 _STR_CONST_test!74))
+       (= index_4_1!78 (NewIndex!75 _STR_CONST_test!74))
+       (= parentInjector_1_1!83 a!5)
+       (= parentInjector_2_1!91 a!6)
+       (= parentInjector_3_1!92 a!7)
+       (= parentInjector_4_1!93 a!8)
+       (= injector_1_1!98 a!9)
+       (= injector_2_1!105 a!10)
+       (= injector_3_1!107 a!11)
+       (= injector_4_1!109 a!12)
+       (= analysisService_1_1!111
+          (getInstance!102 injector_1_1!98
+                           |Just (RefType (ClassRefType (ClassType [(Ident "AnalysisService",[])])))!112|))
+       (= analysisService_2_1!113
+          (getInstance!102 injector_2_1!105
+                           |Just (RefType (ClassRefType (ClassType [(Ident "AnalysisService",[])])))!114|))
+       (= analysisService_3_1!115
+          (getInstance!102 injector_3_1!107
+                           |Just (RefType (ClassRefType (ClassType [(Ident "AnalysisService",[])])))!116|))
+       (= analysisService_4_1!117
+          (getInstance!102 injector_4_1!109
+                           |Just (RefType (ClassRefType (ClassType [(Ident "AnalysisService",[])])))!118|))
+       (= match_1_1!121 Anonymous0!120)
+       (= match_2_1!123 Anonymous0!120)
+       (= match_3_1!125 Anonymous0!120)
+       (= match_4_1!127 Anonymous0!120)
+       (= ret_analysisService_1_0!8 analysisService_1_1!111)
+       (= ret_logger_1_0!12 logger_1_0!4)
+       (= ret_analysisService_2_0!9 analysisService_2_1!113)
+       (= ret_logger_2_0!13 logger_2_0!5)
+       (= ret_analysisService_3_0!10 analysisService_3_1!115)
+       (= ret_logger_3_0!14 logger_3_0!6)
+       (= ret_analysisService_4_0!11 analysisService_4_1!117)
+       (= ret_logger_4_0!15 logger_4_0!7)))
+verify: semantic conflict VC
+(let ((a!1 (=> (not (and (= ret_logger_1_0!12 ret_logger_2_0!13)))
+               (and (= ret_logger_4_0!15 ret_logger_2_0!13))))
+      (a!2 (=> (not (and (= ret_logger_1_0!12 ret_logger_3_0!14)))
+               (and (= ret_logger_4_0!15 ret_logger_3_0!14))))
+      (a!4 (=> (not (and (= ret_analysisService_1_0!8 ret_analysisService_2_0!9)))
+               (and (= ret_analysisService_4_0!11 ret_analysisService_2_0!9))))
+      (a!5 (=> (not (and (= ret_analysisService_1_0!8
+                            ret_analysisService_3_0!10)))
+               (and (= ret_analysisService_4_0!11 ret_analysisService_3_0!10)))))
+(let ((a!3 (or (and (and (= ret_logger_4_0!15 ret_logger_2_0!13))
+                    (and (= ret_logger_4_0!15 ret_logger_3_0!14))
+                    (= ret_logger_1_0!12 ret_logger_4_0!15))
+               (and a!1 a!2)))
+      (a!6 (or (and (and (= ret_analysisService_4_0!11
+                            ret_analysisService_2_0!9))
+                    (and (= ret_analysisService_4_0!11
+                            ret_analysisService_3_0!10))
+                    (= ret_analysisService_1_0!8 ret_analysisService_4_0!11))
+               (and a!4 a!5))))
+  (and a!3 a!6)))

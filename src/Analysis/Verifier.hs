@@ -475,12 +475,16 @@ checkDep inputs = do
      let i = absVarToIdent v 
      case M.lookup i _e_ssamap of
        Nothing -> return r
-       Just ve -> do
-        ast <- lift $ conflict_freedom ve
-        return (ast:r) 
+       Just ve -> 
+        if M.size ve == 4 
+        then do
+         ast <- lift $ conflict_freedom ve
+         return (ast:r) 
+        else return r
 
 conflict_freedom :: SSAVer -> Z3 AST
 conflict_freedom v = do
+  -- liftIO $ putStrLn $ "conflict_freedom: " ++ show v
   let [r_o,r_a,r_b,r_m] = map getASTSSAVar $ M.elems v 
   -- Comparison between original and A
   _oa <- mapM (uncurry mkEq) $ zip r_o r_a

@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 220
+File: src/test/java/org/elasticsearch/index/query/SimpleIndexQueryParserTests.java
+Orig: 24ffcc28ac67dbd9ca6e27642121af17f7aaced7
+VarA: 6046ecbab32a6a5ba27fd5ed3a60af17e278e754
+VarB: 11db3170cd373674e7ed6499e1ad4cfd1012687c
+Merg: 36884807b3cc9d660db4da062275c7fdbec8ba67

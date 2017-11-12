@@ -458,38 +458,41 @@ assign vIds _exp lhs aOp rhs = mapM_ assignVId vIds
         NameLhs  name                            -> toIdent name 
         FieldLhs (PrimaryFieldAccess This ident) -> ident 
         ArrayLhs (ArrayIndex e args)             -> expToIdent e
-       lhsVar = getVarSSAMap "assign" vId ident (_e_ssamap e) 
-   nLhsVar <- lift $ updateVariable vId ident lhsVar
-   -- This is incorrect in the case of arrays: a[i] = x
-   rhsAst  <- encodeExp (Just $ _v_typ lhsVar) vId rhs
-   iSort   <- lift $ mkIntSort
-   env@Env{..} <- get
-   case lhs of
-    NameLhs (Name [ident]) -> do
-     let ssamap = insertSSAVar vId ident nLhsVar _e_ssamap
-     ass <- lift $ processAssign lhsVar nLhsVar aOp rhsAst 
-     pre <- lift $ mkAnd [_e_pre,ass]
-     updatePre pre
-     updateSSAMap ssamap
-    FieldLhs (PrimaryFieldAccess This ident) -> do
-     let ssamap = insertSSAVar vId ident nLhsVar _e_ssamap
-     ass <- lift $ processAssign lhsVar nLhsVar aOp rhsAst 
-     pre <- lift $ mkAnd [_e_pre,ass]
-     updatePre pre
-     updateSSAMap ssamap
-    ArrayLhs (ArrayIndex e args) -> do
-     nLhsVar <- lift $ updateVariable vId ident lhsVar
-     let ssamap = insertSSAVar vId ident nLhsVar _e_ssamap
-     a <- encodeExp (Just $ _v_typ lhsVar) vId e
-     i <- case args of
-            [x] -> encodeExp (Just iSort) vId x
-            _   -> error $ "assign: ArrayLhs " ++ show lhs 
-     _rhsAst <- lift $ mkStore a i rhsAst
-     ass <- lift $ mkEq (_v_ast nLhsVar) rhsAst 
-     pre <- lift $ mkAnd [_e_pre,ass]
-     updatePre pre
-     updateSSAMap ssamap
-    _ -> error $ show _exp ++ " not supported"
+   case M.lookup ident (_e_ssamap e) of
+     Nothing -> return ()
+     Just _ -> do
+       let lhsVar = getVarSSAMap "assign" vId ident (_e_ssamap e) 
+       nLhsVar <- lift $ updateVariable vId ident lhsVar
+       -- This is incorrect in the case of arrays: a[i] = x
+       rhsAst  <- encodeExp (Just $ _v_typ lhsVar) vId rhs
+       iSort   <- lift $ mkIntSort
+       env@Env{..} <- get
+       case lhs of
+        NameLhs (Name [ident]) -> do
+         let ssamap = insertSSAVar vId ident nLhsVar _e_ssamap
+         ass <- lift $ processAssign lhsVar nLhsVar aOp rhsAst 
+         pre <- lift $ mkAnd [_e_pre,ass]
+         updatePre pre
+         updateSSAMap ssamap
+        FieldLhs (PrimaryFieldAccess This ident) -> do
+         let ssamap = insertSSAVar vId ident nLhsVar _e_ssamap
+         ass <- lift $ processAssign lhsVar nLhsVar aOp rhsAst 
+         pre <- lift $ mkAnd [_e_pre,ass]
+         updatePre pre
+         updateSSAMap ssamap
+        ArrayLhs (ArrayIndex e args) -> do
+         nLhsVar <- lift $ updateVariable vId ident lhsVar
+         let ssamap = insertSSAVar vId ident nLhsVar _e_ssamap
+         a <- encodeExp (Just $ _v_typ lhsVar) vId e
+         i <- case args of
+                [x] -> encodeExp (Just iSort) vId x
+                _   -> error $ "assign: ArrayLhs " ++ show lhs 
+         _rhsAst <- lift $ mkStore a i rhsAst
+         ass <- lift $ mkEq (_v_ast nLhsVar) rhsAst 
+         pre <- lift $ mkAnd [_e_pre,ass]
+         updatePre pre
+         updateSSAMap ssamap
+        _ -> error $ show _exp ++ " not supported"
 
 processAssign :: SSAVar -> SSAVar -> AssignOp -> AST -> Z3 AST
 processAssign plhs lhs op rhs =

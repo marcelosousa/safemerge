@@ -1,0 +1,379 @@
+verify: relational VC
+(let ((a!1 (= propertyDescriptor_4_2!124
+              (setType!123 propertyDescriptor_4_1!102
+                           getInType!115
+                           getOutType!116
+                           (copyTypeParameters.DescriptorUtils!118
+                             propertyDescriptor_4_1!102
+                             getTypeParameters!117)
+                           expectedThisObject_4_0!51
+                           (wiz_cond!122 (exists!119 receiver_4_0!35)
+                                         (getType!121 receiver_4_1!120)
+                                         0))))
+      (a!2 (= propertyDescriptor_3_2!126
+              (setType!123 propertyDescriptor_3_1!109
+                           getInType!115
+                           getOutType!116
+                           (copyTypeParameters.DescriptorUtils!118
+                             propertyDescriptor_3_1!109
+                             getTypeParameters!117)
+                           expectedThisObject_3_0!50
+                           (wiz_cond!122 (exists!119 receiver_3_0!34)
+                                         (getType!121 receiver_3_1!125)
+                                         0))))
+      (a!3 (= propertyDescriptor_2_2!129
+              (setType!128 propertyDescriptor_2_1!111
+                           getInType!115
+                           getOutType!116
+                           (copyTypeParameters.DescriptorUtils!118
+                             propertyDescriptor_2_1!111
+                             getTypeParameters!117)
+                           (wiz_cond!122 (exists!119 receiver_2_0!33)
+                                         (getType!121 receiver_2_1!127)
+                                         0))))
+      (a!4 (= propertyDescriptor_1_2!131
+              (setType!128 propertyDescriptor_1_1!114
+                           getInType!115
+                           getOutType!116
+                           (copyTypeParameters.DescriptorUtils!118
+                             propertyDescriptor_1_1!114
+                             getTypeParameters!117)
+                           (wiz_cond!122 (exists!119 receiver_1_0!32)
+                                         (getType!121 receiver_1_1!130)
+                                         0)))))
+(let ((a!5 (and (= newOwner_4_0!3 newOwner_3_0!2)
+                (= newOwner_3_0!2 newOwner_2_0!1)
+                (= newOwner_2_0!1 newOwner_1_0!0)
+                (= makeNonAbstract_4_0!7 makeNonAbstract_3_0!6)
+                (= makeNonAbstract_3_0!6 makeNonAbstract_2_0!5)
+                (= makeNonAbstract_2_0!5 makeNonAbstract_1_0!4)
+                (= expectedThisObject_4_0!11 expectedThisObject_3_0!10)
+                (= expectedThisObject_3_0!10 expectedThisObject_2_0!9)
+                (= expectedThisObject_2_0!9 expectedThisObject_1_0!8)
+                (= getter_4_0!15 getter_3_0!14)
+                (= getter_3_0!14 getter_2_0!13)
+                (= getter_2_0!13 getter_1_0!12)
+                (= isVar_4_0!19 isVar_3_0!18)
+                (= isVar_3_0!18 isVar_2_0!17)
+                (= isVar_2_0!17 isVar_1_0!16)
+                (= modality_4_0!23 modality_3_0!22)
+                (= modality_3_0!22 modality_2_0!21)
+                (= modality_2_0!21 modality_1_0!20)
+                (= original_4_0!27 original_3_0!26)
+                (= original_3_0!26 original_2_0!25)
+                (= original_2_0!25 original_1_0!24)
+                (= overriddenProperties_4_0!31 overriddenProperties_3_0!30)
+                (= overriddenProperties_3_0!30 overriddenProperties_2_0!29)
+                (= overriddenProperties_2_0!29 overriddenProperties_1_0!28)
+                (= receiver_4_0!35 receiver_3_0!34)
+                (= receiver_3_0!34 receiver_2_0!33)
+                (= receiver_2_0!33 receiver_1_0!32)
+                (= setter_4_0!39 setter_3_0!38)
+                (= setter_3_0!38 setter_2_0!37)
+                (= setter_2_0!37 setter_1_0!36)
+                (= typeParemeters_4_0!43 typeParemeters_3_0!42)
+                (= typeParemeters_3_0!42 typeParemeters_2_0!41)
+                (= typeParemeters_2_0!41 typeParemeters_1_0!40)
+                (= visibility_4_0!47 visibility_3_0!46)
+                (= visibility_3_0!46 visibility_2_0!45)
+                (= visibility_2_0!45 visibility_1_0!44)
+                (= expectedThisObject_4_0!51 expectedThisObject_3_0!50)
+                (= expectedThisObject_3_0!50 expectedThisObject_2_0!49)
+                (= expectedThisObject_2_0!49 expectedThisObject_1_0!48)
+                (= propertyDescriptor_4_1!102
+                   (NewPropertyDescriptor!107
+                     newOwner_4_0!3
+                     (newArrayList.Lists!104 getAnnotations!103)
+                     (convertModality.DescriptorUtils!105
+                       modality_4_0!23
+                       makeNonAbstract_4_0!7)
+                     visibility_4_0!47
+                     isVar_4_0!19
+                     getName!106))
+                (= propertyDescriptor_3_1!109
+                   (NewPropertyDescriptor!107
+                     newOwner_3_0!2
+                     (newArrayList.Lists!104 getAnnotations!103)
+                     (convertModality.DescriptorUtils!105
+                       modality_3_0!22
+                       makeNonAbstract_3_0!6)
+                     visibility_3_0!46
+                     isVar_3_0!18
+                     getName!106))
+                (= propertyDescriptor_2_1!111
+                   (NewPropertyDescriptor!112
+                     newOwner_2_0!1
+                     (newArrayList.Lists!104 getAnnotations!103)
+                     (convertModality.DescriptorUtils!105
+                       modality_2_0!21
+                       makeNonAbstract_2_0!5)
+                     visibility_2_0!45
+                     isVar_2_0!17
+                     expectedThisObject_2_0!49
+                     getName!106))
+                (= propertyDescriptor_1_1!114
+                   (NewPropertyDescriptor!112
+                     newOwner_1_0!0
+                     (newArrayList.Lists!104 getAnnotations!103)
+                     (convertModality.DescriptorUtils!105
+                       modality_1_0!20
+                       makeNonAbstract_1_0!4)
+                     visibility_1_0!44
+                     isVar_1_0!16
+                     expectedThisObject_1_0!48
+                     getName!106))
+                (= receiver_4_1!120 (exists!119 receiver_4_0!35))
+                a!1
+                (= receiver_3_1!125 (exists!119 receiver_3_0!34))
+                a!2
+                (= receiver_2_1!127 (exists!119 receiver_2_0!33))
+                a!3
+                (= receiver_1_1!130 (exists!119 receiver_1_0!32))
+                a!4
+                (= getter_1_1!134 (Anonymous0!133 newGetter!132 getter_1_0!12))
+                (= getter_2_1!135 (Anonymous0!133 newGetter!132 getter_2_0!13))
+                (= getter_3_1!136 (Anonymous0!133 newGetter!132 getter_3_0!14))
+                (= getter_4_1!137 (Anonymous0!133 newGetter!132 getter_4_0!15))
+                (= newGetter_1_1!142
+                   (Anonymous1!141 getter_1_1!134
+                                   getter_1_1!134
+                                   propertyDescriptor_1_2!131
+                                   Lists!139
+                                   DescriptorUtils!140
+                                   makeNonAbstract_1_0!4))
+                (= newGetter_2_1!144
+                   (Anonymous1!141 getter_2_1!135
+                                   getter_2_1!135
+                                   propertyDescriptor_2_2!129
+                                   Lists!139
+                                   DescriptorUtils!140
+                                   makeNonAbstract_2_0!5))
+                (= newGetter_3_1!146
+                   (Anonymous1!141 getter_3_1!136
+                                   getter_3_1!136
+                                   propertyDescriptor_3_2!126
+                                   Lists!139
+                                   DescriptorUtils!140
+                                   makeNonAbstract_3_0!6))
+                (= newGetter_4_1!148
+                   (Anonymous1!141 getter_4_1!137
+                                   getter_4_1!137
+                                   propertyDescriptor_4_2!124
+                                   Lists!139
+                                   DescriptorUtils!140
+                                   makeNonAbstract_4_0!7))
+                (= newSetter_1_1!151
+                   (Anonymous2!150 setter_1_0!36
+                                   setter_1_0!36
+                                   DescriptorUtils!140
+                                   makeNonAbstract_1_0!4
+                                   propertyDescriptor_1_2!131
+                                   Lists!139))
+                (= newSetter_2_1!153
+                   (Anonymous2!150 setter_2_0!37
+                                   setter_2_0!37
+                                   DescriptorUtils!140
+                                   makeNonAbstract_2_0!5
+                                   propertyDescriptor_2_2!129
+                                   Lists!139))
+                (= newSetter_3_1!155
+                   (Anonymous2!150 setter_3_0!38
+                                   setter_3_0!38
+                                   DescriptorUtils!140
+                                   makeNonAbstract_3_0!6
+                                   propertyDescriptor_3_2!126
+                                   Lists!139))
+                (= newSetter_4_1!157
+                   (Anonymous2!150 setter_4_0!39
+                                   setter_4_0!39
+                                   DescriptorUtils!140
+                                   makeNonAbstract_4_0!7
+                                   propertyDescriptor_4_2!124
+                                   Lists!139)))))
+(let ((a!6 (and (and a!5 (not (= newSetter_4_1!157 0)))
+                (not (= newSetter_2_1!153 0))))
+      (a!7 (and (and a!5 (not (= newSetter_4_1!157 0)))
+                (not (not (= newSetter_2_1!153 0)))))
+      (a!8 (and a!5 (not (not (= newSetter_4_1!157 0))))))
+(let ((a!9 (and a!8 (not (not (= newSetter_2_1!153 0))))))
+(let ((a!10 (or (and a!8 (not (= newSetter_2_1!153 0))) a!9)))
+  (and (or (and (or a!6 a!7)) (and a!10))
+       (= propertyDescriptor_1_3!165
+          (initialize!164 propertyDescriptor_1_2!131
+                          newGetter_1_1!142
+                          newSetter_1_1!151))
+       (= propertyDescriptor_2_3!166
+          (initialize!164 propertyDescriptor_2_2!129
+                          newGetter_2_1!144
+                          newSetter_2_1!153))
+       (= propertyDescriptor_3_3!167
+          (initialize!164 propertyDescriptor_3_2!126
+                          newGetter_3_1!146
+                          newSetter_3_1!155))
+       (= propertyDescriptor_4_3!168
+          (initialize!164 propertyDescriptor_4_2!124
+                          newGetter_4_1!148
+                          newSetter_4_1!157))
+       (= ret_1_0!52 propertyDescriptor_1_3!165)
+       (= ret_expectedThisObject_1_0!96 expectedThisObject_1_0!48)
+       (= ret_getter_1_0!60 getter_1_1!134)
+       (= ret_isVar_1_0!64 isVar_1_0!16)
+       (= ret_modality_1_0!68 modality_1_0!20)
+       (= ret_original_1_0!72 original_1_0!24)
+       (= ret_overriddenProperties_1_0!76 overriddenProperties_1_0!28)
+       (= ret_receiver_1_0!80 receiver_1_1!130)
+       (= ret_setter_1_0!84 setter_1_0!36)
+       (= ret_typeParemeters_1_0!88 typeParemeters_1_0!40)
+       (= ret_visibility_1_0!92 visibility_1_0!44)
+       (= ret_2_0!53 propertyDescriptor_2_3!166)
+       (= ret_expectedThisObject_2_0!97 expectedThisObject_2_0!49)
+       (= ret_getter_2_0!61 getter_2_1!135)
+       (= ret_isVar_2_0!65 isVar_2_0!17)
+       (= ret_modality_2_0!69 modality_2_0!21)
+       (= ret_original_2_0!73 original_2_0!25)
+       (= ret_overriddenProperties_2_0!77 overriddenProperties_2_0!29)
+       (= ret_receiver_2_0!81 receiver_2_1!127)
+       (= ret_setter_2_0!85 setter_2_0!37)
+       (= ret_typeParemeters_2_0!89 typeParemeters_2_0!41)
+       (= ret_visibility_2_0!93 visibility_2_0!45)
+       (= ret_3_0!54 propertyDescriptor_3_3!167)
+       (= ret_expectedThisObject_3_0!98 expectedThisObject_3_0!50)
+       (= ret_getter_3_0!62 getter_3_1!136)
+       (= ret_isVar_3_0!66 isVar_3_0!18)
+       (= ret_modality_3_0!70 modality_3_0!22)
+       (= ret_original_3_0!74 original_3_0!26)
+       (= ret_overriddenProperties_3_0!78 overriddenProperties_3_0!30)
+       (= ret_receiver_3_0!82 receiver_3_1!125)
+       (= ret_setter_3_0!86 setter_3_0!38)
+       (= ret_typeParemeters_3_0!90 typeParemeters_3_0!42)
+       (= ret_visibility_3_0!94 visibility_3_0!46)
+       (= ret_4_0!55 propertyDescriptor_4_3!168)
+       (= ret_expectedThisObject_4_0!99 expectedThisObject_4_0!51)
+       (= ret_getter_4_0!63 getter_4_1!137)
+       (= ret_isVar_4_0!67 isVar_4_0!19)
+       (= ret_modality_4_0!71 modality_4_0!23)
+       (= ret_original_4_0!75 original_4_0!27)
+       (= ret_overriddenProperties_4_0!79 overriddenProperties_4_0!31)
+       (= ret_receiver_4_0!83 receiver_4_1!120)
+       (= ret_setter_4_0!87 setter_4_0!39)
+       (= ret_typeParemeters_4_0!91 typeParemeters_4_0!43)
+       (= ret_visibility_4_0!95 visibility_4_0!47)))))))
+verify: semantic conflict VC
+(let ((a!1 (=> (not (and (= ret_expectedThisObject_1_0!96
+                            ret_expectedThisObject_2_0!97)))
+               (and (= ret_expectedThisObject_4_0!99
+                       ret_expectedThisObject_2_0!97))))
+      (a!2 (=> (not (and (= ret_expectedThisObject_1_0!96
+                            ret_expectedThisObject_3_0!98)))
+               (and (= ret_expectedThisObject_4_0!99
+                       ret_expectedThisObject_3_0!98))))
+      (a!4 (=> (not (and (= ret_visibility_1_0!92 ret_visibility_2_0!93)))
+               (and (= ret_visibility_4_0!95 ret_visibility_2_0!93))))
+      (a!5 (=> (not (and (= ret_visibility_1_0!92 ret_visibility_3_0!94)))
+               (and (= ret_visibility_4_0!95 ret_visibility_3_0!94))))
+      (a!7 (=> (not (and (= ret_typeParemeters_1_0!88 ret_typeParemeters_2_0!89)))
+               (and (= ret_typeParemeters_4_0!91 ret_typeParemeters_2_0!89))))
+      (a!8 (=> (not (and (= ret_typeParemeters_1_0!88 ret_typeParemeters_3_0!90)))
+               (and (= ret_typeParemeters_4_0!91 ret_typeParemeters_3_0!90))))
+      (a!10 (=> (not (and (= ret_setter_1_0!84 ret_setter_2_0!85)))
+                (and (= ret_setter_4_0!87 ret_setter_2_0!85))))
+      (a!11 (=> (not (and (= ret_setter_1_0!84 ret_setter_3_0!86)))
+                (and (= ret_setter_4_0!87 ret_setter_3_0!86))))
+      (a!13 (=> (not (and (= ret_receiver_1_0!80 ret_receiver_2_0!81)))
+                (and (= ret_receiver_4_0!83 ret_receiver_2_0!81))))
+      (a!14 (=> (not (and (= ret_receiver_1_0!80 ret_receiver_3_0!82)))
+                (and (= ret_receiver_4_0!83 ret_receiver_3_0!82))))
+      (a!16 (=> (not (and (= ret_overriddenProperties_1_0!76
+                             ret_overriddenProperties_2_0!77)))
+                (and (= ret_overriddenProperties_4_0!79
+                        ret_overriddenProperties_2_0!77))))
+      (a!17 (=> (not (and (= ret_overriddenProperties_1_0!76
+                             ret_overriddenProperties_3_0!78)))
+                (and (= ret_overriddenProperties_4_0!79
+                        ret_overriddenProperties_3_0!78))))
+      (a!19 (=> (not (and (= ret_original_1_0!72 ret_original_2_0!73)))
+                (and (= ret_original_4_0!75 ret_original_2_0!73))))
+      (a!20 (=> (not (and (= ret_original_1_0!72 ret_original_3_0!74)))
+                (and (= ret_original_4_0!75 ret_original_3_0!74))))
+      (a!22 (=> (not (and (= ret_modality_1_0!68 ret_modality_2_0!69)))
+                (and (= ret_modality_4_0!71 ret_modality_2_0!69))))
+      (a!23 (=> (not (and (= ret_modality_1_0!68 ret_modality_3_0!70)))
+                (and (= ret_modality_4_0!71 ret_modality_3_0!70))))
+      (a!25 (=> (not (and (= ret_isVar_1_0!64 ret_isVar_2_0!65)))
+                (and (= ret_isVar_4_0!67 ret_isVar_2_0!65))))
+      (a!26 (=> (not (and (= ret_isVar_1_0!64 ret_isVar_3_0!66)))
+                (and (= ret_isVar_4_0!67 ret_isVar_3_0!66))))
+      (a!28 (=> (not (and (= ret_getter_1_0!60 ret_getter_2_0!61)))
+                (and (= ret_getter_4_0!63 ret_getter_2_0!61))))
+      (a!29 (=> (not (and (= ret_getter_1_0!60 ret_getter_3_0!62)))
+                (and (= ret_getter_4_0!63 ret_getter_3_0!62))))
+      (a!31 (=> (not (and (= ret_expectedThisObject_1_0!56
+                             ret_expectedThisObject_2_0!57)))
+                (and (= ret_expectedThisObject_4_0!59
+                        ret_expectedThisObject_2_0!57))))
+      (a!32 (=> (not (and (= ret_expectedThisObject_1_0!56
+                             ret_expectedThisObject_3_0!58)))
+                (and (= ret_expectedThisObject_4_0!59
+                        ret_expectedThisObject_3_0!58))))
+      (a!34 (=> (not (and (= ret_1_0!52 ret_2_0!53)))
+                (and (= ret_4_0!55 ret_2_0!53))))
+      (a!35 (=> (not (and (= ret_1_0!52 ret_3_0!54)))
+                (and (= ret_4_0!55 ret_3_0!54)))))
+(let ((a!3 (or (and (and (= ret_expectedThisObject_4_0!99
+                            ret_expectedThisObject_2_0!97))
+                    (and (= ret_expectedThisObject_4_0!99
+                            ret_expectedThisObject_3_0!98))
+                    (= ret_expectedThisObject_1_0!96
+                       ret_expectedThisObject_4_0!99))
+               (and a!1 a!2)))
+      (a!6 (or (and (and (= ret_visibility_4_0!95 ret_visibility_2_0!93))
+                    (and (= ret_visibility_4_0!95 ret_visibility_3_0!94))
+                    (= ret_visibility_1_0!92 ret_visibility_4_0!95))
+               (and a!4 a!5)))
+      (a!9 (or (and (and (= ret_typeParemeters_4_0!91 ret_typeParemeters_2_0!89))
+                    (and (= ret_typeParemeters_4_0!91 ret_typeParemeters_3_0!90))
+                    (= ret_typeParemeters_1_0!88 ret_typeParemeters_4_0!91))
+               (and a!7 a!8)))
+      (a!12 (or (and (and (= ret_setter_4_0!87 ret_setter_2_0!85))
+                     (and (= ret_setter_4_0!87 ret_setter_3_0!86))
+                     (= ret_setter_1_0!84 ret_setter_4_0!87))
+                (and a!10 a!11)))
+      (a!15 (or (and (and (= ret_receiver_4_0!83 ret_receiver_2_0!81))
+                     (and (= ret_receiver_4_0!83 ret_receiver_3_0!82))
+                     (= ret_receiver_1_0!80 ret_receiver_4_0!83))
+                (and a!13 a!14)))
+      (a!18 (or (and (and (= ret_overriddenProperties_4_0!79
+                             ret_overriddenProperties_2_0!77))
+                     (and (= ret_overriddenProperties_4_0!79
+                             ret_overriddenProperties_3_0!78))
+                     (= ret_overriddenProperties_1_0!76
+                        ret_overriddenProperties_4_0!79))
+                (and a!16 a!17)))
+      (a!21 (or (and (and (= ret_original_4_0!75 ret_original_2_0!73))
+                     (and (= ret_original_4_0!75 ret_original_3_0!74))
+                     (= ret_original_1_0!72 ret_original_4_0!75))
+                (and a!19 a!20)))
+      (a!24 (or (and (and (= ret_modality_4_0!71 ret_modality_2_0!69))
+                     (and (= ret_modality_4_0!71 ret_modality_3_0!70))
+                     (= ret_modality_1_0!68 ret_modality_4_0!71))
+                (and a!22 a!23)))
+      (a!27 (or (and (and (= ret_isVar_4_0!67 ret_isVar_2_0!65))
+                     (and (= ret_isVar_4_0!67 ret_isVar_3_0!66))
+                     (= ret_isVar_1_0!64 ret_isVar_4_0!67))
+                (and a!25 a!26)))
+      (a!30 (or (and (and (= ret_getter_4_0!63 ret_getter_2_0!61))
+                     (and (= ret_getter_4_0!63 ret_getter_3_0!62))
+                     (= ret_getter_1_0!60 ret_getter_4_0!63))
+                (and a!28 a!29)))
+      (a!33 (or (and (and (= ret_expectedThisObject_4_0!59
+                             ret_expectedThisObject_2_0!57))
+                     (and (= ret_expectedThisObject_4_0!59
+                             ret_expectedThisObject_3_0!58))
+                     (= ret_expectedThisObject_1_0!56
+                        ret_expectedThisObject_4_0!59))
+                (and a!31 a!32)))
+      (a!36 (or (and (and (= ret_4_0!55 ret_2_0!53))
+                     (and (= ret_4_0!55 ret_3_0!54))
+                     (= ret_1_0!52 ret_4_0!55))
+                (and a!34 a!35))))
+  (and a!3 a!6 a!9 a!12 a!15 a!18 a!21 a!24 a!27 a!30 a!33 a!36)))

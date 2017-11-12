@@ -215,7 +215,7 @@ aEb_inmerge_nr	./Analysis/Java/Liff.hs	74;"	v
 aEm_bdiff_nr	./Analysis/Java/Liff.hs	76;"	v
 aNb_discard_nr	./Analysis/Java/Liff.hs	72;"	v
 a_discard_nr	./Analysis/Java/Liff.hs	71;"	v
-absVarToIdent	./Analysis/Verifier.hs	510;"	v	file:
+absVarToIdent	./Analysis/Verifier.hs	511;"	v	file:
 addDef	./Analysis/Java/Flow.hs	113;"	v
 addEdge	./Analysis/Java/Flow.hs	67;"	v
 addEdgeInfo	./Analysis/Java/Flow.hs	53;"	v
@@ -260,7 +260,7 @@ arrayListInit	./Analysis/Model/ArrayList.hs	23;"	v
 arrayListModel	./Analysis/Model/ArrayList.hs	33;"	v
 arrayListNew	./Analysis/Model/ArrayList.hs	107;"	v
 assign	./Analysis/Engine.hs	452;"	v
-assign_special	./Analysis/Verifier.hs	531;"	v	file:
+assign_special	./Analysis/Verifier.hs	532;"	v	file:
 b	Main.hs	53;"	v
 bEm_adiff_nr	./Analysis/Java/Liff.hs	77;"	v
 b_discard_nr	./Analysis/Java/Liff.hs	70;"	v
@@ -324,17 +324,17 @@ edit_ty_gen	./Edit/Gen.hs	40;"	v
 edit_tys_gen	./Edit/Gen.hs	28;"	v
 edit_tys_gen_aux	./Edit/Gen.hs	35;"	v
 encCall	./Analysis/Engine.hs	360;"	v
-enc_array_access	./Analysis/Engine.hs	506;"	v
-enc_binop	./Analysis/Engine.hs	549;"	v
-enc_field_access	./Analysis/Engine.hs	521;"	v
-enc_meth_special	./Analysis/Verifier.hs	516;"	v	file:
+enc_array_access	./Analysis/Engine.hs	509;"	v
+enc_binop	./Analysis/Engine.hs	552;"	v
+enc_field_access	./Analysis/Engine.hs	524;"	v
+enc_meth_special	./Analysis/Verifier.hs	517;"	v	file:
 encodeAxioms	./Analysis/Engine.hs	55;"	v
 encodeCall	./Analysis/Engine.hs	333;"	v
 encodeClassType	./Analysis/Engine.hs	191;"	v
 encodeConstant	./Analysis/Engine.hs	259;"	v
 encodeExp	./Analysis/Engine.hs	274;"	v
 encodeExpName	./Analysis/Engine.hs	248;"	v
-encodeLiteral	./Analysis/Engine.hs	529;"	v
+encodeLiteral	./Analysis/Engine.hs	532;"	v
 encodeNew	./Analysis/Engine.hs	324;"	v
 encodePost	./Analysis/Engine.hs	67;"	v
 encodePre	./Analysis/Engine.hs	31;"	v
@@ -537,7 +537,7 @@ pc_counter	./Analysis/Java/Flow.hs	42;"	v
 popEdits	./Analysis/API.hs	187;"	v
 popNext	./Analysis/Java/Flow.hs	167;"	v
 popPrev	./Analysis/Java/Flow.hs	145;"	v
-post_op	./Analysis/Engine.hs	588;"	v
+post_op	./Analysis/Engine.hs	591;"	v
 post_process	./Edit/Gen.hs	154;"	v
 pp_dot_edge	./Analysis/Java/Flow.hs	561;"	v
 pp_dot_edges	./Analysis/Java/Flow.hs	558;"	v
@@ -564,7 +564,7 @@ printSSAVer	./Analysis/Pretty.hs	32;"	v
 printStat	./Analysis/Debug.hs	77;"	v
 print_edit	./Edit/Print.hs	26;"	v
 print_edit_simple	./Edit/Print.hs	21;"	v
-processAssign	./Analysis/Engine.hs	495;"	v
+processAssign	./Analysis/Engine.hs	498;"	v
 productMode	Main.hs	59;"	v
 prog	Main.hs	49;"	v
 progModes	Main.hs	68;"	v
