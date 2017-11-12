@@ -225,6 +225,11 @@ getASTSSAMap err vid ident ssamap =
       Nothing -> error $ "getASTSSAMap vid: " ++ err
       Just v  -> getASTSSAVar v
 
+isVar :: Ident -> SSAMap -> Bool
+isVar ident ssamap = case M.lookup ident ssamap of
+  Nothing -> False
+  Just _  -> True
+ 
 getVarSSAMap :: String -> VId -> Ident -> SSAMap -> SSAVar
 getVarSSAMap err vid ident ssamap = 
   case M.lookup ident ssamap of

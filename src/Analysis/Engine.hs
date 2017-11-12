@@ -172,7 +172,7 @@ encodeType vId ident ty = do
     ShortT   -> mkIntSort
     IntT     -> mkIntSort
     LongT    -> mkIntSort -- mkRealSort
-    CharT    -> error "enc_ty: CharT"
+    CharT    -> mkIntSort -- error "enc_ty: CharT"
     FloatT   -> mkIntSort -- mkRealSort
     DoubleT  -> mkIntSort -- mkRealSort
    return (sort,M.empty,Primitive)
@@ -301,6 +301,9 @@ encodeExp mSort vId expr = do
     wizPrint $ "encodeExp: Ignoring Cast"
     encodeExp mSort vId exp
   This -> lift $ mkIntNum 0
+  ClassLit k -> do
+    int <- lift $ mkIntSort 
+    lift $ mkFreshConst (show k) int 
   _ -> error $  "encodeExp: " ++ show expr
 
 -- | Encode New Instance via a call to an uninterpreted function
@@ -379,7 +382,7 @@ encCall vId nSort name args = do
        --wizBreak
        lift $ mkApp ast args 
   (oc@(Ident ident):meth) -> 
-   if isUpper $ head ident
+   if (isUpper $ head ident) || (not $ isVar oc _e_ssamap)
    then encCall vId nSort [foldr (\(Ident a) (Ident b) -> Ident (a ++ "." ++ b)) oc meth] args  
    else do
     let objVar = getVarSSAMap ("call: " ++ show oc) vId oc _e_ssamap
@@ -525,8 +528,9 @@ encodeLiteral lit = case lit of
     insertConst lit ast 
     return ast
    Just ast -> return ast
- Float f -> lift $ mkRealNum f 
- _ -> error "processLit: not supported"
+ Float f -> lift $ mkIntNum $ round f 
+ Double b -> lift $ mkIntNum $ round b
+ _ -> error $ "processLit: " ++ show lit
 
 enc_binop :: Op -> AST -> AST -> Z3 AST
 enc_binop op lhs rhs = do 

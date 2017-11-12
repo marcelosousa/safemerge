@@ -259,7 +259,7 @@ arrayListAxioms	./Analysis/Model/ArrayList.hs	99;"	v
 arrayListInit	./Analysis/Model/ArrayList.hs	23;"	v
 arrayListModel	./Analysis/Model/ArrayList.hs	33;"	v
 arrayListNew	./Analysis/Model/ArrayList.hs	107;"	v
-assign	./Analysis/Engine.hs	436;"	v
+assign	./Analysis/Engine.hs	439;"	v
 assign_special	./Analysis/Verifier.hs	530;"	v	file:
 b	Main.hs	53;"	v
 bEm_adiff_nr	./Analysis/Java/Liff.hs	77;"	v
@@ -273,7 +273,7 @@ check_edit_soundness	./Edit.hs	132;"	v
 class_diff	./Analysis/Java/Liff.hs	349;"	v
 collapse	./Edit/Gen.hs	174;"	v
 comb	./Analysis/Util.hs	104;"	v
-complexKeywords	./Analysis/Java/Liff.hs	450;"	v
+complexKeywords	./Analysis/Java/Liff.hs	452;"	v
 computeClDefs	./Analysis/Java/Flow.hs	233;"	v
 computeDeclsDefs	./Analysis/Java/Flow.hs	237;"	v
 computeEntry	./Analysis/Java/Flow.hs	228;"	v
@@ -289,7 +289,7 @@ computeMDeclDefs	./Analysis/Java/Flow.hs	246;"	v
 computeSwitchBody	./Analysis/Java/Flow.hs	497;"	v
 computeWhile	./Analysis/Java/Flow.hs	516;"	v
 concatIdent	./Analysis/Util.hs	122;"	v
-condKeywords	./Analysis/Java/Liff.hs	457;"	v
+condKeywords	./Analysis/Java/Liff.hs	459;"	v
 conflict_freedom	./Analysis/Verifier.hs	482;"	v	file:
 current	./Analysis/Java/Flow.hs	38;"	v
 debugger	./Analysis/Debug.hs	52;"	v
@@ -323,19 +323,19 @@ edit_method_body_gen	./Edit/Gen.hs	122;"	v
 edit_ty_gen	./Edit/Gen.hs	40;"	v
 edit_tys_gen	./Edit/Gen.hs	28;"	v
 edit_tys_gen_aux	./Edit/Gen.hs	35;"	v
-encCall	./Analysis/Engine.hs	344;"	v
-enc_array_access	./Analysis/Engine.hs	490;"	v
-enc_binop	./Analysis/Engine.hs	532;"	v
-enc_field_access	./Analysis/Engine.hs	505;"	v
+encCall	./Analysis/Engine.hs	347;"	v
+enc_array_access	./Analysis/Engine.hs	493;"	v
+enc_binop	./Analysis/Engine.hs	536;"	v
+enc_field_access	./Analysis/Engine.hs	508;"	v
 enc_meth_special	./Analysis/Verifier.hs	515;"	v	file:
 encodeAxioms	./Analysis/Engine.hs	55;"	v
-encodeCall	./Analysis/Engine.hs	317;"	v
+encodeCall	./Analysis/Engine.hs	320;"	v
 encodeClassType	./Analysis/Engine.hs	191;"	v
 encodeConstant	./Analysis/Engine.hs	255;"	v
 encodeExp	./Analysis/Engine.hs	270;"	v
 encodeExpName	./Analysis/Engine.hs	244;"	v
-encodeLiteral	./Analysis/Engine.hs	513;"	v
-encodeNew	./Analysis/Engine.hs	308;"	v
+encodeLiteral	./Analysis/Engine.hs	516;"	v
+encodeNew	./Analysis/Engine.hs	311;"	v
 encodePost	./Analysis/Engine.hs	67;"	v
 encodePre	./Analysis/Engine.hs	31;"	v
 encodeRefType	./Analysis/Engine.hs	182;"	v
@@ -387,13 +387,13 @@ getReadSet	./Analysis/Dependence.hs	353;"	v
 getReadSetInv	./Analysis/Dependence.hs	393;"	v
 getReadSetName	./Analysis/Dependence.hs	401;"	v
 getReturnType	./Analysis/Util.hs	68;"	v
-getVarSSAMap	./Analysis/API.hs	229;"	v
+getVarSSAMap	./Analysis/API.hs	234;"	v
 getWrite	./Analysis/Dependence.hs	340;"	v
 get_context	./Analysis/Java/Liff.hs	96;"	v
 get_edge_info	./Analysis/Java/Graph.hs	52;"	v
-get_edit_category	./Analysis/Java/Liff.hs	475;"	v
-get_merge_context	./Analysis/Java/Liff.hs	413;"	v
-get_meth_category	./Analysis/Java/Liff.hs	435;"	v
+get_edit_category	./Analysis/Java/Liff.hs	477;"	v
+get_merge_context	./Analysis/Java/Liff.hs	415;"	v
+get_meth_category	./Analysis/Java/Liff.hs	437;"	v
 get_method	./Analysis/Util.hs	46;"	v
 get_node_info	./Analysis/Java/Graph.hs	57;"	v
 get_stats	./Analysis/Java/Liff.hs	393;"	v
@@ -410,10 +410,10 @@ i_lstats	./Analysis/Java/Liff.hs	188;"	v
 i_sum	./Analysis/Java/Liff.hs	161;"	v
 if_scope	./Edit/Types.hs	42;"	v
 implies	./Analysis/Util.hs	28;"	v
-incAnonym	./Analysis/API.hs	261;"	v
+incAnonym	./Analysis/API.hs	266;"	v
 incCounter	./Analysis/Java/Flow.hs	93;"	v
 incEdCounter	./Analysis/Java/Flow.hs	100;"	v
-incLoc	./Analysis/API.hs	282;"	v
+incLoc	./Analysis/API.hs	287;"	v
 inc_class_nr	./Analysis/Java/Liff.hs	192;"	v
 inc_context	./Analysis/Java/Liff.hs	110;"	v
 inc_edit_size_dist	./Analysis/Java/Liff.hs	319;"	v
@@ -428,17 +428,18 @@ inc_meth_total	./Analysis/Java/Liff.hs	216;"	v
 init_graph	./Analysis/Java/Graph.hs	71;"	v
 init_st	./Analysis/Java/Flow.hs	47;"	v
 initial_FuncMap	./Analysis/API.hs	28;"	v
-insertConst	./Analysis/API.hs	269;"	v
-insertSSAVar	./Analysis/API.hs	247;"	v
+insertConst	./Analysis/API.hs	274;"	v
+insertSSAVar	./Analysis/API.hs	252;"	v
 invToStmt	./Analysis/Java/Flow.hs	299;"	v
 isComplex	./Analysis/Verifier.hs	149;"	v	file:
 isField	./Analysis/Java/Liff.hs	385;"	v
-is_code_complex	./Analysis/Java/Liff.hs	447;"	v
-is_code_cond	./Analysis/Java/Liff.hs	454;"	v
-is_code_loop	./Analysis/Java/Liff.hs	460;"	v
-is_code_return	./Analysis/Java/Liff.hs	469;"	v
-is_code_simple	./Analysis/Java/Liff.hs	466;"	v
-is_code_stateless	./Analysis/Java/Liff.hs	472;"	v
+isVar	./Analysis/API.hs	229;"	v
+is_code_complex	./Analysis/Java/Liff.hs	449;"	v
+is_code_cond	./Analysis/Java/Liff.hs	456;"	v
+is_code_loop	./Analysis/Java/Liff.hs	462;"	v
+is_code_return	./Analysis/Java/Liff.hs	471;"	v
+is_code_simple	./Analysis/Java/Liff.hs	468;"	v
+is_code_stateless	./Analysis/Java/Liff.hs	474;"	v
 is_common	./Analysis/Optimiser.hs	73;"	v
 is_common_block	./Analysis/Optimiser.hs	59;"	v
 is_common_bstmt	./Analysis/Optimiser.hs	62;"	v
@@ -486,7 +487,7 @@ lin	./Analysis/Util.hs	108;"	v
 lk	./Edit/Diff.hs	22;"	v
 loc_of	./Edit/Types.hs	30;"	v
 localToStmt	./Analysis/Java/Flow.hs	308;"	v
-loopKeywords	./Analysis/Java/Liff.hs	463;"	v
+loopKeywords	./Analysis/Java/Liff.hs	465;"	v
 loop_scope	./Edit/Types.hs	38;"	v
 m	Main.hs	52;"	v
 main	Main.hs	76;"	v
@@ -536,7 +537,7 @@ pc_counter	./Analysis/Java/Flow.hs	42;"	v
 popEdits	./Analysis/API.hs	187;"	v
 popNext	./Analysis/Java/Flow.hs	167;"	v
 popPrev	./Analysis/Java/Flow.hs	145;"	v
-post_op	./Analysis/Engine.hs	571;"	v
+post_op	./Analysis/Engine.hs	575;"	v
 post_process	./Edit/Gen.hs	154;"	v
 pp_dot_edge	./Analysis/Java/Flow.hs	561;"	v
 pp_dot_edges	./Analysis/Java/Flow.hs	558;"	v
@@ -548,12 +549,12 @@ printAbsElem	./Analysis/Dependence.hs	140;"	v
 printDepInfo	./Analysis/Dependence.hs	149;"	v
 printDepMap	./Analysis/Dependence.hs	145;"	v
 printEdit	./Edit/Print.hs	15;"	v
-printEdits	./Analysis/Debug.hs	97;"	v
-printEnv	./Analysis/Debug.hs	126;"	v	file:
+printEdits	./Analysis/Debug.hs	100;"	v
+printEnv	./Analysis/Debug.hs	129;"	v	file:
 printMethInst	./Edit.hs	50;"	v
 printMethInsts	./Edit.hs	43;"	v
-printPre	./Analysis/Debug.hs	115;"	v	file:
-printProg	./Analysis/Debug.hs	84;"	v
+printPre	./Analysis/Debug.hs	118;"	v	file:
+printProg	./Analysis/Debug.hs	87;"	v
 printProg	./Edit/Print.hs	18;"	v
 printResultList	./Analysis/Dependence.hs	136;"	v
 printSSA	./Analysis/Pretty.hs	39;"	v
@@ -563,7 +564,7 @@ printSSAVer	./Analysis/Pretty.hs	32;"	v
 printStat	./Analysis/Debug.hs	77;"	v
 print_edit	./Edit/Print.hs	26;"	v
 print_edit_simple	./Edit/Print.hs	21;"	v
-processAssign	./Analysis/Engine.hs	479;"	v
+processAssign	./Analysis/Engine.hs	482;"	v
 productMode	Main.hs	59;"	v
 prog	Main.hs	49;"	v
 progModes	Main.hs	68;"	v
@@ -630,16 +631,16 @@ transformer_expr	./Analysis/Dependence.hs	314;"	v
 transformer_methInv	./Analysis/Dependence.hs	327;"	v
 up_edit_cat	./Analysis/Java/Liff.hs	271;"	v
 up_meth_cat	./Analysis/Java/Liff.hs	235;"	v
-updateConsts	./Analysis/API.hs	276;"	v
+updateConsts	./Analysis/API.hs	281;"	v
 updateEdits	./Analysis/API.hs	181;"	v
-updateFunctMap	./Analysis/API.hs	255;"	v
-updateLoc	./Analysis/API.hs	289;"	v
+updateFunctMap	./Analysis/API.hs	260;"	v
+updateLoc	./Analysis/API.hs	294;"	v
 updateNumRet	./Analysis/API.hs	200;"	v
 updatePid	./Analysis/API.hs	169;"	v
 updatePre	./Analysis/API.hs	175;"	v
 updatePredicate	./Analysis/Verifier.hs	342;"	v	file:
 updateSSAMap	./Analysis/API.hs	209;"	v
-updateVariable	./Analysis/API.hs	238;"	v
+updateVariable	./Analysis/API.hs	243;"	v
 update_node_table	./Analysis/Dependence.hs	164;"	v
 varDeclIdToIdent	./Analysis/Java/ClassInfo.hs	67;"	v
 varDeclIdToName	./Analysis/Java/Flow.hs	318;"	v

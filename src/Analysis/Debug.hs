@@ -75,10 +75,13 @@ debugger prog = do
 
 printStat :: AnnBlockStmt -> EnvOp ()
 printStat bstmt = do
-  let str = prettyPrint (fromAnn bstmt :: BlockStmt)
+  let stm = (fromAnn bstmt :: BlockStmt)
+      str = prettyPrint stm 
       scope = getAnn bstmt  
+  liftIO $ putStrLn $ "=================================="
   liftIO $ putStrLn $ "Statement of versions " ++ show scope
   liftIO $ putStrLn str
+  liftIO $ putStrLn $ show stm
 
 printProg :: Bool -> ProdProgram -> EnvOp ()
 printProg b stmts = do
