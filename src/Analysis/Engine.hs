@@ -163,7 +163,7 @@ equalModel m1 m2 =
 -- | Encode Type 
 encodeType :: VId -> String -> Type -> Z3 (Sort,SSAVarModel,VarType)
 encodeType vId ident ty = do 
- -- liftIO $ putStrLn $ "encodType: " ++ show ty
+-- liftIO $ putStrLn $ "encodType: " ++ show ty
  case ty of 
   PrimType pty -> do
    sort <- case pty of
@@ -231,7 +231,11 @@ getASTExp vId expr = do
  case expr of
   ExpName name -> do
     let ident = toIdent name
-    return $ getASTSSAMap "encodeExp" vId ident _e_ssamap
+    case M.lookup ident _e_ssamap of
+      Nothing -> do  
+        ast <- encodeExpName vId name
+        return [ast]
+      Just _ -> return $ getASTSSAMap "encodeExp" vId ident _e_ssamap
   _ -> 
    case _e_rety of 
     Nothing -> error $ "getASTExp: no return type with a return statement?"
@@ -284,13 +288,18 @@ encodeExp mSort vId expr = do
     nexprEnc <- encodeExp iSort vId nexpr
     lift $ mkUnaryMinus nexprEnc
   Cond cond _then _else -> do
-    condEnc  <- encodeExp bSort vId cond
-    _thenEnc <- encodeExp mSort vId _then
-    _elseEnc <- encodeExp mSort vId _else
-    lift $ mkIte condEnc _thenEnc _elseEnc        
+   -- converts this to a special function
+    let e = MethodInv (MethodCall (Name [Ident "wiz_cond"]) [cond,_then,_else])  
+    encodeExp mSort vId e 
+    --condEnc  <- encodeExp bSort vId cond
+    --_thenEnc <- encodeExp mSort vId _then
+    --_elseEnc <- encodeExp mSort vId _else
+    --lift $ mkIte condEnc _thenEnc _elseEnc        
   PreNot nexpr -> do
-    nexprEnc <- encodeExp bSort vId nexpr
-    lift $ mkNot nexprEnc
+    let e = BinOp nexpr Equal (Lit $ Int 0)
+    encodeExp mSort vId e
+    --nexprEnc <- encodeExp bSort vId nexpr
+    --lift $ mkNot nexprEnc
   ArrayAccess ai -> enc_array_access vId ai
   FieldAccess fa -> do
     asts <- enc_field_access vId fa
@@ -304,6 +313,10 @@ encodeExp mSort vId expr = do
   ClassLit k -> do
     int <- lift $ mkIntSort 
     lift $ mkFreshConst (show k) int 
+  InstanceOf e _ -> 
+   let call = MethodInv $ MethodCall (Name [Ident "instanceOf"]) [e]
+       one  = Lit $ Int 1
+   in encodeExp mSort vId (BinOp call Equal one) 
   _ -> error $  "encodeExp: " ++ show expr
 
 -- | Encode New Instance via a call to an uninterpreted function

@@ -297,7 +297,7 @@ transformer stmt class_sum el@(k,dmap) = -- trace ("transformer: " ++ show stmt)
     Throw e -> 
       let (r,w) = transformer_expr class_sum e
       in  (k, foldr (set_dep $ r ++ kvars) dmap w) 
-    _ -> error $ "transformer: " ++ show stmt
+    _ -> el -- error $ "transformer: " ++ show stmt
 
 set_output :: AbsVar -> DepMap -> DepMap 
 set_output v m = -- trace ("set_output: " ++ show v) $  
@@ -394,7 +394,7 @@ getReadSetInv class_sum mi = case mi of
   MethodCall (Name n) args -> (getReadSetName class_sum n) ++ concatMap (getReadSet class_sum) args
   PrimaryMethodCall e _ _ args -> (getReadSet class_sum) e ++ concatMap (getReadSet class_sum) args
   SuperMethodCall _ i args -> (getReadSetName class_sum [i]) ++ concatMap (getReadSet class_sum) args
-  _ -> error $ "getReadSetInv: " ++ show mi 
+  _ -> [] -- error $ "getReadSetInv: " ++ show mi 
 
 -- | Receives the CallSum in case it is a member
 getReadSetName :: ClassSum -> [Ident] -> [AbsVar]

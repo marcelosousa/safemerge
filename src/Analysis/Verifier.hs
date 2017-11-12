@@ -229,6 +229,7 @@ analyseIf vId cond s1 s2 cont = do
   put new_env
   analyse cont
  else do
+  -- @TODO: Normalize the condition
   condSmt  <- mapM (\v -> encodeExp bSort v cond) vId 
   env      <- get
   -- check that all variants take the same paths 
