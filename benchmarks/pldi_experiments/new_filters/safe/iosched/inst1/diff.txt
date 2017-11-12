@@ -1,3 +1,8 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
 Merge Instance for method (Ident "FeedActivity",Ident "onCreate",[RefType (ClassRefType (ClassType [(Ident "Bundle",[])]))])
 @Override
  protected void onCreate (final Bundle savedInstanceState)
@@ -7,7 +12,7 @@ Merge Instance for method (Ident "FeedActivity",Ident "onCreate",[RefType (Class
   setContentView(R.layout.feed_act);
   <?HOLE?>
   <?HOLE?>
-  FeedFragment feedFragment = (FeedFragment) getSupportFragmentManager().findFragmentById(R.id.main_content);
+  FeedFragment feedFragment = (FeedFragment) getSupportFragmentManagerfindFragmentById(R.id.main_content);
   <?HOLE?>
   mPresenter = new FeedPresenter(feedFragment);
   feedFragment.setPresenter(mPresenter);
@@ -69,4 +74,5 @@ Hole 5:
 []: <SKIP>
 Hole 6:
 []: <SKIP>
+
 

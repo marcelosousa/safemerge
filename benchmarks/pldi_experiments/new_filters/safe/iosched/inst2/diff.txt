@@ -1,3 +1,8 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
 Merge Instance for method (Ident "FeedViewHolder",Ident "bind",[RefType (ClassRefType (ClassType [(Ident "FeedMessage",[])]))])
 void bind (@NonNull
            FeedMessage message)
@@ -13,7 +18,7 @@ void bind (@NonNull
   setTitleContentDescription(feedMessage.getTitle());
   expandIcon.setActivated(expanded);
   expandIcon.setRotation((expanded ? 180.0F : 0.0F));
-  if (!TextUtils.isEmpty(feedMessage.getImageUrl()))
+  if (TextUtils.isEmpty(feedMessage.getImageUrl()) == 0)
   {
     image.setVisibility(VISIBLE);
     <?HOLE?>
@@ -50,4 +55,5 @@ Hole 1:
 [SCond]: Glide.with(image.getContext()).load((feedMessage.getImageUrl() + "=s" + getScreenWidth(image.getContext()))).override(getScreenWidth(image.getContext()), ((int) (getScreenWidth(image.getContext()) * 9.0 / 16))).placeholder(R.drawable.io17_logo).into(image);
 Hole 2:
 []: description.setMovementMethod(LinkMovementMethod.getInstance());
+
 

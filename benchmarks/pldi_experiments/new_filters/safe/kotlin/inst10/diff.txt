@@ -1,38 +1,48 @@
-Merge Instance for method (Ident "JetLightCodeInsightFixtureTestCase",Ident "tearDown",[])
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+Merge Instance for method (Ident "JetLightCodeInsightFixtureTestCase",Ident "setUp",[])
 @Override
- protected void tearDown () throws Exception
+ protected void setUp () throws Exception
 {
+  super.setUp();
+  ((StartupManagerImpl) StartupManager.getInstance(getProject())).runPostStartupActivities();
   <?HOLE?>
   <?HOLE?>
-  Set<JetFile> builtInsSources = getProject().getComponent(BuiltInsReferenceResolver.class).getBuiltInsSources();
-  FileManager fileManager = ((PsiManagerEx) PsiManager.getInstance(getProject())).getFileManager();
-  super.tearDown();
-  for (JetFile source : builtInsSources) {
-                                           FileViewProvider provider = source.getViewProvider();
-                                           fileManager.setViewProvider(provider.getVirtualFile(), provider);
-                                         }
+  <?HOLE?>
 }
 Edit Base:
 Hole 1:
-[]: VfsRootAccess.disallowRootAccess(JetTestCaseBuilder.getHomeDirectory());
+[]: VfsRootAccess.allowRootAccess(JetTestCaseBuilder.getHomeDirectory());
 Hole 2:
+[]: <SKIP>
+Hole 3:
 []: <SKIP>
 
 Edit A:
 Hole 1:
-[]: VirtualDirectoryImpl.disallowRootAccess(JetTestCaseBuilder.getHomeDirectory());
+[]: VirtualDirectoryImpl.allowRootAccess(JetTestCaseBuilder.getHomeDirectory());
 Hole 2:
+[]: <SKIP>
+Hole 3:
 []: <SKIP>
 
 Edit B:
 Hole 1:
-[]: KotlinInternalMode.OBJECT$.setEnabled(kotlinInternalModeOriginalValue);
+[]: VfsRootAccess.allowRootAccess(JetTestCaseBuilder.getHomeDirectory());
 Hole 2:
-[]: VfsRootAccess.disallowRootAccess(JetTestCaseBuilder.getHomeDirectory());
+[]: kotlinInternalModeOriginalValue = KotlinInternalMode.OBJECT$.getEnabled();
+Hole 3:
+[]: KotlinInternalMode.OBJECT$.setEnabled(true);
 
 Edit M:
 Hole 1:
-[]: KotlinInternalMode.OBJECT$.setEnabled(kotlinInternalModeOriginalValue);
+[]: VirtualDirectoryImpl.allowRootAccess(JetTestCaseBuilder.getHomeDirectory());
 Hole 2:
-[]: VirtualDirectoryImpl.disallowRootAccess(JetTestCaseBuilder.getHomeDirectory());
+[]: kotlinInternalModeOriginalValue = KotlinInternalMode.OBJECT$.getEnabled();
+Hole 3:
+[]: KotlinInternalMode.OBJECT$.setEnabled(true);
+
 

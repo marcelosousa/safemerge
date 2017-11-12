@@ -1,3 +1,44 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+Merge Instance for method (Ident "DocWriteResponse",Ident "readFrom",[RefType (ClassRefType (ClassType [(Ident "StreamInput",[])]))])
+@Override
+ public void readFrom (StreamInput in) throws IOException
+{
+  super.readFrom(in);
+  shardId = ShardId.readShardId(in);
+  type = in.readString();
+  id = in.readString();
+  version = in.readZLong();
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: seqNo = in.readZLong();
+Hole 2:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: forcedRefresh = in.readBoolean();
+Hole 2:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: seqNo = in.readZLong();
+Hole 2:
+[]: forcedRefresh = in.readBoolean();
+
 Merge Instance for method (Ident "DocWriteResponse",Ident "toXContent",[RefType (ClassRefType (ClassType [(Ident "XContentBuilder",[])])),RefType (ClassRefType (ClassType [(Ident "Params",[])]))])
 @Override
  public XContentBuilder toXContent (XContentBuilder builder, Params params) throws IOException
@@ -46,4 +87,5 @@ Hole 3:
 {
   builder.field(Fields._SEQ_NO, getSeqNo());
 }
+
 

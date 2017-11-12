@@ -1,50 +1,48 @@
-Merge Instance for method (Ident "IndexRequest",Ident "writeTo",[RefType (ClassRefType (ClassType [(Ident "StreamOutput",[])]))])
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+Merge Instance for method (Ident "IndexRequest",Ident "readFrom",[RefType (ClassRefType (ClassType [(Ident "StreamInput",[])]))])
 @Override
- public void writeTo (StreamOutput out) throws IOException
+ public void readFrom (StreamInput in) throws IOException
 {
-  super.writeTo(out);
+  super.readFrom(in);
   <?HOLE?>
-  out.writeOptionalString(id);
-  out.writeOptionalString(routing);
-  out.writeOptionalString(parent);
-  out.writeOptionalString(timestamp);
-  if (ttl == null)
-  {
-    out.writeBoolean(false);
-  }
-  else
-  {
-    out.writeBoolean(true);
-    ttl.writeTo(out);
-  }
-  out.writeBytesReference(source);
-  out.writeByte(opType.id());
-  out.writeBoolean(refresh);
-  out.writeLong(version);
-  out.writeByte(versionType.getValue());
+  id = in.readOptionalString();
+  routing = in.readOptionalString();
+  parent = in.readOptionalString();
+  timestamp = in.readOptionalString();
+  ttl = in.readBoolean() ? TimeValue.readTimeValue(in) : null;
+  source = in.readBytesReference();
+  opType = OpType.fromId(in.readByte());
+  refresh = in.readBoolean();
+  version = in.readLong();
+  versionType = VersionType.fromValue(in.readByte());
   <?HOLE?>
 }
 Edit Base:
 Hole 1:
-[]: out.writeString(type);
+[]: type = in.readString();
 Hole 2:
 []: <SKIP>
 
 Edit A:
 Hole 1:
-[]: out.writeOptionalString(type);
+[]: type = in.readOptionalString();
 Hole 2:
 []: <SKIP>
 
 Edit B:
 Hole 1:
-[]: out.writeString(type);
+[]: type = in.readString();
 Hole 2:
-[]: out.writeOptionalString(pipeline);
+[]: pipeline = in.readOptionalString();
 
 Edit M:
 Hole 1:
-[]: out.writeOptionalString(type);
+[]: type = in.readOptionalString();
 Hole 2:
-[]: out.writeOptionalString(pipeline);
+[]: pipeline = in.readOptionalString();
+
 

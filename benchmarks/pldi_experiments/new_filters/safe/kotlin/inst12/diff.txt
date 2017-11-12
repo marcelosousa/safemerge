@@ -1,3 +1,8 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
 Merge Instance for method (Ident "KotlinAndroidTestCase",Ident "setUp",[])
 @Override
  protected void setUp () throws Exception
@@ -87,4 +92,52 @@ Hole 2:
 []: kotlinInternalModeOriginalValue = KotlinInternalMode.Instance.getEnabled();
 Hole 3:
 []: KotlinInternalMode.Instance.setEnabled(true);
+
+Merge Instance for method (Ident "KotlinAndroidTestCase",Ident "tearDown",[])
+@Override
+ public void tearDown () throws Exception
+{
+  <?HOLE?>
+  <?HOLE?>
+  Set<JetFile> builtInsSources = getProject().getComponent(BuiltInsReferenceResolver.class).getBuiltInsSources();
+  FileManager fileManager = ((PsiManagerEx) PsiManager.getInstance(getProject())).getFileManager();
+  myModule = null;
+  myAdditionalModules = null;
+  myFixture.tearDown();
+  myFixture = null;
+  myFacet = null;
+  if (RenderSecurityManager.RESTRICT_READS)
+  {
+    RenderSecurityManager.sEnabled = true;
+  }
+  super.tearDown();
+  for (JetFile source : builtInsSources) {
+                                           FileViewProvider provider = source.getViewProvider();
+                                           fileManager.setViewProvider(provider.getVirtualFile(), provider);
+                                         }
+}
+Edit Base:
+Hole 1:
+[]: KotlinInternalMode.OBJECT$.setEnabled(kotlinInternalModeOriginalValue);
+Hole 2:
+[]: VfsRootAccess.disallowRootAccess(JetTestUtils.getHomeDirectory());
+
+Edit A:
+Hole 1:
+[]: KotlinInternalMode.OBJECT$.setEnabled(kotlinInternalModeOriginalValue);
+Hole 2:
+[]: VirtualDirectoryImpl.disallowRootAccess(JetTestUtils.getHomeDirectory());
+
+Edit B:
+Hole 1:
+[]: KotlinInternalMode.Instance.setEnabled(kotlinInternalModeOriginalValue);
+Hole 2:
+[]: VfsRootAccess.disallowRootAccess(JetTestUtils.getHomeDirectory());
+
+Edit M:
+Hole 1:
+[]: KotlinInternalMode.Instance.setEnabled(kotlinInternalModeOriginalValue);
+Hole 2:
+[]: VirtualDirectoryImpl.disallowRootAccess(JetTestUtils.getHomeDirectory());
+
 

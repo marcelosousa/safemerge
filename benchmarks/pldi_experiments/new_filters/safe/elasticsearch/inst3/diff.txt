@@ -1,12 +1,17 @@
-Merge Instance for method (Ident "DocWriteResponse",Ident "writeTo",[RefType (ClassRefType (ClassType [(Ident "StreamOutput",[])]))])
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+Merge Instance for method (Ident "DocWriteResponse",Ident "readFrom",[RefType (ClassRefType (ClassType [(Ident "StreamInput",[])]))])
 @Override
- public void writeTo (StreamOutput out) throws IOException
+ public void readFrom (StreamInput in) throws IOException
 {
-  super.writeTo(out);
-  shardId.writeTo(out);
-  out.writeString(type);
-  out.writeString(id);
-  out.writeZLong(version);
+  super.readFrom(in);
+  shardId = ShardId.readShardId(in);
+  type = in.readString();
+  id = in.readString();
+  version = in.readZLong();
   <?HOLE?>
   <?HOLE?>
 }
@@ -18,19 +23,69 @@ Hole 2:
 
 Edit A:
 Hole 1:
-[]: out.writeZLong(seqNo);
+[]: seqNo = in.readZLong();
 Hole 2:
 []: <SKIP>
 
 Edit B:
 Hole 1:
-[]: out.writeBoolean(forcedRefresh);
+[]: forcedRefresh = in.readBoolean();
 Hole 2:
 []: <SKIP>
 
 Edit M:
 Hole 1:
-[]: out.writeZLong(seqNo);
+[]: seqNo = in.readZLong();
 Hole 2:
-[]: out.writeBoolean(forcedRefresh);
+[]: forcedRefresh = in.readBoolean();
+
+Merge Instance for method (Ident "DocWriteResponse",Ident "toXContent",[RefType (ClassRefType (ClassType [(Ident "XContentBuilder",[])])),RefType (ClassRefType (ClassType [(Ident "Params",[])]))])
+@Override
+ public XContentBuilder toXContent (XContentBuilder builder, Params params) throws IOException
+{
+  ReplicationResponse.ShardInfo shardInfo = getShardInfo();
+  <?HOLE?>
+  shardInfo.toXContent(builder, params);
+  <?HOLE?>
+  <?HOLE?>
+  return builder;
+}
+Edit Base:
+Hole 1:
+[]: builder.field(Fields._INDEX, shardId.getIndexName()).field(Fields._TYPE, type).field(Fields._ID, id).field(Fields._VERSION, version);
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: builder.field(Fields._INDEX, shardId.getIndexName()).field(Fields._TYPE, type).field(Fields._ID, id).field(Fields._VERSION, version);
+Hole 2:
+[]: builder.field(Fields._SHARD_ID, shardId.id());
+Hole 3:
+[]: if (getSeqNo() >= 0)
+{
+  builder.field(Fields._SEQ_NO, getSeqNo());
+}
+
+Edit B:
+Hole 1:
+[]: builder.field(Fields._INDEX, shardId.getIndexName()).field(Fields._TYPE, type).field(Fields._ID, id).field(Fields._VERSION, version).field("forced_refresh", forcedRefresh);
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: builder.field(Fields._INDEX, shardId.getIndexName()).field(Fields._TYPE, type).field(Fields._ID, id).field(Fields._VERSION, version).field("forced_refresh", forcedRefresh);
+Hole 2:
+[]: builder.field(Fields._SHARD_ID, shardId.id());
+Hole 3:
+[]: if (getSeqNo() >= 0)
+{
+  builder.field(Fields._SEQ_NO, getSeqNo());
+}
+
 
