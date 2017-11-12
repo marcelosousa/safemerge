@@ -13,5 +13,6 @@ encodings
 cabal.sandbox.config
 cabal.config
 benchmarks/industrial
+benchmarks/popl_experiments
 tools/git-merge-analyser/git-merge-analyzer
 tools/git-merge-analyser/src/tags
