@@ -158,7 +158,7 @@ public class NestedInnerQueryParseSupport {
         }
     }
 
-    public void setPath(String path) {
+    public void setPathM(String path) {
         this.path = path;
         nestedObjectMapper = shardContext.getObjectMapper(path);
         if (nestedObjectMapper == null) {

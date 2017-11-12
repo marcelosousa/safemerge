@@ -1,0 +1,2 @@
+inst1: elasticsearch
+

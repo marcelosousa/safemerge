@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 56
-File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/cache/CacheAutoConfigurationTests.java
-Orig: d32c3a7f43e02c36ea79e9e824c49dbaa182f16e
-VarA: 50c0204f2d72802b8dfd0278673cb5308404c246
-VarB: 07c56c60ba1b5f98064ab9ce5df11b82ec56187d
-Merg: 207ab3ecb4f6b4f1364f399018cfe11c2011e2ae

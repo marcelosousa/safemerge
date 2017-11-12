@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 213
-File: compiler/frontend/src/org/jetbrains/jet/lang/resolve/BodyResolver.java
-Orig: 7b2c5132f7d232bd2ed7f18e4cef2f1b2f1e2cfe
-VarA: 225913126b504c42ac75da7b5c20c937d71eb41f
-VarB: 1c299fe5362be051c3e89abd8112cbb90a5e42d6
-Merg: b40b7ada4de429be8f1e57075a98d3ac63d58413

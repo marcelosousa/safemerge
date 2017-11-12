@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 222
-File: idea/src/org/jetbrains/jet/lang/resolve/TopDownAnalyzer.java
-Orig: 07b2ab347deca99d69d19d951b4beafc96bb311e
-VarA: 533574368fb8b25258b21ce98eeb80b059f5eedd
-VarB: fa631503ef5cde92904f99617decebda92943c9a
-Merg: d6336d9ca5bf1f303be4e147608ae766f4b8bb4a

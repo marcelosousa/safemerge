@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 102
-File: spring-boot/src/test/java/org/springframework/boot/logging/LoggingApplicationListenerTests.java
-Orig: 2cf93f89f5c53ea67ca6669a775e1868d14af84d
-VarA: 3d619da553a4bd9b4da59f11bb3d48dbffcec484
-VarB: ae910f3169d2f2728e687c652a9bdcafe90b91bb
-Merg: f3db8c90c747f1f73b4f19551592ad2bedd9ee59

@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 243
-File: spring-boot-tools/spring-boot-loader/src/test/java/org/springframework/boot/loader/jar/JarFileTests.java
-Orig: 28bd6d60c8874d08dcf7c23be490776bb44fe0ea
-VarA: ac5696e13c654599fa34b35d7d29736b740a4a4a
-VarB: 3772d9f937a2097bba75a227db0ac86611da5ef5
-Merg: 436b58acbf88f3b32a0a780753abdea677685f94

@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 59
-File: gdx/src/com/badlogic/gdx/maps/tiled/TmxMapLoader.java
-Orig: d9a6557a866e4715446210dbbc28232d7d6ba537
-VarA: 74be1e9f9355528402e82a6d65fc14d1507b5b8b
-VarB: c9e3a8cdaa7305e8f469715717e455f4bdeac4cd
-Merg: e19dc0fcfd727bc2efa629a2be61e6c767ac35c7

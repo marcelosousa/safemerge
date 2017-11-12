@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 178
-File: core/src/main/java/org/elasticsearch/index/query/GeoShapeQueryBuilder.java
-Orig: af4b7ee00032270726926e3d431c50492a3013ad
-VarA: 33b3323a6332d40e6c211bc14d762065c6a5d0d4
-VarB: b78211ddaaf719b71dff9fd31ee83414904de6c6
-Merg: 99147228d721acfad158a6b0166783e3ab930ebb

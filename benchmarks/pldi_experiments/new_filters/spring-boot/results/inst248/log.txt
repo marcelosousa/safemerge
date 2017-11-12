@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 248
-File: spring-boot-samples/spring-boot-sample-data-elasticsearch/src/test/java/sample/data/elasticsearch/SampleElasticsearchApplicationTests.java
-Orig: ae89cb0355c72b803e27635d39126d1708fbc69f
-VarA: 6ed63a6eff7c35a2b90211c618bc242a3cfd9b0e
-VarB: 275651e89a94529cba5c3f9f897125168dadee24
-Merg: ccd19ce2c32b596ed9d537f97a67b693b7d5ee67

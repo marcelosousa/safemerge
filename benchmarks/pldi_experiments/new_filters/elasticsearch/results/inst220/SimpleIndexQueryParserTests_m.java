@@ -205,7 +205,7 @@ public class SimpleIndexQueryParserTests extends ElasticsearchSingleNodeTest {
     @Before
     public void setup() throws IOException {
         Settings settings = ImmutableSettings.settingsBuilder()
-                .put("index.queryparser.query.dummy.type", DummyQueryParser.class)
+                .put("index.queryparser.query.dummy.type", DummyQueryParserClass)
                 .put("index.cache.filter.type", "none")
                 .put("name", "SimpleIndexQueryParserTests")
                 .build();

@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 17
-File: okhttp-tests/src/test/java/com/squareup/okhttp/internal/http/URLConnectionTest.java
-Orig: 8ee5584a1c6ff170fbac8222d0bda95b82acee78
-VarA: af08d4a3f3790c375ce86b54ad80d9d1af9cf970
-VarB: 271cc7b632ace0ce5770725d38abb2413af5410e
-Merg: 85a3e9bfc58040c9ffb2ee906b39702bb26a84a5

@@ -146,7 +146,7 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         setTitleContentDescription(feedMessage.getTitle());
         expandIcon.setActivated(expanded);
         expandIcon.setRotation(expanded ? 180f : 0f);
-        if (!TextUtils.isEmpty(feedMessage.getImageUrl())) {
+        if (TextUtils.isEmpty(feedMessage.getImageUrl()) == 0) {
             image.setVisibility(VISIBLE);
             Glide.with(image.getContext())
                     // Add "=s" query string to scale down GCS image to longest dimension (supposed

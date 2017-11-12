@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 121
-File: MPChartLib/src/com/github/mikephil/charting/renderer/LineChartRenderer.java
-Orig: 5f5950b4414fc6294f333870deda0341ea0dd9fc
-VarA: f28c5ce67c7660095851753495366a89e464061a
-VarB: fd3b2a164aa7a0d1936271f75b32393787d8ebc7
-Merg: 600496a3d5e5a1363cc8cb1cc8ed2b18dcd5faa3

@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 214
-File: spring-boot-devtools/src/test/java/org/springframework/boot/devtools/remote/client/ClassPathChangeUploaderTests.java
-Orig: 68fb5789ca652d3b6c9e7cc9a0edb6423e2549ac
-VarA: b8ad9537a6cd6c60e6224b712f2b1316e6521d10
-VarB: b1dd92881d50f0210cb989ee511273e87f7e9341
-Merg: bf618d505c503b9f1410ba5cd6f4cc6209370e28

@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 202
-File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/liquibase/LiquibaseAutoConfigurationTests.java
-Orig: 9300c6d4226741841d0a82868c21a99291622b36
-VarA: c9a3880f278c95b59267c711942fa6e2fee95b00
-VarB: ba51dc5c4a6822ee74af522546527d4326509343
-Merg: d4c9a2b27121e9751ea9506b4ebd7596b61fcb8c

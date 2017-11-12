@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 258
-File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/web/WebMvcAutoConfigurationTests.java
-Orig: 247685e9923093a22d53d03730cd365c7d9994ab
-VarA: 1ef3327441c22c124b60e994097057cf43684edb
-VarB: ac8e87d79f329fe2ca834198854a648c49ee52f8
-Merg: ad5674cbb0f79575f3f11f344f66a56cc56b376f

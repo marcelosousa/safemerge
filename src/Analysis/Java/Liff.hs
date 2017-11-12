@@ -360,7 +360,7 @@ class_diff cls_name cl@(cl_o:cls) (stats,r) =
              MethodBody m_bdy = mth_body m_m
              code_m = show m_bdy 
              mcat   = get_meth_category (M.null fields) code_m 
-         in if ctx /= 0 && mcat /= LComplex && (mcat /= LStateless || modFields fields (findLhs m_m)) 
+         in if ctx == 9 && mcat /= LComplex && (mcat /= LStateless || modFields fields (findLhs m_m)) 
             -- | This is a potential interesting merge instance
             then let stats3 = inc_m_context ctx $ inc_meth_changed stats2
                      mident = (cls,mi,mty)
@@ -413,6 +413,8 @@ get_stats fields ident ctx o a b m st =
 --   o != a || o != b
 get_merge_context :: MemberDecl -> MemberDecl -> MemberDecl -> MemberDecl -> MContext 
 get_merge_context o a b m 
+  --  9. {O} {A} {B} {M} 
+  | o /= a && o /= b && o /= m && a /= b && a /= m && b /= m = 9
   --  1. {O,A,M} {B}    
   | o == a && a == m && a /= b = 1
   --  2. {O,B,M} {A}   
@@ -429,8 +431,6 @@ get_merge_context o a b m
   | o /= a && a == m && b /= m && o /= m = 7
   --  8. {O} {A} {M,B}   
   | o /= a && o /= b && a /= b && b == m = 8
-  --  9. {O} {A} {B} {M} 
-  | o /= a && o /= b && o /= m && a /= b && a /= m && b /= m = 9
   | otherwise = 0
  
 get_meth_category :: Bool -> String -> MethCategory 
