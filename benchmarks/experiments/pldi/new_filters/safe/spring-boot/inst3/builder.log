@@ -37,225 +37,82 @@ verify: relational VC
                 (= builder_3_1!96 builder.MongoClientOptions!94)
                 (= builder_4_1!97 builder.MongoClientOptions!94))))
 (let ((a!2 (and a!1
-                (not (= options_1_0!0 0))
-                (not (= options_2_0!1 0))
-                (not (= options_3_0!2 0))
-                (not (= options_4_0!3 0))
-                (= builder_1_2!99 (Anonymous0!98 builder_1_1!93 options_1_0!0))
-                (= builder_2_2!100 (Anonymous0!98 builder_2_1!95 options_2_0!1))
-                (= builder_3_2!101 (Anonymous0!98 builder_3_1!96 options_3_0!2))
-                (= builder_4_2!102 (Anonymous0!98 builder_4_1!97 options_4_0!3))
-                (= options_1_1!104
-                   (Anonymous1!103 builder_1_2!99 options_1_0!0))
-                (= options_2_1!105
-                   (Anonymous1!103 builder_2_2!100 options_2_0!1))
-                (= options_3_1!106
-                   (Anonymous1!103 builder_3_2!101 options_3_0!2))
-                (= options_4_1!107
-                   (Anonymous1!103 builder_4_2!102 options_4_0!3))
-                (= builder_4_3!110
-                   (heartbeatConnectTimeout!109
-                     builder_4_2!102
-                     (getHeartbeatConnectTimeout!108 options_4_1!107)))
-                (= builder_3_3!111
-                   (heartbeatConnectTimeout!109
-                     builder_3_2!101
-                     (getHeartbeatConnectTimeout!108 options_3_1!106)))
-                (= builder_4_4!114
-                   (heartbeatFrequency!113
-                     builder_4_3!110
-                     (getHeartbeatFrequency!112 options_4_1!107)))
-                (= builder_3_4!115
-                   (heartbeatFrequency!113
-                     builder_3_3!111
-                     (getHeartbeatFrequency!112 options_3_1!106)))
-                (= builder_4_5!118
-                   (heartbeatSocketTimeout!117
-                     builder_4_4!114
-                     (getHeartbeatSocketTimeout!116 options_4_1!107)))
-                (= builder_3_5!119
-                   (heartbeatSocketTimeout!117
-                     builder_3_4!115
-                     (getHeartbeatSocketTimeout!116 options_3_1!106)))
-                (= builder_4_6!122
-                   (localThreshold!121
-                     builder_4_5!118
-                     (getLocalThreshold!120 options_4_1!107)))
-                (= builder_3_6!123
-                   (localThreshold!121
-                     builder_3_5!119
-                     (getLocalThreshold!120 options_3_1!106)))
-                (= builder_4_7!126
-                   (minConnectionsPerHost!125
-                     builder_4_6!122
-                     (getMinConnectionsPerHost!124 options_4_1!107)))
-                (= builder_3_7!127
-                   (minConnectionsPerHost!125
-                     builder_3_6!123
-                     (getMinConnectionsPerHost!124 options_3_1!106)))
-                (= builder_4_8!130
-                   (minHeartbeatFrequency!129
-                     builder_4_7!126
-                     (getMinHeartbeatFrequency!128 options_4_1!107)))
-                (= builder_3_8!131
-                   (minHeartbeatFrequency!129
-                     builder_3_7!127
-                     (getMinHeartbeatFrequency!128 options_3_1!106)))
-                (= builder_4_9!134
-                   (maxConnectionIdleTime!133
-                     builder_4_8!130
-                     (getMaxConnectionIdleTime!132 options_4_1!107)))
-                (= builder_3_9!135
-                   (maxConnectionIdleTime!133
-                     builder_3_8!131
-                     (getMaxConnectionIdleTime!132 options_3_1!106)))
-                (= builder_4_10!138
-                   (maxConnectionLifeTime!137
-                     builder_4_9!134
-                     (getMaxConnectionLifeTime!136 options_4_1!107)))
-                (= builder_3_10!139
-                   (maxConnectionLifeTime!137
-                     builder_3_9!135
-                     (getMaxConnectionLifeTime!136 options_3_1!106)))
-                (= builder_1_3!141
-                   (Anonymous2!140 builder_1_2!99 options_1_1!104))
-                (= builder_2_3!142
-                   (Anonymous2!140 builder_2_2!100 options_2_1!105))
-                (= builder_3_11!143
-                   (Anonymous2!140 builder_3_10!139 options_3_1!106))
-                (= builder_4_11!144
-                   (Anonymous2!140 builder_4_10!138 options_4_1!107))
-                (= options_1_2!146
-                   (Anonymous3!145 builder_1_3!141 options_1_1!104))
-                (= options_2_2!147
-                   (Anonymous3!145 builder_2_3!142 options_2_1!105))
-                (= options_3_2!148
-                   (Anonymous3!145 builder_3_11!143 options_3_1!106))
-                (= options_4_2!149
-                   (Anonymous3!145 builder_4_11!144 options_4_1!107))
-                (= builder_4_12!152
-                   (requiredReplicaSetName!151
-                     builder_4_11!144
-                     (getRequiredReplicaSetName!150 options_4_2!149)))
-                (= builder_3_12!153
-                   (requiredReplicaSetName!151
-                     builder_3_11!143
-                     (getRequiredReplicaSetName!150 options_3_2!148)))
-                (= options_2_3!155 (isSslEnabled!154 options_2_2!147))
-                (= builder_2_4!157
-                   (sslEnabled!156 builder_2_3!142
-                                   (isSslEnabled!154 options_2_2!147)))
-                (= options_4_3!158 (isSslEnabled!154 options_4_2!149))
-                (= builder_4_13!159
-                   (sslEnabled!156 builder_4_12!152
-                                   (isSslEnabled!154 options_4_2!149)))
-                (= builder_1_4!163
-                   (socketFactory!162
-                     builder_1_3!141
-                     (getSocketFactory!161 options_1_2!146)))
-                (= builder_2_5!164
-                   (socketFactory!162
-                     builder_2_4!157
-                     (getSocketFactory!161 options_2_3!155)))
-                (= builder_3_13!165
-                   (socketFactory!162
-                     builder_3_12!153
-                     (getSocketFactory!161 options_3_2!148)))
-                (= builder_4_14!166
-                   (socketFactory!162
-                     builder_4_13!159
-                     (getSocketFactory!161 options_4_3!158)))
-                (= options_1_3!169 (isSocketKeepAlive!168 options_1_2!146))
-                (= builder_1_5!171
-                   (socketKeepAlive!170
-                     builder_1_4!163
-                     (isSocketKeepAlive!168 options_1_2!146)))
-                (= options_2_4!172 (isSocketKeepAlive!168 options_2_3!155))
-                (= builder_2_6!173
-                   (socketKeepAlive!170
-                     builder_2_5!164
-                     (isSocketKeepAlive!168 options_2_3!155)))
-                (= options_3_3!174 (isSocketKeepAlive!168 options_3_2!148))
-                (= builder_3_14!175
-                   (socketKeepAlive!170
-                     builder_3_13!165
-                     (isSocketKeepAlive!168 options_3_2!148)))
-                (= options_4_4!176 (isSocketKeepAlive!168 options_4_3!158))
-                (= builder_4_15!177
-                   (socketKeepAlive!170
-                     builder_4_14!166
-                     (isSocketKeepAlive!168 options_4_3!158)))
-                (= builder_1_6!181
-                   (socketTimeout!180
-                     builder_1_5!171
-                     (getSocketTimeout!179 options_1_3!169)))
-                (= builder_2_7!182
-                   (socketTimeout!180
-                     builder_2_6!173
-                     (getSocketTimeout!179 options_2_4!172)))
-                (= builder_3_15!183
-                   (socketTimeout!180
-                     builder_3_14!175
-                     (getSocketTimeout!179 options_3_3!174)))
-                (= builder_4_16!184
-                   (socketTimeout!180
-                     builder_4_15!177
-                     (getSocketTimeout!179 options_4_4!176)))
-                (= builder_1_7!188
-                   (threadsAllowedToBlockForConnectionMultiplier!187
-                     builder_1_6!181
-                     (getThreadsAllowedToBlockForConnectionMultiplier!186
-                       options_1_3!169)))
-                (= builder_2_8!189
-                   (threadsAllowedToBlockForConnectionMultiplier!187
-                     builder_2_7!182
-                     (getThreadsAllowedToBlockForConnectionMultiplier!186
-                       options_2_4!172)))
-                (= builder_3_16!190
-                   (threadsAllowedToBlockForConnectionMultiplier!187
-                     builder_3_15!183
-                     (getThreadsAllowedToBlockForConnectionMultiplier!186
-                       options_3_3!174)))
-                (= builder_4_17!191
-                   (threadsAllowedToBlockForConnectionMultiplier!187
-                     builder_4_16!184
-                     (getThreadsAllowedToBlockForConnectionMultiplier!186
-                       options_4_4!176)))
-                (= builder_1_8!194
-                   (writeConcern!193 builder_1_7!188
-                                     (getWriteConcern!192 options_1_3!169)))
-                (= builder_2_9!195
-                   (writeConcern!193 builder_2_8!189
-                                     (getWriteConcern!192 options_2_4!172)))
-                (= builder_3_17!196
-                   (writeConcern!193 builder_3_16!190
-                                     (getWriteConcern!192 options_3_3!174)))
-                (= builder_4_18!197
-                   (writeConcern!193 builder_4_17!191
-                                     (getWriteConcern!192 options_4_4!176)))
-                (= builder_1_9 builder_1_8!194)
-                (= builder_2_10 builder_2_9!195)
-                (= builder_3_18 builder_3_17!196)
-                (= builder_4_19 builder_4_18!197)
-                (= options_1_4 options_1_3!169)
-                (= options_2_5 options_2_4!172)
-                (= options_3_4 options_3_3!174)
-                (= options_4_5 options_4_4!176)))
-      (a!3 (and a!1
                 (not (not (= options_1_0!0 0)))
                 (not (not (= options_2_0!1 0)))
                 (not (not (= options_3_0!2 0)))
                 (not (not (= options_4_0!3 0)))
-                (= builder_1_9 builder_1_1!93)
-                (= builder_2_10 builder_2_1!95)
-                (= builder_3_18 builder_3_1!96)
-                (= builder_4_19 builder_4_1!97)
+                (= builder_1_5 builder_1_1!93)
+                (= builder_2_5 builder_2_1!95)
+                (= builder_3_5 builder_3_1!96)
+                (= builder_4_5 builder_4_1!97)
                 (= options_1_4 options_1_0!0)
-                (= options_2_5 options_2_0!1)
+                (= options_2_4 options_2_0!1)
                 (= options_3_4 options_3_0!2)
-                (= options_4_5 options_4_0!3))))
-  (and (or a!2 a!3)
-       (= ret_1_0!44 builder_1_9)
+                (= options_4_4 options_4_0!3))))
+(let ((a!3 (or (and a!1
+                    (not (= options_1_0!0 0))
+                    (not (= options_2_0!1 0))
+                    (not (= options_3_0!2 0))
+                    (not (= options_4_0!3 0))
+                    (= builder_1_2!99
+                       (Anonymous0!98 builder_1_1!93 options_1_0!0))
+                    (= builder_2_2!100
+                       (Anonymous0!98 builder_2_1!95 options_2_0!1))
+                    (= builder_3_2!101
+                       (Anonymous0!98 builder_3_1!96 options_3_0!2))
+                    (= builder_4_2!102
+                       (Anonymous0!98 builder_4_1!97 options_4_0!3))
+                    (= options_1_1!104
+                       (Anonymous1!103 builder_1_2!99 options_1_0!0))
+                    (= options_2_1!105
+                       (Anonymous1!103 builder_2_2!100 options_2_0!1))
+                    (= options_3_1!106
+                       (Anonymous1!103 builder_3_2!101 options_3_0!2))
+                    (= options_4_1!107
+                       (Anonymous1!103 builder_4_2!102 options_4_0!3))
+                    (= builder_1_3!125
+                       (Anonymous2!124 builder_1_2!99 options_1_1!104))
+                    (= builder_2_3!126
+                       (Anonymous2!124 builder_2_2!100 options_2_1!105))
+                    (= builder_3_3!127
+                       (Anonymous2!124 builder_3_2!101 options_3_1!106))
+                    (= builder_4_3!128
+                       (Anonymous2!124 builder_4_2!102 options_4_1!107))
+                    (= options_1_2!130
+                       (Anonymous3!129 builder_1_3!125 options_1_1!104))
+                    (= options_2_2!131
+                       (Anonymous3!129 builder_2_3!126 options_2_1!105))
+                    (= options_3_2!132
+                       (Anonymous3!129 builder_3_3!127 options_3_1!106))
+                    (= options_4_2!133
+                       (Anonymous3!129 builder_4_3!128 options_4_1!107))
+                    (= builder_1_4!139
+                       (Anonymous4!138 builder_1_3!125 options_1_2!130))
+                    (= builder_2_4!140
+                       (Anonymous4!138 builder_2_3!126 options_2_2!131))
+                    (= builder_3_4!141
+                       (Anonymous4!138 builder_3_3!127 options_3_2!132))
+                    (= builder_4_4!142
+                       (Anonymous4!138 builder_4_3!128 options_4_2!133))
+                    (= options_1_3!144
+                       (Anonymous5!143 builder_1_4!139 options_1_2!130))
+                    (= options_2_3!145
+                       (Anonymous5!143 builder_2_4!140 options_2_2!131))
+                    (= options_3_3!146
+                       (Anonymous5!143 builder_3_4!141 options_3_2!132))
+                    (= options_4_3!147
+                       (Anonymous5!143 builder_4_4!142 options_4_2!133))
+                    (= builder_1_5 builder_1_4!139)
+                    (= builder_2_5 builder_2_4!140)
+                    (= builder_3_5 builder_3_4!141)
+                    (= builder_4_5 builder_4_4!142)
+                    (= options_1_4 options_1_3!144)
+                    (= options_2_4 options_2_3!145)
+                    (= options_3_4 options_3_3!146)
+                    (= options_4_4 options_4_3!147))
+               a!2)))
+  (and a!3
+       (= ret_1_0!44 builder_1_5)
        (= ret_DEFAULT_PORT_1_0!48 DEFAULT_PORT_1_0!4)
        (= ret_authenticationDatabase_1_0!52 authenticationDatabase_1_0!8)
        (= ret_database_1_0!56 database_1_0!12)
@@ -266,7 +123,7 @@ verify: relational VC
        (= ret_port_1_0!76 port_1_0!32)
        (= ret_uri_1_0!80 uri_1_0!36)
        (= ret_username_1_0!84 username_1_0!40)
-       (= ret_2_0!45 builder_2_10)
+       (= ret_2_0!45 builder_2_5)
        (= ret_DEFAULT_PORT_2_0!49 DEFAULT_PORT_2_0!5)
        (= ret_authenticationDatabase_2_0!53 authenticationDatabase_2_0!9)
        (= ret_database_2_0!57 database_2_0!13)
@@ -277,7 +134,7 @@ verify: relational VC
        (= ret_port_2_0!77 port_2_0!33)
        (= ret_uri_2_0!81 uri_2_0!37)
        (= ret_username_2_0!85 username_2_0!41)
-       (= ret_3_0!46 builder_3_18)
+       (= ret_3_0!46 builder_3_5)
        (= ret_DEFAULT_PORT_3_0!50 DEFAULT_PORT_3_0!6)
        (= ret_authenticationDatabase_3_0!54 authenticationDatabase_3_0!10)
        (= ret_database_3_0!58 database_3_0!14)
@@ -288,7 +145,7 @@ verify: relational VC
        (= ret_port_3_0!78 port_3_0!34)
        (= ret_uri_3_0!82 uri_3_0!38)
        (= ret_username_3_0!86 username_3_0!42)
-       (= ret_4_0!47 builder_4_19)
+       (= ret_4_0!47 builder_4_5)
        (= ret_DEFAULT_PORT_4_0!51 DEFAULT_PORT_4_0!7)
        (= ret_authenticationDatabase_4_0!55 authenticationDatabase_4_0!11)
        (= ret_database_4_0!59 database_4_0!15)
@@ -298,7 +155,7 @@ verify: relational VC
        (= ret_password_4_0!75 password_4_0!31)
        (= ret_port_4_0!79 port_4_0!35)
        (= ret_uri_4_0!83 uri_4_0!39)
-       (= ret_username_4_0!87 username_4_0!43))))
+       (= ret_username_4_0!87 username_4_0!43)))))
 verify: semantic conflict VC
 (let ((a!1 (=> (not (and (= ret_username_1_0!84 ret_username_2_0!85)))
                (and (= ret_username_4_0!87 ret_username_2_0!85))))

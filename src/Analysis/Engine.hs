@@ -432,19 +432,20 @@ encCall vId nSort name args = do
          Object -> do 
            let ident@(Ident id) = concatIdent meth
            rhsAst  <- encCall vId (Just (_v_typ objVar)) [ident] ((_v_ast objVar):args)
-           let isReadOrGet = (length id > 5) && ((take 3 id) == "get") || ((take 4 id) == "read") 
-           if isReadOrGet
-           then return rhsAst
-           else do
-             wizPrint "HERE!!!!!"
-             env@Env{..} <- get
-             nLhsVar <- lift $ updateVariable vId oc objVar 
-             let ssamap = insertSSAVar vId oc nLhsVar _e_ssamap
-             ass <- lift $ mkEq (_v_ast nLhsVar) rhsAst 
-             pre <- lift $ mkAnd [_e_pre,ass]
-             updatePre pre
-             updateSSAMap ssamap
-             return rhsAst
+           return rhsAst
+           --let isReadOrGet = (length id > 5) && ((take 3 id) == "get") || ((take 4 id) == "read") 
+           --if isReadOrGet
+           --then return rhsAst
+           --else do
+           --  wizPrint "HERE!!!!!"
+           --  env@Env{..} <- get
+           --  nLhsVar <- lift $ updateVariable vId oc objVar 
+           --  let ssamap = insertSSAVar vId oc nLhsVar _e_ssamap
+           --  ass <- lift $ mkEq (_v_ast nLhsVar) rhsAst 
+           --  pre <- lift $ mkAnd [_e_pre,ass]
+           --  updatePre pre
+           --  updateSSAMap ssamap
+           --  return rhsAst
          _ -> encCall vId nSort [concatIdent meth] ((_v_ast objVar):args)
 
 -- Analyse Assign
@@ -530,8 +531,8 @@ enc_field_access vId exp = do
     
 encodeLiteral :: Literal -> EnvOp AST
 encodeLiteral lit = case lit of
- Boolean True  -> lift $ mkTrue
- Boolean False -> lift $ mkFalse
+ Boolean True  -> lift $ mkIntNum 1 -- mkTrue
+ Boolean False -> lift $ mkIntNum 0 -- mkFalse
  Int i         -> lift $ mkIntNum i
  Null          -> lift $ mkIntNum 0 
  String s      -> do

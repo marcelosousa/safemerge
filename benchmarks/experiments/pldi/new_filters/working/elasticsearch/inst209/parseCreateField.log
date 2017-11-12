@@ -1,0 +1,1628 @@
+verify: relational VC
+(let ((a!1 (and (= context_4_0!3 context_3_0!2)
+                (= context_3_0!2 context_2_0!1)
+                (= context_2_0!1 context_1_0!0)
+                (= fields_4_0!7 fields_3_0!6)
+                (= fields_3_0!6 fields_2_0!5)
+                (= fields_2_0!5 fields_1_0!4)
+                (= CONTENT_TYPE_4_0!11 CONTENT_TYPE_3_0!10)
+                (= CONTENT_TYPE_3_0!10 CONTENT_TYPE_2_0!9)
+                (= CONTENT_TYPE_2_0!9 CONTENT_TYPE_1_0!8)
+                (= NAME_4_0!15 NAME_3_0!14)
+                (= NAME_3_0!14 NAME_2_0!13)
+                (= NAME_2_0!13 NAME_1_0!12)
+                (= complete_4_0!19 complete_3_0!18)
+                (= complete_3_0!18 complete_2_0!17)
+                (= complete_2_0!17 complete_1_0!16)
+                (= compress_4_0!23 compress_3_0!22)
+                (= compress_3_0!22 compress_2_0!21)
+                (= compress_2_0!21 compress_1_0!20)
+                (= compressThreshold_4_0!27 compressThreshold_3_0!26)
+                (= compressThreshold_3_0!26 compressThreshold_2_0!25)
+                (= compressThreshold_2_0!25 compressThreshold_1_0!24)
+                (= enabled_4_0!31 enabled_3_0!30)
+                (= enabled_3_0!30 enabled_2_0!29)
+                (= enabled_2_0!29 enabled_1_0!28)
+                (= excludes_4_0!35 excludes_3_0!34)
+                (= excludes_3_0!34 excludes_2_0!33)
+                (= excludes_2_0!33 excludes_1_0!32)
+                (= format_4_0!39 format_3_0!38)
+                (= format_3_0!38 format_2_0!37)
+                (= format_2_0!37 format_1_0!36)
+                (= formatContentType_4_0!43 formatContentType_3_0!42)
+                (= formatContentType_3_0!42 formatContentType_2_0!41)
+                (= formatContentType_2_0!41 formatContentType_1_0!40)
+                (= includes_4_0!47 includes_3_0!46)
+                (= includes_3_0!46 includes_2_0!45)
+                (= includes_2_0!45 includes_1_0!44)))
+      (a!8 (and (not (= compress_1_0!20 0))
+                (= compress_1_0!20 1)
+                (= (isCompressed.CompressorFactory!203 source_1_1!109) 0)))
+      (a!9 (and (not (= compress_2_0!21 0))
+                (= compress_2_0!21 1)
+                (= (isCompressed.CompressorFactory!203 source_2_1!111) 0)))
+      (a!10 (and (not (= compress_3_0!22 0))
+                 (= compress_3_0!22 1)
+                 (= (isCompressed.CompressorFactory!203 source_3_1!113) 0)))
+      (a!11 (and (not (= compress_4_0!23 0))
+                 (= compress_4_0!23 1)
+                 (= (isCompressed.CompressorFactory!203 source_4_1!115) 0))))
+(let ((a!2 (or (and a!1
+                    (= enabled_1_0!28 0)
+                    (= enabled_2_0!29 0)
+                    (= enabled_3_0!30 0)
+                    (= enabled_4_0!31 0)
+                    (= ret_CONTENT_TYPE_1_0!48 CONTENT_TYPE_1_0!8)
+                    (= ret_NAME_1_0!52 NAME_1_0!12)
+                    (= ret_complete_1_0!56 complete_1_0!16)
+                    (= ret_compress_1_0!60 compress_1_0!20)
+                    (= ret_compressThreshold_1_0!64 compressThreshold_1_0!24)
+                    (= ret_enabled_1_0!68 enabled_1_0!28)
+                    (= ret_excludes_1_0!72 excludes_1_0!32)
+                    (= ret_format_1_0!76 format_1_0!36)
+                    (= ret_formatContentType_1_0!80 formatContentType_1_0!40)
+                    (= ret_includes_1_0!84 includes_1_0!44)
+                    (= ret_CONTENT_TYPE_2_0!49 CONTENT_TYPE_2_0!9)
+                    (= ret_NAME_2_0!53 NAME_2_0!13)
+                    (= ret_complete_2_0!57 complete_2_0!17)
+                    (= ret_compress_2_0!61 compress_2_0!21)
+                    (= ret_compressThreshold_2_0!65 compressThreshold_2_0!25)
+                    (= ret_enabled_2_0!69 enabled_2_0!29)
+                    (= ret_excludes_2_0!73 excludes_2_0!33)
+                    (= ret_format_2_0!77 format_2_0!37)
+                    (= ret_formatContentType_2_0!81 formatContentType_2_0!41)
+                    (= ret_includes_2_0!85 includes_2_0!45)
+                    (= ret_CONTENT_TYPE_3_0!50 CONTENT_TYPE_3_0!10)
+                    (= ret_NAME_3_0!54 NAME_3_0!14)
+                    (= ret_complete_3_0!58 complete_3_0!18)
+                    (= ret_compress_3_0!62 compress_3_0!22)
+                    (= ret_compressThreshold_3_0!66 compressThreshold_3_0!26)
+                    (= ret_enabled_3_0!70 enabled_3_0!30)
+                    (= ret_excludes_3_0!74 excludes_3_0!34)
+                    (= ret_format_3_0!78 format_3_0!38)
+                    (= ret_formatContentType_3_0!82 formatContentType_3_0!42)
+                    (= ret_includes_3_0!86 includes_3_0!46)
+                    (= ret_CONTENT_TYPE_4_0!51 CONTENT_TYPE_4_0!11)
+                    (= ret_NAME_4_0!55 NAME_4_0!15)
+                    (= ret_complete_4_0!59 complete_4_0!19)
+                    (= ret_compress_4_0!63 compress_4_0!23)
+                    (= ret_compressThreshold_4_0!67 compressThreshold_4_0!27)
+                    (= ret_enabled_4_0!71 enabled_4_0!31)
+                    (= ret_excludes_4_0!75 excludes_4_0!35)
+                    (= ret_format_4_0!79 format_4_0!39)
+                    (= ret_formatContentType_4_0!83 formatContentType_4_0!43)
+                    (= ret_includes_4_0!87 includes_4_0!47))
+               (and a!1
+                    (not (= enabled_1_0!28 0))
+                    (not (= enabled_2_0!29 0))
+                    (not (= enabled_3_0!30 0))
+                    (not (= enabled_4_0!31 0))))))
+(let ((a!3 (or (and a!2
+                    (= stored.fieldType!89 0)
+                    (= stored.fieldType!89 0)
+                    (= stored.fieldType!89 0)
+                    (= stored.fieldType!89 0)
+                    (= ret_CONTENT_TYPE_1_0!48 CONTENT_TYPE_1_0!8)
+                    (= ret_NAME_1_0!52 NAME_1_0!12)
+                    (= ret_complete_1_0!56 complete_1_0!16)
+                    (= ret_compress_1_0!60 compress_1_0!20)
+                    (= ret_compressThreshold_1_0!64 compressThreshold_1_0!24)
+                    (= ret_enabled_1_0!68 enabled_1_0!28)
+                    (= ret_excludes_1_0!72 excludes_1_0!32)
+                    (= ret_format_1_0!76 format_1_0!36)
+                    (= ret_formatContentType_1_0!80 formatContentType_1_0!40)
+                    (= ret_includes_1_0!84 includes_1_0!44)
+                    (= ret_CONTENT_TYPE_2_0!49 CONTENT_TYPE_2_0!9)
+                    (= ret_NAME_2_0!53 NAME_2_0!13)
+                    (= ret_complete_2_0!57 complete_2_0!17)
+                    (= ret_compress_2_0!61 compress_2_0!21)
+                    (= ret_compressThreshold_2_0!65 compressThreshold_2_0!25)
+                    (= ret_enabled_2_0!69 enabled_2_0!29)
+                    (= ret_excludes_2_0!73 excludes_2_0!33)
+                    (= ret_format_2_0!77 format_2_0!37)
+                    (= ret_formatContentType_2_0!81 formatContentType_2_0!41)
+                    (= ret_includes_2_0!85 includes_2_0!45)
+                    (= ret_CONTENT_TYPE_3_0!50 CONTENT_TYPE_3_0!10)
+                    (= ret_NAME_3_0!54 NAME_3_0!14)
+                    (= ret_complete_3_0!58 complete_3_0!18)
+                    (= ret_compress_3_0!62 compress_3_0!22)
+                    (= ret_compressThreshold_3_0!66 compressThreshold_3_0!26)
+                    (= ret_enabled_3_0!70 enabled_3_0!30)
+                    (= ret_excludes_3_0!74 excludes_3_0!34)
+                    (= ret_format_3_0!78 format_3_0!38)
+                    (= ret_formatContentType_3_0!82 formatContentType_3_0!42)
+                    (= ret_includes_3_0!86 includes_3_0!46)
+                    (= ret_CONTENT_TYPE_4_0!51 CONTENT_TYPE_4_0!11)
+                    (= ret_NAME_4_0!55 NAME_4_0!15)
+                    (= ret_complete_4_0!59 complete_4_0!19)
+                    (= ret_compress_4_0!63 compress_4_0!23)
+                    (= ret_compressThreshold_4_0!67 compressThreshold_4_0!27)
+                    (= ret_enabled_4_0!71 enabled_4_0!31)
+                    (= ret_excludes_4_0!75 excludes_4_0!35)
+                    (= ret_format_4_0!79 format_4_0!39)
+                    (= ret_formatContentType_4_0!83 formatContentType_4_0!43)
+                    (= ret_includes_4_0!87 includes_4_0!47))
+               (and a!2
+                    (not (= stored.fieldType!89 0))
+                    (not (= stored.fieldType!89 0))
+                    (not (= stored.fieldType!89 0))
+                    (not (= stored.fieldType!89 0))))))
+(let ((a!4 (and a!3
+                (not (= (flyweight!90 context_1_0!0) 1))
+                (not (= (flyweight!90 context_2_0!1) 1))
+                (not (= (flyweight!90 context_3_0!2) 1))
+                (not (= (flyweight!90 context_4_0!3) 1)))))
+(let ((a!5 (or (and a!3
+                    (= (flyweight!90 context_1_0!0) 1)
+                    (= (flyweight!90 context_2_0!1) 1)
+                    (= (flyweight!90 context_3_0!2) 1)
+                    (= (flyweight!90 context_4_0!3) 1)
+                    (= ret_CONTENT_TYPE_1_0!48 CONTENT_TYPE_1_0!8)
+                    (= ret_NAME_1_0!52 NAME_1_0!12)
+                    (= ret_complete_1_0!56 complete_1_0!16)
+                    (= ret_compress_1_0!60 compress_1_0!20)
+                    (= ret_compressThreshold_1_0!64 compressThreshold_1_0!24)
+                    (= ret_enabled_1_0!68 enabled_1_0!28)
+                    (= ret_excludes_1_0!72 excludes_1_0!32)
+                    (= ret_format_1_0!76 format_1_0!36)
+                    (= ret_formatContentType_1_0!80 formatContentType_1_0!40)
+                    (= ret_includes_1_0!84 includes_1_0!44)
+                    (= ret_CONTENT_TYPE_2_0!49 CONTENT_TYPE_2_0!9)
+                    (= ret_NAME_2_0!53 NAME_2_0!13)
+                    (= ret_complete_2_0!57 complete_2_0!17)
+                    (= ret_compress_2_0!61 compress_2_0!21)
+                    (= ret_compressThreshold_2_0!65 compressThreshold_2_0!25)
+                    (= ret_enabled_2_0!69 enabled_2_0!29)
+                    (= ret_excludes_2_0!73 excludes_2_0!33)
+                    (= ret_format_2_0!77 format_2_0!37)
+                    (= ret_formatContentType_2_0!81 formatContentType_2_0!41)
+                    (= ret_includes_2_0!85 includes_2_0!45)
+                    (= ret_CONTENT_TYPE_3_0!50 CONTENT_TYPE_3_0!10)
+                    (= ret_NAME_3_0!54 NAME_3_0!14)
+                    (= ret_complete_3_0!58 complete_3_0!18)
+                    (= ret_compress_3_0!62 compress_3_0!22)
+                    (= ret_compressThreshold_3_0!66 compressThreshold_3_0!26)
+                    (= ret_enabled_3_0!70 enabled_3_0!30)
+                    (= ret_excludes_3_0!74 excludes_3_0!34)
+                    (= ret_format_3_0!78 format_3_0!38)
+                    (= ret_formatContentType_3_0!82 formatContentType_3_0!42)
+                    (= ret_includes_3_0!86 includes_3_0!46)
+                    (= ret_CONTENT_TYPE_4_0!51 CONTENT_TYPE_4_0!11)
+                    (= ret_NAME_4_0!55 NAME_4_0!15)
+                    (= ret_complete_4_0!59 complete_4_0!19)
+                    (= ret_compress_4_0!63 compress_4_0!23)
+                    (= ret_compressThreshold_4_0!67 compressThreshold_4_0!27)
+                    (= ret_enabled_4_0!71 enabled_4_0!31)
+                    (= ret_excludes_4_0!75 excludes_4_0!35)
+                    (= ret_format_4_0!79 format_4_0!39)
+                    (= ret_formatContentType_4_0!83 formatContentType_4_0!43)
+                    (= ret_includes_4_0!87 includes_4_0!47))
+               a!4)))
+(let ((a!6 (and a!5
+                (= context_1_1!92 (Anonymous0!91 context_1_0!0))
+                (= context_2_1!93 (Anonymous0!91 context_2_0!1))
+                (= context_3_1!94 (Anonymous0!91 context_3_0!2))
+                (= context_4_1!95 (Anonymous0!91 context_4_0!3))
+                (= filtered_1_1!100
+                   (Anonymous1!99 includes_1_0!44
+                                  includes_1_0!44
+                                  length.includes!97
+                                  excludes_1_0!32
+                                  excludes_1_0!32
+                                  length.excludes!98))
+                (= filtered_2_1!102
+                   (Anonymous1!99 includes_2_0!45
+                                  includes_2_0!45
+                                  length.includes!97
+                                  excludes_2_0!33
+                                  excludes_2_0!33
+                                  length.excludes!98))
+                (= filtered_3_1!104
+                   (Anonymous1!99 includes_3_0!46
+                                  includes_3_0!46
+                                  length.includes!97
+                                  excludes_3_0!34
+                                  excludes_3_0!34
+                                  length.excludes!98))
+                (= filtered_4_1!106
+                   (Anonymous1!99 includes_4_0!47
+                                  includes_4_0!47
+                                  length.includes!97
+                                  excludes_4_0!35
+                                  excludes_4_0!35
+                                  length.excludes!98))
+                (= source_1_1!109 (Anonymous2!108 context_1_1!92))
+                (= source_2_1!111 (Anonymous2!108 context_2_1!93))
+                (= source_3_1!113 (Anonymous2!108 context_3_1!94))
+                (= source_4_1!115 (Anonymous2!108 context_4_1!95)))))
+(let ((a!7 (and a!6
+                (not (= filtered_1_1!100 1))
+                (not (= filtered_2_1!102 1))
+                (not (= filtered_3_1!104 1))
+                (not (= filtered_4_1!106 1)))))
+(let ((a!12 (and a!7 (not a!8) (not a!9) (not a!10) (not a!11))))
+(let ((a!13 (and a!12
+                 (not (= formatContentType_1_0!40 0))
+                 (not (= formatContentType_2_0!41 0))
+                 (not (= formatContentType_3_0!42 0))
+                 (not (= formatContentType_4_0!43 0))
+                 (= compressor_1_1!263
+                    (Anonymous3!262 CompressorFactory!129 source_1_1!109))
+                 (= compressor_2_1!265
+                    (Anonymous3!262 CompressorFactory!129 source_2_1!111))
+                 (= compressor_3_1!267
+                    (Anonymous3!262 CompressorFactory!129 source_3_1!113))
+                 (= compressor_4_1!269
+                    (Anonymous3!262 CompressorFactory!129 source_4_1!115))
+                 (= source_1_2!271
+                    (Anonymous4!270 CompressorFactory!129 source_1_1!109))
+                 (= source_2_2!272
+                    (Anonymous4!270 CompressorFactory!129 source_2_1!111))
+                 (= source_3_2!273
+                    (Anonymous4!270 CompressorFactory!129 source_3_1!113))
+                 (= source_4_2!274
+                    (Anonymous4!270 CompressorFactory!129 source_4_1!115))))
+      (a!23 (and a!12
+                 (not (not (= formatContentType_1_0!40 0)))
+                 (not (not (= formatContentType_2_0!41 0)))
+                 (not (not (= formatContentType_3_0!42 0)))
+                 (not (not (= formatContentType_4_0!43 0)))
+                 (= context_1_4 context_1_1!92)
+                 (= context_2_4 context_2_1!93)
+                 (= context_3_4 context_3_1!94)
+                 (= context_4_4 context_4_1!95)
+                 (= formatContentType_1_4 formatContentType_1_0!40)
+                 (= formatContentType_2_4 formatContentType_2_0!41)
+                 (= formatContentType_3_4 formatContentType_3_0!42)
+                 (= formatContentType_4_4 formatContentType_4_0!43)
+                 (= source_1_5 source_1_1!109)
+                 (= source_2_5 source_2_1!111)
+                 (= source_3_5 source_3_1!113)
+                 (= source_4_5 source_4_1!115))))
+(let ((a!14 (and a!13
+                 (not (= compressor_1_1!263 0))
+                 (not (= compressor_2_1!265 0))
+                 (not (= compressor_3_1!267 0))
+                 (not (= compressor_4_1!269 0))
+                 (= compressedStreamInput_4_1!276
+                    (streamInput!278 compressor_4_1!269
+                                     (streamInput!277 source_4_2!274)))
+                 (= compressedStreamInput_3_1!280
+                    (streamInput!278 compressor_3_1!267
+                                     (streamInput!277 source_3_2!273)))
+                 (= compressedStreamInput_2_1!282
+                    (streamInput!278 compressor_2_1!265
+                                     (streamInput!277 source_2_2!272)))
+                 (= compressedStreamInput_1_1!284
+                    (streamInput!278 compressor_1_1!263
+                                     (streamInput!277 source_1_2!271)))))
+      (a!22 (and a!13
+                 (not (not (= compressor_1_1!263 0)))
+                 (not (not (= compressor_2_1!265 0)))
+                 (not (not (= compressor_3_1!267 0)))
+                 (not (not (= compressor_4_1!269 0)))
+                 (= formatContentType_1_1!359
+                    (Anonymous5!358 XContentFactory!139
+                                    formatContentType_1_0!40
+                                    formatContentType_1_0!40
+                                    bStream!204
+                                    contentType!140
+                                    formatContentType_1_0!40
+                                    formatContentType_1_0!40))
+                 (= formatContentType_2_1!360
+                    (Anonymous5!358 XContentFactory!139
+                                    formatContentType_2_0!41
+                                    formatContentType_2_0!41
+                                    bStream!204
+                                    contentType!140
+                                    formatContentType_2_0!41
+                                    formatContentType_2_0!41))
+                 (= formatContentType_3_1!361
+                    (Anonymous5!358 XContentFactory!139
+                                    formatContentType_3_0!42
+                                    formatContentType_3_0!42
+                                    bStream!204
+                                    contentType!140
+                                    formatContentType_3_0!42
+                                    formatContentType_3_0!42))
+                 (= formatContentType_4_1!362
+                    (Anonymous5!358 XContentFactory!139
+                                    formatContentType_4_0!43
+                                    formatContentType_4_0!43
+                                    bStream!204
+                                    contentType!140
+                                    formatContentType_4_0!43
+                                    formatContentType_4_0!43))
+                 (= bStream_1_1!365
+                    (Anonymous6!364 contentType!140
+                                    formatContentType_1_1!359
+                                    formatContentType_1_1!359
+                                    XContentFactory!139))
+                 (= bStream_2_1!367
+                    (Anonymous6!364 contentType!140
+                                    formatContentType_2_1!360
+                                    formatContentType_2_1!360
+                                    XContentFactory!139))
+                 (= bStream_3_1!369
+                    (Anonymous6!364 contentType!140
+                                    formatContentType_3_1!361
+                                    formatContentType_3_1!361
+                                    XContentFactory!139))
+                 (= bStream_4_1!371
+                    (Anonymous6!364 contentType!140
+                                    formatContentType_4_1!362
+                                    formatContentType_4_1!362
+                                    XContentFactory!139))
+                 (= builder_1_1!374
+                    (Anonymous7!373 XContentFactory!139
+                                    formatContentType_1_1!359
+                                    formatContentType_1_1!359
+                                    bStream_1_1!365
+                                    contentType!140
+                                    source_1_2!271))
+                 (= builder_2_1!376
+                    (Anonymous7!373 XContentFactory!139
+                                    formatContentType_2_1!360
+                                    formatContentType_2_1!360
+                                    bStream_2_1!367
+                                    contentType!140
+                                    source_2_2!272))
+                 (= builder_3_1!378
+                    (Anonymous7!373 XContentFactory!139
+                                    formatContentType_3_1!361
+                                    formatContentType_3_1!361
+                                    bStream_3_1!369
+                                    contentType!140
+                                    source_3_2!273))
+                 (= builder_4_1!380
+                    (Anonymous7!373 XContentFactory!139
+                                    formatContentType_4_1!362
+                                    formatContentType_4_1!362
+                                    bStream_4_1!371
+                                    contentType!140
+                                    source_4_2!274))
+                 (= contentType_1_1!383
+                    (Anonymous8!382 XContentFactory!139
+                                    source_1_2!271
+                                    builder_1_1!374
+                                    formatContentType_1_1!359
+                                    formatContentType_1_1!359))
+                 (= contentType_2_1!385
+                    (Anonymous8!382 XContentFactory!139
+                                    source_2_2!272
+                                    builder_2_1!376
+                                    formatContentType_2_1!360
+                                    formatContentType_2_1!360))
+                 (= contentType_3_1!387
+                    (Anonymous8!382 XContentFactory!139
+                                    source_3_2!273
+                                    builder_3_1!378
+                                    formatContentType_3_1!361
+                                    formatContentType_3_1!361))
+                 (= contentType_4_1!389
+                    (Anonymous8!382 XContentFactory!139
+                                    source_4_2!274
+                                    builder_4_1!380
+                                    formatContentType_4_1!362
+                                    formatContentType_4_1!362))
+                 (= context_1_2!391
+                    (Anonymous9!390 context_1_1!92
+                                    source_1_2!271
+                                    contentType_1_1!383
+                                    formatContentType_1_1!359
+                                    formatContentType_1_1!359))
+                 (= context_2_2!392
+                    (Anonymous9!390 context_2_1!93
+                                    source_2_2!272
+                                    contentType_2_1!385
+                                    formatContentType_2_1!360
+                                    formatContentType_2_1!360))
+                 (= context_3_2!393
+                    (Anonymous9!390 context_3_1!94
+                                    source_3_2!273
+                                    contentType_3_1!387
+                                    formatContentType_3_1!361
+                                    formatContentType_3_1!361))
+                 (= context_4_2!394
+                    (Anonymous9!390 context_4_1!95
+                                    source_4_2!274
+                                    contentType_4_1!389
+                                    formatContentType_4_1!362
+                                    formatContentType_4_1!362))
+                 (= formatContentType_1_2!396
+                    (Anonymous10!395 XContentFactory!139
+                                     formatContentType_1_1!359
+                                     formatContentType_1_1!359
+                                     bStream_1_1!365
+                                     contentType_1_1!383
+                                     formatContentType_1_1!359
+                                     formatContentType_1_1!359))
+                 (= formatContentType_2_2!397
+                    (Anonymous10!395 XContentFactory!139
+                                     formatContentType_2_1!360
+                                     formatContentType_2_1!360
+                                     bStream_2_1!367
+                                     contentType_2_1!385
+                                     formatContentType_2_1!360
+                                     formatContentType_2_1!360))
+                 (= formatContentType_3_2!398
+                    (Anonymous10!395 XContentFactory!139
+                                     formatContentType_3_1!361
+                                     formatContentType_3_1!361
+                                     bStream_3_1!369
+                                     contentType_3_1!387
+                                     formatContentType_3_1!361
+                                     formatContentType_3_1!361))
+                 (= formatContentType_4_2!399
+                    (Anonymous10!395 XContentFactory!139
+                                     formatContentType_4_1!362
+                                     formatContentType_4_1!362
+                                     bStream_4_1!371
+                                     contentType_4_1!389
+                                     formatContentType_4_1!362
+                                     formatContentType_4_1!362))
+                 (= source_1_3!401
+                    (Anonymous11!400 XContentFactory!139
+                                     source_1_2!271
+                                     builder_1_1!374
+                                     contentType_1_1!383
+                                     formatContentType_1_2!396
+                                     formatContentType_1_2!396
+                                     bStream_1_1!365
+                                     context_1_2!391))
+                 (= source_2_3!402
+                    (Anonymous11!400 XContentFactory!139
+                                     source_2_2!272
+                                     builder_2_1!376
+                                     contentType_2_1!385
+                                     formatContentType_2_2!397
+                                     formatContentType_2_2!397
+                                     bStream_2_1!367
+                                     context_2_2!392))
+                 (= source_3_3!403
+                    (Anonymous11!400 XContentFactory!139
+                                     source_3_2!273
+                                     builder_3_1!378
+                                     contentType_3_1!387
+                                     formatContentType_3_2!398
+                                     formatContentType_3_2!398
+                                     bStream_3_1!369
+                                     context_3_2!393))
+                 (= source_4_3!404
+                    (Anonymous11!400 XContentFactory!139
+                                     source_4_2!274
+                                     builder_4_1!380
+                                     contentType_4_1!389
+                                     formatContentType_4_2!399
+                                     formatContentType_4_2!399
+                                     bStream_4_1!371
+                                     context_4_2!394))
+                 (= context_1_3 context_1_2!391)
+                 (= context_2_3 context_2_2!392)
+                 (= context_3_3 context_3_2!393)
+                 (= context_4_3 context_4_2!394)
+                 (= formatContentType_1_3 formatContentType_1_2!396)
+                 (= formatContentType_2_3 formatContentType_2_2!397)
+                 (= formatContentType_3_3 formatContentType_3_2!398)
+                 (= formatContentType_4_3 formatContentType_4_2!399)
+                 (= source_1_4 source_1_3!401)
+                 (= source_2_4 source_2_3!402)
+                 (= source_3_4 source_3_3!403)
+                 (= source_4_4 source_4_3!404))))
+(let ((a!15 (and a!14
+                 (= (markSupported!285 compressedStreamInput_4_1!276) 0)
+                 (= compressedStreamInput_4_2!286
+                    (NewBufferedInputStream!287 compressedStreamInput_4_1!276))))
+      (a!18 (and a!14
+                 (not (= (markSupported!285 compressedStreamInput_4_1!276) 0)))))
+(let ((a!16 (and a!15
+                 (not (= (markSupported!285 compressedStreamInput_3_1!280) 0))
+                 (= compressedStreamInput_3_3 compressedStreamInput_3_1!280)))
+      (a!19 (and a!18
+                 (not (= (markSupported!285 compressedStreamInput_3_1!280) 0))
+                 (= compressedStreamInput_3_3 compressedStreamInput_3_1!280))))
+(let ((a!17 (or (and a!15
+                     (= (markSupported!285 compressedStreamInput_3_1!280) 0)
+                     (= compressedStreamInput_3_2!288
+                        (NewBufferedInputStream!287
+                          compressedStreamInput_3_1!280))
+                     (= compressedStreamInput_3_3 compressedStreamInput_3_2!288))
+                a!16))
+      (a!20 (or (and a!18
+                     (= (markSupported!285 compressedStreamInput_3_1!280) 0)
+                     (= compressedStreamInput_3_2!289
+                        (NewBufferedInputStream!290
+                          compressedStreamInput_3_1!280))
+                     (= compressedStreamInput_3_3 compressedStreamInput_3_2!289))
+                a!19)))
+(let ((a!21 (and (or (and a!17
+                          (= compressedStreamInput_3_4
+                             compressedStreamInput_3_3)
+                          (= compressedStreamInput_4_3
+                             compressedStreamInput_4_2!286))
+                     (and a!20
+                          (= compressedStreamInput_3_4
+                             compressedStreamInput_3_3)
+                          (= compressedStreamInput_4_3
+                             compressedStreamInput_4_1!276)))
+                 (= contentType_1_1!295
+                    (xContentType.XContentFactory!296
+                      compressedStreamInput_1_1!284))
+                 (= contentType_2_1!297
+                    (xContentType.XContentFactory!296
+                      compressedStreamInput_2_1!282))
+                 (= contentType_3_1!298
+                    (xContentType.XContentFactory!296 compressedStreamInput_3_4))
+                 (= contentType_4_1!299
+                    (xContentType.XContentFactory!296 compressedStreamInput_4_3))
+                 (= formatContentType_1_1!302
+                    (Anonymous5!301 XContentFactory!139
+                                    formatContentType_1_0!40
+                                    formatContentType_1_0!40
+                                    streamOutput!141
+                                    contentType_1_1!295
+                                    formatContentType_1_0!40
+                                    formatContentType_1_0!40))
+                 (= formatContentType_2_1!303
+                    (Anonymous5!301 XContentFactory!139
+                                    formatContentType_2_0!41
+                                    formatContentType_2_0!41
+                                    streamOutput!141
+                                    contentType_2_1!297
+                                    formatContentType_2_0!41
+                                    formatContentType_2_0!41))
+                 (= formatContentType_3_1!304
+                    (Anonymous5!301 XContentFactory!139
+                                    formatContentType_3_0!42
+                                    formatContentType_3_0!42
+                                    streamOutput!141
+                                    contentType_3_1!298
+                                    formatContentType_3_0!42
+                                    formatContentType_3_0!42))
+                 (= formatContentType_4_1!305
+                    (Anonymous5!301 XContentFactory!139
+                                    formatContentType_4_0!43
+                                    formatContentType_4_0!43
+                                    streamOutput!141
+                                    contentType_4_1!299
+                                    formatContentType_4_0!43
+                                    formatContentType_4_0!43))
+                 (= bStream_1_1!308
+                    (Anonymous6!307 contentType_1_1!295
+                                    formatContentType_1_1!302
+                                    formatContentType_1_1!302
+                                    CompressorFactory!129))
+                 (= bStream_2_1!310
+                    (Anonymous6!307 contentType_2_1!297
+                                    formatContentType_2_1!303
+                                    formatContentType_2_1!303
+                                    CompressorFactory!129))
+                 (= bStream_3_1!312
+                    (Anonymous6!307 contentType_3_1!298
+                                    formatContentType_3_1!304
+                                    formatContentType_3_1!304
+                                    CompressorFactory!129))
+                 (= bStream_4_1!314
+                    (Anonymous6!307 contentType_4_1!299
+                                    formatContentType_4_1!305
+                                    formatContentType_4_1!305
+                                    CompressorFactory!129))
+                 (= builder_1_1!317
+                    (Anonymous7!316 XContentFactory!139
+                                    formatContentType_1_1!302
+                                    formatContentType_1_1!302
+                                    streamOutput!141
+                                    contentType_1_1!295
+                                    compressedStreamInput_1_1!284))
+                 (= builder_2_1!319
+                    (Anonymous7!316 XContentFactory!139
+                                    formatContentType_2_1!303
+                                    formatContentType_2_1!303
+                                    streamOutput!141
+                                    contentType_2_1!297
+                                    compressedStreamInput_2_1!282))
+                 (= builder_3_1!321
+                    (Anonymous7!316 XContentFactory!139
+                                    formatContentType_3_1!304
+                                    formatContentType_3_1!304
+                                    streamOutput!141
+                                    contentType_3_1!298
+                                    compressedStreamInput_3_4))
+                 (= builder_4_1!323
+                    (Anonymous7!316 XContentFactory!139
+                                    formatContentType_4_1!305
+                                    formatContentType_4_1!305
+                                    streamOutput!141
+                                    contentType_4_1!299
+                                    compressedStreamInput_4_3))
+                 (= compressedStreamInput_1_2!325
+                    (Anonymous8!324 builder_1_1!317
+                                    XContentFactory!139
+                                    contentType_1_1!295
+                                    compressedStreamInput_1_1!284
+                                    formatContentType_1_1!302
+                                    formatContentType_1_1!302))
+                 (= compressedStreamInput_2_2!326
+                    (Anonymous8!324 builder_2_1!319
+                                    XContentFactory!139
+                                    contentType_2_1!297
+                                    compressedStreamInput_2_1!282
+                                    formatContentType_2_1!303
+                                    formatContentType_2_1!303))
+                 (= compressedStreamInput_3_5!327
+                    (Anonymous8!324 builder_3_1!321
+                                    XContentFactory!139
+                                    contentType_3_1!298
+                                    compressedStreamInput_3_4
+                                    formatContentType_3_1!304
+                                    formatContentType_3_1!304))
+                 (= compressedStreamInput_4_4!328
+                    (Anonymous8!324 builder_4_1!323
+                                    XContentFactory!139
+                                    contentType_4_1!299
+                                    compressedStreamInput_4_3
+                                    formatContentType_4_1!305
+                                    formatContentType_4_1!305))
+                 (= contentType_1_2!330
+                    (Anonymous9!329 builder_1_1!317
+                                    XContentFactory!139
+                                    contentType_1_1!295
+                                    compressedStreamInput_1_2!325
+                                    contentType_1_1!295
+                                    formatContentType_1_1!302
+                                    formatContentType_1_1!302))
+                 (= contentType_2_2!331
+                    (Anonymous9!329 builder_2_1!319
+                                    XContentFactory!139
+                                    contentType_2_1!297
+                                    compressedStreamInput_2_2!326
+                                    contentType_2_1!297
+                                    formatContentType_2_1!303
+                                    formatContentType_2_1!303))
+                 (= contentType_3_2!332
+                    (Anonymous9!329 builder_3_1!321
+                                    XContentFactory!139
+                                    contentType_3_1!298
+                                    compressedStreamInput_3_5!327
+                                    contentType_3_1!298
+                                    formatContentType_3_1!304
+                                    formatContentType_3_1!304))
+                 (= contentType_4_2!333
+                    (Anonymous9!329 builder_4_1!323
+                                    XContentFactory!139
+                                    contentType_4_1!299
+                                    compressedStreamInput_4_4!328
+                                    contentType_4_1!299
+                                    formatContentType_4_1!305
+                                    formatContentType_4_1!305))
+                 (= context_1_2!335
+                    (Anonymous10!334 context_1_1!92
+                                     source_1_2!271
+                                     contentType_1_2!330
+                                     formatContentType_1_1!302
+                                     formatContentType_1_1!302))
+                 (= context_2_2!336
+                    (Anonymous10!334 context_2_1!93
+                                     source_2_2!272
+                                     contentType_2_2!331
+                                     formatContentType_2_1!303
+                                     formatContentType_2_1!303))
+                 (= context_3_2!337
+                    (Anonymous10!334 context_3_1!94
+                                     source_3_2!273
+                                     contentType_3_2!332
+                                     formatContentType_3_1!304
+                                     formatContentType_3_1!304))
+                 (= context_4_2!338
+                    (Anonymous10!334 context_4_1!95
+                                     source_4_2!274
+                                     contentType_4_2!333
+                                     formatContentType_4_1!305
+                                     formatContentType_4_1!305))
+                 (= formatContentType_1_2!340
+                    (Anonymous11!339 XContentFactory!139
+                                     formatContentType_1_1!302
+                                     formatContentType_1_1!302
+                                     streamOutput!141
+                                     contentType_1_2!330
+                                     formatContentType_1_1!302
+                                     formatContentType_1_1!302))
+                 (= formatContentType_2_2!341
+                    (Anonymous11!339 XContentFactory!139
+                                     formatContentType_2_1!303
+                                     formatContentType_2_1!303
+                                     streamOutput!141
+                                     contentType_2_2!331
+                                     formatContentType_2_1!303
+                                     formatContentType_2_1!303))
+                 (= formatContentType_3_2!342
+                    (Anonymous11!339 XContentFactory!139
+                                     formatContentType_3_1!304
+                                     formatContentType_3_1!304
+                                     streamOutput!141
+                                     contentType_3_2!332
+                                     formatContentType_3_1!304
+                                     formatContentType_3_1!304))
+                 (= formatContentType_4_2!343
+                    (Anonymous11!339 XContentFactory!139
+                                     formatContentType_4_1!305
+                                     formatContentType_4_1!305
+                                     streamOutput!141
+                                     contentType_4_2!333
+                                     formatContentType_4_1!305
+                                     formatContentType_4_1!305))
+                 (= source_1_3!345
+                    (Anonymous12!344 bStream_1_1!308
+                                     contentType_1_2!330
+                                     formatContentType_1_2!340
+                                     formatContentType_1_2!340
+                                     context_1_2!335
+                                     source_1_2!271))
+                 (= source_2_3!346
+                    (Anonymous12!344 bStream_2_1!310
+                                     contentType_2_2!331
+                                     formatContentType_2_2!341
+                                     formatContentType_2_2!341
+                                     context_2_2!336
+                                     source_2_2!272))
+                 (= source_3_3!347
+                    (Anonymous12!344 bStream_3_1!312
+                                     contentType_3_2!332
+                                     formatContentType_3_2!342
+                                     formatContentType_3_2!342
+                                     context_3_2!337
+                                     source_3_2!273))
+                 (= source_4_3!348
+                    (Anonymous12!344 bStream_4_1!314
+                                     contentType_4_2!333
+                                     formatContentType_4_2!343
+                                     formatContentType_4_2!343
+                                     context_4_2!338
+                                     source_4_2!274))
+                 (= streamOutput_1_1!351
+                    (Anonymous13!350 CompressorFactory!129
+                                     bStream_1_1!308
+                                     contentType_1_2!330
+                                     formatContentType_1_2!340
+                                     formatContentType_1_2!340
+                                     XContentFactory!139))
+                 (= streamOutput_2_1!353
+                    (Anonymous13!350 CompressorFactory!129
+                                     bStream_2_1!310
+                                     contentType_2_2!331
+                                     formatContentType_2_2!341
+                                     formatContentType_2_2!341
+                                     XContentFactory!139))
+                 (= streamOutput_3_1!355
+                    (Anonymous13!350 CompressorFactory!129
+                                     bStream_3_1!312
+                                     contentType_3_2!332
+                                     formatContentType_3_2!342
+                                     formatContentType_3_2!342
+                                     XContentFactory!139))
+                 (= streamOutput_4_1!357
+                    (Anonymous13!350 CompressorFactory!129
+                                     bStream_4_1!314
+                                     contentType_4_2!333
+                                     formatContentType_4_2!343
+                                     formatContentType_4_2!343
+                                     XContentFactory!139))
+                 (= context_1_3 context_1_2!335)
+                 (= context_2_3 context_2_2!336)
+                 (= context_3_3 context_3_2!337)
+                 (= context_4_3 context_4_2!338)
+                 (= formatContentType_1_3 formatContentType_1_2!340)
+                 (= formatContentType_2_3 formatContentType_2_2!341)
+                 (= formatContentType_3_3 formatContentType_3_2!342)
+                 (= formatContentType_4_3 formatContentType_4_2!343)
+                 (= source_1_4 source_1_3!345)
+                 (= source_2_4 source_2_3!346)
+                 (= source_3_4 source_3_3!347)
+                 (= source_4_4 source_4_3!348))))
+(let ((a!24 (and (or (and (or a!21 a!22)
+                          (= context_1_4 context_1_3)
+                          (= context_2_4 context_2_3)
+                          (= context_3_4 context_3_3)
+                          (= context_4_4 context_4_3)
+                          (= formatContentType_1_4 formatContentType_1_3)
+                          (= formatContentType_2_4 formatContentType_2_3)
+                          (= formatContentType_3_4 formatContentType_3_3)
+                          (= formatContentType_4_4 formatContentType_4_3)
+                          (= source_1_5 source_1_4)
+                          (= source_2_5 source_2_4)
+                          (= source_3_5 source_3_4)
+                          (= source_4_5 source_4_4))
+                     a!23)
+                 (= context_1_5 context_1_4)
+                 (= context_2_5 context_2_4)
+                 (= context_3_5 context_3_4)
+                 (= context_4_5 context_4_4)
+                 (= formatContentType_1_5 formatContentType_1_4)
+                 (= formatContentType_2_5 formatContentType_2_4)
+                 (= formatContentType_3_5 formatContentType_3_4)
+                 (= formatContentType_4_5 formatContentType_4_4)
+                 (= source_1_6 source_1_5)
+                 (= source_2_6 source_2_5)
+                 (= source_3_6 source_3_5)
+                 (= source_4_6 source_4_5))))
+(let ((a!25 (or (and a!7
+                     a!8
+                     a!9
+                     a!10
+                     a!11
+                     (= formatContentType_1_1!206
+                        (Anonymous3!205 XContentFactory!139
+                                        formatContentType_1_0!40
+                                        formatContentType_1_0!40
+                                        CompressorFactory!129
+                                        bStream!204
+                                        contentType!140
+                                        compressThreshold_1_0!24
+                                        compressThreshold_1_0!24
+                                        source_1_1!109))
+                     (= formatContentType_2_1!207
+                        (Anonymous3!205 XContentFactory!139
+                                        formatContentType_2_0!41
+                                        formatContentType_2_0!41
+                                        CompressorFactory!129
+                                        bStream!204
+                                        contentType!140
+                                        compressThreshold_2_0!25
+                                        compressThreshold_2_0!25
+                                        source_2_1!111))
+                     (= formatContentType_3_1!208
+                        (Anonymous3!205 XContentFactory!139
+                                        formatContentType_3_0!42
+                                        formatContentType_3_0!42
+                                        CompressorFactory!129
+                                        bStream!204
+                                        contentType!140
+                                        compressThreshold_3_0!26
+                                        compressThreshold_3_0!26
+                                        source_3_1!113))
+                     (= formatContentType_4_1!209
+                        (Anonymous3!205 XContentFactory!139
+                                        formatContentType_4_0!43
+                                        formatContentType_4_0!43
+                                        CompressorFactory!129
+                                        bStream!204
+                                        contentType!140
+                                        compressThreshold_4_0!27
+                                        compressThreshold_4_0!27
+                                        source_4_1!115))
+                     (= bStream_1_1!212
+                        (Anonymous4!211 compressThreshold_1_0!24
+                                        compressThreshold_1_0!24
+                                        source_1_1!109
+                                        XContentFactory!139
+                                        formatContentType_1_1!206
+                                        formatContentType_1_1!206
+                                        CompressorFactory!129
+                                        contentType!140))
+                     (= bStream_2_1!214
+                        (Anonymous4!211 compressThreshold_2_0!25
+                                        compressThreshold_2_0!25
+                                        source_2_1!111
+                                        XContentFactory!139
+                                        formatContentType_2_1!207
+                                        formatContentType_2_1!207
+                                        CompressorFactory!129
+                                        contentType!140))
+                     (= bStream_3_1!216
+                        (Anonymous4!211 compressThreshold_3_0!26
+                                        compressThreshold_3_0!26
+                                        source_3_1!113
+                                        XContentFactory!139
+                                        formatContentType_3_1!208
+                                        formatContentType_3_1!208
+                                        CompressorFactory!129
+                                        contentType!140))
+                     (= bStream_4_1!218
+                        (Anonymous4!211 compressThreshold_4_0!27
+                                        compressThreshold_4_0!27
+                                        source_4_1!115
+                                        XContentFactory!139
+                                        formatContentType_4_1!209
+                                        formatContentType_4_1!209
+                                        CompressorFactory!129
+                                        contentType!140))
+                     (= builder_1_1!221
+                        (Anonymous5!220 XContentFactory!139
+                                        formatContentType_1_1!206
+                                        formatContentType_1_1!206
+                                        CompressorFactory!129
+                                        bStream_1_1!212
+                                        contentType!140
+                                        compressThreshold_1_0!24
+                                        compressThreshold_1_0!24
+                                        source_1_1!109))
+                     (= builder_2_1!223
+                        (Anonymous5!220 XContentFactory!139
+                                        formatContentType_2_1!207
+                                        formatContentType_2_1!207
+                                        CompressorFactory!129
+                                        bStream_2_1!214
+                                        contentType!140
+                                        compressThreshold_2_0!25
+                                        compressThreshold_2_0!25
+                                        source_2_1!111))
+                     (= builder_3_1!225
+                        (Anonymous5!220 XContentFactory!139
+                                        formatContentType_3_1!208
+                                        formatContentType_3_1!208
+                                        CompressorFactory!129
+                                        bStream_3_1!216
+                                        contentType!140
+                                        compressThreshold_3_0!26
+                                        compressThreshold_3_0!26
+                                        source_3_1!113))
+                     (= builder_4_1!227
+                        (Anonymous5!220 XContentFactory!139
+                                        formatContentType_4_1!209
+                                        formatContentType_4_1!209
+                                        CompressorFactory!129
+                                        bStream_4_1!218
+                                        contentType!140
+                                        compressThreshold_4_0!27
+                                        compressThreshold_4_0!27
+                                        source_4_1!115))
+                     (= contentType_1_1!230
+                        (Anonymous6!229 XContentFactory!139
+                                        source_1_1!109
+                                        compressThreshold_1_0!24
+                                        compressThreshold_1_0!24
+                                        builder_1_1!221
+                                        formatContentType_1_1!206
+                                        formatContentType_1_1!206))
+                     (= contentType_2_1!232
+                        (Anonymous6!229 XContentFactory!139
+                                        source_2_1!111
+                                        compressThreshold_2_0!25
+                                        compressThreshold_2_0!25
+                                        builder_2_1!223
+                                        formatContentType_2_1!207
+                                        formatContentType_2_1!207))
+                     (= contentType_3_1!234
+                        (Anonymous6!229 XContentFactory!139
+                                        source_3_1!113
+                                        compressThreshold_3_0!26
+                                        compressThreshold_3_0!26
+                                        builder_3_1!225
+                                        formatContentType_3_1!208
+                                        formatContentType_3_1!208))
+                     (= contentType_4_1!236
+                        (Anonymous6!229 XContentFactory!139
+                                        source_4_1!115
+                                        compressThreshold_4_0!27
+                                        compressThreshold_4_0!27
+                                        builder_4_1!227
+                                        formatContentType_4_1!209
+                                        formatContentType_4_1!209))
+                     (= context_1_2!238
+                        (Anonymous7!237 context_1_1!92
+                                        source_1_1!109
+                                        compressThreshold_1_0!24
+                                        compressThreshold_1_0!24))
+                     (= context_2_2!239
+                        (Anonymous7!237 context_2_1!93
+                                        source_2_1!111
+                                        compressThreshold_2_0!25
+                                        compressThreshold_2_0!25))
+                     (= context_3_2!240
+                        (Anonymous7!237 context_3_1!94
+                                        source_3_1!113
+                                        compressThreshold_3_0!26
+                                        compressThreshold_3_0!26))
+                     (= context_4_2!241
+                        (Anonymous7!237 context_4_1!95
+                                        source_4_1!115
+                                        compressThreshold_4_0!27
+                                        compressThreshold_4_0!27))
+                     (= formatContentType_1_2!243
+                        (Anonymous8!242 XContentFactory!139
+                                        formatContentType_1_1!206
+                                        formatContentType_1_1!206
+                                        CompressorFactory!129
+                                        bStream_1_1!212
+                                        contentType_1_1!230
+                                        compressThreshold_1_0!24
+                                        compressThreshold_1_0!24
+                                        source_1_1!109))
+                     (= formatContentType_2_2!244
+                        (Anonymous8!242 XContentFactory!139
+                                        formatContentType_2_1!207
+                                        formatContentType_2_1!207
+                                        CompressorFactory!129
+                                        bStream_2_1!214
+                                        contentType_2_1!232
+                                        compressThreshold_2_0!25
+                                        compressThreshold_2_0!25
+                                        source_2_1!111))
+                     (= formatContentType_3_2!245
+                        (Anonymous8!242 XContentFactory!139
+                                        formatContentType_3_1!208
+                                        formatContentType_3_1!208
+                                        CompressorFactory!129
+                                        bStream_3_1!216
+                                        contentType_3_1!234
+                                        compressThreshold_3_0!26
+                                        compressThreshold_3_0!26
+                                        source_3_1!113))
+                     (= formatContentType_4_2!246
+                        (Anonymous8!242 XContentFactory!139
+                                        formatContentType_4_1!209
+                                        formatContentType_4_1!209
+                                        CompressorFactory!129
+                                        bStream_4_1!218
+                                        contentType_4_1!236
+                                        compressThreshold_4_0!27
+                                        compressThreshold_4_0!27
+                                        source_4_1!115))
+                     (= source_1_2!248
+                        (Anonymous9!247 XContentFactory!139
+                                        source_1_1!109
+                                        compressThreshold_1_0!24
+                                        compressThreshold_1_0!24
+                                        builder_1_1!221
+                                        contentType_1_1!230
+                                        formatContentType_1_2!243
+                                        formatContentType_1_2!243
+                                        streamOutput!141
+                                        bStream_1_1!212
+                                        context_1_2!238))
+                     (= source_2_2!249
+                        (Anonymous9!247 XContentFactory!139
+                                        source_2_1!111
+                                        compressThreshold_2_0!25
+                                        compressThreshold_2_0!25
+                                        builder_2_1!223
+                                        contentType_2_1!232
+                                        formatContentType_2_2!244
+                                        formatContentType_2_2!244
+                                        streamOutput!141
+                                        bStream_2_1!214
+                                        context_2_2!239))
+                     (= source_3_2!250
+                        (Anonymous9!247 XContentFactory!139
+                                        source_3_1!113
+                                        compressThreshold_3_0!26
+                                        compressThreshold_3_0!26
+                                        builder_3_1!225
+                                        contentType_3_1!234
+                                        formatContentType_3_2!245
+                                        formatContentType_3_2!245
+                                        streamOutput!141
+                                        bStream_3_1!216
+                                        context_3_2!240))
+                     (= source_4_2!251
+                        (Anonymous9!247 XContentFactory!139
+                                        source_4_1!115
+                                        compressThreshold_4_0!27
+                                        compressThreshold_4_0!27
+                                        builder_4_1!227
+                                        contentType_4_1!236
+                                        formatContentType_4_2!246
+                                        formatContentType_4_2!246
+                                        streamOutput!141
+                                        bStream_4_1!218
+                                        context_4_2!241))
+                     (= streamOutput_1_1!254
+                        (Anonymous10!253 CompressorFactory!129
+                                         bStream_1_1!212
+                                         formatContentType_1_2!243
+                                         formatContentType_1_2!243
+                                         contentType_1_1!230
+                                         compressThreshold_1_0!24
+                                         compressThreshold_1_0!24
+                                         source_1_2!248))
+                     (= streamOutput_2_1!256
+                        (Anonymous10!253 CompressorFactory!129
+                                         bStream_2_1!214
+                                         formatContentType_2_2!244
+                                         formatContentType_2_2!244
+                                         contentType_2_1!232
+                                         compressThreshold_2_0!25
+                                         compressThreshold_2_0!25
+                                         source_2_2!249))
+                     (= streamOutput_3_1!258
+                        (Anonymous10!253 CompressorFactory!129
+                                         bStream_3_1!216
+                                         formatContentType_3_2!245
+                                         formatContentType_3_2!245
+                                         contentType_3_1!234
+                                         compressThreshold_3_0!26
+                                         compressThreshold_3_0!26
+                                         source_3_2!250))
+                     (= streamOutput_4_1!260
+                        (Anonymous10!253 CompressorFactory!129
+                                         bStream_4_1!218
+                                         formatContentType_4_2!246
+                                         formatContentType_4_2!246
+                                         contentType_4_1!236
+                                         compressThreshold_4_0!27
+                                         compressThreshold_4_0!27
+                                         source_4_2!251))
+                     (= context_1_5 context_1_2!238)
+                     (= context_2_5 context_2_2!239)
+                     (= context_3_5 context_3_2!240)
+                     (= context_4_5 context_4_2!241)
+                     (= formatContentType_1_5 formatContentType_1_2!243)
+                     (= formatContentType_2_5 formatContentType_2_2!244)
+                     (= formatContentType_3_5 formatContentType_3_2!245)
+                     (= formatContentType_4_5 formatContentType_4_2!246)
+                     (= source_1_6 source_1_2!248)
+                     (= source_2_6 source_2_2!249)
+                     (= source_3_6 source_3_2!250)
+                     (= source_4_6 source_4_2!251))
+                a!24)))
+(let ((a!26 (or (and a!6
+                     (= filtered_1_1!100 1)
+                     (= filtered_2_1!102 1)
+                     (= filtered_3_1!104 1)
+                     (= filtered_4_1!106 1)
+                     (= excludes_1_1!119
+                        (Anonymous3!118 XContentMapValues!116
+                                        mapTuple!117
+                                        includes_1_0!44
+                                        includes_1_0!44
+                                        excludes_1_0!32
+                                        excludes_1_0!32))
+                     (= excludes_2_1!120
+                        (Anonymous3!118 XContentMapValues!116
+                                        mapTuple!117
+                                        includes_2_0!45
+                                        includes_2_0!45
+                                        excludes_2_0!33
+                                        excludes_2_0!33))
+                     (= excludes_3_1!121
+                        (Anonymous3!118 XContentMapValues!116
+                                        mapTuple!117
+                                        includes_3_0!46
+                                        includes_3_0!46
+                                        excludes_3_0!34
+                                        excludes_3_0!34))
+                     (= excludes_4_1!122
+                        (Anonymous3!118 XContentMapValues!116
+                                        mapTuple!117
+                                        includes_4_0!47
+                                        includes_4_0!47
+                                        excludes_4_0!35
+                                        excludes_4_0!35))
+                     (= includes_1_1!124
+                        (Anonymous4!123 XContentMapValues!116
+                                        mapTuple!117
+                                        includes_1_0!44
+                                        includes_1_0!44
+                                        excludes_1_1!119
+                                        excludes_1_1!119))
+                     (= includes_2_1!125
+                        (Anonymous4!123 XContentMapValues!116
+                                        mapTuple!117
+                                        includes_2_0!45
+                                        includes_2_0!45
+                                        excludes_2_1!120
+                                        excludes_2_1!120))
+                     (= includes_3_1!126
+                        (Anonymous4!123 XContentMapValues!116
+                                        mapTuple!117
+                                        includes_3_0!46
+                                        includes_3_0!46
+                                        excludes_3_1!121
+                                        excludes_3_1!121))
+                     (= includes_4_1!127
+                        (Anonymous4!123 XContentMapValues!116
+                                        mapTuple!117
+                                        includes_4_0!47
+                                        includes_4_0!47
+                                        excludes_4_1!122
+                                        excludes_4_1!122))
+                     (= bStream_1_1!131
+                        (Anonymous5!130 CompressorFactory!129
+                                        compress_1_0!20
+                                        compress_1_0!20
+                                        compressThreshold_1_0!24
+                                        compressThreshold_1_0!24
+                                        source_1_1!109))
+                     (= bStream_2_1!133
+                        (Anonymous5!130 CompressorFactory!129
+                                        compress_2_0!21
+                                        compress_2_0!21
+                                        compressThreshold_2_0!25
+                                        compressThreshold_2_0!25
+                                        source_2_1!111))
+                     (= bStream_3_1!135
+                        (Anonymous5!130 CompressorFactory!129
+                                        compress_3_0!22
+                                        compress_3_0!22
+                                        compressThreshold_3_0!26
+                                        compressThreshold_3_0!26
+                                        source_3_1!113))
+                     (= bStream_4_1!137
+                        (Anonymous5!130 CompressorFactory!129
+                                        compress_4_0!23
+                                        compress_4_0!23
+                                        compressThreshold_4_0!27
+                                        compressThreshold_4_0!27
+                                        source_4_1!115))
+                     (= builder_1_1!144
+                        (Anonymous6!143 XContentFactory!139
+                                        contentType!140
+                                        streamOutput!141
+                                        filteredSource!142))
+                     (= builder_2_1!146
+                        (Anonymous6!143 XContentFactory!139
+                                        contentType!140
+                                        streamOutput!141
+                                        filteredSource!142))
+                     (= builder_3_1!148
+                        (Anonymous6!143 XContentFactory!139
+                                        contentType!140
+                                        streamOutput!141
+                                        filteredSource!142))
+                     (= builder_4_1!150
+                        (Anonymous6!143 XContentFactory!139
+                                        contentType!140
+                                        streamOutput!141
+                                        filteredSource!142))
+                     (= contentType_1_1!153
+                        (Anonymous7!152 formatContentType_1_0!40
+                                        formatContentType_1_0!40
+                                        mapTuple!117
+                                        XContentFactory!139
+                                        streamOutput!141
+                                        filteredSource!142))
+                     (= contentType_2_1!155
+                        (Anonymous7!152 formatContentType_2_0!41
+                                        formatContentType_2_0!41
+                                        mapTuple!117
+                                        XContentFactory!139
+                                        streamOutput!141
+                                        filteredSource!142))
+                     (= contentType_3_1!157
+                        (Anonymous7!152 formatContentType_3_0!42
+                                        formatContentType_3_0!42
+                                        mapTuple!117
+                                        XContentFactory!139
+                                        streamOutput!141
+                                        filteredSource!142))
+                     (= contentType_4_1!159
+                        (Anonymous7!152 formatContentType_4_0!43
+                                        formatContentType_4_0!43
+                                        mapTuple!117
+                                        XContentFactory!139
+                                        streamOutput!141
+                                        filteredSource!142))
+                     (= excludes_1_2!161
+                        (Anonymous8!160 XContentMapValues!116
+                                        mapTuple!117
+                                        includes_1_1!124
+                                        includes_1_1!124
+                                        excludes_1_1!119
+                                        excludes_1_1!119))
+                     (= excludes_2_2!162
+                        (Anonymous8!160 XContentMapValues!116
+                                        mapTuple!117
+                                        includes_2_1!125
+                                        includes_2_1!125
+                                        excludes_2_1!120
+                                        excludes_2_1!120))
+                     (= excludes_3_2!163
+                        (Anonymous8!160 XContentMapValues!116
+                                        mapTuple!117
+                                        includes_3_1!126
+                                        includes_3_1!126
+                                        excludes_3_1!121
+                                        excludes_3_1!121))
+                     (= excludes_4_2!164
+                        (Anonymous8!160 XContentMapValues!116
+                                        mapTuple!117
+                                        includes_4_1!127
+                                        includes_4_1!127
+                                        excludes_4_1!122
+                                        excludes_4_1!122))
+                     (= filteredSource_1_1!167
+                        (Anonymous9!166 XContentMapValues!116
+                                        mapTuple!117
+                                        includes_1_1!124
+                                        includes_1_1!124
+                                        excludes_1_2!161
+                                        excludes_1_2!161
+                                        XContentFactory!139
+                                        contentType_1_1!153
+                                        streamOutput!141))
+                     (= filteredSource_2_1!169
+                        (Anonymous9!166 XContentMapValues!116
+                                        mapTuple!117
+                                        includes_2_1!125
+                                        includes_2_1!125
+                                        excludes_2_2!162
+                                        excludes_2_2!162
+                                        XContentFactory!139
+                                        contentType_2_1!155
+                                        streamOutput!141))
+                     (= filteredSource_3_1!171
+                        (Anonymous9!166 XContentMapValues!116
+                                        mapTuple!117
+                                        includes_3_1!126
+                                        includes_3_1!126
+                                        excludes_3_2!163
+                                        excludes_3_2!163
+                                        XContentFactory!139
+                                        contentType_3_1!157
+                                        streamOutput!141))
+                     (= filteredSource_4_1!173
+                        (Anonymous9!166 XContentMapValues!116
+                                        mapTuple!117
+                                        includes_4_1!127
+                                        includes_4_1!127
+                                        excludes_4_2!164
+                                        excludes_4_2!164
+                                        XContentFactory!139
+                                        contentType_4_1!159
+                                        streamOutput!141))
+                     (= includes_1_2!175
+                        (Anonymous10!174 XContentMapValues!116
+                                         mapTuple!117
+                                         includes_1_1!124
+                                         includes_1_1!124
+                                         excludes_1_2!161
+                                         excludes_1_2!161))
+                     (= includes_2_2!176
+                        (Anonymous10!174 XContentMapValues!116
+                                         mapTuple!117
+                                         includes_2_1!125
+                                         includes_2_1!125
+                                         excludes_2_2!162
+                                         excludes_2_2!162))
+                     (= includes_3_2!177
+                        (Anonymous10!174 XContentMapValues!116
+                                         mapTuple!117
+                                         includes_3_1!126
+                                         includes_3_1!126
+                                         excludes_3_2!163
+                                         excludes_3_2!163))
+                     (= includes_4_2!178
+                        (Anonymous10!174 XContentMapValues!116
+                                         mapTuple!117
+                                         includes_4_1!127
+                                         includes_4_1!127
+                                         excludes_4_2!164
+                                         excludes_4_2!164))
+                     (= mapTuple_1_1!182
+                        (Anonymous11!181 XContentHelper!180
+                                         source_1_1!109
+                                         XContentMapValues!116
+                                         includes_1_2!175
+                                         includes_1_2!175
+                                         excludes_1_2!161
+                                         excludes_1_2!161
+                                         contentType_1_1!153))
+                     (= mapTuple_2_1!184
+                        (Anonymous11!181 XContentHelper!180
+                                         source_2_1!111
+                                         XContentMapValues!116
+                                         includes_2_2!176
+                                         includes_2_2!176
+                                         excludes_2_2!162
+                                         excludes_2_2!162
+                                         contentType_2_1!155))
+                     (= mapTuple_3_1!186
+                        (Anonymous11!181 XContentHelper!180
+                                         source_3_1!113
+                                         XContentMapValues!116
+                                         includes_3_2!177
+                                         includes_3_2!177
+                                         excludes_3_2!163
+                                         excludes_3_2!163
+                                         contentType_3_1!157))
+                     (= mapTuple_4_1!188
+                        (Anonymous11!181 XContentHelper!180
+                                         source_4_1!115
+                                         XContentMapValues!116
+                                         includes_4_2!178
+                                         includes_4_2!178
+                                         excludes_4_2!164
+                                         excludes_4_2!164
+                                         contentType_4_1!159))
+                     (= source_1_2!190
+                        (Anonymous12!189 XContentHelper!180
+                                         source_1_1!109
+                                         bStream_1_1!131))
+                     (= source_2_2!191
+                        (Anonymous12!189 XContentHelper!180
+                                         source_2_1!111
+                                         bStream_2_1!133))
+                     (= source_3_2!192
+                        (Anonymous12!189 XContentHelper!180
+                                         source_3_1!113
+                                         bStream_3_1!135))
+                     (= source_4_2!193
+                        (Anonymous12!189 XContentHelper!180
+                                         source_4_1!115
+                                         bStream_4_1!137))
+                     (= streamOutput_1_1!196
+                        (Anonymous13!195 bStream_1_1!131
+                                         CompressorFactory!129
+                                         compress_1_0!20
+                                         compress_1_0!20
+                                         compressThreshold_1_0!24
+                                         compressThreshold_1_0!24
+                                         source_1_2!190
+                                         XContentFactory!139
+                                         contentType_1_1!153
+                                         filteredSource_1_1!167))
+                     (= streamOutput_2_1!198
+                        (Anonymous13!195 bStream_2_1!133
+                                         CompressorFactory!129
+                                         compress_2_0!21
+                                         compress_2_0!21
+                                         compressThreshold_2_0!25
+                                         compressThreshold_2_0!25
+                                         source_2_2!191
+                                         XContentFactory!139
+                                         contentType_2_1!155
+                                         filteredSource_2_1!169))
+                     (= streamOutput_3_1!200
+                        (Anonymous13!195 bStream_3_1!135
+                                         CompressorFactory!129
+                                         compress_3_0!22
+                                         compress_3_0!22
+                                         compressThreshold_3_0!26
+                                         compressThreshold_3_0!26
+                                         source_3_2!192
+                                         XContentFactory!139
+                                         contentType_3_1!157
+                                         filteredSource_3_1!171))
+                     (= streamOutput_4_1!202
+                        (Anonymous13!195 bStream_4_1!137
+                                         CompressorFactory!129
+                                         compress_4_0!23
+                                         compress_4_0!23
+                                         compressThreshold_4_0!27
+                                         compressThreshold_4_0!27
+                                         source_4_2!193
+                                         XContentFactory!139
+                                         contentType_4_1!159
+                                         filteredSource_4_1!173))
+                     (= context_1_6 context_1_1!92)
+                     (= context_2_6 context_2_1!93)
+                     (= context_3_6 context_3_1!94)
+                     (= context_4_6 context_4_1!95)
+                     (= excludes_1_3 excludes_1_2!161)
+                     (= excludes_2_3 excludes_2_2!162)
+                     (= excludes_3_3 excludes_3_2!163)
+                     (= excludes_4_3 excludes_4_2!164)
+                     (= formatContentType_1_6 formatContentType_1_0!40)
+                     (= formatContentType_2_6 formatContentType_2_0!41)
+                     (= formatContentType_3_6 formatContentType_3_0!42)
+                     (= formatContentType_4_6 formatContentType_4_0!43)
+                     (= includes_1_3 includes_1_2!175)
+                     (= includes_2_3 includes_2_2!176)
+                     (= includes_3_3 includes_3_2!177)
+                     (= includes_4_3 includes_4_2!178)
+                     (= source_1_7 source_1_2!190)
+                     (= source_2_7 source_2_2!191)
+                     (= source_3_7 source_3_2!192)
+                     (= source_4_7 source_4_2!193))
+                (and a!25
+                     (= context_1_6 context_1_5)
+                     (= context_2_6 context_2_5)
+                     (= context_3_6 context_3_5)
+                     (= context_4_6 context_4_5)
+                     (= excludes_1_3 excludes_1_0!32)
+                     (= excludes_2_3 excludes_2_0!33)
+                     (= excludes_3_3 excludes_3_0!34)
+                     (= excludes_4_3 excludes_4_0!35)
+                     (= formatContentType_1_6 formatContentType_1_5)
+                     (= formatContentType_2_6 formatContentType_2_5)
+                     (= formatContentType_3_6 formatContentType_3_5)
+                     (= formatContentType_4_6 formatContentType_4_5)
+                     (= includes_1_3 includes_1_0!44)
+                     (= includes_2_3 includes_2_0!45)
+                     (= includes_3_3 includes_3_0!46)
+                     (= includes_4_3 includes_4_0!47)
+                     (= source_1_7 source_1_6)
+                     (= source_2_7 source_2_6)
+                     (= source_3_7 source_3_6)
+                     (= source_4_7 source_4_6)))))
+  (and a!26
+       (= source_1_8!406 (Anonymous14!405 source_1_7))
+       (= source_2_8!407 (Anonymous14!405 source_2_7))
+       (= source_3_8!408 (Anonymous14!405 source_3_7))
+       (= source_4_8!409 (Anonymous14!405 source_4_7))))))))))))))))))))
+verify: semantic conflict VC
+(let ((a!1 (=> (not (and (= ret_includes_1_0!84 ret_includes_2_0!85)))
+               (and (= ret_includes_4_0!87 ret_includes_2_0!85))))
+      (a!2 (=> (not (and (= ret_includes_1_0!84 ret_includes_3_0!86)))
+               (and (= ret_includes_4_0!87 ret_includes_3_0!86))))
+      (a!4 (=> (not (and (= ret_formatContentType_1_0!80
+                            ret_formatContentType_2_0!81)))
+               (and (= ret_formatContentType_4_0!83
+                       ret_formatContentType_2_0!81))))
+      (a!5 (=> (not (and (= ret_formatContentType_1_0!80
+                            ret_formatContentType_3_0!82)))
+               (and (= ret_formatContentType_4_0!83
+                       ret_formatContentType_3_0!82))))
+      (a!7 (=> (not (and (= ret_format_1_0!76 ret_format_2_0!77)))
+               (and (= ret_format_4_0!79 ret_format_2_0!77))))
+      (a!8 (=> (not (and (= ret_format_1_0!76 ret_format_3_0!78)))
+               (and (= ret_format_4_0!79 ret_format_3_0!78))))
+      (a!10 (=> (not (and (= ret_excludes_1_0!72 ret_excludes_2_0!73)))
+                (and (= ret_excludes_4_0!75 ret_excludes_2_0!73))))
+      (a!11 (=> (not (and (= ret_excludes_1_0!72 ret_excludes_3_0!74)))
+                (and (= ret_excludes_4_0!75 ret_excludes_3_0!74))))
+      (a!13 (=> (not (and (= ret_enabled_1_0!68 ret_enabled_2_0!69)))
+                (and (= ret_enabled_4_0!71 ret_enabled_2_0!69))))
+      (a!14 (=> (not (and (= ret_enabled_1_0!68 ret_enabled_3_0!70)))
+                (and (= ret_enabled_4_0!71 ret_enabled_3_0!70))))
+      (a!16 (=> (not (and (= ret_compressThreshold_1_0!64
+                             ret_compressThreshold_2_0!65)))
+                (and (= ret_compressThreshold_4_0!67
+                        ret_compressThreshold_2_0!65))))
+      (a!17 (=> (not (and (= ret_compressThreshold_1_0!64
+                             ret_compressThreshold_3_0!66)))
+                (and (= ret_compressThreshold_4_0!67
+                        ret_compressThreshold_3_0!66))))
+      (a!19 (=> (not (and (= ret_compress_1_0!60 ret_compress_2_0!61)))
+                (and (= ret_compress_4_0!63 ret_compress_2_0!61))))
+      (a!20 (=> (not (and (= ret_compress_1_0!60 ret_compress_3_0!62)))
+                (and (= ret_compress_4_0!63 ret_compress_3_0!62))))
+      (a!22 (=> (not (and (= ret_complete_1_0!56 ret_complete_2_0!57)))
+                (and (= ret_complete_4_0!59 ret_complete_2_0!57))))
+      (a!23 (=> (not (and (= ret_complete_1_0!56 ret_complete_3_0!58)))
+                (and (= ret_complete_4_0!59 ret_complete_3_0!58))))
+      (a!25 (=> (not (and (= ret_NAME_1_0!52 ret_NAME_2_0!53)))
+                (and (= ret_NAME_4_0!55 ret_NAME_2_0!53))))
+      (a!26 (=> (not (and (= ret_NAME_1_0!52 ret_NAME_3_0!54)))
+                (and (= ret_NAME_4_0!55 ret_NAME_3_0!54))))
+      (a!28 (=> (not (and (= ret_CONTENT_TYPE_1_0!48 ret_CONTENT_TYPE_2_0!49)))
+                (and (= ret_CONTENT_TYPE_4_0!51 ret_CONTENT_TYPE_2_0!49))))
+      (a!29 (=> (not (and (= ret_CONTENT_TYPE_1_0!48 ret_CONTENT_TYPE_3_0!50)))
+                (and (= ret_CONTENT_TYPE_4_0!51 ret_CONTENT_TYPE_3_0!50)))))
+(let ((a!3 (or (and (and (= ret_includes_4_0!87 ret_includes_2_0!85))
+                    (and (= ret_includes_4_0!87 ret_includes_3_0!86))
+                    (= ret_includes_1_0!84 ret_includes_4_0!87))
+               (and a!1 a!2)))
+      (a!6 (or (and (and (= ret_formatContentType_4_0!83
+                            ret_formatContentType_2_0!81))
+                    (and (= ret_formatContentType_4_0!83
+                            ret_formatContentType_3_0!82))
+                    (= ret_formatContentType_1_0!80
+                       ret_formatContentType_4_0!83))
+               (and a!4 a!5)))
+      (a!9 (or (and (and (= ret_format_4_0!79 ret_format_2_0!77))
+                    (and (= ret_format_4_0!79 ret_format_3_0!78))
+                    (= ret_format_1_0!76 ret_format_4_0!79))
+               (and a!7 a!8)))
+      (a!12 (or (and (and (= ret_excludes_4_0!75 ret_excludes_2_0!73))
+                     (and (= ret_excludes_4_0!75 ret_excludes_3_0!74))
+                     (= ret_excludes_1_0!72 ret_excludes_4_0!75))
+                (and a!10 a!11)))
+      (a!15 (or (and (and (= ret_enabled_4_0!71 ret_enabled_2_0!69))
+                     (and (= ret_enabled_4_0!71 ret_enabled_3_0!70))
+                     (= ret_enabled_1_0!68 ret_enabled_4_0!71))
+                (and a!13 a!14)))
+      (a!18 (or (and (and (= ret_compressThreshold_4_0!67
+                             ret_compressThreshold_2_0!65))
+                     (and (= ret_compressThreshold_4_0!67
+                             ret_compressThreshold_3_0!66))
+                     (= ret_compressThreshold_1_0!64
+                        ret_compressThreshold_4_0!67))
+                (and a!16 a!17)))
+      (a!21 (or (and (and (= ret_compress_4_0!63 ret_compress_2_0!61))
+                     (and (= ret_compress_4_0!63 ret_compress_3_0!62))
+                     (= ret_compress_1_0!60 ret_compress_4_0!63))
+                (and a!19 a!20)))
+      (a!24 (or (and (and (= ret_complete_4_0!59 ret_complete_2_0!57))
+                     (and (= ret_complete_4_0!59 ret_complete_3_0!58))
+                     (= ret_complete_1_0!56 ret_complete_4_0!59))
+                (and a!22 a!23)))
+      (a!27 (or (and (and (= ret_NAME_4_0!55 ret_NAME_2_0!53))
+                     (and (= ret_NAME_4_0!55 ret_NAME_3_0!54))
+                     (= ret_NAME_1_0!52 ret_NAME_4_0!55))
+                (and a!25 a!26)))
+      (a!30 (or (and (and (= ret_CONTENT_TYPE_4_0!51 ret_CONTENT_TYPE_2_0!49))
+                     (and (= ret_CONTENT_TYPE_4_0!51 ret_CONTENT_TYPE_3_0!50))
+                     (= ret_CONTENT_TYPE_1_0!48 ret_CONTENT_TYPE_4_0!51))
+                (and a!28 a!29))))
+  (and a!3 a!6 a!9 a!12 a!15 a!18 a!21 a!24 a!27 a!30)))

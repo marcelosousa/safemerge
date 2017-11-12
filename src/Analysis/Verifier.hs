@@ -138,7 +138,7 @@ analyse prog = do
 --     Initialization of local variables
 analyseBStmt :: AnnBlockStmt -> ProdProgram -> EnvOp () 
 analyseBStmt bstmt cont = do 
- printStat bstmt
+ -- printStat bstmt
  case bstmt of
   AnnBlockStmt stmt           -> analyseStmt stmt cont 
   AnnLocalVars vIds _ ty vars -> do
@@ -229,8 +229,7 @@ analyseIf vId cond s1 s2 cont = do
   put new_env
   analyse cont
  else do
-  -- @TODO: Normalize the condition
-  condSmt  <- mapM (\v -> encodeExp bSort v cond) vId 
+  condSmt  <- mapM (\v -> encodeCond bSort v cond) vId 
   env      <- get
   -- check that all variants take the same paths 
   condAst <- lift $ mapM (uncurry mkIff) (pair condSmt) >>= mkAnd
@@ -260,6 +259,17 @@ analyseIf vId cond s1 s2 cont = do
     wizPrint "analyseIf: not all variants are taking the same path"
     let ifs = map (\i -> AnnBlockStmt $ AnnIfThenElse [i] cond (toAnn [i] ((fromAnn s1)::Stmt)) (toAnn [i] ((fromAnn s2)::Stmt))) vId
     analyse $ ifs ++ cont  
+
+encodeCond :: Maybe Sort -> VId -> Exp -> EnvOp AST
+encodeCond bSort vId cond = do
+  exp <- encodeExp bSort vId cond
+  str <- lift $ getSort exp >>= sortToString 
+  if str == "Bool"
+  then return exp
+  else do
+    one <- lift $ mkIntNum 1
+    res <- lift $ mkEq exp one
+    return res
 
 -- Analyse Loops
 --  Houdini style loop invariant generation

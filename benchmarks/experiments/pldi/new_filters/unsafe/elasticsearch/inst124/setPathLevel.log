@@ -44,233 +44,147 @@ verify: relational VC
                 (= childFilter_4_0!59 childFilter_3_0!58)
                 (= childFilter_3_0!58 childFilter_2_0!57)
                 (= childFilter_2_0!57 childFilter_1_0!56)
-                (= shardContext_4_1!124
-                   (nestedScope.getObjectMapper!123 shardContext_4_0!55))
                 (= objectMapper_4_1!122
                    (nestedScope.getObjectMapper!123 shardContext_4_0!55))
-                (= parseContext_3_1!127
+                (= objectMapper_3_1!125
                    (nestedScope.getObjectMapper!123 parseContext_3_0!34))
-                (= objectMapper_3_1!126
-                   (nestedScope.getObjectMapper!123 parseContext_3_0!34))
-                (= shardContext_2_1!130
+                (= objectMapper_2_1!127
                    (nestedScope.getObjectMapper!123 shardContext_2_0!53))
-                (= objectMapper_2_1!129
-                   (nestedScope.getObjectMapper!123 shardContext_2_0!53))
-                (= parseContext_1_1!133
-                   (nestedScope.getObjectMapper!123 parseContext_1_0!32))
-                (= objectMapper_1_1!132
+                (= objectMapper_1_1!129
                    (nestedScope.getObjectMapper!123 parseContext_1_0!32)))))
 (let ((a!2 (and a!1
-                (not (= objectMapper_1_1!132 0))
-                (= objectMapper_1_2!140
-                   (nestedTypeFilter!139 objectMapper_1_1!132))
-                (= parseContext_1_2!142
-                   (bitsetFilter!141 parseContext_1_1!133
-                                     (nestedTypeFilter!139 objectMapper_1_1!132)))
-                (= parentFilter_1_1!138
-                   (bitsetFilter!141 parseContext_1_1!133
-                                     (nestedTypeFilter!139 objectMapper_1_1!132)))
-                (= objectMapper_1_3 objectMapper_1_2!140)
-                (= parentFilter_1_2 parentFilter_1_1!138)
-                (= parseContext_1_3 parseContext_1_2!142))))
+                (not (= objectMapper_1_1!129 0))
+                (= parentFilter_1_1!133
+                   (bitsetFilter!135 parseContext_1_0!32
+                                     (nestedTypeFilter!134 objectMapper_1_1!129)))
+                (= parentFilter_1_2 parentFilter_1_1!133))))
 (let ((a!3 (or (and a!1
-                    (= objectMapper_1_1!132 0)
-                    (= parseContext_1_2!137
-                       (bitsetFilter!136 parseContext_1_1!133
-                                         newNonNestedFilter.Queries!135))
-                    (= parentFilter_1_1!134
-                       (bitsetFilter!136 parseContext_1_1!133
-                                         newNonNestedFilter.Queries!135))
-                    (= objectMapper_1_3 objectMapper_1_1!132)
-                    (= parentFilter_1_2 parentFilter_1_1!134)
-                    (= parseContext_1_3 parseContext_1_2!137))
+                    (= objectMapper_1_1!129 0)
+                    (= parentFilter_1_1!130
+                       (bitsetFilter!132 parseContext_1_0!32
+                                         newNonNestedFilter.Queries!131))
+                    (= parentFilter_1_2 parentFilter_1_1!130))
                a!2)))
 (let ((a!4 (and a!3
-                (not (= objectMapper_2_1!129 0))
-                (= objectMapper_2_2!146
-                   (nestedTypeFilter!139 objectMapper_2_1!129))
-                (= shardContext_2_2!147
-                   (bitsetFilter!136 shardContext_2_1!130
-                                     (nestedTypeFilter!139 objectMapper_2_1!129)))
-                (= parentFilter_2_1!145
-                   (bitsetFilter!136 shardContext_2_1!130
-                                     (nestedTypeFilter!139 objectMapper_2_1!129)))
-                (= objectMapper_2_3 objectMapper_2_2!146)
-                (= parentFilter_2_2 parentFilter_2_1!145)
-                (= shardContext_2_3 shardContext_2_2!147))))
+                (not (= objectMapper_2_1!127 0))
+                (= parentFilter_2_1!137
+                   (bitsetFilter!132 shardContext_2_0!53
+                                     (nestedTypeFilter!134 objectMapper_2_1!127)))
+                (= parentFilter_2_2 parentFilter_2_1!137))))
 (let ((a!5 (or (and a!3
-                    (= objectMapper_2_1!129 0)
-                    (= shardContext_2_2!144
-                       (bitsetFilter!136 shardContext_2_1!130
-                                         newNonNestedFilter.Queries!135))
-                    (= parentFilter_2_1!143
-                       (bitsetFilter!136 shardContext_2_1!130
-                                         newNonNestedFilter.Queries!135))
-                    (= objectMapper_2_3 objectMapper_2_1!129)
-                    (= parentFilter_2_2 parentFilter_2_1!143)
-                    (= shardContext_2_3 shardContext_2_2!144))
+                    (= objectMapper_2_1!127 0)
+                    (= parentFilter_2_1!136
+                       (bitsetFilter!132 shardContext_2_0!53
+                                         newNonNestedFilter.Queries!131))
+                    (= parentFilter_2_2 parentFilter_2_1!136))
                a!4)))
 (let ((a!6 (and a!5
-                (not (= objectMapper_3_1!126 0))
-                (= objectMapper_3_2!151
-                   (nestedTypeFilter!139 objectMapper_3_1!126))
-                (= parseContext_3_2!152
-                   (bitsetFilter!136 parseContext_3_1!127
-                                     (nestedTypeFilter!139 objectMapper_3_1!126)))
-                (= parentFilter_3_1!150
-                   (bitsetFilter!136 parseContext_3_1!127
-                                     (nestedTypeFilter!139 objectMapper_3_1!126)))
-                (= objectMapper_3_3 objectMapper_3_2!151)
-                (= parentFilter_3_2 parentFilter_3_1!150)
-                (= parseContext_3_3 parseContext_3_2!152))))
+                (not (= objectMapper_3_1!125 0))
+                (= parentFilter_3_1!139
+                   (bitsetFilter!132 parseContext_3_0!34
+                                     (nestedTypeFilter!134 objectMapper_3_1!125)))
+                (= parentFilter_3_2 parentFilter_3_1!139))))
 (let ((a!7 (or (and a!5
-                    (= objectMapper_3_1!126 0)
-                    (= parseContext_3_2!149
-                       (bitsetFilter!136 parseContext_3_1!127
-                                         newNonNestedFilter.Queries!135))
-                    (= parentFilter_3_1!148
-                       (bitsetFilter!136 parseContext_3_1!127
-                                         newNonNestedFilter.Queries!135))
-                    (= objectMapper_3_3 objectMapper_3_1!126)
-                    (= parentFilter_3_2 parentFilter_3_1!148)
-                    (= parseContext_3_3 parseContext_3_2!149))
+                    (= objectMapper_3_1!125 0)
+                    (= parentFilter_3_1!138
+                       (bitsetFilter!132 parseContext_3_0!34
+                                         newNonNestedFilter.Queries!131))
+                    (= parentFilter_3_2 parentFilter_3_1!138))
                a!6)))
 (let ((a!8 (and a!7
                 (not (= objectMapper_4_1!122 0))
-                (= objectMapper_4_2!156
-                   (nestedTypeFilter!139 objectMapper_4_1!122))
-                (= shardContext_4_2!157
-                   (bitsetFilter!136 shardContext_4_1!124
-                                     (nestedTypeFilter!139 objectMapper_4_1!122)))
-                (= parentFilter_4_1!155
-                   (bitsetFilter!136 shardContext_4_1!124
-                                     (nestedTypeFilter!139 objectMapper_4_1!122)))
-                (= objectMapper_4_3 objectMapper_4_2!156)
-                (= parentFilter_4_2 parentFilter_4_1!155)
-                (= shardContext_4_3 shardContext_4_2!157))))
+                (= parentFilter_4_1!141
+                   (bitsetFilter!132 shardContext_4_0!55
+                                     (nestedTypeFilter!134 objectMapper_4_1!122)))
+                (= parentFilter_4_2 parentFilter_4_1!141))))
 (let ((a!9 (or (and a!7
                     (= objectMapper_4_1!122 0)
-                    (= shardContext_4_2!154
-                       (bitsetFilter!136 shardContext_4_1!124
-                                         newNonNestedFilter.Queries!135))
-                    (= parentFilter_4_1!153
-                       (bitsetFilter!136 shardContext_4_1!124
-                                         newNonNestedFilter.Queries!135))
-                    (= objectMapper_4_3 objectMapper_4_1!122)
-                    (= parentFilter_4_2 parentFilter_4_1!153)
-                    (= shardContext_4_3 shardContext_4_2!154))
+                    (= parentFilter_4_1!140
+                       (bitsetFilter!132 shardContext_4_0!55
+                                         newNonNestedFilter.Queries!131))
+                    (= parentFilter_4_2 parentFilter_4_1!140))
                a!8)))
   (and a!9
-       (= nestedObjectMapper_4_1!159
-          (nestedTypeFilter!139 nestedObjectMapper_4_0!23))
-       (= childFilter_4_1!158 (nestedTypeFilter!139 nestedObjectMapper_4_0!23))
-       (= nestedObjectMapper_3_1!161
-          (nestedTypeFilter!139 nestedObjectMapper_3_0!22))
-       (= childFilter_3_1!160 (nestedTypeFilter!139 nestedObjectMapper_3_0!22))
-       (= nestedObjectMapper_2_1!163
-          (nestedTypeFilter!139 nestedObjectMapper_2_0!21))
-       (= shardContext_2_4!164
-          (bitsetFilter!136 shardContext_2_3
-                            (nestedTypeFilter!139 nestedObjectMapper_2_0!21)))
-       (= childFilter_2_1!162
-          (bitsetFilter!136 shardContext_2_3
-                            (nestedTypeFilter!139 nestedObjectMapper_2_0!21)))
-       (= nestedObjectMapper_1_1!166
-          (nestedTypeFilter!139 nestedObjectMapper_1_0!20))
-       (= parseContext_1_4!167
-          (bitsetFilter!136 parseContext_1_3
-                            (nestedTypeFilter!139 nestedObjectMapper_1_0!20)))
-       (= childFilter_1_1!165
-          (bitsetFilter!136 parseContext_1_3
-                            (nestedTypeFilter!139 nestedObjectMapper_1_0!20)))
-       (= shardContext_4_4!170
-          (nestedScope.nextLevel!169
-            shardContext_4_3
-            nestedObjectMapper_4_1!159))
-       (= parentObjectMapper_4_1!168
-          (nestedScope.nextLevel!169
-            shardContext_4_3
-            nestedObjectMapper_4_1!159))
-       (= parseContext_3_4!172
-          (nestedScope.nextLevel!169
-            parseContext_3_3
-            nestedObjectMapper_3_1!161))
-       (= parentObjectMapper_3_1!171
-          (nestedScope.nextLevel!169
-            parseContext_3_3
-            nestedObjectMapper_3_1!161))
-       (= shardContext_2_5!174
-          (nestedScope.nextLevel!169
-            shardContext_2_4!164
-            nestedObjectMapper_2_1!163))
-       (= parentObjectMapper_2_1!173
-          (nestedScope.nextLevel!169
-            shardContext_2_4!164
-            nestedObjectMapper_2_1!163))
-       (= parseContext_1_5!176
-          (nestedScope.nextLevel!169
-            parseContext_1_4!167
-            nestedObjectMapper_1_1!166))
-       (= parentObjectMapper_1_1!175
-          (nestedScope.nextLevel!169
-            parseContext_1_4!167
-            nestedObjectMapper_1_1!166))
-       (= ret_childFilter_1_0!116 childFilter_1_1!165)
+       (= childFilter_4_1!142 (nestedTypeFilter!134 nestedObjectMapper_4_0!23))
+       (= childFilter_3_1!143 (nestedTypeFilter!134 nestedObjectMapper_3_0!22))
+       (= childFilter_2_1!144
+          (bitsetFilter!132 shardContext_2_0!53
+                            (nestedTypeFilter!134 nestedObjectMapper_2_0!21)))
+       (= childFilter_1_1!145
+          (bitsetFilter!132 parseContext_1_0!32
+                            (nestedTypeFilter!134 nestedObjectMapper_1_0!20)))
+       (= parentObjectMapper_4_1!146
+          (nestedScope.nextLevel!147
+            shardContext_4_0!55
+            nestedObjectMapper_4_0!23))
+       (= parentObjectMapper_3_1!148
+          (nestedScope.nextLevel!147
+            parseContext_3_0!34
+            nestedObjectMapper_3_0!22))
+       (= parentObjectMapper_2_1!149
+          (nestedScope.nextLevel!147
+            shardContext_2_0!53
+            nestedObjectMapper_2_0!21))
+       (= parentObjectMapper_1_1!150
+          (nestedScope.nextLevel!147
+            parseContext_1_0!32
+            nestedObjectMapper_1_0!20))
+       (= ret_childFilter_1_0!116 childFilter_1_1!145)
        (= ret_filterFound_1_0!64 filterFound_1_0!4)
        (= ret_filterParsed_1_0!68 filterParsed_1_0!8)
        (= ret_innerFilter_1_0!72 innerFilter_1_0!12)
        (= ret_innerQuery_1_0!76 innerQuery_1_0!16)
-       (= ret_nestedObjectMapper_1_0!80 nestedObjectMapper_1_1!166)
+       (= ret_nestedObjectMapper_1_0!80 nestedObjectMapper_1_0!20)
        (= ret_parentFilter_1_0!84 parentFilter_1_2)
-       (= ret_parentObjectMapper_1_0!88 parentObjectMapper_1_1!175)
-       (= ret_parseContext_1_0!92 parseContext_1_5!176)
+       (= ret_parentObjectMapper_1_0!88 parentObjectMapper_1_1!150)
+       (= ret_parseContext_1_0!92 parseContext_1_0!32)
        (= ret_path_1_0!96 path_1_0!36)
        (= ret_queryFound_1_0!100 queryFound_1_0!40)
        (= ret_queryParsed_1_0!104 queryParsed_1_0!44)
        (= ret_source_1_0!108 source_1_0!48)
        (= ret_shardContext_1_0!112 shardContext_1_0!52)
-       (= ret_childFilter_2_0!117 childFilter_2_1!162)
+       (= ret_childFilter_2_0!117 childFilter_2_1!144)
        (= ret_filterFound_2_0!65 filterFound_2_0!5)
        (= ret_filterParsed_2_0!69 filterParsed_2_0!9)
        (= ret_innerFilter_2_0!73 innerFilter_2_0!13)
        (= ret_innerQuery_2_0!77 innerQuery_2_0!17)
-       (= ret_nestedObjectMapper_2_0!81 nestedObjectMapper_2_1!163)
+       (= ret_nestedObjectMapper_2_0!81 nestedObjectMapper_2_0!21)
        (= ret_parentFilter_2_0!85 parentFilter_2_2)
-       (= ret_parentObjectMapper_2_0!89 parentObjectMapper_2_1!173)
+       (= ret_parentObjectMapper_2_0!89 parentObjectMapper_2_1!149)
        (= ret_parseContext_2_0!93 parseContext_2_0!33)
        (= ret_path_2_0!97 path_2_0!37)
        (= ret_queryFound_2_0!101 queryFound_2_0!41)
        (= ret_queryParsed_2_0!105 queryParsed_2_0!45)
        (= ret_source_2_0!109 source_2_0!49)
-       (= ret_shardContext_2_0!113 shardContext_2_5!174)
-       (= ret_childFilter_3_0!118 childFilter_3_1!160)
+       (= ret_shardContext_2_0!113 shardContext_2_0!53)
+       (= ret_childFilter_3_0!118 childFilter_3_1!143)
        (= ret_filterFound_3_0!66 filterFound_3_0!6)
        (= ret_filterParsed_3_0!70 filterParsed_3_0!10)
        (= ret_innerFilter_3_0!74 innerFilter_3_0!14)
        (= ret_innerQuery_3_0!78 innerQuery_3_0!18)
-       (= ret_nestedObjectMapper_3_0!82 nestedObjectMapper_3_1!161)
+       (= ret_nestedObjectMapper_3_0!82 nestedObjectMapper_3_0!22)
        (= ret_parentFilter_3_0!86 parentFilter_3_2)
-       (= ret_parentObjectMapper_3_0!90 parentObjectMapper_3_1!171)
-       (= ret_parseContext_3_0!94 parseContext_3_4!172)
+       (= ret_parentObjectMapper_3_0!90 parentObjectMapper_3_1!148)
+       (= ret_parseContext_3_0!94 parseContext_3_0!34)
        (= ret_path_3_0!98 path_3_0!38)
        (= ret_queryFound_3_0!102 queryFound_3_0!42)
        (= ret_queryParsed_3_0!106 queryParsed_3_0!46)
        (= ret_source_3_0!110 source_3_0!50)
        (= ret_shardContext_3_0!114 shardContext_3_0!54)
-       (= ret_childFilter_4_0!119 childFilter_4_1!158)
+       (= ret_childFilter_4_0!119 childFilter_4_1!142)
        (= ret_filterFound_4_0!67 filterFound_4_0!7)
        (= ret_filterParsed_4_0!71 filterParsed_4_0!11)
        (= ret_innerFilter_4_0!75 innerFilter_4_0!15)
        (= ret_innerQuery_4_0!79 innerQuery_4_0!19)
-       (= ret_nestedObjectMapper_4_0!83 nestedObjectMapper_4_1!159)
+       (= ret_nestedObjectMapper_4_0!83 nestedObjectMapper_4_0!23)
        (= ret_parentFilter_4_0!87 parentFilter_4_2)
-       (= ret_parentObjectMapper_4_0!91 parentObjectMapper_4_1!168)
+       (= ret_parentObjectMapper_4_0!91 parentObjectMapper_4_1!146)
        (= ret_parseContext_4_0!95 parseContext_4_0!35)
        (= ret_path_4_0!99 path_4_0!39)
        (= ret_queryFound_4_0!103 queryFound_4_0!43)
        (= ret_queryParsed_4_0!107 queryParsed_4_0!47)
        (= ret_source_4_0!111 source_4_0!51)
-       (= ret_shardContext_4_0!115 shardContext_4_4!170)))))))))))
+       (= ret_shardContext_4_0!115 shardContext_4_0!55)))))))))))
 verify: semantic conflict VC
 (let ((a!1 (=> (not (and (= ret_childFilter_1_0!116 ret_childFilter_2_0!117)))
                (and (= ret_childFilter_4_0!119 ret_childFilter_2_0!117))))
