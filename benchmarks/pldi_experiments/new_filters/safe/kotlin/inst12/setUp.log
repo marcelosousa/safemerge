@@ -1,0 +1,779 @@
+verify: relational VC
+(and (= kotlinInternalModeOriginalValue_4_0!3
+        kotlinInternalModeOriginalValue_3_0!2)
+     (= kotlinInternalModeOriginalValue_3_0!2
+        kotlinInternalModeOriginalValue_2_0!1)
+     (= kotlinInternalModeOriginalValue_2_0!1
+        kotlinInternalModeOriginalValue_1_0!0)
+     (= myAdditionalModules_4_0!7 myAdditionalModules_3_0!6)
+     (= myAdditionalModules_3_0!6 myAdditionalModules_2_0!5)
+     (= myAdditionalModules_2_0!5 myAdditionalModules_1_0!4)
+     (= myCreateManifest_4_0!11 myCreateManifest_3_0!10)
+     (= myCreateManifest_3_0!10 myCreateManifest_2_0!9)
+     (= myCreateManifest_2_0!9 myCreateManifest_1_0!8)
+     (= myFacet_4_0!15 myFacet_3_0!14)
+     (= myFacet_3_0!14 myFacet_2_0!13)
+     (= myFacet_2_0!13 myFacet_1_0!12)
+     (= myModule_4_0!19 myModule_3_0!18)
+     (= myModule_3_0!18 myModule_2_0!17)
+     (= myModule_2_0!17 myModule_1_0!16)
+     (= myAdditionalModules_1_1!45
+        (Anonymous0!44 myAdditionalModules_1_0!4
+                       additionalModule!41
+                       wiz_i!42
+                       modules!43))
+     (= myAdditionalModules_2_1!46
+        (Anonymous0!44 myAdditionalModules_2_0!5
+                       additionalModule!41
+                       wiz_i!42
+                       modules!43))
+     (= myAdditionalModules_3_1!47
+        (Anonymous0!44 myAdditionalModules_3_0!6
+                       additionalModule!41
+                       wiz_i!42
+                       modules!43))
+     (= myAdditionalModules_4_1!48
+        (Anonymous0!44 myAdditionalModules_4_0!7
+                       additionalModule!41
+                       wiz_i!42
+                       modules!43))
+     (= myFacet_1_1!54
+        (Anonymous1!53 addAndroidFacet!49
+                       myModule_1_0!16
+                       myModule_1_0!16
+                       sdkPath!50
+                       getPlatformDir!51
+                       isToAddSdk!52))
+     (= myFacet_2_1!55
+        (Anonymous1!53 addAndroidFacet!49
+                       myModule_2_0!17
+                       myModule_2_0!17
+                       sdkPath!50
+                       getPlatformDir!51
+                       isToAddSdk!52))
+     (= myFacet_3_1!56
+        (Anonymous1!53 addAndroidFacet!49
+                       myModule_3_0!18
+                       myModule_3_0!18
+                       sdkPath!50
+                       getPlatformDir!51
+                       isToAddSdk!52))
+     (= myFacet_4_1!57
+        (Anonymous1!53 addAndroidFacet!49
+                       myModule_4_0!19
+                       myModule_4_0!19
+                       sdkPath!50
+                       getPlatformDir!51
+                       isToAddSdk!52))
+     (= myModule_1_1!61
+        (Anonymous2!60 moduleFixtureBuilder!58
+                       addAndroidFacet!49
+                       myModule_1_0!16
+                       myModule_1_0!16
+                       sdkPath!50
+                       getPlatformDir!51
+                       isToAddSdk!52
+                       ModuleRootModificationUtil!59
+                       additionalModule!41
+                       wiz_i!42
+                       modules!43))
+     (= myModule_2_1!62
+        (Anonymous2!60 moduleFixtureBuilder!58
+                       addAndroidFacet!49
+                       myModule_2_0!17
+                       myModule_2_0!17
+                       sdkPath!50
+                       getPlatformDir!51
+                       isToAddSdk!52
+                       ModuleRootModificationUtil!59
+                       additionalModule!41
+                       wiz_i!42
+                       modules!43))
+     (= myModule_3_1!63
+        (Anonymous2!60 moduleFixtureBuilder!58
+                       addAndroidFacet!49
+                       myModule_3_0!18
+                       myModule_3_0!18
+                       sdkPath!50
+                       getPlatformDir!51
+                       isToAddSdk!52
+                       ModuleRootModificationUtil!59
+                       additionalModule!41
+                       wiz_i!42
+                       modules!43))
+     (= myModule_4_1!64
+        (Anonymous2!60 moduleFixtureBuilder!58
+                       addAndroidFacet!49
+                       myModule_4_0!19
+                       myModule_4_0!19
+                       sdkPath!50
+                       getPlatformDir!51
+                       isToAddSdk!52
+                       ModuleRootModificationUtil!59
+                       additionalModule!41
+                       wiz_i!42
+                       modules!43))
+     (= sEnabled.RenderSecurityManager_1_1!68
+        (Anonymous3!67 RESTRICT_READS.RenderSecurityManager!66
+                       wiz_i!42
+                       modules!43))
+     (= sEnabled.RenderSecurityManager_2_1!70
+        (Anonymous3!67 RESTRICT_READS.RenderSecurityManager!66
+                       wiz_i!42
+                       modules!43))
+     (= sEnabled.RenderSecurityManager_3_1!72
+        (Anonymous3!67 RESTRICT_READS.RenderSecurityManager!66
+                       wiz_i!42
+                       modules!43))
+     (= sEnabled.RenderSecurityManager_4_1!74
+        (Anonymous3!67 RESTRICT_READS.RenderSecurityManager!66
+                       wiz_i!42
+                       modules!43))
+     (= addAndroidFacet_1_1!77
+        (Anonymous4!76 myModule_1_1!61
+                       myModule_1_1!61
+                       sdkPath!50
+                       getPlatformDir!51
+                       isToAddSdk!52
+                       additionalModule!41
+                       wiz_i!42
+                       modules!43))
+     (= addAndroidFacet_2_1!79
+        (Anonymous4!76 myModule_2_1!62
+                       myModule_2_1!62
+                       sdkPath!50
+                       getPlatformDir!51
+                       isToAddSdk!52
+                       additionalModule!41
+                       wiz_i!42
+                       modules!43))
+     (= addAndroidFacet_3_1!81
+        (Anonymous4!76 myModule_3_1!63
+                       myModule_3_1!63
+                       sdkPath!50
+                       getPlatformDir!51
+                       isToAddSdk!52
+                       additionalModule!41
+                       wiz_i!42
+                       modules!43))
+     (= addAndroidFacet_4_1!83
+        (Anonymous4!76 myModule_4_1!64
+                       myModule_4_1!64
+                       sdkPath!50
+                       getPlatformDir!51
+                       isToAddSdk!52
+                       additionalModule!41
+                       wiz_i!42
+                       modules!43))
+     (= additionalModule_1_1!87
+        (Anonymous5!86 data!85
+                       wiz_i!42
+                       modules!43
+                       myAdditionalModules_1_1!45
+                       addAndroidFacet_1_1!77
+                       sdkPath!50
+                       getPlatformDir!51
+                       ModuleRootModificationUtil!59
+                       myModule_1_1!61
+                       myModule_1_1!61))
+     (= additionalModule_2_1!89
+        (Anonymous5!86 data!85
+                       wiz_i!42
+                       modules!43
+                       myAdditionalModules_2_1!46
+                       addAndroidFacet_2_1!79
+                       sdkPath!50
+                       getPlatformDir!51
+                       ModuleRootModificationUtil!59
+                       myModule_2_1!62
+                       myModule_2_1!62))
+     (= additionalModule_3_1!91
+        (Anonymous5!86 data!85
+                       wiz_i!42
+                       modules!43
+                       myAdditionalModules_3_1!47
+                       addAndroidFacet_3_1!81
+                       sdkPath!50
+                       getPlatformDir!51
+                       ModuleRootModificationUtil!59
+                       myModule_3_1!63
+                       myModule_3_1!63))
+     (= additionalModule_4_1!93
+        (Anonymous5!86 data!85
+                       wiz_i!42
+                       modules!43
+                       myAdditionalModules_4_1!48
+                       addAndroidFacet_4_1!83
+                       sdkPath!50
+                       getPlatformDir!51
+                       ModuleRootModificationUtil!59
+                       myModule_4_1!64
+                       myModule_4_1!64))
+     (= androidSdk_1_1!98
+        (Anonymous6!97 createAndroidSdk!95 getTestSdkPath!96 getPlatformDir!51))
+     (= androidSdk_2_1!100
+        (Anonymous6!97 createAndroidSdk!95 getTestSdkPath!96 getPlatformDir!51))
+     (= androidSdk_3_1!102
+        (Anonymous6!97 createAndroidSdk!95 getTestSdkPath!96 getPlatformDir!51))
+     (= androidSdk_4_1!104
+        (Anonymous6!97 createAndroidSdk!95 getTestSdkPath!96 getPlatformDir!51))
+     (= assertTrue_1_1!108 (Anonymous7!107 dir!106))
+     (= assertTrue_2_1!110 (Anonymous7!107 dir!106))
+     (= assertTrue_3_1!112 (Anonymous7!107 dir!106))
+     (= assertTrue_4_1!114 (Anonymous7!107 dir!106))
+     (= configureAdditionalModules_1_1!118
+        (Anonymous8!117 projectBuilder!116 modules!43))
+     (= configureAdditionalModules_2_1!120
+        (Anonymous8!117 projectBuilder!116 modules!43))
+     (= configureAdditionalModules_3_1!122
+        (Anonymous8!117 projectBuilder!116 modules!43))
+     (= configureAdditionalModules_4_1!124
+        (Anonymous8!117 projectBuilder!116 modules!43))
+     (= createAndroidSdk_1_1!127
+        (Anonymous9!126 getTestSdkPath!96 getPlatformDir!51))
+     (= createAndroidSdk_2_1!129
+        (Anonymous9!126 getTestSdkPath!96 getPlatformDir!51))
+     (= createAndroidSdk_3_1!131
+        (Anonymous9!126 getTestSdkPath!96 getPlatformDir!51))
+     (= createAndroidSdk_4_1!133
+        (Anonymous9!126 getTestSdkPath!96 getPlatformDir!51))
+     (= createManifest_1_1!136 Anonymous10!135)
+     (= createManifest_2_1!138 Anonymous10!135)
+     (= createManifest_3_1!140 Anonymous10!135)
+     (= createManifest_4_1!142 Anonymous10!135)
+     (= data_1_1!145 (Anonymous11!144 modules!43 wiz_i!42))
+     (= data_2_1!147 (Anonymous11!144 modules!43 wiz_i!42))
+     (= data_3_1!149 (Anonymous11!144 modules!43 wiz_i!42))
+     (= data_4_1!151 (Anonymous11!144 modules!43 wiz_i!42))
+     (= myDirName.data_1_1!155
+        (Anonymous12!154 getContentRootPath!153 wiz_i!42 modules!43))
+     (= myDirName.data_2_1!157
+        (Anonymous12!154 getContentRootPath!153 wiz_i!42 modules!43))
+     (= myDirName.data_3_1!159
+        (Anonymous12!154 getContentRootPath!153 wiz_i!42 modules!43))
+     (= myDirName.data_4_1!161
+        (Anonymous12!154 getContentRootPath!153 wiz_i!42 modules!43))
+     (= myLibrary.data_1_1!165 (Anonymous13!164 facet!163 wiz_i!42 modules!43))
+     (= myLibrary.data_2_1!167 (Anonymous13!164 facet!163 wiz_i!42 modules!43))
+     (= myLibrary.data_3_1!169 (Anonymous13!164 facet!163 wiz_i!42 modules!43))
+     (= myLibrary.data_4_1!171 (Anonymous13!164 facet!163 wiz_i!42 modules!43))
+     (= deleteManifest_1_1!174
+        (Anonymous14!173 myCreateManifest_1_0!8
+                         myCreateManifest_1_0!8
+                         wiz_i!42
+                         modules!43))
+     (= deleteManifest_2_1!176
+        (Anonymous14!173 myCreateManifest_2_0!9
+                         myCreateManifest_2_0!9
+                         wiz_i!42
+                         modules!43))
+     (= deleteManifest_3_1!178
+        (Anonymous14!173 myCreateManifest_3_0!10
+                         myCreateManifest_3_0!10
+                         wiz_i!42
+                         modules!43))
+     (= deleteManifest_4_1!180
+        (Anonymous14!173 myCreateManifest_4_0!11
+                         myCreateManifest_4_0!11
+                         wiz_i!42
+                         modules!43))
+     (= dir_1_1!184 (Anonymous15!183 dirPath!182 assertTrue_1_1!108))
+     (= dir_2_1!186 (Anonymous15!183 dirPath!182 assertTrue_2_1!110))
+     (= dir_3_1!188 (Anonymous15!183 dirPath!182 assertTrue_3_1!112))
+     (= dir_4_1!190 (Anonymous15!183 dirPath!182 assertTrue_4_1!114))
+     (= dirPath_1_1!195
+        (Anonymous16!194 myFixture!192
+                         getContentRootPath!153
+                         tuneModule!193
+                         moduleFixtureBuilder!58))
+     (= dirPath_2_1!197
+        (Anonymous16!194 myFixture!192
+                         getContentRootPath!153
+                         tuneModule!193
+                         moduleFixtureBuilder!58))
+     (= dirPath_3_1!199
+        (Anonymous16!194 myFixture!192
+                         getContentRootPath!153
+                         tuneModule!193
+                         moduleFixtureBuilder!58))
+     (= dirPath_4_1!201
+        (Anonymous16!194 myFixture!192
+                         getContentRootPath!153
+                         tuneModule!193
+                         moduleFixtureBuilder!58))
+     (= facet_1_1!204
+        (Anonymous17!203 addAndroidFacet_1_1!77
+                         additionalModule_1_1!87
+                         sdkPath!50
+                         getPlatformDir!51
+                         wiz_i!42
+                         modules!43
+                         myLibrary.data_1_1!165))
+     (= facet_2_1!206
+        (Anonymous17!203 addAndroidFacet_2_1!79
+                         additionalModule_2_1!89
+                         sdkPath!50
+                         getPlatformDir!51
+                         wiz_i!42
+                         modules!43
+                         myLibrary.data_2_1!167))
+     (= facet_3_1!208
+        (Anonymous17!203 addAndroidFacet_3_1!81
+                         additionalModule_3_1!91
+                         sdkPath!50
+                         getPlatformDir!51
+                         wiz_i!42
+                         modules!43
+                         myLibrary.data_3_1!169))
+     (= facet_4_1!210
+        (Anonymous17!203 addAndroidFacet_4_1!83
+                         additionalModule_4_1!93
+                         sdkPath!50
+                         getPlatformDir!51
+                         wiz_i!42
+                         modules!43
+                         myLibrary.data_4_1!171))
+     (= getContentRootPath_1_1!213
+        (Anonymous18!212 myDirName.data_1_1!155 wiz_i!42 modules!43))
+     (= getContentRootPath_2_1!215
+        (Anonymous18!212 myDirName.data_2_1!157 wiz_i!42 modules!43))
+     (= getContentRootPath_3_1!217
+        (Anonymous18!212 myDirName.data_3_1!159 wiz_i!42 modules!43))
+     (= getContentRootPath_4_1!219
+        (Anonymous18!212 myDirName.data_4_1!161 wiz_i!42 modules!43))
+     (= getName_1_1!223 (Anonymous19!222 IdeaTestFixtureFactory!221))
+     (= getName_2_1!225 (Anonymous19!222 IdeaTestFixtureFactory!221))
+     (= getName_3_1!227 (Anonymous19!222 IdeaTestFixtureFactory!221))
+     (= getName_4_1!229 (Anonymous19!222 IdeaTestFixtureFactory!221))
+     (= getPlatformDir_1_1!232
+        (Anonymous20!231 createAndroidSdk_1_1!127
+                         getTestSdkPath!96
+                         addAndroidFacet_1_1!77
+                         myModule_1_1!61
+                         myModule_1_1!61
+                         sdkPath!50
+                         isToAddSdk!52
+                         additionalModule_1_1!87
+                         wiz_i!42
+                         modules!43))
+     (= getPlatformDir_2_1!234
+        (Anonymous20!231 createAndroidSdk_2_1!129
+                         getTestSdkPath!96
+                         addAndroidFacet_2_1!79
+                         myModule_2_1!62
+                         myModule_2_1!62
+                         sdkPath!50
+                         isToAddSdk!52
+                         additionalModule_2_1!89
+                         wiz_i!42
+                         modules!43))
+     (= getPlatformDir_3_1!236
+        (Anonymous20!231 createAndroidSdk_3_1!131
+                         getTestSdkPath!96
+                         addAndroidFacet_3_1!81
+                         myModule_3_1!63
+                         myModule_3_1!63
+                         sdkPath!50
+                         isToAddSdk!52
+                         additionalModule_3_1!91
+                         wiz_i!42
+                         modules!43))
+     (= getPlatformDir_4_1!238
+        (Anonymous20!231 createAndroidSdk_4_1!133
+                         getTestSdkPath!96
+                         addAndroidFacet_4_1!83
+                         myModule_4_1!64
+                         myModule_4_1!64
+                         sdkPath!50
+                         isToAddSdk!52
+                         additionalModule_4_1!93
+                         wiz_i!42
+                         modules!43))
+     (= getProject_1_1!242
+        (Anonymous21!241 StartupManager!240 wiz_i!42 modules!43))
+     (= getProject_2_1!244
+        (Anonymous21!241 StartupManager!240 wiz_i!42 modules!43))
+     (= getProject_3_1!246
+        (Anonymous21!241 StartupManager!240 wiz_i!42 modules!43))
+     (= getProject_4_1!248
+        (Anonymous21!241 StartupManager!240 wiz_i!42 modules!43))
+     (= getResDir_1_1!251 (Anonymous22!250 myFixture!192))
+     (= getResDir_2_1!253 (Anonymous22!250 myFixture!192))
+     (= getResDir_3_1!255 (Anonymous22!250 myFixture!192))
+     (= getResDir_4_1!257 (Anonymous22!250 myFixture!192))
+     (= getTestDataPath_1_1!260 (Anonymous23!259 myFixture!192))
+     (= getTestDataPath_2_1!262 (Anonymous23!259 myFixture!192))
+     (= getTestDataPath_3_1!264 (Anonymous23!259 myFixture!192))
+     (= getTestDataPath_4_1!266 (Anonymous23!259 myFixture!192))
+     (= getTestSdkPath_1_1!269
+        (Anonymous24!268 createAndroidSdk_1_1!127 getPlatformDir_1_1!232))
+     (= getTestSdkPath_2_1!271
+        (Anonymous24!268 createAndroidSdk_2_1!129 getPlatformDir_2_1!234))
+     (= getTestSdkPath_3_1!273
+        (Anonymous24!268 createAndroidSdk_3_1!131 getPlatformDir_3_1!236))
+     (= getTestSdkPath_4_1!275
+        (Anonymous24!268 createAndroidSdk_4_1!133 getPlatformDir_4_1!238))
+     (= isToAddSdk_1_1!278
+        (Anonymous25!277 addAndroidFacet_1_1!77
+                         myModule_1_1!61
+                         myModule_1_1!61
+                         sdkPath!50
+                         getPlatformDir_1_1!232))
+     (= isToAddSdk_2_1!280
+        (Anonymous25!277 addAndroidFacet_2_1!79
+                         myModule_2_1!62
+                         myModule_2_1!62
+                         sdkPath!50
+                         getPlatformDir_2_1!234))
+     (= isToAddSdk_3_1!282
+        (Anonymous25!277 addAndroidFacet_3_1!81
+                         myModule_3_1!63
+                         myModule_3_1!63
+                         sdkPath!50
+                         getPlatformDir_3_1!236))
+     (= isToAddSdk_4_1!284
+        (Anonymous25!277 addAndroidFacet_4_1!83
+                         myModule_4_1!64
+                         myModule_4_1!64
+                         sdkPath!50
+                         getPlatformDir_4_1!238))
+     (= moduleFixtureBuilder_1_1!287
+        (Anonymous26!286 projectBuilder!116 tuneModule!193 dirPath_1_1!195))
+     (= moduleFixtureBuilder_2_1!289
+        (Anonymous26!286 projectBuilder!116 tuneModule!193 dirPath_2_1!197))
+     (= moduleFixtureBuilder_3_1!291
+        (Anonymous26!286 projectBuilder!116 tuneModule!193 dirPath_3_1!199))
+     (= moduleFixtureBuilder_4_1!293
+        (Anonymous26!286 projectBuilder!116 tuneModule!193 dirPath_4_1!201))
+     (= modules_1_1!296
+        (Anonymous27!295 configureAdditionalModules_1_1!118
+                         projectBuilder!116
+                         wiz_i!42))
+     (= modules_2_1!298
+        (Anonymous27!295 configureAdditionalModules_2_1!120
+                         projectBuilder!116
+                         wiz_i!42))
+     (= modules_3_1!300
+        (Anonymous27!295 configureAdditionalModules_3_1!122
+                         projectBuilder!116
+                         wiz_i!42))
+     (= modules_4_1!302
+        (Anonymous27!295 configureAdditionalModules_4_1!124
+                         projectBuilder!116
+                         wiz_i!42))
+     (= myAdditionalModules_1_2!304 Anonymous28!303)
+     (= myAdditionalModules_2_2!305 Anonymous28!303)
+     (= myAdditionalModules_3_2!306 Anonymous28!303)
+     (= myAdditionalModules_4_2!307 Anonymous28!303)
+     (= myFacet_1_2!309
+        (Anonymous29!308 addAndroidFacet_1_1!77
+                         myModule_1_1!61
+                         myModule_1_1!61
+                         sdkPath!50
+                         getPlatformDir_1_1!232
+                         isToAddSdk_1_1!278))
+     (= myFacet_2_2!310
+        (Anonymous29!308 addAndroidFacet_2_1!79
+                         myModule_2_1!62
+                         myModule_2_1!62
+                         sdkPath!50
+                         getPlatformDir_2_1!234
+                         isToAddSdk_2_1!280))
+     (= myFacet_3_2!311
+        (Anonymous29!308 addAndroidFacet_3_1!81
+                         myModule_3_1!63
+                         myModule_3_1!63
+                         sdkPath!50
+                         getPlatformDir_3_1!236
+                         isToAddSdk_3_1!282))
+     (= myFacet_4_2!312
+        (Anonymous29!308 addAndroidFacet_4_1!83
+                         myModule_4_1!64
+                         myModule_4_1!64
+                         sdkPath!50
+                         getPlatformDir_4_1!238
+                         isToAddSdk_4_1!284))
+     (= myFixture_1_1!318
+        (Anonymous30!317 JavaTestFixtureFactory!314
+                         projectBuilder!116
+                         getTestDataPath_1_1!260
+                         getResDir_1_1!251
+                         rootPath!315
+                         wiz_i!42
+                         modules_1_1!296
+                         FN_ANDROID_MANIFEST_XML.SdkConstants!316))
+     (= myFixture_2_1!320
+        (Anonymous30!317 JavaTestFixtureFactory!314
+                         projectBuilder!116
+                         getTestDataPath_2_1!262
+                         getResDir_2_1!253
+                         rootPath!315
+                         wiz_i!42
+                         modules_2_1!298
+                         FN_ANDROID_MANIFEST_XML.SdkConstants!316))
+     (= myFixture_3_1!322
+        (Anonymous30!317 JavaTestFixtureFactory!314
+                         projectBuilder!116
+                         getTestDataPath_3_1!264
+                         getResDir_3_1!255
+                         rootPath!315
+                         wiz_i!42
+                         modules_3_1!300
+                         FN_ANDROID_MANIFEST_XML.SdkConstants!316))
+     (= myFixture_4_1!324
+        (Anonymous30!317 JavaTestFixtureFactory!314
+                         projectBuilder!116
+                         getTestDataPath_4_1!266
+                         getResDir_4_1!257
+                         rootPath!315
+                         wiz_i!42
+                         modules_4_1!302
+                         FN_ANDROID_MANIFEST_XML.SdkConstants!316))
+     (= myModule_1_2!326
+        (Anonymous31!325 moduleFixtureBuilder_1_1!287
+                         addAndroidFacet_1_1!77
+                         myModule_1_1!61
+                         myModule_1_1!61
+                         sdkPath!50
+                         getPlatformDir_1_1!232
+                         isToAddSdk_1_1!278
+                         ModuleRootModificationUtil!59
+                         additionalModule_1_1!87
+                         wiz_i!42
+                         modules_1_1!296))
+     (= myModule_2_2!327
+        (Anonymous31!325 moduleFixtureBuilder_2_1!289
+                         addAndroidFacet_2_1!79
+                         myModule_2_1!62
+                         myModule_2_1!62
+                         sdkPath!50
+                         getPlatformDir_2_1!234
+                         isToAddSdk_2_1!280
+                         ModuleRootModificationUtil!59
+                         additionalModule_2_1!89
+                         wiz_i!42
+                         modules_2_1!298))
+     (= myModule_3_2!328
+        (Anonymous31!325 moduleFixtureBuilder_3_1!291
+                         addAndroidFacet_3_1!81
+                         myModule_3_1!63
+                         myModule_3_1!63
+                         sdkPath!50
+                         getPlatformDir_3_1!236
+                         isToAddSdk_3_1!282
+                         ModuleRootModificationUtil!59
+                         additionalModule_3_1!91
+                         wiz_i!42
+                         modules_3_1!300))
+     (= myModule_4_2!329
+        (Anonymous31!325 moduleFixtureBuilder_4_1!293
+                         addAndroidFacet_4_1!83
+                         myModule_4_1!64
+                         myModule_4_1!64
+                         sdkPath!50
+                         getPlatformDir_4_1!238
+                         isToAddSdk_4_1!284
+                         ModuleRootModificationUtil!59
+                         additionalModule_4_1!93
+                         wiz_i!42
+                         modules_4_1!302))
+     (= projectBuilder_1_1!332
+        (Anonymous32!331 IdeaTestFixtureFactory!221
+                         getName_1_1!223
+                         JavaTestFixtureFactory!314
+                         configureAdditionalModules_1_1!118
+                         modules_1_1!296))
+     (= projectBuilder_2_1!334
+        (Anonymous32!331 IdeaTestFixtureFactory!221
+                         getName_2_1!225
+                         JavaTestFixtureFactory!314
+                         configureAdditionalModules_2_1!120
+                         modules_2_1!298))
+     (= projectBuilder_3_1!336
+        (Anonymous32!331 IdeaTestFixtureFactory!221
+                         getName_3_1!227
+                         JavaTestFixtureFactory!314
+                         configureAdditionalModules_3_1!122
+                         modules_3_1!300))
+     (= projectBuilder_4_1!338
+        (Anonymous32!331 IdeaTestFixtureFactory!221
+                         getName_4_1!229
+                         JavaTestFixtureFactory!314
+                         configureAdditionalModules_4_1!124
+                         modules_4_1!302))
+     (= rootPath_1_1!341
+        (Anonymous33!340 getContentRootPath_1_1!213
+                         myDirName.data_1_1!155
+                         wiz_i!42
+                         modules_1_1!296
+                         myFixture_1_1!318
+                         FN_ANDROID_MANIFEST_XML.SdkConstants!316))
+     (= rootPath_2_1!343
+        (Anonymous33!340 getContentRootPath_2_1!215
+                         myDirName.data_2_1!157
+                         wiz_i!42
+                         modules_2_1!298
+                         myFixture_2_1!320
+                         FN_ANDROID_MANIFEST_XML.SdkConstants!316))
+     (= rootPath_3_1!345
+        (Anonymous33!340 getContentRootPath_3_1!217
+                         myDirName.data_3_1!159
+                         wiz_i!42
+                         modules_3_1!300
+                         myFixture_3_1!322
+                         FN_ANDROID_MANIFEST_XML.SdkConstants!316))
+     (= rootPath_4_1!347
+        (Anonymous33!340 getContentRootPath_4_1!219
+                         myDirName.data_4_1!161
+                         wiz_i!42
+                         modules_4_1!302
+                         myFixture_4_1!324
+                         FN_ANDROID_MANIFEST_XML.SdkConstants!316))
+     (= sdkPath_1_1!350
+        (Anonymous34!349 getTestSdkPath_1_1!269
+                         addAndroidFacet_1_1!77
+                         myModule_1_2!326
+                         myModule_1_2!326
+                         getPlatformDir_1_1!232
+                         isToAddSdk_1_1!278
+                         additionalModule_1_1!87
+                         wiz_i!42
+                         modules_1_1!296))
+     (= sdkPath_2_1!352
+        (Anonymous34!349 getTestSdkPath_2_1!271
+                         addAndroidFacet_2_1!79
+                         myModule_2_2!327
+                         myModule_2_2!327
+                         getPlatformDir_2_1!234
+                         isToAddSdk_2_1!280
+                         additionalModule_2_1!89
+                         wiz_i!42
+                         modules_2_1!298))
+     (= sdkPath_3_1!354
+        (Anonymous34!349 getTestSdkPath_3_1!273
+                         addAndroidFacet_3_1!81
+                         myModule_3_2!328
+                         myModule_3_2!328
+                         getPlatformDir_3_1!236
+                         isToAddSdk_3_1!282
+                         additionalModule_3_1!91
+                         wiz_i!42
+                         modules_3_1!300))
+     (= sdkPath_4_1!356
+        (Anonymous34!349 getTestSdkPath_4_1!275
+                         addAndroidFacet_4_1!83
+                         myModule_4_2!329
+                         myModule_4_2!329
+                         getPlatformDir_4_1!238
+                         isToAddSdk_4_1!284
+                         additionalModule_4_1!93
+                         wiz_i!42
+                         modules_4_1!302))
+     (= setUp_1_1!359 Anonymous35!358)
+     (= setUp_2_1!361 Anonymous35!358)
+     (= setUp_3_1!363 Anonymous35!358)
+     (= setUp_4_1!365 Anonymous35!358)
+     (= tuneModule_1_1!368
+        (Anonymous36!367 moduleFixtureBuilder_1_1!287 dirPath_1_1!195))
+     (= tuneModule_2_1!370
+        (Anonymous36!367 moduleFixtureBuilder_2_1!289 dirPath_2_1!197))
+     (= tuneModule_3_1!372
+        (Anonymous36!367 moduleFixtureBuilder_3_1!291 dirPath_3_1!199))
+     (= tuneModule_4_1!374
+        (Anonymous36!367 moduleFixtureBuilder_4_1!293 dirPath_4_1!201))
+     (= wiz_i_1_1!377 (Anonymous37!376 modules_1_1!296))
+     (= wiz_i_2_1!379 (Anonymous37!376 modules_2_1!298))
+     (= wiz_i_3_1!381 (Anonymous37!376 modules_3_1!300))
+     (= wiz_i_4_1!383 (Anonymous37!376 modules_4_1!302))
+     (= kotlinInternalModeOriginalValue_4_1!387
+        Instance.getEnabled.KotlinInternalMode!388)
+     (= kotlinInternalModeOriginalValue_3_1!389
+        Instance.getEnabled.KotlinInternalMode!388)
+     (= kotlinInternalModeOriginalValue_2_1!390
+        OBJECT$.getEnabled.KotlinInternalMode!391)
+     (= kotlinInternalModeOriginalValue_1_1!392
+        OBJECT$.getEnabled.KotlinInternalMode!391)
+     (= ret_kotlinInternalModeOriginalValue_1_0!20
+        kotlinInternalModeOriginalValue_1_1!392)
+     (= ret_myAdditionalModules_1_0!24 myAdditionalModules_1_2!304)
+     (= ret_myCreateManifest_1_0!28 myCreateManifest_1_0!8)
+     (= ret_myFacet_1_0!32 myFacet_1_2!309)
+     (= ret_myModule_1_0!36 myModule_1_2!326)
+     (= ret_kotlinInternalModeOriginalValue_2_0!21
+        kotlinInternalModeOriginalValue_2_1!390)
+     (= ret_myAdditionalModules_2_0!25 myAdditionalModules_2_2!305)
+     (= ret_myCreateManifest_2_0!29 myCreateManifest_2_0!9)
+     (= ret_myFacet_2_0!33 myFacet_2_2!310)
+     (= ret_myModule_2_0!37 myModule_2_2!327)
+     (= ret_kotlinInternalModeOriginalValue_3_0!22
+        kotlinInternalModeOriginalValue_3_1!389)
+     (= ret_myAdditionalModules_3_0!26 myAdditionalModules_3_2!306)
+     (= ret_myCreateManifest_3_0!30 myCreateManifest_3_0!10)
+     (= ret_myFacet_3_0!34 myFacet_3_2!311)
+     (= ret_myModule_3_0!38 myModule_3_2!328)
+     (= ret_kotlinInternalModeOriginalValue_4_0!23
+        kotlinInternalModeOriginalValue_4_1!387)
+     (= ret_myAdditionalModules_4_0!27 myAdditionalModules_4_2!307)
+     (= ret_myCreateManifest_4_0!31 myCreateManifest_4_0!11)
+     (= ret_myFacet_4_0!35 myFacet_4_2!312)
+     (= ret_myModule_4_0!39 myModule_4_2!329))
+verify: semantic conflict VC
+(let ((a!1 (=> (not (and (= ret_myModule_1_0!36 ret_myModule_2_0!37)))
+               (and (= ret_myModule_4_0!39 ret_myModule_2_0!37))))
+      (a!2 (=> (not (and (= ret_myModule_1_0!36 ret_myModule_3_0!38)))
+               (and (= ret_myModule_4_0!39 ret_myModule_3_0!38))))
+      (a!4 (=> (not (and (= ret_myFacet_1_0!32 ret_myFacet_2_0!33)))
+               (and (= ret_myFacet_4_0!35 ret_myFacet_2_0!33))))
+      (a!5 (=> (not (and (= ret_myFacet_1_0!32 ret_myFacet_3_0!34)))
+               (and (= ret_myFacet_4_0!35 ret_myFacet_3_0!34))))
+      (a!7 (=> (not (and (= ret_myCreateManifest_1_0!28
+                            ret_myCreateManifest_2_0!29)))
+               (and (= ret_myCreateManifest_4_0!31 ret_myCreateManifest_2_0!29))))
+      (a!8 (=> (not (and (= ret_myCreateManifest_1_0!28
+                            ret_myCreateManifest_3_0!30)))
+               (and (= ret_myCreateManifest_4_0!31 ret_myCreateManifest_3_0!30))))
+      (a!10 (=> (not (and (= ret_myAdditionalModules_1_0!24
+                             ret_myAdditionalModules_2_0!25)))
+                (and (= ret_myAdditionalModules_4_0!27
+                        ret_myAdditionalModules_2_0!25))))
+      (a!11 (=> (not (and (= ret_myAdditionalModules_1_0!24
+                             ret_myAdditionalModules_3_0!26)))
+                (and (= ret_myAdditionalModules_4_0!27
+                        ret_myAdditionalModules_3_0!26))))
+      (a!13 (=> (not (and (= ret_kotlinInternalModeOriginalValue_1_0!20
+                             ret_kotlinInternalModeOriginalValue_2_0!21)))
+                (and (= ret_kotlinInternalModeOriginalValue_4_0!23
+                        ret_kotlinInternalModeOriginalValue_2_0!21))))
+      (a!14 (=> (not (and (= ret_kotlinInternalModeOriginalValue_1_0!20
+                             ret_kotlinInternalModeOriginalValue_3_0!22)))
+                (and (= ret_kotlinInternalModeOriginalValue_4_0!23
+                        ret_kotlinInternalModeOriginalValue_3_0!22)))))
+(let ((a!3 (or (and (and (= ret_myModule_4_0!39 ret_myModule_2_0!37))
+                    (and (= ret_myModule_4_0!39 ret_myModule_3_0!38))
+                    (= ret_myModule_1_0!36 ret_myModule_4_0!39))
+               (and a!1 a!2)))
+      (a!6 (or (and (and (= ret_myFacet_4_0!35 ret_myFacet_2_0!33))
+                    (and (= ret_myFacet_4_0!35 ret_myFacet_3_0!34))
+                    (= ret_myFacet_1_0!32 ret_myFacet_4_0!35))
+               (and a!4 a!5)))
+      (a!9 (or (and (and (= ret_myCreateManifest_4_0!31
+                            ret_myCreateManifest_2_0!29))
+                    (and (= ret_myCreateManifest_4_0!31
+                            ret_myCreateManifest_3_0!30))
+                    (= ret_myCreateManifest_1_0!28 ret_myCreateManifest_4_0!31))
+               (and a!7 a!8)))
+      (a!12 (or (and (and (= ret_myAdditionalModules_4_0!27
+                             ret_myAdditionalModules_2_0!25))
+                     (and (= ret_myAdditionalModules_4_0!27
+                             ret_myAdditionalModules_3_0!26))
+                     (= ret_myAdditionalModules_1_0!24
+                        ret_myAdditionalModules_4_0!27))
+                (and a!10 a!11)))
+      (a!15 (or (and (and (= ret_kotlinInternalModeOriginalValue_4_0!23
+                             ret_kotlinInternalModeOriginalValue_2_0!21))
+                     (and (= ret_kotlinInternalModeOriginalValue_4_0!23
+                             ret_kotlinInternalModeOriginalValue_3_0!22))
+                     (= ret_kotlinInternalModeOriginalValue_1_0!20
+                        ret_kotlinInternalModeOriginalValue_4_0!23))
+                (and a!13 a!14))))
+  (and a!3 a!6 a!9 a!12 a!15)))

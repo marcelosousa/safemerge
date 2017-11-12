@@ -1,0 +1,60 @@
+verify: relational VC
+(and (= request_4_0!3 request_3_0!2)
+     (= request_3_0!2 request_2_0!1)
+     (= request_2_0!1 request_1_0!0)
+     (= indexNameExpressionResolver_4_0!7 indexNameExpressionResolver_3_0!6)
+     (= indexNameExpressionResolver_3_0!6 indexNameExpressionResolver_2_0!5)
+     (= indexNameExpressionResolver_2_0!5 indexNameExpressionResolver_1_0!4)
+     (= table_1_1!19 Anonymous0!18)
+     (= table_2_1!21 Anonymous0!18)
+     (= table_3_1!23 Anonymous0!18)
+     (= table_4_1!25 Anonymous0!18)
+     (= table_1_2!56 (Anonymous1!55 table_1_1!19))
+     (= table_2_2!57 (Anonymous1!55 table_2_1!21))
+     (= table_3_2!58 (Anonymous1!55 table_3_1!23))
+     (= table_4_2!59 (Anonymous1!55 table_4_1!25))
+     (= table_1_3!69 (Anonymous2!68 table_1_2!56))
+     (= table_2_3!70 (Anonymous2!68 table_2_2!57))
+     (= table_3_3!71 (Anonymous2!68 table_3_2!58))
+     (= table_4_3!72 (Anonymous2!68 table_4_2!59))
+     (= table_1_4!82 (Anonymous3!81 table_1_3!69))
+     (= table_2_4!83 (Anonymous3!81 table_2_3!70))
+     (= table_3_4!84 (Anonymous3!81 table_3_3!71))
+     (= table_4_4!85 (Anonymous3!81 table_4_3!72))
+     (= ret_1_0!8 table_1_4!82)
+     (= ret_indexNameExpressionResolver_1_0!12
+        indexNameExpressionResolver_1_0!4)
+     (= ret_2_0!9 table_2_4!83)
+     (= ret_indexNameExpressionResolver_2_0!13
+        indexNameExpressionResolver_2_0!5)
+     (= ret_3_0!10 table_3_4!84)
+     (= ret_indexNameExpressionResolver_3_0!14
+        indexNameExpressionResolver_3_0!6)
+     (= ret_4_0!11 table_4_4!85)
+     (= ret_indexNameExpressionResolver_4_0!15
+        indexNameExpressionResolver_4_0!7))
+verify: semantic conflict VC
+(let ((a!1 (=> (not (and (= ret_indexNameExpressionResolver_1_0!12
+                            ret_indexNameExpressionResolver_2_0!13)))
+               (and (= ret_indexNameExpressionResolver_4_0!15
+                       ret_indexNameExpressionResolver_2_0!13))))
+      (a!2 (=> (not (and (= ret_indexNameExpressionResolver_1_0!12
+                            ret_indexNameExpressionResolver_3_0!14)))
+               (and (= ret_indexNameExpressionResolver_4_0!15
+                       ret_indexNameExpressionResolver_3_0!14))))
+      (a!4 (=> (not (and (= ret_1_0!8 ret_2_0!9)))
+               (and (= ret_4_0!11 ret_2_0!9))))
+      (a!5 (=> (not (and (= ret_1_0!8 ret_3_0!10)))
+               (and (= ret_4_0!11 ret_3_0!10)))))
+(let ((a!3 (or (and (and (= ret_indexNameExpressionResolver_4_0!15
+                            ret_indexNameExpressionResolver_2_0!13))
+                    (and (= ret_indexNameExpressionResolver_4_0!15
+                            ret_indexNameExpressionResolver_3_0!14))
+                    (= ret_indexNameExpressionResolver_1_0!12
+                       ret_indexNameExpressionResolver_4_0!15))
+               (and a!1 a!2)))
+      (a!6 (or (and (and (= ret_4_0!11 ret_2_0!9))
+                    (and (= ret_4_0!11 ret_3_0!10))
+                    (= ret_1_0!8 ret_4_0!11))
+               (and a!4 a!5))))
+  (and a!3 a!6)))
