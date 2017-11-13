@@ -64,6 +64,47 @@ expToIdent exp = case exp of
   ArrayAccess (ArrayIndex e _)         -> expToIdent e
   ExpName n                            -> toIdent n
 
+getIdentsExp :: Exp -> [Ident]
+getIdentsExp exp = case exp of
+  ThisClass n -> [toIdent n] 
+  FieldAccess fa -> getIdentsFA fa 
+  MethodInv   ma -> getIdentsMA ma 
+  ArrayAccess (ArrayIndex e es) -> foldr (\e r -> getIdentsExp e ++ r) [] (e:es) 
+  ExpName n -> [toIdent n] 
+  PostIncrement e -> getIdentsExp e 
+  PostDecrement e -> getIdentsExp e 
+  PreIncrement  e -> getIdentsExp e  
+  PreDecrement  e -> getIdentsExp e  
+  PrePlus       e -> getIdentsExp e  
+  PreMinus      e -> getIdentsExp e  
+  PreBitCompl   e -> getIdentsExp e  
+  PreNot        e -> getIdentsExp e  
+  Cast _        e -> getIdentsExp e 
+  BinOp e _ e'    -> getIdentsExp e ++ getIdentsExp e' 
+  InstanceOf  e _ -> getIdentsExp e 
+  Cond e e' e'' ->  getIdentsExp e ++ getIdentsExp e' ++ getIdentsExp e'' 
+  Assign lhs _ e -> getIdentsLhs lhs ++ getIdentsExp e 
+
+getIdentsFA :: FieldAccess -> [Ident]
+getIdentsFA fa = case fa of
+  PrimaryFieldAccess e i -> [i] ++ getIdentsExp e
+  SuperFieldAccess   i -> [i] 
+  ClassFieldAccess n i -> [toIdent n, i] 
+
+getIdentsMA :: MethodInvocation -> [Ident]
+getIdentsMA met = case met of
+  MethodCall n ars -> [toIdent n] ++ foldr (\e r -> getIdentsExp e ++ r) [] ars 
+  PrimaryMethodCall e _ i ars -> [i] ++ foldr (\e r -> getIdentsExp e ++ r) [] (e:ars) 
+  SuperMethodCall _ i ars -> [i] ++ foldr (\e r -> getIdentsExp e ++ r) [] ars
+  ClassMethodCall n _ i ars -> [i,toIdent n] ++ foldr (\e r -> getIdentsExp e ++ r) [] ars 
+  TypeMethodCall  n _ i ars -> [i,toIdent n] ++ foldr (\e r -> getIdentsExp e ++ r) [] ars 
+
+getIdentsLhs :: Lhs -> [Ident]
+getIdentsLhs lhs = case lhs of
+  NameLhs n -> [toIdent n]
+  FieldLhs fa -> getIdentsFA fa
+  ArrayLhs (ArrayIndex e es) -> foldr (\e r -> getIdentsExp e ++ r) [] (e:es) 
+
 getReturnType :: AnnMemberDecl -> Maybe Type
 getReturnType m = case m of
   AnnMethodDecl _ _ rTy _ _ _ _ -> rTy 

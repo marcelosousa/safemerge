@@ -138,7 +138,7 @@ analyse prog = do
 --     Initialization of local variables
 analyseBStmt :: AnnBlockStmt -> ProdProgram -> EnvOp () 
 analyseBStmt bstmt cont = do 
- printStat bstmt
+ --printStat bstmt
  case bstmt of
   AnnBlockStmt stmt           -> analyseStmt stmt cont 
   AnnLocalVars vIds _ ty vars -> do
@@ -205,6 +205,8 @@ analyseHole vId rest = do
   -- Get the edit statements for this hole.
   edits <- foldM popEdits [] vId
   let prod_prog = miniproduct edits
+  --printProg False prod_prog 
+  --wizBreak
   analyse $ prod_prog ++ rest
 
 -- Analyse If Then Else

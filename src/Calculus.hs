@@ -6,6 +6,7 @@
 module Calculus where
 
 import Analysis.Java.AST
+import Analysis.Util
 import Data.Map (Map)
 import Data.Maybe (fromJust)
 import Edit.Apply
@@ -62,10 +63,36 @@ pproduct (s:r) =
     -- Applies Seq-Compose which is just (:)
     AnnLocalVars pids mods ty varDecls -> s:(miniproduct r) 
 
+-- | Apply a simple metric to select a set of loops to fuse
 apply_loop :: ProdProgram -> ProdProgram
 apply_loop stmts = 
   let parts = map decomposeWhile stmts
-      (conds,bodies) = unzip parts 
+      loops = select_loop_rule parts
+  in foldr (\l r -> apply_loop_rule l ++ r) [] loops 
+
+select_loop_rule :: [([(Int,Exp)], AnnStmt)] -> [[([(Int,Exp)], AnnStmt)]]
+select_loop_rule [] = []
+select_loop_rule (h:t) = 
+  let (t',r) = select_loops h t
+      f = select_loop_rule r
+      e = h:t'
+  in e:f
+
+select_loops :: ([(Int,Exp)], AnnStmt) -> [([(Int,Exp)], AnnStmt)] -> ([([(Int,Exp)], AnnStmt)], [([(Int,Exp)], AnnStmt)])  
+select_loops (exps,_) l =
+  let vars = L.nub $ concatMap getIdentsExp $ snd $ unzip exps 
+      l'   = filter (isSimilar vars) l 
+  in (l', l L.\\ l')
+
+isSimilar :: [Ident] -> ([(Int,Exp)], AnnStmt) -> Bool
+isSimilar vars (exps,_) =
+  let vars' = L.nub $ concatMap getIdentsExp $ snd $ unzip exps  
+  in not $ null $ L.intersect vars vars'
+
+-- | Apply fusion to a set of loops
+apply_loop_rule :: [([(Int,Exp)], AnnStmt)] -> ProdProgram 
+apply_loop_rule parts = 
+  let (conds,bodies) = unzip parts 
       cond = concat conds
       body = AnnStmtBlock [] $ AnnBlock $ miniproduct $ map AnnBlockStmt bodies
       while = AnnWhile cond body 

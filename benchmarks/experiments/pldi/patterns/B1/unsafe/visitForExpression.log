@@ -1,0 +1,537 @@
+verify: relational VC
+(let ((a!1 (and (= expression_4_0!3 expression_3_0!2)
+                (= expression_3_0!2 expression_2_0!1)
+                (= expression_2_0!1 expression_1_0!0)
+                (= contextWithExpectedType_4_0!7 contextWithExpectedType_3_0!6)
+                (= contextWithExpectedType_3_0!6 contextWithExpectedType_2_0!5)
+                (= contextWithExpectedType_2_0!5 contextWithExpectedType_1_0!4)
+                (= wiz_field_4_0!11 wiz_field_3_0!10)
+                (= wiz_field_3_0!10 wiz_field_2_0!9)
+                (= wiz_field_2_0!9 wiz_field_1_0!8)
+                (= wiz_field_4_1!21 (+ wiz_field_4_0!11 1))
+                (= wiz_field_3_1!22 (+ wiz_field_3_0!10 1))
+                (= wiz_field_2_1!23 (+ wiz_field_2_0!9 1))
+                (= wiz_field_4_2!24 (+ wiz_field_4_1!21 1))
+                (= checkIterableConvention_1_1!30
+                   (Anonymous0!29 loopRangeReceiver!26 context!27 loopRange!28))
+                (= checkIterableConvention_2_1!32
+                   (Anonymous0!29 loopRangeReceiver!26 context!27 loopRange!28))
+                (= checkIterableConvention_3_1!34
+                   (Anonymous0!29 loopRangeReceiver!26 context!27 loopRange!28))
+                (= checkIterableConvention_4_1!36
+                   (Anonymous0!29 loopRangeReceiver!26 context!27 loopRange!28))
+                (= context_1_1!44
+                   (Anonymous1!43 contextWithExpectedType_1_0!4
+                                  NO_EXPECTED_TYPE.TypeUtils!38
+                                  getExpressionReceiver!39
+                                  facade!40
+                                  loopRange!28
+                                  scope.context!41
+                                  checkIterableConvention_1_1!30
+                                  loopRangeReceiver!26
+                                  newWritableScopeImpl!42))
+                (= context_2_1!46
+                   (Anonymous1!43 contextWithExpectedType_2_0!5
+                                  NO_EXPECTED_TYPE.TypeUtils!38
+                                  getExpressionReceiver!39
+                                  facade!40
+                                  loopRange!28
+                                  scope.context!41
+                                  checkIterableConvention_2_1!32
+                                  loopRangeReceiver!26
+                                  newWritableScopeImpl!42))
+                (= context_3_1!48
+                   (Anonymous1!43 contextWithExpectedType_3_0!6
+                                  NO_EXPECTED_TYPE.TypeUtils!38
+                                  getExpressionReceiver!39
+                                  facade!40
+                                  loopRange!28
+                                  scope.context!41
+                                  checkIterableConvention_3_1!34
+                                  loopRangeReceiver!26
+                                  newWritableScopeImpl!42))
+                (= context_4_1!50
+                   (Anonymous1!43 contextWithExpectedType_4_0!7
+                                  NO_EXPECTED_TYPE.TypeUtils!38
+                                  getExpressionReceiver!39
+                                  facade!40
+                                  loopRange!28
+                                  scope.context!41
+                                  checkIterableConvention_4_1!36
+                                  loopRangeReceiver!26
+                                  newWritableScopeImpl!42))
+                (= scope.context_1_1!53
+                   (Anonymous2!52 getExpressionReceiver!39
+                                  facade!40
+                                  loopRange!28
+                                  context_1_1!44))
+                (= scope.context_2_1!55
+                   (Anonymous2!52 getExpressionReceiver!39
+                                  facade!40
+                                  loopRange!28
+                                  context_2_1!46))
+                (= scope.context_3_1!57
+                   (Anonymous2!52 getExpressionReceiver!39
+                                  facade!40
+                                  loopRange!28
+                                  context_3_1!48))
+                (= scope.context_4_1!59
+                   (Anonymous2!52 getExpressionReceiver!39
+                                  facade!40
+                                  loopRange!28
+                                  context_4_1!50))
+                (= contextWithExpectedType_1_1!61
+                   (Anonymous3!60 contextWithExpectedType_1_0!4
+                                  NO_EXPECTED_TYPE.TypeUtils!38))
+                (= contextWithExpectedType_2_1!62
+                   (Anonymous3!60 contextWithExpectedType_2_0!5
+                                  NO_EXPECTED_TYPE.TypeUtils!38))
+                (= contextWithExpectedType_3_1!63
+                   (Anonymous3!60 contextWithExpectedType_3_0!6
+                                  NO_EXPECTED_TYPE.TypeUtils!38))
+                (= contextWithExpectedType_4_1!64
+                   (Anonymous3!60 contextWithExpectedType_4_0!7
+                                  NO_EXPECTED_TYPE.TypeUtils!38))
+                (= expectedParameterType_1_1!67
+                   (Anonymous4!66 checkIterableConvention_1_1!30
+                                  loopRangeReceiver!26
+                                  context_1_1!44
+                                  loopRange!28))
+                (= expectedParameterType_2_1!69
+                   (Anonymous4!66 checkIterableConvention_2_1!32
+                                  loopRangeReceiver!26
+                                  context_2_1!46
+                                  loopRange!28))
+                (= expectedParameterType_3_1!71
+                   (Anonymous4!66 checkIterableConvention_3_1!34
+                                  loopRangeReceiver!26
+                                  context_3_1!48
+                                  loopRange!28))
+                (= expectedParameterType_4_1!73
+                   (Anonymous4!66 checkIterableConvention_4_1!36
+                                  loopRangeReceiver!26
+                                  context_4_1!50
+                                  loopRange!28))
+                (= expression_1_1!75 (Anonymous5!74 expression_1_0!0))
+                (= expression_2_1!76 (Anonymous5!74 expression_2_0!1))
+                (= expression_3_1!77 (Anonymous5!74 expression_3_0!2))
+                (= expression_4_1!78 (Anonymous5!74 expression_4_0!3))
+                (= facade_1_1!81
+                   (Anonymous6!80 getExpressionReceiver!39
+                                  loopRange!28
+                                  context_1_1!44
+                                  scope.context_1_1!53))
+                (= facade_2_1!83
+                   (Anonymous6!80 getExpressionReceiver!39
+                                  loopRange!28
+                                  context_2_1!46
+                                  scope.context_2_1!55))
+                (= facade_3_1!85
+                   (Anonymous6!80 getExpressionReceiver!39
+                                  loopRange!28
+                                  context_3_1!48
+                                  scope.context_3_1!57))
+                (= facade_4_1!87
+                   (Anonymous6!80 getExpressionReceiver!39
+                                  loopRange!28
+                                  context_4_1!50
+                                  scope.context_4_1!59))
+                (= getExpressionReceiver_1_1!90
+                   (Anonymous7!89 facade_1_1!81
+                                  loopRange!28
+                                  context_1_1!44
+                                  scope.context_1_1!53))
+                (= getExpressionReceiver_2_1!92
+                   (Anonymous7!89 facade_2_1!83
+                                  loopRange!28
+                                  context_2_1!46
+                                  scope.context_2_1!55))
+                (= getExpressionReceiver_3_1!94
+                   (Anonymous7!89 facade_3_1!85
+                                  loopRange!28
+                                  context_3_1!48
+                                  scope.context_3_1!57))
+                (= getExpressionReceiver_4_1!96
+                   (Anonymous7!89 facade_4_1!87
+                                  loopRange!28
+                                  context_4_1!50
+                                  scope.context_4_1!59))
+                (= loopParameter_1_1!99 (Anonymous8!98 expression_1_1!75))
+                (= loopParameter_2_1!101 (Anonymous8!98 expression_2_1!76))
+                (= loopParameter_3_1!103 (Anonymous8!98 expression_3_1!77))
+                (= loopParameter_4_1!105 (Anonymous8!98 expression_4_1!78))
+                (= loopRange_1_1!108
+                   (Anonymous9!107 expression_1_1!75
+                                   getExpressionReceiver_1_1!90
+                                   facade_1_1!81
+                                   context_1_1!44
+                                   scope.context_1_1!53))
+                (= loopRange_2_1!110
+                   (Anonymous9!107 expression_2_1!76
+                                   getExpressionReceiver_2_1!92
+                                   facade_2_1!83
+                                   context_2_1!46
+                                   scope.context_2_1!55))
+                (= loopRange_3_1!112
+                   (Anonymous9!107 expression_3_1!77
+                                   getExpressionReceiver_3_1!94
+                                   facade_3_1!85
+                                   context_3_1!48
+                                   scope.context_3_1!57))
+                (= loopRange_4_1!114
+                   (Anonymous9!107 expression_4_1!78
+                                   getExpressionReceiver_4_1!96
+                                   facade_4_1!87
+                                   context_4_1!50
+                                   scope.context_4_1!59))
+                (= loopRangeReceiver_1_1!117
+                   (Anonymous10!116 getExpressionReceiver_1_1!90
+                                    facade_1_1!81
+                                    loopRange_1_1!108
+                                    context_1_1!44
+                                    scope.context_1_1!53
+                                    checkIterableConvention_1_1!30))
+                (= loopRangeReceiver_2_1!119
+                   (Anonymous10!116 getExpressionReceiver_2_1!92
+                                    facade_2_1!83
+                                    loopRange_2_1!110
+                                    context_2_1!46
+                                    scope.context_2_1!55
+                                    checkIterableConvention_2_1!32))
+                (= loopRangeReceiver_3_1!121
+                   (Anonymous10!116 getExpressionReceiver_3_1!94
+                                    facade_3_1!85
+                                    loopRange_3_1!112
+                                    context_3_1!48
+                                    scope.context_3_1!57
+                                    checkIterableConvention_3_1!34))
+                (= loopRangeReceiver_4_1!123
+                   (Anonymous10!116 getExpressionReceiver_4_1!96
+                                    facade_4_1!87
+                                    loopRange_4_1!114
+                                    context_4_1!50
+                                    scope.context_4_1!59
+                                    checkIterableConvention_4_1!36))
+                (= loopScope_1_1!126
+                   (Anonymous11!125 newWritableScopeImpl!42 context_1_1!44))
+                (= loopScope_2_1!128
+                   (Anonymous11!125 newWritableScopeImpl!42 context_2_1!46))
+                (= loopScope_3_1!130
+                   (Anonymous11!125 newWritableScopeImpl!42 context_3_1!48))
+                (= loopScope_4_1!132
+                   (Anonymous11!125 newWritableScopeImpl!42 context_4_1!50))
+                (= newWritableScopeImpl_1_1!135
+                   (Anonymous12!134 context_1_1!44))
+                (= newWritableScopeImpl_2_1!137
+                   (Anonymous12!134 context_2_1!46))
+                (= newWritableScopeImpl_3_1!139
+                   (Anonymous12!134 context_3_1!48))
+                (= newWritableScopeImpl_4_1!141
+                   (Anonymous12!134 context_4_1!50))))
+      (a!3 (and (not (= olderVariable_4_1!194 0))
+                (= (isLocal.DescriptorUtils!200
+                     (scope.getContainingDeclaration!199 context_4_2!158)
+                     olderVariable_4_1!194)
+                   1)))
+      (a!4 (and (not (= olderVariable_3_1!198 0))
+                (= (isLocal.DescriptorUtils!200
+                     (scope.getContainingDeclaration!199 context_3_2!157)
+                     olderVariable_3_1!198)
+                   1))))
+(let ((a!2 (and a!1
+                (not (= loopParameter_1_1!99 0))
+                (not (= loopParameter_2_1!101 0))
+                (not (= loopParameter_3_1!103 0))
+                (not (= loopParameter_4_1!105 0))
+                (= actualParameterType_1_1!147
+                   (Anonymous13!146 variableDescriptor!143
+                                    typeReference!144
+                                    context_1_1!44
+                                    TYPE_MISMATCH_IN_FOR_LOOP!145
+                                    expectedParameterType_1_1!67))
+                (= actualParameterType_2_1!149
+                   (Anonymous13!146 variableDescriptor!143
+                                    typeReference!144
+                                    context_2_1!46
+                                    TYPE_MISMATCH_IN_FOR_LOOP!145
+                                    expectedParameterType_2_1!69))
+                (= actualParameterType_3_1!151
+                   (Anonymous13!146 variableDescriptor!143
+                                    typeReference!144
+                                    context_3_1!48
+                                    TYPE_MISMATCH_IN_FOR_LOOP!145
+                                    expectedParameterType_3_1!71))
+                (= actualParameterType_4_1!153
+                   (Anonymous13!146 variableDescriptor!143
+                                    typeReference!144
+                                    context_4_1!50
+                                    TYPE_MISMATCH_IN_FOR_LOOP!145
+                                    expectedParameterType_4_1!73))
+                (= context_1_2!155
+                   (Anonymous14!154 context_1_1!44
+                                    scope.context_1_1!53
+                                    loopParameter_1_1!99
+                                    typeReference!144
+                                    TYPE_MISMATCH_IN_FOR_LOOP!145
+                                    expectedParameterType_1_1!67
+                                    actualParameterType_1_1!147))
+                (= context_2_2!156
+                   (Anonymous14!154 context_2_1!46
+                                    scope.context_2_1!55
+                                    loopParameter_2_1!101
+                                    typeReference!144
+                                    TYPE_MISMATCH_IN_FOR_LOOP!145
+                                    expectedParameterType_2_1!69
+                                    actualParameterType_2_1!149))
+                (= context_3_2!157
+                   (Anonymous14!154 context_3_1!48
+                                    scope.context_3_1!57
+                                    loopParameter_3_1!103
+                                    typeReference!144
+                                    TYPE_MISMATCH_IN_FOR_LOOP!145
+                                    expectedParameterType_3_1!71
+                                    actualParameterType_3_1!151))
+                (= context_4_2!158
+                   (Anonymous14!154 context_4_1!50
+                                    scope.context_4_1!59
+                                    loopParameter_4_1!105
+                                    typeReference!144
+                                    TYPE_MISMATCH_IN_FOR_LOOP!145
+                                    expectedParameterType_4_1!73
+                                    actualParameterType_4_1!153))
+                (= scope.context_1_2!160
+                   (Anonymous15!159 context_1_2!155
+                                    scope.context_1_1!53
+                                    loopParameter_1_1!99
+                                    typeReference!144))
+                (= scope.context_2_2!161
+                   (Anonymous15!159 context_2_2!156
+                                    scope.context_2_1!55
+                                    loopParameter_2_1!101
+                                    typeReference!144))
+                (= scope.context_3_2!162
+                   (Anonymous15!159 context_3_2!157
+                                    scope.context_3_1!57
+                                    loopParameter_3_1!103
+                                    typeReference!144))
+                (= scope.context_4_2!163
+                   (Anonymous15!159 context_4_2!158
+                                    scope.context_4_1!59
+                                    loopParameter_4_1!105
+                                    typeReference!144))
+                (= expectedParameterType_1_2!166
+                   (Anonymous16!165 context_1_2!155
+                                    TYPE_MISMATCH_IN_FOR_LOOP!145
+                                    typeReference!144
+                                    expectedParameterType_1_1!67
+                                    actualParameterType_1_1!147
+                                    ErrorUtils!164
+                                    loopParameter_1_1!99))
+                (= expectedParameterType_2_2!167
+                   (Anonymous16!165 context_2_2!156
+                                    TYPE_MISMATCH_IN_FOR_LOOP!145
+                                    typeReference!144
+                                    expectedParameterType_2_1!69
+                                    actualParameterType_2_1!149
+                                    ErrorUtils!164
+                                    loopParameter_2_1!101))
+                (= expectedParameterType_3_2!168
+                   (Anonymous16!165 context_3_2!157
+                                    TYPE_MISMATCH_IN_FOR_LOOP!145
+                                    typeReference!144
+                                    expectedParameterType_3_1!71
+                                    actualParameterType_3_1!151
+                                    ErrorUtils!164
+                                    loopParameter_3_1!103))
+                (= expectedParameterType_4_2!169
+                   (Anonymous16!165 context_4_2!158
+                                    TYPE_MISMATCH_IN_FOR_LOOP!145
+                                    typeReference!144
+                                    expectedParameterType_4_1!73
+                                    actualParameterType_4_1!153
+                                    ErrorUtils!164
+                                    loopParameter_4_1!105))
+                (= loopParameter_1_2!171
+                   (Anonymous17!170 loopParameter_1_1!99
+                                    context_1_2!155
+                                    scope.context_1_2!160
+                                    typeReference!144
+                                    expectedParameterType_1_2!166))
+                (= loopParameter_2_2!172
+                   (Anonymous17!170 loopParameter_2_1!101
+                                    context_2_2!156
+                                    scope.context_2_2!161
+                                    typeReference!144
+                                    expectedParameterType_2_2!167))
+                (= loopParameter_3_2!173
+                   (Anonymous17!170 loopParameter_3_1!103
+                                    context_3_2!157
+                                    scope.context_3_2!162
+                                    typeReference!144
+                                    expectedParameterType_3_2!168))
+                (= loopParameter_4_2!174
+                   (Anonymous17!170 loopParameter_4_1!105
+                                    context_4_2!158
+                                    scope.context_4_2!163
+                                    typeReference!144
+                                    expectedParameterType_4_2!169))
+                (= typeReference_1_1!177
+                   (Anonymous18!176 loopParameter_1_2!171
+                                    context_1_2!155
+                                    TYPE_MISMATCH_IN_FOR_LOOP!145
+                                    expectedParameterType_1_2!166
+                                    actualParameterType_1_1!147))
+                (= typeReference_2_1!179
+                   (Anonymous18!176 loopParameter_2_2!172
+                                    context_2_2!156
+                                    TYPE_MISMATCH_IN_FOR_LOOP!145
+                                    expectedParameterType_2_2!167
+                                    actualParameterType_2_1!149))
+                (= typeReference_3_1!181
+                   (Anonymous18!176 loopParameter_3_2!173
+                                    context_3_2!157
+                                    TYPE_MISMATCH_IN_FOR_LOOP!145
+                                    expectedParameterType_3_2!168
+                                    actualParameterType_3_1!151))
+                (= typeReference_4_1!183
+                   (Anonymous18!176 loopParameter_4_2!174
+                                    context_4_2!158
+                                    TYPE_MISMATCH_IN_FOR_LOOP!145
+                                    expectedParameterType_4_2!169
+                                    actualParameterType_4_1!153))
+                (= variableDescriptor_1_1!186
+                   (Anonymous19!185 context_1_2!155
+                                    scope.context_1_2!160
+                                    loopParameter_1_2!171
+                                    typeReference_1_1!177
+                                    expectedParameterType_1_2!166))
+                (= variableDescriptor_2_1!188
+                   (Anonymous19!185 context_2_2!156
+                                    scope.context_2_2!161
+                                    loopParameter_2_2!172
+                                    typeReference_2_1!179
+                                    expectedParameterType_2_2!167))
+                (= variableDescriptor_3_1!190
+                   (Anonymous19!185 context_3_2!157
+                                    scope.context_3_2!162
+                                    loopParameter_3_2!173
+                                    typeReference_3_1!181
+                                    expectedParameterType_3_2!168))
+                (= variableDescriptor_4_1!192
+                   (Anonymous19!185 context_4_2!158
+                                    scope.context_4_2!163
+                                    loopParameter_4_2!174
+                                    typeReference_4_1!183
+                                    expectedParameterType_4_2!169))
+                (= olderVariable_4_1!194
+                   (scope.getVariable!196
+                     context_4_2!158
+                     (getName!195 variableDescriptor_4_1!192)))
+                (= olderVariable_3_1!198
+                   (scope.getVariable!196
+                     context_3_2!157
+                     (getName!195 variableDescriptor_3_1!190)))))
+      (a!7 (and a!1
+                (not (not (= loopParameter_1_1!99 0)))
+                (not (not (= loopParameter_2_1!101 0)))
+                (not (not (= loopParameter_3_1!103 0)))
+                (not (not (= loopParameter_4_1!105 0)))
+                (= context_1_3 context_1_1!44)
+                (= context_2_3 context_2_1!46)
+                (= context_3_3 context_3_1!48)
+                (= context_4_3 context_4_1!50)
+                (= expectedParameterType_1_3 expectedParameterType_1_1!67)
+                (= expectedParameterType_2_3 expectedParameterType_2_1!69)
+                (= expectedParameterType_3_3 expectedParameterType_3_1!71)
+                (= expectedParameterType_4_3 expectedParameterType_4_1!73)
+                (= loopParameter_1_3 loopParameter_1_1!99)
+                (= loopParameter_2_3 loopParameter_2_1!101)
+                (= loopParameter_3_3 loopParameter_3_1!103)
+                (= loopParameter_4_3 loopParameter_4_1!105)
+                (= scope.context_1_3 scope.context_1_1!53)
+                (= scope.context_2_3 scope.context_2_1!55)
+                (= scope.context_3_3 scope.context_3_1!57)
+                (= scope.context_4_3 scope.context_4_1!59))))
+(let ((a!5 (and (or (and (and a!2 a!3) a!4) (and (and a!2 a!3) (not a!4)))))
+      (a!6 (or (and (and a!2 (not a!3)) a!4)
+               (and (and a!2 (not a!3)) (not a!4)))))
+(let ((a!8 (or (and (or a!5 (and a!6))
+                    (= context_1_3 context_1_2!155)
+                    (= context_2_3 context_2_2!156)
+                    (= context_3_3 context_3_2!157)
+                    (= context_4_3 context_4_2!158)
+                    (= expectedParameterType_1_3 expectedParameterType_1_2!166)
+                    (= expectedParameterType_2_3 expectedParameterType_2_2!167)
+                    (= expectedParameterType_3_3 expectedParameterType_3_2!168)
+                    (= expectedParameterType_4_3 expectedParameterType_4_2!169)
+                    (= loopParameter_1_3 loopParameter_1_2!171)
+                    (= loopParameter_2_3 loopParameter_2_2!172)
+                    (= loopParameter_3_3 loopParameter_3_2!173)
+                    (= loopParameter_4_3 loopParameter_4_2!174)
+                    (= scope.context_1_3 scope.context_1_2!160)
+                    (= scope.context_2_3 scope.context_2_2!161)
+                    (= scope.context_3_3 scope.context_3_2!162)
+                    (= scope.context_4_3 scope.context_4_2!163))
+               a!7)))
+(let ((a!9 (and a!8
+                (= body_1_1!212 (getBody!213 expression_1_1!75))
+                (= body_2_1!214 (getBody!213 expression_2_1!76))
+                (= body_3_1!215 (getBody!213 expression_3_1!77))
+                (= body_4_1!216 (getBody!213 expression_4_1!78)))))
+(let ((a!10 (and a!9
+                 (not (not (= body_1_1!212 0)))
+                 (not (not (= body_2_1!214 0)))
+                 (not (not (= body_3_1!215 0)))
+                 (not (not (= body_4_1!216 0))))))
+(let ((a!11 (or (and a!9
+                     (not (= body_1_1!212 0))
+                     (not (= body_2_1!214 0))
+                     (not (= body_3_1!215 0))
+                     (not (= body_4_1!216 0))
+                     (= blockLevelVisitor_3_1!221
+                        (createForBlock.ExpressionTypingVisitorDispatcher!222
+                          loopScope_3_1!130)))
+                a!10)))
+  (and a!11
+       (= ret_1_0!12
+          (checkType.DataFlowUtils!226
+            getUnitType.JetStandardClasses!225
+            expression_1_1!75
+            contextWithExpectedType_1_1!61))
+       (= ret_wiz_field_1_0!16 wiz_field_1_0!8)
+       (= ret_2_0!13
+          (checkType.DataFlowUtils!226
+            getUnitType.JetStandardClasses!225
+            expression_2_1!76
+            contextWithExpectedType_2_1!62))
+       (= ret_wiz_field_2_0!17 wiz_field_2_1!23)
+       (= ret_3_0!14
+          (checkType.DataFlowUtils!226
+            getUnitType.JetStandardClasses!225
+            expression_3_1!77
+            contextWithExpectedType_3_1!63))
+       (= ret_wiz_field_3_0!18 wiz_field_3_1!22)
+       (= ret_4_0!15
+          (checkType.DataFlowUtils!226
+            getUnitType.JetStandardClasses!225
+            expression_4_1!78
+            contextWithExpectedType_4_1!64))
+       (= ret_wiz_field_4_0!19 wiz_field_4_2!24)))))))))
+verify: semantic conflict VC
+(let ((a!1 (=> (not (and (= ret_wiz_field_1_0!16 ret_wiz_field_2_0!17)))
+               (and (= ret_wiz_field_4_0!19 ret_wiz_field_2_0!17))))
+      (a!2 (=> (not (and (= ret_wiz_field_1_0!16 ret_wiz_field_3_0!18)))
+               (and (= ret_wiz_field_4_0!19 ret_wiz_field_3_0!18))))
+      (a!4 (=> (not (and (= ret_1_0!12 ret_2_0!13)))
+               (and (= ret_4_0!15 ret_2_0!13))))
+      (a!5 (=> (not (and (= ret_1_0!12 ret_3_0!14)))
+               (and (= ret_4_0!15 ret_3_0!14)))))
+(let ((a!3 (or (and (and (= ret_wiz_field_4_0!19 ret_wiz_field_2_0!17))
+                    (and (= ret_wiz_field_4_0!19 ret_wiz_field_3_0!18))
+                    (= ret_wiz_field_1_0!16 ret_wiz_field_4_0!19))
+               (and a!1 a!2)))
+      (a!6 (or (and (and (= ret_4_0!15 ret_2_0!13))
+                    (and (= ret_4_0!15 ret_3_0!14))
+                    (= ret_1_0!12 ret_4_0!15))
+               (and a!4 a!5))))
+  (and a!3 a!6)))

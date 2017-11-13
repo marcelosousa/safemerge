@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-open(my $info, '-|', 'find', 'unsafe', '-type', 'f', '-name', '*_o.java', '-print') or die "Failed: $!";
+open(my $info, '-|', 'find', 'safe', '-type', 'f', '-name', '*_o.java', '-print') or die "Failed: $!";
 
 while(my $line = <$info>) {
   my @words = split ' ', $line;
