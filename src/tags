@@ -259,7 +259,7 @@ arrayListAxioms	./Analysis/Model/ArrayList.hs	99;"	v
 arrayListInit	./Analysis/Model/ArrayList.hs	23;"	v
 arrayListModel	./Analysis/Model/ArrayList.hs	33;"	v
 arrayListNew	./Analysis/Model/ArrayList.hs	107;"	v
-assign	./Analysis/Engine.hs	453;"	v
+assign	./Analysis/Engine.hs	454;"	v
 assign_special	./Analysis/Verifier.hs	545;"	v	file:
 b	Main.hs	53;"	v
 bEm_adiff_nr	./Analysis/Java/Liff.hs	77;"	v
@@ -323,20 +323,20 @@ edit_method_body_gen	./Edit/Gen.hs	122;"	v
 edit_ty_gen	./Edit/Gen.hs	40;"	v
 edit_tys_gen	./Edit/Gen.hs	28;"	v
 edit_tys_gen_aux	./Edit/Gen.hs	35;"	v
-encCall	./Analysis/Engine.hs	360;"	v
-enc_array_access	./Analysis/Engine.hs	510;"	v
-enc_binop	./Analysis/Engine.hs	553;"	v
-enc_field_access	./Analysis/Engine.hs	525;"	v
+encCall	./Analysis/Engine.hs	359;"	v
+enc_array_access	./Analysis/Engine.hs	511;"	v
+enc_binop	./Analysis/Engine.hs	555;"	v
+enc_field_access	./Analysis/Engine.hs	526;"	v
 enc_meth_special	./Analysis/Verifier.hs	530;"	v	file:
 encodeAxioms	./Analysis/Engine.hs	55;"	v
-encodeCall	./Analysis/Engine.hs	333;"	v
+encodeCall	./Analysis/Engine.hs	332;"	v
 encodeClassType	./Analysis/Engine.hs	191;"	v
 encodeCond	./Analysis/Verifier.hs	264;"	v	file:
 encodeConstant	./Analysis/Engine.hs	259;"	v
 encodeExp	./Analysis/Engine.hs	274;"	v
 encodeExpName	./Analysis/Engine.hs	248;"	v
-encodeLiteral	./Analysis/Engine.hs	533;"	v
-encodeNew	./Analysis/Engine.hs	324;"	v
+encodeLiteral	./Analysis/Engine.hs	534;"	v
+encodeNew	./Analysis/Engine.hs	323;"	v
 encodePost	./Analysis/Engine.hs	67;"	v
 encodePre	./Analysis/Engine.hs	31;"	v
 encodeRefType	./Analysis/Engine.hs	182;"	v
@@ -384,12 +384,12 @@ getParIdents	./Analysis/Util.hs	73;"	v
 getParamType	./Analysis/Java/ClassInfo.hs	132;"	v
 getPredicates	./Analysis/Verifier.hs	362;"	v	file:
 getPrev	./Analysis/Java/Flow.hs	154;"	v
-getReadSet	./Analysis/Dependence.hs	353;"	v
-getReadSetInv	./Analysis/Dependence.hs	393;"	v
-getReadSetName	./Analysis/Dependence.hs	401;"	v
+getReadSet	./Analysis/Dependence.hs	354;"	v
+getReadSetInv	./Analysis/Dependence.hs	394;"	v
+getReadSetName	./Analysis/Dependence.hs	402;"	v
 getReturnType	./Analysis/Util.hs	68;"	v
 getVarSSAMap	./Analysis/API.hs	234;"	v
-getWrite	./Analysis/Dependence.hs	340;"	v
+getWrite	./Analysis/Dependence.hs	341;"	v
 get_context	./Analysis/Java/Liff.hs	96;"	v
 get_edge_info	./Analysis/Java/Graph.hs	52;"	v
 get_edit_category	./Analysis/Java/Liff.hs	477;"	v
@@ -538,7 +538,7 @@ pc_counter	./Analysis/Java/Flow.hs	42;"	v
 popEdits	./Analysis/API.hs	187;"	v
 popNext	./Analysis/Java/Flow.hs	167;"	v
 popPrev	./Analysis/Java/Flow.hs	145;"	v
-post_op	./Analysis/Engine.hs	592;"	v
+post_op	./Analysis/Engine.hs	594;"	v
 post_process	./Edit/Gen.hs	154;"	v
 pp_dot_edge	./Analysis/Java/Flow.hs	561;"	v
 pp_dot_edges	./Analysis/Java/Flow.hs	558;"	v
@@ -565,7 +565,7 @@ printSSAVer	./Analysis/Pretty.hs	32;"	v
 printStat	./Analysis/Debug.hs	77;"	v
 print_edit	./Edit/Print.hs	26;"	v
 print_edit_simple	./Edit/Print.hs	21;"	v
-processAssign	./Analysis/Engine.hs	499;"	v
+processAssign	./Analysis/Engine.hs	500;"	v
 productMode	Main.hs	59;"	v
 prog	Main.hs	49;"	v
 progModes	Main.hs	68;"	v
@@ -583,8 +583,8 @@ replaceExit	./Analysis/Java/Flow.hs	129;"	v
 replaceGraph	./Analysis/Java/Flow.hs	88;"	v
 runOption	Main.hs	80;"	v
 safeLookup	./Analysis/Util.hs	83;"	v
-set_dep	./Analysis/Dependence.hs	309;"	v
-set_output	./Analysis/Dependence.hs	303;"	v
+set_dep	./Analysis/Dependence.hs	310;"	v
+set_output	./Analysis/Dependence.hs	304;"	v
 showSSAMap	./Analysis/Pretty.hs	49;"	v
 show_context	./Analysis/Java/Liff.hs	42;"	v
 show_short_context	./Analysis/Java/Liff.hs	56;"	v
@@ -628,8 +628,8 @@ to_info	./Analysis/Java/ClassInfo.hs	136;"	v
 to_s	./Edit/Print.hs	32;"	v
 trace	./Util.hs	5;"	v
 transformer	./Analysis/Dependence.hs	279;"	v
-transformer_expr	./Analysis/Dependence.hs	314;"	v
-transformer_methInv	./Analysis/Dependence.hs	327;"	v
+transformer_expr	./Analysis/Dependence.hs	315;"	v
+transformer_methInv	./Analysis/Dependence.hs	328;"	v
 up_edit_cat	./Analysis/Java/Liff.hs	271;"	v
 up_meth_cat	./Analysis/Java/Liff.hs	235;"	v
 updateConsts	./Analysis/API.hs	281;"	v
@@ -652,7 +652,7 @@ weak_update	./Analysis/Dependence.hs	266;"	v
 wholeProduct	./Calculus.hs	123;"	v
 wiz	./Analysis/Verifier.hs	39;"	v
 wizBreak	./Analysis/Debug.hs	47;"	v
-wizPrint	./Analysis/Debug.hs	43;"	v
+wizPrint	./Analysis/Debug.hs	44;"	v
 wiz_meth	./Analysis/Verifier.hs	43;"	v	file:
 worklist	./Analysis/Dependence.hs	235;"	v
 writable	./Analysis/Dependence.hs	35;"	v

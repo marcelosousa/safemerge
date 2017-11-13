@@ -27,7 +27,7 @@ public Highlight getHighlightByTouchPoint (float x, float y)
   <?HOLE?>
   int xIndex = (int) base;
   int dataSetIndex = 0;
-  if ((this instanceof LineChart || this) instanceof ScatterChart)
+  if (this instanceof LineChart || this instanceof ScatterChart)
   {
     if (xTouchVal - base > 0.5)
     {
@@ -45,7 +45,7 @@ Edit Base:
 Hole 1:
 []: Log.i(LOG_TAG, ("touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal));
 Hole 2:
-[]: if ((this instanceof LineChart || this) instanceof ScatterChart && (xTouchVal < 0 || xTouchVal) > mDeltaX)
+[]: if ((this instanceof LineChart || this instanceof ScatterChart) && (xTouchVal < 0 || xTouchVal) > mDeltaX)
   return null;
 Hole 3:
 [SCond]: if (this instanceof BarChart && ((xTouchVal < 0 || xTouchVal) > mDeltaX) + 1)
@@ -67,7 +67,7 @@ Hole 1:
 Hole 2:
 []: Log.i(LOG_TAG, ("touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal + ", offset: " + touchOffset));
 Hole 3:
-[SCond]: if ((this instanceof LineChart || this) instanceof ScatterChart && ((xTouchVal < -touchOffset || xTouchVal) > mDeltaX) + touchOffset)
+[SCond]: if ((this instanceof LineChart || this instanceof ScatterChart) && ((xTouchVal < -touchOffset || xTouchVal) > mDeltaX) + touchOffset)
   return null;
 Hole 4:
 []: if (this instanceof BarChart && (xTouchVal < 0 || xTouchVal) > mDeltaX)
@@ -87,7 +87,7 @@ Edit B:
 Hole 1:
 []: Log.i(LOG_TAG, ("touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal));
 Hole 2:
-[]: if ((this instanceof LineChart || this) instanceof ScatterChart && (xTouchVal < 0 || xTouchVal) > mDeltaX)
+[]: if ((this instanceof LineChart || this instanceof ScatterChart) && (xTouchVal < 0 || xTouchVal) > mDeltaX)
   return null;
 Hole 3:
 []: if (this instanceof BarChart && ((xTouchVal < 0 || xTouchVal) > mDeltaX) + 1)
@@ -113,7 +113,7 @@ Hole 1:
 Hole 2:
 []: Log.i(LOG_TAG, ("touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal + ", offset: " + touchOffset));
 Hole 3:
-[]: if ((this instanceof LineChart || this) instanceof ScatterChart && ((xTouchVal < -touchOffset || xTouchVal) > mDeltaX) + touchOffset)
+[]: if ((this instanceof LineChart || this instanceof ScatterChart) && ((xTouchVal < -touchOffset || xTouchVal) > mDeltaX) + touchOffset)
   return null;
 Hole 4:
 []: if (this instanceof BarChart && (xTouchVal < 0 || xTouchVal) > mDeltaX)

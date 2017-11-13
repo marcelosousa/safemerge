@@ -1496,17 +1496,17 @@ public abstract class BarLineChartBase extends Chart {
         Log.i(LOG_TAG, "touchindex x: " + xTouchVal + ", touchindex y: " + yTouchVal);
 
         // touch out of chart
-        if ((this instanceof LineChart || this instanceof ScatterChart)
+        if (((this instanceof LineChart) || (this instanceof ScatterChart))
                 && (xTouchVal < 0 || xTouchVal > mDeltaX))
             return null;
-        if (this instanceof BarChart && (xTouchVal < 0 || xTouchVal > mDeltaX + 1))
+        if ((this instanceof BarChart) && (xTouchVal < 0 || xTouchVal > mDeltaX + 1))
             return null;
 
         int xIndex = (int) base;
         int dataSetIndex = 0; // index of the DataSet inside the ChartData
                               // object
 
-        if (this instanceof LineChart || this instanceof ScatterChart) {
+        if ((this instanceof LineChart) || (this instanceof ScatterChart)) {
 
             // check if we are more than half of a x-value or not
             if (xTouchVal - base > 0.5) {

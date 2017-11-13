@@ -276,7 +276,7 @@ weak_update node_table node el@(cont,depMap) =
       _ -> error "join_update: more than one state in the list"
 
 transformer :: Stmt -> ClassSum -> AbsElem -> AbsElem 
-transformer stmt class_sum el@(k,dmap) = -- trace ("transformer: " ++ show stmt) $ 
+transformer stmt class_sum el@(k,dmap) = -- T.trace ("transformer: " ++ show stmt) $ 
   let kvars = nub $ concat k 
   in case stmt of
     Skip -> el 
@@ -284,9 +284,10 @@ transformer stmt class_sum el@(k,dmap) = -- trace ("transformer: " ++ show stmt)
       Nothing -> el 
       Just e -> 
         let (r,w) = transformer_expr class_sum e
-        in if null w
-           then (k, foldr set_output dmap r) 
-           else error $ "transformer: Write set of return should be empty, " ++ show w 
+        in (k, foldr set_output dmap r)
+       --  if null w
+       --    then (k, foldr set_output dmap r) 
+       --    else error $ "transformer: Write set of return should be empty, " ++ show w 
     ExpStmt e -> 
       let (r,w) = transformer_expr class_sum e
       in  (k, foldr (set_dep $ r ++ kvars) dmap w) 

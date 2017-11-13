@@ -85,7 +85,7 @@ simplifyStmt stmt = case stmt of
         exp = simplifyExp e
         cond = BinOp nameI LThan $ MethodInv $ PrimaryMethodCall exp [] (Ident "length") [] 
         -- create the increment
-        inc = ExpStmt $ BinOp nameI Add $ Lit $ Int 1 
+        inc = ExpStmt $ PostIncrement nameI -- Add $ Lit $ Int 1 
         body = simplifyStmt bdy
         body' = StmtBlock $ Block [BlockStmt body, BlockStmt inc] 
     in StmtBlock $ Block [varDeclI, varDeclK, BlockStmt $ While cond body'] 

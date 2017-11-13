@@ -283,7 +283,7 @@ computeGraphBody mDecl =  case mDecl of
     let inv = invToStmt sym mInv
     mapM_ computeGraphStmt inv
     mapM_ computeGraphBStmt block 
-  _ -> error $ "computeGraphBody: Not supported " ++ show mDecl
+  _ -> return () -- error $ "computeGraphBody: Not supported " ++ show mDecl
 
 computeGraphBStmt :: BlockStmt -> FlowOp Bool st
 computeGraphBStmt bstmt = case bstmt of
@@ -443,7 +443,7 @@ computeGraphStmt stmt = do
       -- create the condition of the loop 
       let cond = BinOp nameI LThan $ MethodInv $ PrimaryMethodCall exp [] (Ident "length") [] 
       -- create the increment
-          inc = ExpStmt $ BinOp nameI Add $ Lit $ Int 1 
+          inc = ExpStmt $ PostIncrement nameI -- Add $ Lit $ Int 1 
           body' = StmtBlock $ Block [BlockStmt body, BlockStmt inc] 
       computeWhile cond body' False
     -- Switch statement

@@ -272,9 +272,8 @@ encodeConstant s = do
 --   in the case where it calls some method.
 encodeExp :: Maybe Sort -> VId -> Exp ->  EnvOp AST
 encodeExp mSort vId expr = do 
--- wizPrint $ "encodeExp: " ++ show expr
+ wizPrint $ "encodeExp: " ++ show expr
  env@Env{..} <- get
- bSort <- lift $ mkBoolSort >>= return . Just
  iSort <- lift $ mkIntSort  >>= return . Just
  case expr of
   Lit lit -> encodeLiteral lit 
@@ -315,8 +314,8 @@ encodeExp mSort vId expr = do
     lift $ mkFreshConst (show k) int 
   InstanceOf e _ -> 
    let call = MethodInv $ MethodCall (Name [Ident "instanceOf"]) [e]
-       one  = Lit $ Int 1
-   in encodeExp mSort vId (BinOp call Equal one) 
+       -- one  = Lit $ Int 1
+   in encodeExp mSort vId call -- (BinOp call Equal one) 
   _ -> error $  "encodeExp: " ++ show expr
 
 -- | Encode New Instance via a call to an uninterpreted function
@@ -383,6 +382,8 @@ encCall vId nSort name args = do
                  Nothing -> lift $ mkIntSort
                  Just s  -> return s 
        fn    <- lift $ mkFreshFuncDecl ident sorts rSort
+       str   <- lift $ funcDeclToString fn 
+       wizPrint $ "encCall: " ++ str
        ast   <- lift $ mkApp fn args
        let fnmap = M.insert (id,arity) (fn,deps) _e_fnmap 
        updateFunctMap fnmap 
@@ -547,6 +548,7 @@ encodeLiteral lit = case lit of
    Just ast -> return ast
  Float f -> lift $ mkIntNum $ round f 
  Double b -> lift $ mkIntNum $ round b
+ Char c -> encodeLiteral (String $ c:[])
  _ -> error $ "processLit: " ++ show lit
 
 enc_binop :: Op -> AST -> AST -> Z3 AST

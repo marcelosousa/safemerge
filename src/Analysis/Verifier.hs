@@ -138,7 +138,7 @@ analyse prog = do
 --     Initialization of local variables
 analyseBStmt :: AnnBlockStmt -> ProdProgram -> EnvOp () 
 analyseBStmt bstmt cont = do 
- -- printStat bstmt
+ printStat bstmt
  case bstmt of
   AnnBlockStmt stmt           -> analyseStmt stmt cont 
   AnnLocalVars vIds _ ty vars -> do
@@ -278,14 +278,14 @@ analyseLoop conds body rest = do
  wizPrint "analyseLoop: press any key to continue..."
  --wizBreak 
  --debugger rest 
- bSort <- lift $ mkBoolSort >>= return . Just
+ --bSort <- lift $ mkBoolSort >>= return . Just
  env@Env{..} <- get
  -- use equality predicates between variables in the assignment map
  all_preds   <- getPredicates _e_ssamap 
  -- only consider filters consistent with the pre-condition 
  init_preds  <- lift $ filterM (\(i,m,n,p) -> _e_pre `implies` p) all_preds
  -- encode the condition of the loop
- cond_ast    <- mapM (uncurry (encodeExp bSort)) conds >>= lift . mkAnd
+ cond_ast    <- mapM (uncurry (encodeCond Nothing)) conds >>= lift . mkAnd
  -- going to call houdini
  cond_str    <- lift $ astToString cond_ast
  preds_str   <- lift $ mapM (\(i,m,n,e) -> astToString e >>= \estr -> return $ show (i,m,n,estr)) init_preds 
