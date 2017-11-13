@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 42
-File: core/src/main/java/org/elasticsearch/action/index/IndexRequest.java
-Orig: 2249a640bb2730c37a23a0d3a39e6d6c92257ef0
-VarA: a034e12bfa04044dead41956f14d0d53d7bb7438
-VarB: 7b5ed21d0dda532d43af51d3b5cd44ae6f4b82ed
-Merg: c1d44780675a9ff43e87a44f62969a0214928988

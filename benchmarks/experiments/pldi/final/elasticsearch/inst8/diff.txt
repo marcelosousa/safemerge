@@ -1,0 +1,69 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+Merge Instance for method (Ident "NestedInnerQueryParseSupport",Ident "setPathLevel",[])
+private void setPathLevel ()
+{
+  <?HOLE?>
+  if (objectMapper == null)
+  {
+    <?HOLE?>
+  }
+  else
+  {
+    <?HOLE?>
+  }
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: ObjectMapper objectMapper = parseContext.nestedScope().getObjectMapper();
+Hole 2:
+[SCond]: parentFilter = parseContext.bitsetFilter(Queries.newNonNestedFilter());
+Hole 3:
+[SCond]: parentFilter = parseContext.bitsetFilter(objectMapper.nestedTypeFilter());
+Hole 4:
+[]: childFilter = parseContext.bitsetFilter(nestedObjectMapper.nestedTypeFilter());
+Hole 5:
+[]: parentObjectMapper = parseContext.nestedScope().nextLevel(nestedObjectMapper);
+
+Edit A:
+Hole 1:
+[]: ObjectMapper objectMapper = shardContext.nestedScope().getObjectMapper();
+Hole 2:
+[SCond]: parentFilter = shardContext.bitsetFilter(Queries.newNonNestedFilter());
+Hole 3:
+[SCond]: parentFilter = shardContext.bitsetFilter(objectMapper.nestedTypeFilter());
+Hole 4:
+[]: childFilter = shardContext.bitsetFilter(nestedObjectMapper.nestedTypeFilter());
+Hole 5:
+[]: parentObjectMapper = shardContext.nestedScope().nextLevel(nestedObjectMapper);
+
+Edit B:
+Hole 1:
+[]: ObjectMapper objectMapper = parseContext.nestedScope().getObjectMapper();
+Hole 2:
+[SCond]: parentFilter = parseContext.bitsetFilter(Queries.newNonNestedFilter());
+Hole 3:
+[SCond]: parentFilter = parseContext.bitsetFilter(objectMapper.nestedTypeFilter());
+Hole 4:
+[]: childFilter = nestedObjectMapper.nestedTypeFilter();
+Hole 5:
+[]: parentObjectMapper = parseContext.nestedScope().nextLevel(nestedObjectMapper);
+
+Edit M:
+Hole 1:
+[]: ObjectMapper objectMapper = shardContext.nestedScope().getObjectMapper();
+Hole 2:
+[SCond]: parentFilter = shardContext.bitsetFilter(Queries.newNonNestedFilter());
+Hole 3:
+[SCond]: parentFilter = shardContext.bitsetFilter(objectMapper.nestedTypeFilter());
+Hole 4:
+[]: childFilter = nestedObjectMapper.nestedTypeFilter();
+Hole 5:
+[]: parentObjectMapper = shardContext.nestedScope().nextLevel(nestedObjectMapper);
+
+

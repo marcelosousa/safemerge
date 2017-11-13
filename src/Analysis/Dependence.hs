@@ -276,7 +276,7 @@ weak_update node_table node el@(cont,depMap) =
       _ -> error "join_update: more than one state in the list"
 
 transformer :: Stmt -> ClassSum -> AbsElem -> AbsElem 
-transformer stmt class_sum el@(k,dmap) = -- T.trace ("transformer: " ++ show stmt) $ 
+transformer stmt class_sum el@(k,dmap) = --T.trace ("transformer: " ++ show stmt) $ 
   let kvars = nub $ concat k 
   in case stmt of
     Skip -> el 

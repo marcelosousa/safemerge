@@ -6,3 +6,5 @@ Parsing m...
 verify: (Ident "DuelScrollIT",Ident "create",[RefType (ClassRefType (ClassType [(Ident "SearchType",[])]))])
 []
 wiz: getVarSSAMap: call: Ident "jsonBuilder"
+
+fixpoint loop is not terminating for the dependence analysis

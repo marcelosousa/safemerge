@@ -26,99 +26,40 @@ verify: relational VC
                 (= shardInfo_1_1!65 getShardInfo!66)
                 (= shardInfo_2_1!67 getShardInfo!66)
                 (= shardInfo_3_1!68 getShardInfo!66)
-                (= shardInfo_4_1!69 getShardInfo!66)
-                (= builder_4_1!77
-                   (field.field!76 builder_4_0!3
-                                   _INDEX.Fields!73
-                                   (getIndexName!74 shardId_4_0!15)
-                                   _TYPE.Fields!75
-                                   type_4_0!19))
-                (= builder_3_1!79
-                   (field.field!76 builder_3_0!2
-                                   _INDEX.Fields!73
-                                   (getIndexName!74 shardId_3_0!14)
-                                   _TYPE.Fields!75
-                                   type_3_0!18))
-                (= builder_2_1!80
-                   (field.field!76 builder_2_0!1
-                                   _INDEX.Fields!73
-                                   (getIndexName!74 shardId_2_0!13)
-                                   _TYPE.Fields!75
-                                   type_2_0!17))
-                (= builder_1_1!81
-                   (field.field!76 builder_1_0!0
-                                   _INDEX.Fields!73
-                                   (getIndexName!74 shardId_1_0!12)
-                                   _TYPE.Fields!75
-                                   type_1_0!16))
-                (= shardInfo_1_2!83
-                   (toXContent!82 shardInfo_1_1!65 builder_1_1!81 params_1_0!4))
-                (= shardInfo_2_2!84
-                   (toXContent!82 shardInfo_2_1!67 builder_2_1!80 params_2_0!5))
-                (= shardInfo_3_2!85
-                   (toXContent!82 shardInfo_3_1!68 builder_3_1!79 params_3_0!6))
-                (= shardInfo_4_2!86
-                   (toXContent!82 shardInfo_4_1!69 builder_4_1!77 params_4_0!7))
-                (= shardId_4_1!89 (id!88 shardId_4_0!15))
-                (= builder_4_2!90
-                   (field!78 builder_4_1!77
-                             _SHARD_ID.Fields!87
-                             (id!88 shardId_4_0!15)))
-                (= shardId_2_1!91 (id!88 shardId_2_0!13))
-                (= builder_2_2!92
-                   (field!78 builder_2_1!80
-                             _SHARD_ID.Fields!87
-                             (id!88 shardId_2_0!13))))))
-(let ((a!2 (and a!1
-                (>= getSeqNo!93 0)
-                (= builder_4_3!95
-                   (field!78 builder_4_2!90 _SEQ_NO.Fields!94 getSeqNo!93))))
-      (a!4 (and (and a!1 (not (>= getSeqNo!93 0)))
-                (>= getSeqNo!93 0)
-                (= builder_2_3!97
-                   (field!78 builder_2_2!92 _SEQ_NO.Fields!94 getSeqNo!93))
-                (= builder_2_4 builder_2_3!97)))
-      (a!5 (and (and a!1 (not (>= getSeqNo!93 0)))
-                (not (>= getSeqNo!93 0))
-                (= builder_2_4 builder_2_2!92))))
-(let ((a!3 (or (and a!2
-                    (>= getSeqNo!93 0)
-                    (= builder_2_3!96
-                       (field!78 builder_2_2!92 _SEQ_NO.Fields!94 getSeqNo!93))
-                    (= builder_2_4 builder_2_3!96))
-               (and a!2 (not (>= getSeqNo!93 0)) (= builder_2_4 builder_2_2!92)))))
-  (and (or (and a!3 (= builder_2_5 builder_2_4) (= builder_4_4 builder_4_3!95))
-           (and (or a!4 a!5)
-                (= builder_2_5 builder_2_4)
-                (= builder_4_4 builder_4_2!90)))
-       (= ret_1_0!32 builder_1_1!81)
+                (= shardInfo_4_1!69 getShardInfo!66))))
+(let ((a!2 (or (and (and a!1 (>= getSeqNo!81 0)) (>= getSeqNo!81 0))
+               (and (and a!1 (>= getSeqNo!81 0)) (not (>= getSeqNo!81 0)))))
+      (a!3 (and (and a!1 (not (>= getSeqNo!81 0))) (>= getSeqNo!81 0)))
+      (a!4 (and (and a!1 (not (>= getSeqNo!81 0))) (not (>= getSeqNo!81 0)))))
+  (and (or (and a!2) (and (or a!3 a!4)))
+       (= ret_1_0!32 builder_1_0!0)
        (= ret_id_1_0!36 id_1_0!8)
        (= ret_shardId_1_0!40 shardId_1_0!12)
        (= ret_type_1_0!44 type_1_0!16)
        (= ret_version_1_0!48 version_1_0!20)
        (= ret_seqNo_1_0!52 seqNo_1_0!24)
        (= ret_forcedRefresh_1_0!56 forcedRefresh_1_0!28)
-       (= ret_2_0!33 builder_2_5)
+       (= ret_2_0!33 builder_2_0!1)
        (= ret_id_2_0!37 id_2_0!9)
-       (= ret_shardId_2_0!41 shardId_2_1!91)
+       (= ret_shardId_2_0!41 shardId_2_0!13)
        (= ret_type_2_0!45 type_2_0!17)
        (= ret_version_2_0!49 version_2_0!21)
        (= ret_seqNo_2_0!53 seqNo_2_0!25)
        (= ret_forcedRefresh_2_0!57 forcedRefresh_2_0!29)
-       (= ret_3_0!34 builder_3_1!79)
+       (= ret_3_0!34 builder_3_0!2)
        (= ret_id_3_0!38 id_3_0!10)
        (= ret_shardId_3_0!42 shardId_3_0!14)
        (= ret_type_3_0!46 type_3_0!18)
        (= ret_version_3_0!50 version_3_0!22)
        (= ret_seqNo_3_0!54 seqNo_3_0!26)
        (= ret_forcedRefresh_3_0!58 forcedRefresh_3_0!30)
-       (= ret_4_0!35 builder_4_4)
+       (= ret_4_0!35 builder_4_0!3)
        (= ret_id_4_0!39 id_4_0!11)
-       (= ret_shardId_4_0!43 shardId_4_1!89)
+       (= ret_shardId_4_0!43 shardId_4_0!15)
        (= ret_type_4_0!47 type_4_0!19)
        (= ret_version_4_0!51 version_4_0!23)
        (= ret_seqNo_4_0!55 seqNo_4_0!27)
-       (= ret_forcedRefresh_4_0!59 forcedRefresh_4_0!31)))))
+       (= ret_forcedRefresh_4_0!59 forcedRefresh_4_0!31))))
 verify: semantic conflict VC
 (let ((a!1 (=> (not (and (= ret_forcedRefresh_1_0!56 ret_forcedRefresh_2_0!57)))
                (and (= ret_forcedRefresh_4_0!59 ret_forcedRefresh_2_0!57))))

@@ -1,0 +1,85 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+Merge Instance for method (Ident "CodeTransformationTestGenerated",Ident "suite",[])
+public static Test suite ()
+{
+  TestSuite suite = new TestSuite("CodeTransformationTestGenerated");
+  suite.addTestSuite(ElvisToIfThen.class);
+  <?HOLE?>
+  suite.addTestSuite(SafeAccessToIfThen.class);
+  <?HOLE?>
+  suite.addTestSuite(IfToAssignment.class);
+  suite.addTestSuite(IfToReturn.class);
+  suite.addTestSuite(IfToReturnAsymmetrically.class);
+  suite.addTestSuite(WhenToAssignment.class);
+  suite.addTestSuite(WhenToReturn.class);
+  suite.addTestSuite(AssignmentToIf.class);
+  suite.addTestSuite(AssignmentToWhen.class);
+  suite.addTestSuite(PropertyToIf.class);
+  suite.addTestSuite(PropertyToWhen.class);
+  suite.addTestSuite(ReturnToIf.class);
+  suite.addTestSuite(ReturnToWhen.class);
+  suite.addTestSuite(IfToWhen.class);
+  suite.addTestSuite(WhenToIf.class);
+  suite.addTestSuite(Flatten.class);
+  suite.addTestSuite(Merge.class);
+  suite.addTestSuite(IntroduceSubject.class);
+  suite.addTestSuite(EliminateSubject.class);
+  suite.addTestSuite(Split.class);
+  suite.addTestSuite(Join.class);
+  suite.addTestSuite(ConvertMemberToExtension.class);
+  suite.addTestSuite(ReconstructedType.class);
+  suite.addTestSuite(RemoveUnnecessaryParentheses.class);
+  suite.addTestSuite(ReplaceWithDotQualifiedMethodCall.class);
+  suite.addTestSuite(ReplaceWithInfixFunctionCall.class);
+  suite.addTestSuite(RemoveCurlyBracesFromTemplate.class);
+  suite.addTestSuite(MoveLambdaInsideParentheses.class);
+  suite.addTestSuite(MoveLambdaOutsideParentheses.class);
+  suite.addTestSuite(ReplaceExplicitFunctionLiteralParamWithIt.class);
+  suite.addTestSuite(ReplaceItWithExplicitFunctionLiteralParam.class);
+  suite.addTestSuite(RemoveBraces.class);
+  suite.addTestSuite(AddBraces.class);
+  suite.addTest(ReplaceGetIntention.innerSuite());
+  suite.addTestSuite(ReplaceContainsIntention.class);
+  suite.addTestSuite(ReplaceBinaryInfixIntention.class);
+  suite.addTestSuite(ReplaceUnaryPrefixIntention.class);
+  suite.addTestSuite(ReplaceInvokeIntention.class);
+  suite.addTestSuite(SimplifyNegatedBinaryExpressionIntention.class);
+  suite.addTestSuite(ConvertNegatedBooleanSequence.class);
+  suite.addTestSuite(ConvertNegatedExpressionWithDemorgansLaw.class);
+  suite.addTestSuite(SwapBinaryExpression.class);
+  suite.addTestSuite(SplitIf.class);
+  suite.addTestSuite(ReplaceWithOperatorAssign.class);
+  suite.addTestSuite(ReplaceWithTraditionalAssignment.class);
+  suite.addTestSuite(SimplifyBooleanWithConstants.class);
+  suite.addTestSuite(InsertExplicitTypeArguments.class);
+  return suite;
+}
+Edit Base:
+Hole 1:
+[]: suite.addTestSuite(IfThenToElvis.class);
+Hole 2:
+[]: suite.addTestSuite(IfThenToSafeAccess.class);
+
+Edit A:
+Hole 1:
+[]: suite.addTest(IfThenToElvis.innerSuite());
+Hole 2:
+[]: suite.addTestSuite(IfThenToSafeAccess.class);
+
+Edit B:
+Hole 1:
+[]: suite.addTestSuite(IfThenToElvis.class);
+Hole 2:
+[]: suite.addTest(IfThenToSafeAccess.innerSuite());
+
+Edit M:
+Hole 1:
+[]: suite.addTest(IfThenToElvis.innerSuite());
+Hole 2:
+[]: suite.addTest(IfThenToSafeAccess.innerSuite());
+
+

@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 4
+File: retrofit/src/main/java/retrofit/RestAdapter.java
+Orig: 7780666f70e208359818650a38adee03f3982705
+VarA: 784a32be3a2a3ddf6f114fd7d8e87c1eb7434a35
+VarB: e60fd394ef841fecdcbd747d0ac07158931065a0
+Merg: 2b6c719c6645f8e48dca6d0047c752069d321bc4

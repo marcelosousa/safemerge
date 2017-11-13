@@ -421,7 +421,7 @@ analyseRet vIds _exp cont = do
 --       the changes using assignments 
 analyseBlock :: ProdProgram -> ProdProgram -> [BlockStmt] -> EnvOp ()
 analyseBlock (bstmt:cont) kont b = do 
-  wizPrint $ "analyseBlock:\n" ++ (unlines $ map prettyPrint b)
+  -- liftIO $ putStrLn $ "analyseBlock:\n" ++ (unlines $ map prettyPrint b)
   env@Env{..} <- get
   let mid = (Ident "", Ident "", [])
       mth_bdy = MethodBody $ Just $ Block (b ++ [BlockStmt $ Return Nothing])

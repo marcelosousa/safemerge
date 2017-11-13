@@ -1,0 +1,52 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+Merge Instance for method (Ident "RedisCacheConfiguration",Ident "cacheManager",[RefType (ClassRefType (ClassType [(Ident "RedisTemplate",[ActualType (ClassRefType (ClassType [(Ident "Object",[])])),ActualType (ClassRefType (ClassType [(Ident "Object",[])]))])]))])
+@Bean
+ public RedisCacheManager cacheManager (RedisTemplate<Object, Object> redisTemplate)
+{
+  RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
+  <?HOLE?>
+  List<String> cacheNames = this.cacheProperties.getCacheNames();
+  if (!cacheNames.isEmpty())
+  {
+    cacheManager.setCacheNames(cacheNames);
+  }
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: this.customizerInvoker.customize(cacheManager);
+Hole 3:
+[]: return cacheManager;
+
+Edit A:
+Hole 1:
+[]: cacheManager.setUsePrefix(true);
+Hole 2:
+[]: this.customizerInvoker.customize(cacheManager);
+Hole 3:
+[]: return cacheManager;
+
+Edit B:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: return this.customizerInvoker.customize(cacheManager);
+Hole 3:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: cacheManager.setUsePrefix(true);
+Hole 2:
+[]: return this.customizerInvoker.customize(cacheManager);
+Hole 3:
+[]: <SKIP>
+
+

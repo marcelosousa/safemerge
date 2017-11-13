@@ -1,0 +1,127 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+Merge Instance for method (Ident "MongoProperties",Ident "builder",[RefType (ClassRefType (ClassType [(Ident "MongoClientOptions",[])]))])
+private Builder builder (MongoClientOptions options)
+{
+  Builder builder = MongoClientOptions.builder();
+  if (options != null)
+  {
+    builder.alwaysUseMBeans(options.isAlwaysUseMBeans());
+    builder.connectionsPerHost(options.getConnectionsPerHost());
+    builder.connectTimeout(options.getConnectTimeout());
+    builder.cursorFinalizerEnabled(options.isCursorFinalizerEnabled());
+    builder.dbDecoderFactory(options.getDbDecoderFactory());
+    builder.dbEncoderFactory(options.getDbEncoderFactory());
+    builder.description(options.getDescription());
+    <?HOLE?>
+    <?HOLE?>
+    <?HOLE?>
+    <?HOLE?>
+    <?HOLE?>
+    <?HOLE?>
+    <?HOLE?>
+    <?HOLE?>
+    builder.maxWaitTime(options.getMaxWaitTime());
+    builder.readPreference(options.getReadPreference());
+    <?HOLE?>
+    <?HOLE?>
+    builder.socketFactory(options.getSocketFactory());
+    builder.socketKeepAlive(options.isSocketKeepAlive());
+    builder.socketTimeout(options.getSocketTimeout());
+    builder.threadsAllowedToBlockForConnectionMultiplier(options.getThreadsAllowedToBlockForConnectionMultiplier());
+    builder.writeConcern(options.getWriteConcern());
+  }
+  return builder;
+}
+Edit Base:
+Hole 1:
+[SCond]: <SKIP>
+Hole 2:
+[SCond]: <SKIP>
+Hole 3:
+[SCond]: <SKIP>
+Hole 4:
+[SCond]: <SKIP>
+Hole 5:
+[SCond]: <SKIP>
+Hole 6:
+[SCond]: <SKIP>
+Hole 7:
+[SCond]: <SKIP>
+Hole 8:
+[SCond]: <SKIP>
+Hole 9:
+[SCond]: <SKIP>
+Hole 10:
+[SCond]: <SKIP>
+
+Edit A:
+Hole 1:
+[SCond]: <SKIP>
+Hole 2:
+[SCond]: <SKIP>
+Hole 3:
+[SCond]: <SKIP>
+Hole 4:
+[SCond]: <SKIP>
+Hole 5:
+[SCond]: <SKIP>
+Hole 6:
+[SCond]: <SKIP>
+Hole 7:
+[SCond]: <SKIP>
+Hole 8:
+[SCond]: <SKIP>
+Hole 9:
+[SCond]: builder.sslEnabled(options.isSslEnabled());
+Hole 10:
+[SCond]: <SKIP>
+
+Edit B:
+Hole 1:
+[SCond]: builder.heartbeatConnectTimeout(options.getHeartbeatConnectTimeout());
+Hole 2:
+[SCond]: builder.heartbeatFrequency(options.getHeartbeatFrequency());
+Hole 3:
+[SCond]: builder.heartbeatSocketTimeout(options.getHeartbeatSocketTimeout());
+Hole 4:
+[SCond]: builder.localThreshold(options.getLocalThreshold());
+Hole 5:
+[SCond]: builder.minConnectionsPerHost(options.getMinConnectionsPerHost());
+Hole 6:
+[SCond]: builder.minHeartbeatFrequency(options.getMinHeartbeatFrequency());
+Hole 7:
+[SCond]: builder.maxConnectionIdleTime(options.getMaxConnectionIdleTime());
+Hole 8:
+[SCond]: builder.maxConnectionLifeTime(options.getMaxConnectionLifeTime());
+Hole 9:
+[SCond]: builder.requiredReplicaSetName(options.getRequiredReplicaSetName());
+Hole 10:
+[SCond]: <SKIP>
+
+Edit M:
+Hole 1:
+[SCond]: builder.heartbeatConnectTimeout(options.getHeartbeatConnectTimeout());
+Hole 2:
+[SCond]: builder.heartbeatFrequency(options.getHeartbeatFrequency());
+Hole 3:
+[SCond]: builder.heartbeatSocketTimeout(options.getHeartbeatSocketTimeout());
+Hole 4:
+[SCond]: builder.localThreshold(options.getLocalThreshold());
+Hole 5:
+[SCond]: builder.minConnectionsPerHost(options.getMinConnectionsPerHost());
+Hole 6:
+[SCond]: builder.minHeartbeatFrequency(options.getMinHeartbeatFrequency());
+Hole 7:
+[SCond]: builder.maxConnectionIdleTime(options.getMaxConnectionIdleTime());
+Hole 8:
+[SCond]: builder.maxConnectionLifeTime(options.getMaxConnectionLifeTime());
+Hole 9:
+[SCond]: builder.requiredReplicaSetName(options.getRequiredReplicaSetName());
+Hole 10:
+[SCond]: builder.sslEnabled(options.isSslEnabled());
+
+

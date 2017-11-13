@@ -1,0 +1,61 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+Merge Instance for method (Ident "PropertyDescriptor",Ident "copy",[RefType (ClassRefType (ClassType [(Ident "DeclarationDescriptor",[])])),PrimType BooleanT])
+@NotNull
+ @Override
+ public PropertyDescriptor copy (DeclarationDescriptor newOwner, boolean makeNonAbstract)
+{
+  <?HOLE?>
+  <?HOLE?>
+  PropertyGetterDescriptor newGetter = getter == null ? null : new PropertyGetterDescriptor(propertyDescriptor, Lists.newArrayList(getter.getAnnotations()), DescriptorUtils.convertModality(getter.getModality(), makeNonAbstract), getter.getVisibility(), getter.hasBody(), getter.isDefault());
+  if (newGetter != null)
+  {
+    newGetter.initialize(getter.getReturnType());
+  }
+  PropertySetterDescriptor newSetter = setter == null ? null : new PropertySetterDescriptor(DescriptorUtils.convertModality(setter.getModality(), makeNonAbstract), setter.getVisibility(), propertyDescriptor, Lists.newArrayList(setter.getAnnotations()), setter.hasBody(), setter.isDefault());
+  <?HOLE?>
+  propertyDescriptor.initialize(newGetter, newSetter);
+  return propertyDescriptor;
+}
+Edit Base:
+Hole 1:
+[]: PropertyDescriptor propertyDescriptor = new PropertyDescriptor(newOwner, Lists.newArrayList(getAnnotations()), DescriptorUtils.convertModality(modality, makeNonAbstract), visibility, isVar, expectedThisObject, getName());
+Hole 2:
+[]: propertyDescriptor.setType(getInType(), getOutType(), DescriptorUtils.copyTypeParameters(propertyDescriptor, getTypeParameters()), (receiver.exists() ? receiver.getType() : null));
+Hole 3:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: PropertyDescriptor propertyDescriptor = new PropertyDescriptor(newOwner, Lists.newArrayList(getAnnotations()), DescriptorUtils.convertModality(modality, makeNonAbstract), visibility, isVar, expectedThisObject, getName());
+Hole 2:
+[]: propertyDescriptor.setType(getInType(), getOutType(), DescriptorUtils.copyTypeParameters(propertyDescriptor, getTypeParameters()), (receiver.exists() ? receiver.getType() : null));
+Hole 3:
+[]: if (newSetter != null)
+{
+  newSetter.initialize(setter.getValueParameters().get(0).copy(newSetter));
+}
+
+Edit B:
+Hole 1:
+[]: PropertyDescriptor propertyDescriptor = new PropertyDescriptor(newOwner, Lists.newArrayList(getAnnotations()), DescriptorUtils.convertModality(modality, makeNonAbstract), visibility, isVar, getName());
+Hole 2:
+[]: propertyDescriptor.setType(getInType(), getOutType(), DescriptorUtils.copyTypeParameters(propertyDescriptor, getTypeParameters()), expectedThisObject, (receiver.exists() ? receiver.getType() : null));
+Hole 3:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: PropertyDescriptor propertyDescriptor = new PropertyDescriptor(newOwner, Lists.newArrayList(getAnnotations()), DescriptorUtils.convertModality(modality, makeNonAbstract), visibility, isVar, getName());
+Hole 2:
+[]: propertyDescriptor.setType(getInType(), getOutType(), DescriptorUtils.copyTypeParameters(propertyDescriptor, getTypeParameters()), expectedThisObject, (receiver.exists() ? receiver.getType() : null));
+Hole 3:
+[]: if (newSetter != null)
+{
+  newSetter.initialize(setter.getValueParameters().get(0).copy(newSetter));
+}
+
+

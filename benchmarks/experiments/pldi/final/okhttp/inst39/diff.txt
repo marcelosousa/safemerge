@@ -1,0 +1,63 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+Merge Instance for method (Ident "OkHttpClient",Ident "copyWithDefaults",[])
+private OkHttpClient copyWithDefaults ()
+{
+  <?HOLE?>
+  result.proxy = proxy;
+  <?HOLE?>
+  result.proxySelector = proxySelector != null ? proxySelector : ProxySelector.getDefault();
+  result.cookieHandler = cookieHandler != null ? cookieHandler : CookieHandler.getDefault();
+  result.responseCache = responseCache != null ? responseCache : ResponseCache.getDefault();
+  result.sslSocketFactory = sslSocketFactory != null ? sslSocketFactory : HttpsURLConnection.getDefaultSSLSocketFactory();
+  <?HOLE?>
+  result.authenticator = authenticator != null ? authenticator : HttpAuthenticator.SYSTEM_DEFAULT;
+  result.connectionPool = connectionPool != null ? connectionPool : ConnectionPool.getDefault();
+  result.followProtocolRedirects = followProtocolRedirects;
+  <?HOLE?>
+  return result;
+}
+Edit Base:
+Hole 1:
+[]: OkHttpClient result = new OkHttpClient();
+Hole 2:
+[]: result.failedRoutes = failedRoutes;
+Hole 3:
+[]: result.hostnameVerifier = hostnameVerifier != null ? hostnameVerifier : HttpsURLConnection.getDefaultHostnameVerifier();
+Hole 4:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: OkHttpClient result = new OkHttpClient(this);
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: result.hostnameVerifier = hostnameVerifier != null ? hostnameVerifier : HttpsURLConnection.getDefaultHostnameVerifier();
+Hole 4:
+[]: result.transports = transports != null ? transports : DEFAULT_TRANSPORTS;
+
+Edit B:
+Hole 1:
+[]: OkHttpClient result = new OkHttpClient();
+Hole 2:
+[]: result.failedRoutes = failedRoutes;
+Hole 3:
+[]: result.hostnameVerifier = hostnameVerifier != null ? hostnameVerifier : new OkHostnameVerifier();
+Hole 4:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: OkHttpClient result = new OkHttpClient(this);
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: result.hostnameVerifier = hostnameVerifier != null ? hostnameVerifier : new OkHostnameVerifier();
+Hole 4:
+[]: result.transports = transports != null ? transports : DEFAULT_TRANSPORTS;
+
+

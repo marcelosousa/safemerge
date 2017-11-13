@@ -1,0 +1,113 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+Merge Instance for method (Ident "K2JSCompiler",Ident "doExecute",[RefType (ClassRefType (ClassType [(Ident "K2JSCompilerArguments",[])])),RefType (ClassRefType (ClassType [(Ident "PrintingMessageCollector",[])])),RefType (ClassRefType (ClassType [(Ident "Disposable",[])]))])
+@NotNull
+ @Override
+ protected ExitCode doExecute (K2JSCompilerArguments arguments, PrintingMessageCollector messageCollector, Disposable rootDisposable)
+{
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  Project project = environmentForJS.getProject();
+  ClassPathLibrarySourcesLoader sourceLoader = new ClassPathLibrarySourcesLoader(project);
+  List<JetFile> sourceFiles = sourceLoader.findSourceFiles();
+  environmentForJS.getSourceFiles().addAll(sourceFiles);
+  if (arguments.isVerbose())
+  {
+    reportCompiledSourcesList(messageCollector, environmentForJS);
+  }
+  Config config = getConfig(arguments, project);
+  if (analyzeAndReportErrors(messageCollector, environmentForJS.getSourceFiles(), config))
+  {
+    return ExitCode.COMPILATION_ERROR;
+  }
+  String outputFile = arguments.outputFile;
+  if (outputFile == null)
+  {
+    messageCollector.report(CompilerMessageSeverity.ERROR, "Specify output file via -output", CompilerMessageLocation.NO_LOCATION);
+    return ExitCode.INTERNAL_ERROR;
+  }
+  MainCallParameters mainCallParameters = arguments.createMainCallParameters();
+  return translateAndGenerateOutputFile(mainCallParameters, messageCollector, environmentForJS, config, outputFile);
+}
+Edit Base:
+Hole 1:
+[SCond]: if ((arguments.srcdir == null && arguments.sourceFiles) == null)
+{
+  messageCollector.report(CompilerMessageSeverity.ERROR, "Specify sources location via -srcdir", NO_LOCATION);
+  return ExitCode.INTERNAL_ERROR;
+}
+Hole 2:
+[]: JetCoreEnvironment environmentForJS = JetCoreEnvironment.getCoreEnvironmentForJS(rootDisposable);
+Hole 3:
+[]: if (arguments.srcdir != null)
+{
+  environmentForJS.addSources(arguments.srcdir);
+}
+Hole 4:
+[]: if (arguments.sourceFiles != null)
+{
+  for (String sourceFile : arguments.sourceFiles) {
+                                                    environmentForJS.addSources(sourceFile);
+                                                  }
+}
+
+Edit A:
+Hole 1:
+[SCond]: if (arguments.sourceFiles == null)
+{
+  messageCollector.report(CompilerMessageSeverity.ERROR, "Specify sources location via -sourceFiles", NO_LOCATION);
+  return ExitCode.INTERNAL_ERROR;
+}
+Hole 2:
+[]: JetCoreEnvironment environmentForJS = JetCoreEnvironment.getCoreEnvironmentForJS(rootDisposable);
+Hole 3:
+[]: for (String sourceFile : arguments.sourceFiles) {
+                                                  environmentForJS.addSources(sourceFile);
+                                                }
+Hole 4:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: if ((arguments.srcdir == null && arguments.sourceFiles) == null)
+{
+  messageCollector.report(CompilerMessageSeverity.ERROR, "Specify sources location via -srcdir", NO_LOCATION);
+  return ExitCode.INTERNAL_ERROR;
+}
+Hole 2:
+[]: JetCoreEnvironment environmentForJS = JetCoreEnvironment.createCoreEnvironmentForJS(rootDisposable);
+Hole 3:
+[]: if (arguments.srcdir != null)
+{
+  environmentForJS.addSources(arguments.srcdir);
+}
+Hole 4:
+[]: if (arguments.sourceFiles != null)
+{
+  for (String sourceFile : arguments.sourceFiles) {
+                                                    environmentForJS.addSources(sourceFile);
+                                                  }
+}
+
+Edit M:
+Hole 1:
+[]: if (arguments.sourceFiles == null)
+{
+  messageCollector.report(CompilerMessageSeverity.ERROR, "Specify sources location via -sourceFiles", NO_LOCATION);
+  return ExitCode.INTERNAL_ERROR;
+}
+Hole 2:
+[]: JetCoreEnvironment environmentForJS = JetCoreEnvironment.createCoreEnvironmentForJS(rootDisposable);
+Hole 3:
+[]: for (String sourceFile : arguments.sourceFiles) {
+                                                  environmentForJS.addSources(sourceFile);
+                                                }
+Hole 4:
+[]: <SKIP>
+
+

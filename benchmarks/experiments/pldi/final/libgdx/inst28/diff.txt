@@ -1,0 +1,48 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+Merge Instance for method (Ident "Lwjgl3Application",Ident "newWindow",[RefType (ClassRefType (ClassType [(Ident "ApplicationListener",[])])),RefType (ClassRefType (ClassType [(Ident "Lwjgl3WindowConfiguration",[])]))])
+public Lwjgl3Window newWindow (ApplicationListener listener, Lwjgl3WindowConfiguration config)
+{
+  Lwjgl3ApplicationConfiguration appConfig = Lwjgl3ApplicationConfiguration.copy(this.config);
+  appConfig.setWindowedMode(config.windowWidth, config.windowHeight);
+  appConfig.setWindowPosition(config.windowX, config.windowY);
+  <?HOLE?>
+  appConfig.setResizable(config.windowResizable);
+  appConfig.setDecorated(config.windowDecorated);
+  appConfig.setWindowListener(config.windowListener);
+  appConfig.setFullscreenMode(config.fullscreenMode);
+  appConfig.setTitle(config.title);
+  appConfig.setInitialBackgroundColor(config.initialBackgroundColor);
+  <?HOLE?>
+  Lwjgl3Window window = createWindow(appConfig, listener, windows.get(0).getWindowHandle());
+  windows.add(window);
+  return window;
+}
+Edit Base:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: appConfig.setWindowSizeLimits(config.windowMinWidth, config.windowMinHeight, config.windowMaxWidth, config.windowMaxHeight);
+Hole 2:
+[]: <SKIP>
+
+Edit B:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: appConfig.setInitialVisible(config.initialVisible);
+
+Edit M:
+Hole 1:
+[]: appConfig.setWindowSizeLimits(config.windowMinWidth, config.windowMinHeight, config.windowMaxWidth, config.windowMaxHeight);
+Hole 2:
+[]: appConfig.setInitialVisible(config.initialVisible);
+
+

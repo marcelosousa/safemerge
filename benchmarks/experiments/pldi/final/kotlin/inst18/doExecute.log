@@ -1,0 +1,325 @@
+verify: relational VC
+(let ((a!1 (and (= arguments_1_0!0 arguments_2_0!1)
+                (= arguments_1_0!0 arguments_3_0!2)
+                (= arguments_1_0!0 arguments_4_0!3)
+                (= arguments_2_0!1 arguments_3_0!2)
+                (= arguments_2_0!1 arguments_4_0!3)
+                (= arguments_3_0!2 arguments_4_0!3)
+                (= environmentForJS_1_1!37 environmentForJS_2_1!34)
+                (= environmentForJS_3_1!32 environmentForJS_4_1!29)
+                (= messageCollector_1_0!4 messageCollector_2_0!5)
+                (= messageCollector_1_0!4 messageCollector_3_0!6)
+                (= messageCollector_1_0!4 messageCollector_4_0!7)
+                (= messageCollector_2_0!5 messageCollector_3_0!6)
+                (= messageCollector_2_0!5 messageCollector_4_0!7)
+                (= messageCollector_3_0!6 messageCollector_4_0!7)
+                (= rootDisposable_1_0!8 rootDisposable_2_0!9)
+                (= rootDisposable_1_0!8 rootDisposable_3_0!10)
+                (= rootDisposable_1_0!8 rootDisposable_4_0!11)
+                (= rootDisposable_2_0!9 rootDisposable_3_0!10)
+                (= rootDisposable_2_0!9 rootDisposable_4_0!11)
+                (= rootDisposable_3_0!10 rootDisposable_4_0!11)))
+      (a!2 (not (and (< wiz_i_3_1!59 (length!51 sourceFiles.arguments!17)))))
+      (a!3 (not (and (< wiz_i_1_1!70 (length!51 sourceFiles.arguments!17)))))
+      (a!4 (not (and (< wiz_i_4_2!54 (length!51 sourceFiles.arguments!17)))))
+      (a!5 (not (and (< wiz_i_2_2!56 (length!51 sourceFiles.arguments!17)))))
+      (a!6 (not (and (< wiz_i_4_1!39 (length!51 sourceFiles.arguments!17))
+                     (< wiz_i_2_1!42 (length!51 sourceFiles.arguments!17)))))
+      (a!13 (not (= (analyzeAndReportErrors!150
+                      messageCollector_1_1!108
+                      (getSourceFiles!149 environmentForJS_1_2!94)
+                      config_1_1!84)
+                    1)))
+      (a!15 (not (= (analyzeAndReportErrors!150
+                      messageCollector_2_1!109
+                      (getSourceFiles!149 environmentForJS_2_2!95)
+                      config_2_1!86)
+                    1)))
+      (a!18 (not (= (analyzeAndReportErrors!150
+                      messageCollector_3_1!110
+                      (getSourceFiles!149 environmentForJS_3_2!96)
+                      config_3_1!88)
+                    1)))
+      (a!20 (not (= (analyzeAndReportErrors!150
+                      messageCollector_4_1!111
+                      (getSourceFiles!149 environmentForJS_4_2!97)
+                      config_4_1!90)
+                    1))))
+(let ((a!7 (and a!1
+                a!6
+                (not (< wiz_i_4_1!39 (length!51 sourceFiles.arguments!17)))
+                (not (< wiz_i_2_1!42 (length!51 sourceFiles.arguments!17)))
+                (= wiz_i_2_3 wiz_i_2_1!42))))
+(let ((a!8 (and (or (and a!1 a!5 (= wiz_i_2_3 wiz_i_2_2!56)) a!7)
+                (= wiz_i_2_4 wiz_i_2_3)
+                (= wiz_i_4_3 wiz_i_4_1!39))))
+(let ((a!9 (and (or (and a!1
+                         a!4
+                         (= wiz_i_2_4 wiz_i_2_1!42)
+                         (= wiz_i_4_3 wiz_i_4_2!54))
+                    a!8)
+                (not (not (= sourceFiles.arguments!17 0)))
+                (not (not (= sourceFiles.arguments!17 0))))))
+(let ((a!10 (and (or (and (= arguments_1_0!0 arguments_2_0!1)
+                          (= arguments_1_0!0 arguments_3_0!2)
+                          (= arguments_1_0!0 arguments_4_0!3)
+                          (= arguments_2_0!1 arguments_3_0!2)
+                          (= arguments_2_0!1 arguments_4_0!3)
+                          (= arguments_3_0!2 arguments_4_0!3)
+                          (= environmentForJS_1_1!37 environmentForJS_2_1!34)
+                          (= environmentForJS_1_1!37 environmentForJS_3_1!32)
+                          (= environmentForJS_1_1!37 environmentForJS_4_1!29)
+                          (= environmentForJS_2_1!34 environmentForJS_3_1!32)
+                          (= environmentForJS_2_1!34 environmentForJS_4_1!29)
+                          (= environmentForJS_3_1!32 environmentForJS_4_1!29)
+                          (= messageCollector_1_0!4 messageCollector_2_0!5)
+                          (= messageCollector_1_0!4 messageCollector_3_0!6)
+                          (= messageCollector_1_0!4 messageCollector_4_0!7)
+                          (= messageCollector_2_0!5 messageCollector_3_0!6)
+                          (= messageCollector_2_0!5 messageCollector_4_0!7)
+                          (= messageCollector_3_0!6 messageCollector_4_0!7)
+                          (= rootDisposable_1_0!8 rootDisposable_2_0!9)
+                          (= rootDisposable_1_0!8 rootDisposable_3_0!10)
+                          (= rootDisposable_1_0!8 rootDisposable_4_0!11)
+                          (= rootDisposable_2_0!9 rootDisposable_3_0!10)
+                          (= rootDisposable_2_0!9 rootDisposable_4_0!11)
+                          (= rootDisposable_3_0!10 rootDisposable_4_0!11)
+                          (= sourceFile_1_1!72 sourceFile_2_1!50)
+                          (= sourceFile_1_1!72 sourceFile_4_1!47)
+                          (= sourceFile_2_1!50 sourceFile_4_1!47)
+                          (= wiz_i_2_4 wiz_i_4_3)
+                          a!3)
+                     a!9))))
+(let ((a!11 (and (or (and a!1 a!2) a!10)
+                 (= arguments_1_1!78
+                    (Anonymous0!77 arguments_1_0!0 getConfig!75 project!76))
+                 (= arguments_2_1!79
+                    (Anonymous0!77 arguments_2_0!1 getConfig!75 project!76))
+                 (= arguments_3_1!80
+                    (Anonymous0!77 arguments_3_0!2 getConfig!75 project!76))
+                 (= arguments_4_1!81
+                    (Anonymous0!77 arguments_4_0!3 getConfig!75 project!76))
+                 (= config_1_1!84
+                    (Anonymous1!83 getConfig!75 arguments_1_1!78 project!76))
+                 (= config_2_1!86
+                    (Anonymous1!83 getConfig!75 arguments_2_1!79 project!76))
+                 (= config_3_1!88
+                    (Anonymous1!83 getConfig!75 arguments_3_1!80 project!76))
+                 (= config_4_1!90
+                    (Anonymous1!83 getConfig!75 arguments_4_1!81 project!76))
+                 (= environmentForJS_1_2!94
+                    (Anonymous2!93 environmentForJS_1_1!37
+                                   sourceFiles!91
+                                   reportCompiledSourcesList!92
+                                   messageCollector_1_0!4
+                                   arguments_1_1!78))
+                 (= environmentForJS_2_2!95
+                    (Anonymous2!93 environmentForJS_2_1!34
+                                   sourceFiles!91
+                                   reportCompiledSourcesList!92
+                                   messageCollector_2_0!5
+                                   arguments_2_1!79))
+                 (= environmentForJS_3_2!96
+                    (Anonymous2!93 environmentForJS_3_1!32
+                                   sourceFiles!91
+                                   reportCompiledSourcesList!92
+                                   messageCollector_3_0!6
+                                   arguments_3_1!80))
+                 (= environmentForJS_4_2!97
+                    (Anonymous2!93 environmentForJS_4_1!29
+                                   sourceFiles!91
+                                   reportCompiledSourcesList!92
+                                   messageCollector_4_0!7
+                                   arguments_4_1!81))
+                 (= getConfig_1_1!100
+                    (Anonymous3!99 arguments_1_1!78 project!76))
+                 (= getConfig_2_1!102
+                    (Anonymous3!99 arguments_2_1!79 project!76))
+                 (= getConfig_3_1!104
+                    (Anonymous3!99 arguments_3_1!80 project!76))
+                 (= getConfig_4_1!106
+                    (Anonymous3!99 arguments_4_1!81 project!76))
+                 (= messageCollector_1_1!108
+                    (Anonymous4!107 reportCompiledSourcesList!92
+                                    messageCollector_1_0!4
+                                    environmentForJS_1_2!94
+                                    arguments_1_1!78))
+                 (= messageCollector_2_1!109
+                    (Anonymous4!107 reportCompiledSourcesList!92
+                                    messageCollector_2_0!5
+                                    environmentForJS_2_2!95
+                                    arguments_2_1!79))
+                 (= messageCollector_3_1!110
+                    (Anonymous4!107 reportCompiledSourcesList!92
+                                    messageCollector_3_0!6
+                                    environmentForJS_3_2!96
+                                    arguments_3_1!80))
+                 (= messageCollector_4_1!111
+                    (Anonymous4!107 reportCompiledSourcesList!92
+                                    messageCollector_4_0!7
+                                    environmentForJS_4_2!97
+                                    arguments_4_1!81))
+                 (= project_1_1!114
+                    (Anonymous5!113 environmentForJS_1_2!94
+                                    getConfig_1_1!100
+                                    arguments_1_1!78))
+                 (= project_2_1!116
+                    (Anonymous5!113 environmentForJS_2_2!95
+                                    getConfig_2_1!102
+                                    arguments_2_1!79))
+                 (= project_3_1!118
+                    (Anonymous5!113 environmentForJS_3_2!96
+                                    getConfig_3_1!104
+                                    arguments_3_1!80))
+                 (= project_4_1!120
+                    (Anonymous5!113 environmentForJS_4_2!97
+                                    getConfig_4_1!106
+                                    arguments_4_1!81))
+                 (= reportCompiledSourcesList_1_1!123
+                    (Anonymous6!122 messageCollector_1_1!108
+                                    environmentForJS_1_2!94
+                                    arguments_1_1!78))
+                 (= reportCompiledSourcesList_2_1!125
+                    (Anonymous6!122 messageCollector_2_1!109
+                                    environmentForJS_2_2!95
+                                    arguments_2_1!79))
+                 (= reportCompiledSourcesList_3_1!127
+                    (Anonymous6!122 messageCollector_3_1!110
+                                    environmentForJS_3_2!96
+                                    arguments_3_1!80))
+                 (= reportCompiledSourcesList_4_1!129
+                    (Anonymous6!122 messageCollector_4_1!111
+                                    environmentForJS_4_2!97
+                                    arguments_4_1!81))
+                 (= sourceFiles_1_1!133
+                    (Anonymous7!132 sourceLoader!131 environmentForJS_1_2!94))
+                 (= sourceFiles_2_1!135
+                    (Anonymous7!132 sourceLoader!131 environmentForJS_2_2!95))
+                 (= sourceFiles_3_1!137
+                    (Anonymous7!132 sourceLoader!131 environmentForJS_3_2!96))
+                 (= sourceFiles_4_1!139
+                    (Anonymous7!132 sourceLoader!131 environmentForJS_4_2!97))
+                 (= sourceLoader_1_1!142 (Anonymous8!141 project_1_1!114))
+                 (= sourceLoader_2_1!144 (Anonymous8!141 project_2_1!116))
+                 (= sourceLoader_3_1!146 (Anonymous8!141 project_3_1!118))
+                 (= sourceLoader_4_1!148 (Anonymous8!141 project_4_1!120)))))
+(let ((a!12 (and a!11
+                 (= (analyzeAndReportErrors!150
+                      messageCollector_1_1!108
+                      (getSourceFiles!149 environmentForJS_1_2!94)
+                      config_1_1!84)
+                    1)
+                 (= ret_1_0!12 COMPILATION_ERROR.ExitCode!151))))
+(let ((a!14 (and (or a!12 (and a!11 a!13))
+                 (= (analyzeAndReportErrors!150
+                      messageCollector_2_1!109
+                      (getSourceFiles!149 environmentForJS_2_2!95)
+                      config_2_1!86)
+                    1)
+                 (= ret_2_0!13 COMPILATION_ERROR.ExitCode!151))))
+(let ((a!16 (or a!14 (and (or a!12 (and a!11 a!13)) a!15))))
+(let ((a!17 (and a!16
+                 (= (analyzeAndReportErrors!150
+                      messageCollector_3_1!110
+                      (getSourceFiles!149 environmentForJS_3_2!96)
+                      config_3_1!88)
+                    1)
+                 (= ret_3_0!14 COMPILATION_ERROR.ExitCode!151))))
+(let ((a!19 (and (or a!17 (and a!16 a!18))
+                 (= (analyzeAndReportErrors!150
+                      messageCollector_4_1!111
+                      (getSourceFiles!149 environmentForJS_4_2!97)
+                      config_4_1!90)
+                    1)
+                 (= ret_4_0!15 COMPILATION_ERROR.ExitCode!151))))
+(let ((a!21 (or a!19 (and (or a!17 (and a!16 a!18)) a!20))))
+(let ((a!22 (and a!21
+                 (= outputFile_1_1!156 outputFile.arguments!157)
+                 (= outputFile_2_1!158 outputFile.arguments!157)
+                 (= outputFile_3_1!159 outputFile.arguments!157)
+                 (= outputFile_4_1!160 outputFile.arguments!157))))
+(let ((a!23 (or (and a!22
+                     (= outputFile_1_1!156 0)
+                     (= outputFile_2_1!158 0)
+                     (= outputFile_3_1!159 0)
+                     (= outputFile_4_1!160 0)
+                     (= messageCollector_1_2!163
+                        (Anonymous9!162 messageCollector_1_1!108
+                                        ERROR.CompilerMessageSeverity!18
+                                        NO_LOCATION.CompilerMessageLocation!161))
+                     (= messageCollector_2_2!164
+                        (Anonymous9!162 messageCollector_2_1!109
+                                        ERROR.CompilerMessageSeverity!18
+                                        NO_LOCATION.CompilerMessageLocation!161))
+                     (= messageCollector_3_2!165
+                        (Anonymous9!162 messageCollector_3_1!110
+                                        ERROR.CompilerMessageSeverity!18
+                                        NO_LOCATION.CompilerMessageLocation!161))
+                     (= messageCollector_4_2!166
+                        (Anonymous9!162 messageCollector_4_1!111
+                                        ERROR.CompilerMessageSeverity!18
+                                        NO_LOCATION.CompilerMessageLocation!161))
+                     (= ret_1_0!12 INTERNAL_ERROR.ExitCode!24)
+                     (= ret_2_0!13 INTERNAL_ERROR.ExitCode!24)
+                     (= ret_3_0!14 INTERNAL_ERROR.ExitCode!24)
+                     (= ret_4_0!15 INTERNAL_ERROR.ExitCode!24)
+                     (= messageCollector_1_3 messageCollector_1_2!163)
+                     (= messageCollector_2_3 messageCollector_2_2!164)
+                     (= messageCollector_3_3 messageCollector_3_2!165)
+                     (= messageCollector_4_3 messageCollector_4_2!166))
+                (and a!22
+                     (not (= outputFile_1_1!156 0))
+                     (not (= outputFile_2_1!158 0))
+                     (not (= outputFile_3_1!159 0))
+                     (not (= outputFile_4_1!160 0))
+                     (= messageCollector_1_3 messageCollector_1_1!108)
+                     (= messageCollector_2_3 messageCollector_2_1!109)
+                     (= messageCollector_3_3 messageCollector_3_1!110)
+                     (= messageCollector_4_3 messageCollector_4_1!111)))))
+  (and a!23
+       (= mainCallParameters_1_1!171
+          (createMainCallParameters!172 arguments_1_1!78))
+       (= mainCallParameters_2_1!173
+          (createMainCallParameters!172 arguments_2_1!79))
+       (= mainCallParameters_3_1!174
+          (createMainCallParameters!172 arguments_3_1!80))
+       (= mainCallParameters_4_1!175
+          (createMainCallParameters!172 arguments_4_1!81))
+       (= ret_1_0!12
+          (translateAndGenerateOutputFile!176
+            mainCallParameters_1_1!171
+            messageCollector_1_3
+            environmentForJS_1_2!94
+            config_1_1!84
+            outputFile_1_1!156))
+       (= ret_2_0!13
+          (translateAndGenerateOutputFile!176
+            mainCallParameters_2_1!173
+            messageCollector_2_3
+            environmentForJS_2_2!95
+            config_2_1!86
+            outputFile_2_1!158))
+       (= ret_3_0!14
+          (translateAndGenerateOutputFile!176
+            mainCallParameters_3_1!174
+            messageCollector_3_3
+            environmentForJS_3_2!96
+            config_3_1!88
+            outputFile_3_1!159))
+       (= ret_4_0!15
+          (translateAndGenerateOutputFile!176
+            mainCallParameters_4_1!175
+            messageCollector_4_3
+            environmentForJS_4_2!97
+            config_4_1!90
+            outputFile_4_1!160)))))))))))))))))
+verify: semantic conflict VC
+(let ((a!1 (=> (not (and (= ret_1_0!12 ret_2_0!13)))
+               (and (= ret_4_0!15 ret_2_0!13))))
+      (a!2 (=> (not (and (= ret_1_0!12 ret_3_0!14)))
+               (and (= ret_4_0!15 ret_3_0!14)))))
+(let ((a!3 (or (and (and (= ret_4_0!15 ret_2_0!13))
+                    (and (= ret_4_0!15 ret_3_0!14))
+                    (= ret_1_0!12 ret_4_0!15))
+               (and a!1 a!2))))
+  (and a!3)))

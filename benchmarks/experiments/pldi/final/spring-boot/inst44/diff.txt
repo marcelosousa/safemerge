@@ -1,0 +1,131 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+Merge Instance for method (Ident "AtomikosProperties",Ident "asProperties",[])
+public Properties asProperties ()
+{
+  Properties properties = new Properties();
+  set(properties, "service", getService());
+  set(properties, "max_timeout", getMaxTimeout());
+  set(properties, "default_jta_timeout", getDefaultJtaTimeout());
+  set(properties, "max_actives", getMaxActives());
+  set(properties, "enable_logging", isEnableLogging());
+  set(properties, "tm_unique_name", getTransactionManagerUniqueName());
+  set(properties, "serial_jta_transactions", isSerialJtaTransactions());
+  <?HOLE?>
+  set(properties, "force_shutdown_on_vm_exit", isForceShutdownOnVmExit());
+  set(properties, "log_base_name", getLogBaseName());
+  set(properties, "log_base_dir", getLogBaseDir());
+  set(properties, "checkpoint_interval", getCheckpointInterval());
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  set(properties, "threaded_2pc", isThreadedTwoPhaseCommit());
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  <?HOLE?>
+  return properties;
+}
+Edit Base:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: set(properties, "console_log_level", getConsoleLogLevel());
+Hole 3:
+[]: set(properties, "output_dir", getOutputDir());
+Hole 4:
+[]: set(properties, "console_file_name", getConsoleFileName());
+Hole 5:
+[]: set(properties, "console_file_count", getConsoleFileCount());
+Hole 6:
+[]: set(properties, "console_file_limit", getConsoleFileLimit());
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+Hole 10:
+[]: <SKIP>
+Hole 11:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[]: set(properties, "allow_subtransactions", isAllowSubTransactions());
+Hole 2:
+[]: set(properties, "console_log_level", getConsoleLogLevel());
+Hole 3:
+[]: set(properties, "output_dir", getOutputDir());
+Hole 4:
+[]: set(properties, "console_file_name", getConsoleFileName());
+Hole 5:
+[]: set(properties, "console_file_count", getConsoleFileCount());
+Hole 6:
+[]: set(properties, "console_file_limit", getConsoleFileLimit());
+Hole 7:
+[]: Recovery recovery = getRecovery();
+Hole 8:
+[]: set(properties, "forget_orphaned_log_entries_delay", recovery.getForgetOrphanedLogEntriesDelay());
+Hole 9:
+[]: set(properties, "recovery_delay", recovery.getDelay());
+Hole 10:
+[]: set(properties, "oltp_max_retries", recovery.getMaxRetries());
+Hole 11:
+[]: set(properties, "oltp_retry_interval", recovery.getRetryInterval());
+
+Edit B:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: <SKIP>
+Hole 8:
+[]: <SKIP>
+Hole 9:
+[]: <SKIP>
+Hole 10:
+[]: <SKIP>
+Hole 11:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: set(properties, "allow_subtransactions", isAllowSubTransactions());
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+Hole 7:
+[]: Recovery recovery = getRecovery();
+Hole 8:
+[]: set(properties, "forget_orphaned_log_entries_delay", recovery.getForgetOrphanedLogEntriesDelay());
+Hole 9:
+[]: set(properties, "recovery_delay", recovery.getDelay());
+Hole 10:
+[]: set(properties, "oltp_max_retries", recovery.getMaxRetries());
+Hole 11:
+[]: set(properties, "oltp_retry_interval", recovery.getRetryInterval());
+
+

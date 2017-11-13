@@ -1,0 +1,78 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+Merge Instance for method (Ident "FeedActivity",Ident "onCreate",[RefType (ClassRefType (ClassType [(Ident "Bundle",[])]))])
+@Override
+ protected void onCreate (final Bundle savedInstanceState)
+{
+  super.onCreate(savedInstanceState);
+  <?HOLE?>
+  setContentView(R.layout.feed_act);
+  <?HOLE?>
+  <?HOLE?>
+  FeedFragment feedFragment = (FeedFragment) getSupportFragmentManagerfindFragmentById(R.id.main_content);
+  <?HOLE?>
+  mPresenter = new FeedPresenter(feedFragment);
+  feedFragment.setPresenter(mPresenter);
+  <?HOLE?>
+  <?HOLE?>
+}
+Edit Base:
+Hole 1:
+[]: FeedMessage.initCategoryColorMap(getResources());
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("feed");
+Hole 6:
+[]: mPresenter.initializeDataListener(mDatabaseReference);
+
+Edit A:
+Hole 1:
+[]: FeedMessage.initCategoryColorMap(getResources());
+Hole 2:
+[]: setFullscreenLayout();
+Hole 3:
+[]: disableActionBarTitle();
+Hole 4:
+[]: <SKIP>
+Hole 5:
+[]: mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("feed");
+Hole 6:
+[]: mPresenter.initializeDataListener(mDatabaseReference);
+
+Edit B:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: <SKIP>
+Hole 3:
+[]: <SKIP>
+Hole 4:
+[]: feedFragment.setRetainInstance(true);
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[]: <SKIP>
+Hole 2:
+[]: setFullscreenLayout();
+Hole 3:
+[]: disableActionBarTitle();
+Hole 4:
+[]: feedFragment.setRetainInstance(true);
+Hole 5:
+[]: <SKIP>
+Hole 6:
+[]: <SKIP>
+
+

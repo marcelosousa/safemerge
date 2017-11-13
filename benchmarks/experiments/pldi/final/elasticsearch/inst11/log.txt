@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 47
+File: test/framework/src/main/java/org/elasticsearch/test/ESSingleNodeTestCase.java
+Orig: 28a9709d7f64d922f51f06cebdc551c7454625f3
+VarA: daadf8e04feb3a316a6c845a0c2ed56f519a1eab
+VarB: 63da9281a9e9d1302a62b27102961b4d2483bf91
+Merg: 0404db65e3497452886173957729c8e82cfd4a03

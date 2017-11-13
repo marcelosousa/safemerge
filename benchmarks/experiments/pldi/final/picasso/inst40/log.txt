@@ -1,0 +1,7 @@
+-------------------------------------------
+Inst: 7
+File: picasso/src/main/java/com/squareup/picasso/NetworkBitmapHunter.java
+Orig: 7cfc9f22f3b76ecba2ba207334199882ebbf282e
+VarA: b6843409d4b0e5f3af88b69e6a2030a2d507692d
+VarB: 1953d5672ccb3bec2a34be2c4d254f3fe39000b2
+Merg: e638abc68aa17af6749cc182b6a469a373d573d6

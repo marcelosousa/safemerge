@@ -1,0 +1,64 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+Merge Instance for method (Ident "TomcatEmbeddedServletContainerFactory",Ident "customizeConnector",[RefType (ClassRefType (ClassType [(Ident "Connector",[])]))])
+protected void customizeConnector (Connector connector)
+{
+  int port = getPort() >= 0 ? getPort() : 0;
+  connector.setPort(port);
+  if (connector.getProtocolHandler() instanceof AbstractProtocol)
+  {
+    if (getAddress() != null)
+    {
+      <?HOLE?>
+    }
+  }
+  if (getUriEncoding() != null)
+  {
+    connector.setURIEncoding(getUriEncoding());
+  }
+  connector.setProperty("bindOnInit", "false");
+  <?HOLE?>
+  for (TomcatConnectorCustomizer customizer : this.tomcatConnectorCustomizers) {
+                                                                                 customizer.customize(connector);
+                                                                               }
+}
+Edit Base:
+Hole 1:
+[SCond,SCond]: ((AbstractProtocol) connector.getProtocolHandler()).setAddress(getAddress());
+Hole 2:
+[]: <SKIP>
+
+Edit A:
+Hole 1:
+[SCond,SCond]: ((AbstractProtocol) connector.getProtocolHandler()).setAddress(getAddress());
+Hole 2:
+[]: if (getSsl() != null)
+{
+  Assert.state((connector.getProtocolHandler() instanceof AbstractHttp11JsseProtocol), ("To use SSL, the connector's protocol handler must be an " + "AbstractHttp11JsseProtocol subclass"));
+  configureSsl(((AbstractHttp11JsseProtocol) connector.getProtocolHandler()), getSsl());
+  connector.setScheme("https");
+  connector.setSecure(true);
+}
+
+Edit B:
+Hole 1:
+[SCond,SCond]: ((AbstractProtocol<?>) connector.getProtocolHandler()).setAddress(getAddress());
+Hole 2:
+[]: <SKIP>
+
+Edit M:
+Hole 1:
+[SCond,SCond]: ((AbstractProtocol<?>) connector.getProtocolHandler()).setAddress(getAddress());
+Hole 2:
+[]: if (getSsl() != null)
+{
+  Assert.state((connector.getProtocolHandler() instanceof AbstractHttp11JsseProtocol), ("To use SSL, the connector's protocol handler must be an " + "AbstractHttp11JsseProtocol subclass"));
+  configureSsl(((AbstractHttp11JsseProtocol<?>) connector.getProtocolHandler()), getSsl());
+  connector.setScheme("https");
+  connector.setSecure(true);
+}
+
+
