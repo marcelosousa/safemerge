@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 60
-File: tests/gdx-tests/src/com/badlogic/gdx/tests/ViewportTest1.java
-Orig: 2ab6102907a23f5f1fd4c7bca202d5172157e331
-VarA: ef0d77846024922e371ddcf1dc806c5863b7afcf
-VarB: 2787aa5b1ed12b54eae4e9c608ed3c71c4aefaab
-Merg: 5de1113a095799c04cdbbe7ac690348d6bd63dd9

@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 107
-File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/security/oauth2/resource/ResourceServerTokenServicesConfigurationTests.java
-Orig: 01729cc1d2d5101b9b3c48c545c5f97b2727e8ad
-VarA: 04a87ee4c195f1ffe429da18788a788f8254a429
-VarB: f57ddff478eff45706550b01485315ed4f913a98
-Merg: 4304cdb91a81244e5693c0c7ffef2508a088e709

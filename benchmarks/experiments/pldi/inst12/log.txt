@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 2
-File: lib/src/main/java/com/google/samples/apps/iosched/feed/FeedViewHolder.java
-Orig: 542124cac8df3e9cf61f5774ee4f77977782c5ec
-VarA: b4e83c360d234e8e7b339757eb0b9f82560cde33
-VarB: ead3a1ebc004d5c5d7e0dbaa37b38b41a73fffa7
-Merg: 390c8e2770ea12975ec99bcd26ea895a3c5c7a5a

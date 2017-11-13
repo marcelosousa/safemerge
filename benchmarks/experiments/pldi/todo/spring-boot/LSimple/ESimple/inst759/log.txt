@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 759
-File: spring-boot-autoconfigure/src/test/java/org/springframework/boot/autoconfigure/web/ServerPropertiesTests.java
-Orig: 5f2ffdb9e282f94a183f1c10f5a7b23726b36a29
-VarA: 7d845391b04a24deddedb786526348ac2bdd0c07
-VarB: 01ba0f75718c0342276cfd7b3c269f9effe5ef56
-Merg: d30dd1fa98f2ab84926ac1c40f6a4a44c39e2f55

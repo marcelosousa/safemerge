@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 251
-File: compiler/frontend/src/org/jetbrains/jet/lang/descriptors/PropertyDescriptor.java
-Orig: 4bfdbdd0635c1b2a13fa40c0032f786852f4c406
-VarA: faf6b87d8700c00c8bb8c46f099e2d9de70a42bd
-VarB: 9d6222c75aa0b61cf55a02cff65b9de43aa0aab2
-Merg: b0ba456bd0a7304604d97d70bff283163576312a

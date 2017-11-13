@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 74
-File: extensions/gdx-tools/src/com/badlogic/gdx/tools/imagepacker/ImageProcessor.java
-Orig: 13a2936616e0a7a8ea109c57af6fdaf7013268b9
-VarA: 9cda1aa96cdefd0476707c92a4fa97337e731a51
-VarB: 3f0df2f5988e31873bd6f7221ad873fe9e2479b2
-Merg: 51124137d1967a53b84fcc9db2da1d4f1ba8d09d

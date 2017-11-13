@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 372
-File: spring-boot-actuator/src/test/java/org/springframework/boot/actuate/autoconfigure/CrshAutoConfigurationTests.java
-Orig: aa175996757dc8c6bfbcff6504937fa04f611e28
-VarA: 36cdc81ef41de227a5b32d7c4eee890a099f797f
-VarB: 72aae34b67ef99cf851b7f26a2b7d78261e033f8
-Merg: 852ba5461357d3c03c5cb74ac55ed21134efe01b

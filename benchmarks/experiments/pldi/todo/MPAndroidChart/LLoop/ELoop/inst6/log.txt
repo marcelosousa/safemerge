@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 6
-File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/fragments/SimpleFragment.java
-Orig: cb0226b2312dcd69c16d4dc0825f02c72471a8d8
-VarA: f01b90668be552ec5139264cda72c0924a5451e3
-VarB: 0f3f4b75b0e8bb386dd1618b50e7240a572e6eda
-Merg: af114d180da6ec5633d32c701ff5467f7629fcf3

@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 336
-File: spring-boot-actuator/src/test/java/org/springframework/boot/actuate/autoconfigure/MetricExportAutoConfigurationTests.java
-Orig: 5e0ba6ea2e235da76798a9b6dd55833b7951e66e
-VarA: 725ae2c834518266ecc92d986159d9cbcfb4d789
-VarB: a1284bce61e6391b8c6dcb4e5e4d97612a32ded1
-Merg: ae249f7568dd25445df34d02b16393ec65ac2d1d

@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 12
-File: MPChartExample/src/com/xxmassdeveloper/mpchartexample/LineChartTime.java
-Orig: 45f9a189b7c9fc5593ae364539dedb0ed2e700b1
-VarA: e704fb87a0119bf1c9e3dfbb8b7c28d47ea0a66e
-VarB: 3c47d0ade9e62e1d798b89129653c9f49e7c6a8d
-Merg: 81dbd913446825b7d3c151800054060176f8088b

@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 815
-File: spring-boot/src/main/java/org/springframework/boot/context/embedded/tomcat/TomcatEmbeddedServletContainerFactory.java
-Orig: d0a85dd4779285689dd70ae567c6053c563c2ad5
-VarA: a9c2eb3919a0ae8c46193c4e96e4cf04554cd8ff
-VarB: adc8cdf16a875b3cf750960b86aa11cdf7631188
-Merg: 2d4e68a9777601bfb8309c94d8b74bc21be80ad1

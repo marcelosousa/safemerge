@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 231
-File: compiler/frontend.java/src/org/jetbrains/jet/lang/resolve/java/JavaPackageScope.java
-Orig: 41f456583aa3dd0ec2374faf692ae48a0b037829
-VarA: fe26a1de9e62f74f14003d368f4113519292e695
-VarB: 6a8dfc555e5d4f4e09313d4f182d520ed7278de1
-Merg: af9f00c1775e05e7f18092915e910a84ad151b9e

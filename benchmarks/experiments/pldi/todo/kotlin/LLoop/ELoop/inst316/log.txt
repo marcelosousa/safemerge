@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 316
-File: idea/src/org/jetbrains/jet/codegen/FunctionCodegen.java
-Orig: 705f4796d54089e5a91a2e9d379beeb16079c0cf
-VarA: 8c35668bfa90aa0fe6831c167fa93c5988fdc46d
-VarB: 234eafb0c1f2d56727960f60711a287810a9cf0a
-Merg: 5d2672f29a40b3a22213345256247da84f0f6481

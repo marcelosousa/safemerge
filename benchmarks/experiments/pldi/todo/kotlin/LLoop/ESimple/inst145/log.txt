@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 145
-File: idea/tests/org/jetbrains/kotlin/idea/JetLightCodeInsightFixtureTestCase.java
-Orig: 48a6fb37f98065d9cee6796d979072ff2d505982
-VarA: 56ce371c24879f45d71afbdb03ea3f4820f2873c
-VarB: e47a156e36a922a8abe73d4a35bdc98979feba40
-Merg: 6c4929ba91c6d382e50c80343eb1ddf5694fc9f0

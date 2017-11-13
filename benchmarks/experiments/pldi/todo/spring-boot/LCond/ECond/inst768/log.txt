@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 768
-File: spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/logging/AutoConfigurationReportLoggingInitializer.java
-Orig: 2d7c0c2f006244c5196d3ff24cfa11a421bf8b48
-VarA: 734f5c39f7d55d6b55c92e1dc35ff1bd50b3cae5
-VarB: 4f988d2aeca5433bbba7fef3b20d9977691fc4c0
-Merg: fdd3f12ee0f92ac18844c08bf71df39feebb6673

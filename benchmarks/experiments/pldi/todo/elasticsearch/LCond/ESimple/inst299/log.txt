@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 299
-File: core/src/main/java/org/elasticsearch/index/query/CommonTermsQueryBuilder.java
-Orig: 6437478d65ff525d540568e344569e4dc9d813bc
-VarA: 4db8c018f528c84bd7728aae3a45b8aafbc13d40
-VarB: af4b7ee00032270726926e3d431c50492a3013ad
-Merg: 1a34d91641ca6106136743276dde0479f1a8b446

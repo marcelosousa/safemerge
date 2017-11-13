@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 134
-File: plugins/android-idea-plugin/tests/org/jetbrains/kotlin/android/KotlinAndroidTestCase.java
-Orig: b8674beac0dded8b7e3c9bd44b02b90ec4973066
-VarA: 03e20787df0389c21a51fdfcb3135dd25ac18ac9
-VarB: 48ce8d5270ad3b3c38273dd670b97adc74a2eca6
-Merg: b6e5590d248800e0bc54f52eeb1d5db4c8796d0b

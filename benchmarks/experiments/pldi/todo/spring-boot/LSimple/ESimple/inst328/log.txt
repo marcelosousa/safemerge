@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 328
-File: spring-boot-devtools/src/test/java/org/springframework/boot/devtools/restart/ChangeableUrlsTests.java
-Orig: af2483816bf4978930b78677df250b22d9eadbe8
-VarA: a192970fb34c38f34bf533b6413ad35df182965c
-VarB: 1412eaa0e0eebf767047564fc476d27fcec2d05e
-Merg: 43d30cc5bc31560cc00e54ae064a0442ddb72af5

@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 267
-File: compiler/frontend/src/org/jetbrains/jet/lang/resolve/ControlFlowAnalyzer.java
-Orig: ecdceb4447278f9422706962e946fd78d7ea1aba
-VarA: 03e1e5dea62f42d68bba75a55dfcce35706a66d4
-VarB: 5e5b793b22244921c73d7d794c7a18ab12ff428e
-Merg: 503f1cf94de9d3cdec82c80ae4a89aa7ca9dc4b0

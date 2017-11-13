@@ -1,7 +1,0 @@
--------------------------------------------
-Inst: 224
-File: idea/src/org/jetbrains/jet/plugin/parameterInfo/JetFunctionParameterInfoHandler.java
-Orig: 5ffbc87b3f26b805a00a1f64ac8910ee8ffb7829
-VarA: ff1cd1c4f7acfc1a095c20a9bdf195dcaedb29fd
-VarB: 652be4ed9517a59a3d408974b2fc6c22c15184db
-Merg: a030576052093d3a2b095484be18e85cf9a8dd2b
