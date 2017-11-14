@@ -1,9 +1,3 @@
-@Autowired
- private CacheProperties cacheProperties;
-@Autowired
- CacheManagerCustomizerInvoker customizerInvoker;
-@Autowired
- private CacheManagerCustomizers customizerInvoker;
 @Bean
  public RedisCacheManager cacheManager (RedisTemplate<Object, Object> redisTemplate)
 {
