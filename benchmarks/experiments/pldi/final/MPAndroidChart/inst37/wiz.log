@@ -1,0 +1,217 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+verify: (Ident "LineChartRenderer",Ident "drawData",[RefType (ClassRefType (ClassType [(Ident "Canvas",[])]))])
+[(Ident "cubicFillPath",[RefType (ClassRefType (ClassType [(Ident "Path",[])]))]),(Ident "cubicPath",[RefType (ClassRefType (ClassType [(Ident "Path",[])]))]),(Ident "mBitmapCanvas",[RefType (ClassRefType (ClassType [(Ident "Canvas",[])]))]),(Ident "mChart",[RefType (ClassRefType (ClassType [(Ident "LineDataProvider",[])]))]),(Ident "mCircleBuffers",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "CircleBuffer",[])]))))]),(Ident "mCirclePaintInner",[RefType (ClassRefType (ClassType [(Ident "Paint",[])]))]),(Ident "mLineBuffers",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "LineBuffer",[])]))))]),(Ident "mPathBitmap",[RefType (ClassRefType (ClassType [(Ident "Bitmap",[])]))])]
+verify: result = Sat
+wiz: |HOLE|   = 1
+wiz: LOC HOLE = 5
+Semantic conflict found:
+ret_mPathBitmap_1_0!64 -> 29
+ret_mCirclePaintInner_2_0!57 -> 5
+ret_mChart_3_0!50 -> 15
+ret_cubicPath_4_0!43 -> 3
+cubicPath_3_0!10 -> 3
+mChart_1_0!16 -> 4
+mPathBitmap_3_0!34 -> 10
+mBitmapCanvas_4_2 -> 14
+ret_mChart_4_0!51 -> 15
+Config.ARGB_4444.Bitmap!74 -> 7
+ret_mChart_2_0!49 -> 15
+mLineBuffers_1_0!28 -> (_ as-array k!188)
+mPathBitmap_1_2 -> 10
+mCirclePaintInner_3_0!26 -> 5
+mPathBitmap_1_3 -> 10
+mRenderPaint_4_1!168 -> 32
+mPathBitmap_1_4 -> 10
+ret_mCircleBuffers_3_0!54 -> (_ as-array k!187)
+mPathBitmap_4_4!159 -> 30
+wiz_i!123 -> 18
+ret_mBitmapCanvas_2_0!45 -> 13
+mCirclePaintInner_1_0!24 -> 5
+mCircleBuffers_2_0!21 -> (_ as-array k!187)
+mPathBitmap_2_5!127 -> 21
+mBitmapCanvas_2_3 -> 13
+cubicFillPath_3_0!6 -> 2
+mLineBuffers_2_0!29 -> (_ as-array k!188)
+mRenderPaint_2_1!164 -> 32
+cubicFillPath_4_0!7 -> 2
+lineData_2_1!150 -> 28
+ret_mBitmapCanvas_3_0!46 -> 12
+mBitmapCanvas_4_0!15 -> 12
+ret_cubicFillPath_3_0!38 -> 2
+mPathBitmap_1_6!126 -> 20
+mPathBitmap_2_0!33 -> 10
+wiz_i_4_1!186 -> 35
+mBitmapCanvas_3_2 -> 12
+TRANSPARENT.Color!121 -> 16
+c_2_0!1 -> 1
+mBitmapCanvas_2_2 -> 13
+lineData_1_1!148 -> 28
+mPathBitmap_3_2 -> 10
+set!131 -> 23
+ret_mBitmapCanvas_4_0!47 -> 14
+mChart_4_1!120 -> 15
+cubicPath_2_0!9 -> 3
+ret_mChart_1_0!48 -> 15
+mBitmapCanvas_3_3 -> 12
+c_4_1!136 -> 25
+ret_mCircleBuffers_2_0!53 -> (_ as-array k!187)
+mBitmapCanvas_1_4 -> 12
+ret_cubicFillPath_2_0!37 -> 2
+lineData!124 -> 19
+set_4_1!177 -> 34
+mBitmapCanvas_2_0!13 -> 12
+drawDataSet_4_1!145 -> 27
+mBitmapCanvas_1_5 -> 12
+ret_mLineBuffers_2_0!61 -> (_ as-array k!188)
+lineData_4_1!154 -> 28
+mLineBuffers_3_0!30 -> (_ as-array k!188)
+cubicFillPath_1_0!4 -> 2
+drawDataSet_2_1!141 -> 27
+getChartHeight.mViewPortHandler!72 -> 8
+wiz_i_2_1!182 -> 35
+ret_mCirclePaintInner_1_0!56 -> 5
+mBitmapCanvas_1_2 -> 12
+mPathBitmap_4_3!129 -> 21
+mCircleBuffers_4_0!23 -> (_ as-array k!187)
+drawDataSet!130 -> 22
+mPathBitmap_3_5!158 -> 29
+mChart_4_0!19 -> 4
+mPathBitmap_2_4 -> 11
+ret_mPathBitmap_2_0!65 -> 30
+mBitmapCanvas_1_0!12 -> 12
+set_3_1!175 -> 33
+c_4_0!3 -> 1
+mBitmapCanvas_1_3 -> 12
+mCirclePaintInner_2_0!25 -> 5
+mPathBitmap_4_2 -> 11
+mPathBitmap_2_2 -> 11
+mChart_3_0!18 -> 4
+mRenderPaint_3_1!166 -> 31
+ret_mLineBuffers_4_0!63 -> (_ as-array k!188)
+mPathBitmap_4_0!35 -> 10
+ret_mCircleBuffers_4_0!55 -> (_ as-array k!187)
+mCircleBuffers_1_0!20 -> (_ as-array k!187)
+mRenderPaint!122 -> 17
+mPathBitmap_2_6!157 -> 30
+ret_cubicPath_3_0!42 -> 3
+wiz_i_1_1!180 -> 35
+mPathBitmap_1_7!156 -> 29
+mRenderPaint_1_1!162 -> 31
+drawDataSet_3_1!143 -> 26
+ret_cubicPath_1_0!40 -> 3
+ret_mBitmapCanvas_1_0!44 -> 12
+mChart_2_0!17 -> 4
+wiz_i_3_1!184 -> 35
+ret_cubicFillPath_4_0!39 -> 2
+cubicPath_1_0!8 -> 3
+c_3_0!2 -> 1
+mChart_1_1!117 -> 15
+ret_mPathBitmap_3_0!66 -> 29
+mPathBitmap_2_3 -> 11
+mPathBitmap_3_3 -> 10
+mBitmapCanvas_4_1!94 -> 14
+mPathBitmap_3_4!128 -> 20
+ret_mCirclePaintInner_4_0!59 -> 5
+mPathBitmap_2_1!86 -> 11
+mLineBuffers_4_0!31 -> (_ as-array k!188)
+mCircleBuffers_3_0!22 -> (_ as-array k!187)
+mPathBitmap_1_0!32 -> 10
+mBitmapCanvas_2_4 -> 13
+mChart_2_1!118 -> 15
+drawDataSet_1_1!139 -> 26
+c_1_1!133 -> 24
+mBitmapCanvas_2_1!90 -> 13
+ret_mLineBuffers_3_0!62 -> (_ as-array k!188)
+c_1_0!0 -> 1
+cubicPath_4_0!11 -> 3
+mBitmapCanvas_3_0!14 -> 12
+mChart_3_1!119 -> 15
+ret_mCircleBuffers_1_0!52 -> (_ as-array k!187)
+ret_mCirclePaintInner_3_0!58 -> 5
+set_1_1!171 -> 33
+mPathBitmap_1_5 -> 10
+ret_mLineBuffers_1_0!60 -> (_ as-array k!188)
+getChartWidth.mViewPortHandler!70 -> 6
+c_2_1!134 -> 25
+mCirclePaintInner_4_0!27 -> 5
+mPathBitmap_4_1!73 -> 11
+lineData_3_1!152 -> 28
+c_3_1!135 -> 24
+ret_cubicFillPath_1_0!36 -> 2
+ret_cubicPath_2_0!41 -> 3
+set_2_1!173 -> 34
+ret_mPathBitmap_4_0!67 -> 30
+cubicFillPath_2_0!5 -> 2
+Anonymous0!116 -> {
+  4 -> 15
+  else -> 15
+}
+k!188 -> {
+  15
+}
+Anonymous2!132 -> {
+  22 1 23 18 19 20 20 17 -> 24
+  22 1 23 18 19 21 21 17 -> 25
+  else -> 24
+}
+getHeight!71 -> {
+  10 -> 8
+  else -> 8
+}
+Anonymous8!179 -> {
+  28 -> 35
+  else -> 35
+}
+k!187 -> {
+  15
+}
+Anonymous7!170 -> {
+  28 18 26 24 -> 33
+  28 18 27 25 -> 34
+  else -> 33
+}
+getWidth!69 -> {
+  10 -> 9
+  else -> 9
+}
+NewCanvas!80 -> {
+  11 -> 14
+  else -> 14
+}
+Anonymous3!138 -> {
+  24 23 18 19 -> 26
+  25 23 18 19 -> 27
+  else -> 26
+}
+NewCanvas!89 -> {
+  11 -> 13
+  else -> 13
+}
+Anonymous4!147 -> {
+  15 18 -> 28
+  else -> 28
+}
+Anonymous5!155 -> {
+  24 20 20 17 18 28 -> 29
+  25 21 21 17 18 28 -> 30
+  else -> 29
+}
+Anonymous6!161 -> {
+  24 29 29 18 28 -> 31
+  25 30 30 18 28 -> 32
+  else -> 31
+}
+Anonymous1!125 -> {
+  10 16 1 10 17 18 19 -> 20
+  11 16 1 11 17 18 19 -> 21
+  else -> 20
+}
+createBitmap.Bitmap!75 -> {
+  6 8 7 -> 11
+  else -> 11
+}
+

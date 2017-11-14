@@ -1,0 +1,99 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+verify: (Ident "SimpleFragment",Ident "generateScatterData",[PrimType IntT,PrimType FloatT,PrimType IntT])
+[(Ident "mLabels",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "String",[])]))))]),(Ident "tf",[RefType (ClassRefType (ClassType [(Ident "Typeface",[])]))])]
+verify: result = Sat
+wiz: |HOLE|   = 3
+wiz: LOC HOLE = 3
+Semantic conflict found:
+mLabels_4_0!15 -> (_ as-array k!285)
+mLabels_3_0!14 -> (_ as-array k!285)
+tf_1_0!16 -> 7
+mLabels_1_0!12 -> (_ as-array k!285)
+tf_3_0!18 -> 7
+sets_idx_end_4_0!43 -> 5
+shapes_2_1!52 -> (_ as-array k!288)
+range_3_0!6 -> 2
+tf_2_0!17 -> 7
+d_3_1!277 -> 13
+ret_tf_4_0!31 -> 7
+ret_mLabels_2_0!25 -> (_ as-array k!285)
+range_1_0!4 -> 2
+i_2_1!60 -> 0
+shapes_4_1!47 -> (_ as-array k!289)
+sets_idx_end_3_0!40 -> 5
+sets_idx_end_2_0!37 -> 3
+ret_tf_3_0!30 -> 7
+range_2_0!5 -> 2
+tf_4_0!19 -> 7
+ret_1_0!20 -> 16
+ret_2_0!21 -> 14
+i_1_1!58 -> 0
+sets_1_0!35 -> (_ as-array k!286)
+shapes_3_1!50 -> (_ as-array k!289)
+d_2_1!281 -> 14
+ret_4_0!23 -> 12
+dataSets_2_0!1 -> 0
+i_4_1!64 -> 0
+sets_idx_start_4_0!42 -> 6
+sets_3_0!41 -> (_ as-array k!287)
+d_4_1!274 -> 12
+mLabels_2_0!13 -> (_ as-array k!285)
+count_4_0!11 -> 1
+sets_idx_start_2_0!36 -> 4
+ret_mLabels_3_0!26 -> (_ as-array k!285)
+ret_tf_2_0!29 -> 7
+count_1_0!8 -> 1
+sets_idx_start_1_0!33 -> 4
+ret_tf_1_0!28 -> 7
+sets_idx_end_1_0!34 -> 3
+sets_2_0!38 -> (_ as-array k!286)
+count_3_0!10 -> 1
+shapes_1_1!55 -> (_ as-array k!288)
+count_2_0!9 -> 1
+d_1_1!283 -> 16
+dataSets_1_0!0 -> 0
+sets_4_0!44 -> (_ as-array k!287)
+ret_mLabels_1_0!24 -> (_ as-array k!285)
+i_3_1!62 -> 0
+ret_3_0!22 -> 13
+dataSets_3_0!2 -> 0
+ret_mLabels_4_0!27 -> (_ as-array k!285)
+sets_idx_start_3_0!39 -> 6
+dataSets_4_0!3 -> 0
+range_4_0!7 -> 2
+k!287 -> {
+  20 -> 22
+  else -> 22
+}
+generateXVals.ChartData!278 -> {
+  0 1 -> 15
+  else -> 15
+}
+NewScatterData!279 -> {
+  15 (_ as-array k!287) -> 13
+  15 (_ as-array k!286) -> 16
+  else -> 13
+}
+k!289 -> {
+  5
+}
+k!286 -> {
+  20 -> 21
+  else -> 21
+}
+k!288 -> {
+  5
+}
+k!285 -> {
+  5
+}
+NewScatterData!275 -> {
+  (_ as-array k!287) -> 12
+  (_ as-array k!286) -> 14
+  else -> 12
+}
+
