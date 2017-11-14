@@ -92,23 +92,24 @@ public class AutoConfigurationReportLoggingInitializer implements
 	}
 
 	public void logAutoConfigurationReport(boolean isCrashReport) {
+                int ret = 0;
 		if (this.report == null) {
 			if (this.applicationContext == null) {
 				this.logger.info("Unable to provide auto-configuration report "
 						+ "due to missing ApplicationContext");
-				return;
+                                ret = 1;
 			}
 			this.report = ConditionEvaluationReport.get(this.applicationContext
 					.getBeanFactory());
 		}
-		if (this.report.getConditionAndOutcomesBySource().size() > 0) {
-			if (isCrashReport && this.logger.isInfoEnabled()
-					&& !this.logger.isDebugEnabled()) {
+		if ((this.report.getConditionAndOutcomesBySource().size() > 0) && (ret == 0)) {
+			if ((isCrashReport == 1) && (this.logger.isInfoEnabled() == 1)
+					&& (this.logger.isDebugEnabled() == 0)) {
 				this.logger.info("\n\nError starting ApplicationContext. "
 						+ "To display the auto-configuration report enabled "
 						+ "debug logging (start with --debug)\n\n");
 			}
-			if (this.logger.isDebugEnabled()) {
+			if (this.logger.isDebugEnabled() == 1) {
 				this.logger.debug(getLogMessage(this.report
 						.getConditionAndOutcomesBySource()));
 			}

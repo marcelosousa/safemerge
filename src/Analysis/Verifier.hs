@@ -44,6 +44,9 @@ wiz_meth mode diff@MInst{..} (mth_id,mth,e_o,e_a,e_b,e_m) = do
   -- putStrLn $ "wiz_meth: " ++ show mth_id
   let _mth = simplifyMDecl mth
       _es  = map simplifyEdit [e_o,e_a,e_b,e_m]
+      orig = map (\e -> fst $ apply_edit_member _mth e) _es
+      mid  = case snd3 mth_id of
+               Ident s -> s
       m_mth = fst $ apply_edit_member _mth (_es!!3)
       (f_mth,f_edits) = case mode of
         Prod -> wholeProduct _mth _es 
@@ -54,6 +57,10 @@ wiz_meth mode diff@MInst{..} (mth_id,mth,e_o,e_a,e_b,e_m) = do
   res <- evalZ3 $ verify mode m_mth (mth_id,f_mth) classes f_edits 
   putStrLn $ "wiz: |HOLE|   = " ++ show (length e_m)
   putStrLn $ "wiz: LOC HOLE = " ++ show (loc_of e_m)
+  writeFile (mid ++ "_o.java") $ prettyPrint $ orig !! 0
+  writeFile (mid ++ "_a.java") $ prettyPrint $ orig !! 1
+  writeFile (mid ++ "_b.java") $ prettyPrint $ orig !! 2
+  writeFile (mid ++ "_m.java") $ prettyPrint $ orig !! 3
   case res of
     Nothing  -> putStrLn "No semantic conflict found"
     Just str -> do
@@ -114,7 +121,7 @@ analyser prog = do
 -- | Analyser main function
 analyse :: ProdProgram -> EnvOp () 
 analyse prog = do
- wizPrint "analyzer: press any key to continue..."
+ --wizPrint "analyzer: press any key to continue..."
  --wizBreak 
  --debugger prog 
  env@Env{..} <- get

@@ -215,7 +215,7 @@ aEb_inmerge_nr	./Analysis/Java/Liff.hs	74;"	v
 aEm_bdiff_nr	./Analysis/Java/Liff.hs	76;"	v
 aNb_discard_nr	./Analysis/Java/Liff.hs	72;"	v
 a_discard_nr	./Analysis/Java/Liff.hs	71;"	v
-absVarToIdent	./Analysis/Verifier.hs	524;"	v	file:
+absVarToIdent	./Analysis/Verifier.hs	533;"	v	file:
 addDef	./Analysis/Java/Flow.hs	113;"	v
 addEdge	./Analysis/Java/Flow.hs	67;"	v
 addEdgeInfo	./Analysis/Java/Flow.hs	53;"	v
@@ -228,16 +228,16 @@ add_clmeth	./Analysis/Java/ClassInfo.hs	97;"	v
 add_skip	./Analysis/Java/AST.hs	274;"	v
 add_to_map	./Analysis/Java/Liff.hs	299;"	v
 all_diff_nr	./Analysis/Java/Liff.hs	78;"	v
-analyse	./Analysis/Verifier.hs	116;"	v	file:
-analyseBStmt	./Analysis/Verifier.hs	140;"	v	file:
-analyseBlock	./Analysis/Verifier.hs	421;"	v	file:
-analyseExp	./Analysis/Verifier.hs	179;"	v	file:
-analyseHole	./Analysis/Verifier.hs	204;"	v	file:
-analyseIf	./Analysis/Verifier.hs	213;"	v	file:
-analyseLoop	./Analysis/Verifier.hs	277;"	v	file:
-analyseRet	./Analysis/Verifier.hs	371;"	v	file:
-analyseStmt	./Analysis/Verifier.hs	160;"	v	file:
-analyser	./Analysis/Verifier.hs	109;"	v	file:
+analyse	./Analysis/Verifier.hs	123;"	v	file:
+analyseBStmt	./Analysis/Verifier.hs	147;"	v	file:
+analyseBlock	./Analysis/Verifier.hs	430;"	v	file:
+analyseExp	./Analysis/Verifier.hs	186;"	v	file:
+analyseHole	./Analysis/Verifier.hs	211;"	v	file:
+analyseIf	./Analysis/Verifier.hs	222;"	v	file:
+analyseLoop	./Analysis/Verifier.hs	286;"	v	file:
+analyseRet	./Analysis/Verifier.hs	380;"	v	file:
+analyseStmt	./Analysis/Verifier.hs	167;"	v	file:
+analyser	./Analysis/Verifier.hs	116;"	v	file:
 andAST	./Analysis/Java/AST.hs	205;"	v
 ann_mth_body	./Analysis/Java/AST.hs	260;"	v
 apply_edit	./Edit/Apply.hs	20;"	v
@@ -261,14 +261,14 @@ arrayListInit	./Analysis/Model/ArrayList.hs	23;"	v
 arrayListModel	./Analysis/Model/ArrayList.hs	33;"	v
 arrayListNew	./Analysis/Model/ArrayList.hs	107;"	v
 assign	./Analysis/Engine.hs	454;"	v
-assign_special	./Analysis/Verifier.hs	545;"	v	file:
+assign_special	./Analysis/Verifier.hs	554;"	v	file:
 b	Main.hs	53;"	v
 bEm_adiff_nr	./Analysis/Java/Liff.hs	77;"	v
 b_discard_nr	./Analysis/Java/Liff.hs	70;"	v
 base	Main.hs	51;"	v
 blockDep	./Analysis/Dependence.hs	212;"	v
 breaker	./Analysis/Debug.hs	26;"	v	file:
-checkDep	./Analysis/Verifier.hs	459;"	v	file:
+checkDep	./Analysis/Verifier.hs	468;"	v	file:
 checkSAT	./Analysis/Util.hs	13;"	v
 check_edit_soundness	./Edit.hs	132;"	v
 class_diff	./Analysis/Java/Liff.hs	349;"	v
@@ -291,7 +291,7 @@ computeSwitchBody	./Analysis/Java/Flow.hs	497;"	v
 computeWhile	./Analysis/Java/Flow.hs	516;"	v
 concatIdent	./Analysis/Util.hs	163;"	v
 condKeywords	./Analysis/Java/Liff.hs	459;"	v
-conflict_freedom	./Analysis/Verifier.hs	496;"	v	file:
+conflict_freedom	./Analysis/Verifier.hs	505;"	v	file:
 current	./Analysis/Java/Flow.hs	38;"	v
 debugger	./Analysis/Debug.hs	52;"	v
 decomposeWhile	./Calculus.hs	103;"	v
@@ -328,11 +328,11 @@ encCall	./Analysis/Engine.hs	359;"	v
 enc_array_access	./Analysis/Engine.hs	511;"	v
 enc_binop	./Analysis/Engine.hs	555;"	v
 enc_field_access	./Analysis/Engine.hs	526;"	v
-enc_meth_special	./Analysis/Verifier.hs	530;"	v	file:
+enc_meth_special	./Analysis/Verifier.hs	539;"	v	file:
 encodeAxioms	./Analysis/Engine.hs	55;"	v
 encodeCall	./Analysis/Engine.hs	332;"	v
 encodeClassType	./Analysis/Engine.hs	191;"	v
-encodeCond	./Analysis/Verifier.hs	264;"	v	file:
+encodeCond	./Analysis/Verifier.hs	273;"	v	file:
 encodeConstant	./Analysis/Engine.hs	259;"	v
 encodeExp	./Analysis/Engine.hs	274;"	v
 encodeExpName	./Analysis/Engine.hs	248;"	v
@@ -387,7 +387,7 @@ getNext	./Analysis/Java/Flow.hs	185;"	v
 getPCLabel	./Analysis/Java/Flow.hs	176;"	v
 getParIdents	./Analysis/Util.hs	114;"	v
 getParamType	./Analysis/Java/ClassInfo.hs	132;"	v
-getPredicates	./Analysis/Verifier.hs	362;"	v	file:
+getPredicates	./Analysis/Verifier.hs	371;"	v	file:
 getPrev	./Analysis/Java/Flow.hs	154;"	v
 getReadSet	./Analysis/Dependence.hs	354;"	v
 getReadSetInv	./Analysis/Dependence.hs	394;"	v
@@ -408,7 +408,7 @@ graphs	./Analysis/Java/Flow.hs	31;"	v
 header	./Analysis/Debug.hs	27;"	v	file:
 helper	./Analysis/Util.hs	17;"	v
 hole	./Edit/Diff.hs	49;"	v
-houdini	./Analysis/Verifier.hs	300;"	v	file:
+houdini	./Analysis/Verifier.hs	309;"	v	file:
 iM	./Edit/Diff.hs	28;"	v
 i_clsum	./Analysis/Java/ClassInfo.hs	86;"	v
 i_context	./Analysis/Java/Liff.hs	138;"	v
@@ -437,7 +437,7 @@ initial_FuncMap	./Analysis/API.hs	28;"	v
 insertConst	./Analysis/API.hs	274;"	v
 insertSSAVar	./Analysis/API.hs	252;"	v
 invToStmt	./Analysis/Java/Flow.hs	299;"	v
-isComplex	./Analysis/Verifier.hs	149;"	v	file:
+isComplex	./Analysis/Verifier.hs	156;"	v	file:
 isField	./Analysis/Java/Liff.hs	385;"	v
 isSimilar	./Calculus.hs	88;"	v
 isVar	./Analysis/API.hs	229;"	v
@@ -627,7 +627,7 @@ toIdent	./Analysis/Java/ClassInfo.hs	160;"	v
 toIf	./Calculus.hs	119;"	v
 toIfs	./Calculus.hs	113;"	v
 toMemberSig	./Analysis/Java/ClassInfo.hs	72;"	v
-toOldPredicate	./Analysis/Verifier.hs	347;"	v	file:
+toOldPredicate	./Analysis/Verifier.hs	356;"	v	file:
 toOp	./Analysis/Java/Simplifier.hs	126;"	v
 toSSAMap	./Analysis/API.hs	74;"	v
 toString	./Analysis/Util.hs	121;"	v
@@ -647,20 +647,20 @@ updateLoc	./Analysis/API.hs	294;"	v
 updateNumRet	./Analysis/API.hs	200;"	v
 updatePid	./Analysis/API.hs	169;"	v
 updatePre	./Analysis/API.hs	175;"	v
-updatePredicate	./Analysis/Verifier.hs	353;"	v	file:
+updatePredicate	./Analysis/Verifier.hs	362;"	v	file:
 updateSSAMap	./Analysis/API.hs	209;"	v
 updateVariable	./Analysis/API.hs	243;"	v
 update_node_table	./Analysis/Dependence.hs	164;"	v
 varDeclIdToIdent	./Analysis/Java/ClassInfo.hs	67;"	v
 varDeclIdToName	./Analysis/Java/Flow.hs	318;"	v
-verify	./Analysis/Verifier.hs	65;"	v	file:
+verify	./Analysis/Verifier.hs	72;"	v	file:
 verify	Main.hs	154;"	v
 verifyMode	Main.hs	62;"	v
 weak_update	./Analysis/Dependence.hs	266;"	v
 wholeProduct	./Calculus.hs	150;"	v
 wiz	./Analysis/Verifier.hs	39;"	v
 wizBreak	./Analysis/Debug.hs	47;"	v
-wizPrint	./Analysis/Debug.hs	43;"	v
+wizPrint	./Analysis/Debug.hs	44;"	v
 wiz_meth	./Analysis/Verifier.hs	43;"	v	file:
 worklist	./Analysis/Dependence.hs	235;"	v
 writable	./Analysis/Dependence.hs	35;"	v
