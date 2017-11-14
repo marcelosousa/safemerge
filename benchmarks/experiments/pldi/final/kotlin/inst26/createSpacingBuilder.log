@@ -1,0 +1,864 @@
+verify: relational VC
+(let ((a!1 (between!126 (blankLines!125 (after!124 (NewSpacingBuilder!123
+                                                     settings_4_1!32)
+                                                   NAMESPACE_HEADER!122)
+                                        1)
+                        IMPORT_DIRECTIVE!121
+                        IMPORT_DIRECTIVE!121))
+      (a!30 (between!126 (blankLines!125 (after!124 (NewSpacingBuilder!137
+                                                      settings_3_1!31
+                                                      INSTANCE.JetLanguage!10)
+                                                    NAMESPACE_HEADER!122)
+                                         1)
+                         IMPORT_DIRECTIVE!121
+                         IMPORT_DIRECTIVE!121))
+      (a!59 (between!126 (blankLines!125 (after!124 (NewSpacingBuilder!123
+                                                      settings_2_1!30)
+                                                    NAMESPACE_HEADER!122)
+                                         1)
+                         IMPORT_DIRECTIVE!121
+                         IMPORT_DIRECTIVE!121))
+      (a!84 (between!126 (blankLines!125 (after!124 (NewSpacingBuilder!137
+                                                      settings_1_1!29
+                                                      INSTANCE.JetLanguage!10)
+                                                    NAMESPACE_HEADER!122)
+                                         1)
+                         IMPORT_DIRECTIVE!121
+                         IMPORT_DIRECTIVE!121)))
+(let ((a!2 (before!128 (blankLines!125 (after!124 (lineBreakInCode!127 a!1)
+                                                  IMPORT_LIST!120)
+                                       1)
+                       DOC_COMMENT!119))
+      (a!31 (before!128 (blankLines!125 (after!124 (lineBreakInCode!127 a!30)
+                                                   IMPORT_LIST!120)
+                                        1)
+                        DOC_COMMENT!119))
+      (a!60 (before!128 (blankLines!125 (after!124 (lineBreakInCode!127 a!59)
+                                                   IMPORT_LIST!120)
+                                        1)
+                        DOC_COMMENT!119))
+      (a!85 (before!128 (blankLines!125 (after!124 (lineBreakInCode!127 a!84)
+                                                   IMPORT_LIST!120)
+                                        1)
+                        DOC_COMMENT!119)))
+(let ((a!3 (before!128 (lineBreakInCode!127
+                         (before!128 (lineBreakInCode!127 a!2) FUN!60))
+                       PROPERTY!61))
+      (a!32 (before!128 (lineBreakInCode!127
+                          (before!128 (lineBreakInCode!127 a!31) FUN!60))
+                        PROPERTY!61))
+      (a!61 (before!128 (lineBreakInCode!127
+                          (before!128 (lineBreakInCode!127 a!60) FUN!60))
+                        PROPERTY!61))
+      (a!86 (before!128 (lineBreakInCode!127
+                          (before!128 (lineBreakInCode!127 a!85) FUN!60))
+                        PROPERTY!61)))
+(let ((a!4 (between!126 (blankLines!125 (between!126 (lineBreakInCode!127 a!3)
+                                                     FUN!60
+                                                     FUN!60)
+                                        1)
+                        FUN!60
+                        PROPERTY!61))
+      (a!33 (between!126 (blankLines!125 (between!126 (lineBreakInCode!127 a!32)
+                                                      FUN!60
+                                                      FUN!60)
+                                         1)
+                         FUN!60
+                         PROPERTY!61))
+      (a!62 (between!126 (blankLines!125 (between!126 (lineBreakInCode!127 a!61)
+                                                      FUN!60
+                                                      FUN!60)
+                                         1)
+                         FUN!60
+                         PROPERTY!61))
+      (a!87 (between!126 (blankLines!125 (between!126 (lineBreakInCode!127 a!86)
+                                                      FUN!60
+                                                      FUN!60)
+                                         1)
+                         FUN!60
+                         PROPERTY!61)))
+(let ((a!5 (beforeInside!130 (lineBreakInCode!127
+                               (afterInside!129 (blankLines!125 a!4 1)
+                                                LBRACE!44
+                                                BLOCK!76))
+                             RBRACE!117
+                             CLASS_BODY!118))
+      (a!34 (beforeInside!130 (lineBreakInCode!127
+                                (afterInside!129 (blankLines!125 a!33 1)
+                                                 LBRACE!44
+                                                 BLOCK!76))
+                              RBRACE!117
+                              CLASS_BODY!118))
+      (a!63 (beforeInside!130 (lineBreakInCode!127
+                                (afterInside!129 (blankLines!125 a!62 1)
+                                                 LBRACE!44
+                                                 BLOCK!76))
+                              RBRACE!117
+                              CLASS_BODY!118))
+      (a!88 (beforeInside!130 (lineBreakInCode!127
+                                (afterInside!129 (blankLines!125 a!87 1)
+                                                 LBRACE!44
+                                                 BLOCK!76))
+                              RBRACE!117
+                              CLASS_BODY!118)))
+(let ((a!6 (before!128 (lineBreakInCode!127
+                         (beforeInside!130 (lineBreakInCode!127 a!5)
+                                           RBRACE!117
+                                           BLOCK!76))
+                       COMMA!115))
+      (a!35 (before!128 (lineBreakInCode!127
+                          (beforeInside!130 (lineBreakInCode!127 a!34)
+                                            RBRACE!117
+                                            BLOCK!76))
+                        COMMA!115))
+      (a!64 (before!128 (lineBreakInCode!127
+                          (beforeInside!130 (lineBreakInCode!127 a!63)
+                                            RBRACE!117
+                                            BLOCK!76))
+                        COMMA!115))
+      (a!89 (before!128 (lineBreakInCode!127
+                          (beforeInside!130 (lineBreakInCode!127 a!88)
+                                            RBRACE!117
+                                            BLOCK!76))
+                        COMMA!115)))
+(let ((a!7 (around!132 (spaceIf!131 (after!124 (spaceIf!131 a!6
+                                                            SPACE_BEFORE_COMMA.jetCommonSettings!116)
+                                               COMMA!115)
+                                    SPACE_AFTER_COMMA.jetCommonSettings!114)
+                       (create.TokenSet!86
+                         EQ!108
+                         MULTEQ!109
+                         DIVEQ!110
+                         PLUSEQ!111
+                         MINUSEQ!112
+                         PERCEQ!113)))
+      (a!36 (around!132 (spaceIf!131 (after!124 (spaceIf!131 a!35
+                                                             SPACE_BEFORE_COMMA.jetCommonSettings!116)
+                                                COMMA!115)
+                                     SPACE_AFTER_COMMA.jetCommonSettings!114)
+                        (create.TokenSet!86
+                          EQ!108
+                          MULTEQ!109
+                          DIVEQ!110
+                          PLUSEQ!111
+                          MINUSEQ!112
+                          PERCEQ!113)))
+      (a!65 (around!132 (spaceIf!131 (after!124 (spaceIf!131 a!64
+                                                             SPACE_BEFORE_COMMA.jetCommonSettings!116)
+                                                COMMA!115)
+                                     SPACE_AFTER_COMMA.jetCommonSettings!114)
+                        (create.TokenSet!86
+                          EQ!108
+                          MULTEQ!109
+                          DIVEQ!110
+                          PLUSEQ!111
+                          MINUSEQ!112
+                          PERCEQ!113)))
+      (a!90 (around!132 (spaceIf!131 (after!124 (spaceIf!131 a!89
+                                                             SPACE_BEFORE_COMMA.jetCommonSettings!116)
+                                                COMMA!115)
+                                     SPACE_AFTER_COMMA.jetCommonSettings!114)
+                        (create.TokenSet!86
+                          EQ!108
+                          MULTEQ!109
+                          DIVEQ!110
+                          PLUSEQ!111
+                          MINUSEQ!112
+                          PERCEQ!113))))
+(let ((a!8 (around!132 (spaceIf!131 (around!132 (spaceIf!131 a!7
+                                                             SPACE_AROUND_ASSIGNMENT_OPERATORS.jetCommonSettings!107)
+                                                (create.TokenSet!94
+                                                  ANDAND!105
+                                                  OROR!106))
+                                    SPACE_AROUND_LOGICAL_OPERATORS.jetCommonSettings!104)
+                       (create.TokenSet!98
+                         EQEQ!100
+                         EXCLEQ!101
+                         EQEQEQ!102
+                         EXCLEQEQEQ!103)))
+      (a!37 (around!132 (spaceIf!131 (around!132 (spaceIf!131 a!36
+                                                              SPACE_AROUND_ASSIGNMENT_OPERATORS.jetCommonSettings!107)
+                                                 (create.TokenSet!94
+                                                   ANDAND!105
+                                                   OROR!106))
+                                     SPACE_AROUND_LOGICAL_OPERATORS.jetCommonSettings!104)
+                        (create.TokenSet!98
+                          EQEQ!100
+                          EXCLEQ!101
+                          EQEQEQ!102
+                          EXCLEQEQEQ!103)))
+      (a!66 (around!132 (spaceIf!131 (around!132 (spaceIf!131 a!65
+                                                              SPACE_AROUND_ASSIGNMENT_OPERATORS.jetCommonSettings!107)
+                                                 (create.TokenSet!94
+                                                   ANDAND!105
+                                                   OROR!106))
+                                     SPACE_AROUND_LOGICAL_OPERATORS.jetCommonSettings!104)
+                        (create.TokenSet!98
+                          EQEQ!100
+                          EXCLEQ!101
+                          EQEQEQ!102
+                          EXCLEQEQEQ!103)))
+      (a!91 (around!132 (spaceIf!131 (around!132 (spaceIf!131 a!90
+                                                              SPACE_AROUND_ASSIGNMENT_OPERATORS.jetCommonSettings!107)
+                                                 (create.TokenSet!94
+                                                   ANDAND!105
+                                                   OROR!106))
+                                     SPACE_AROUND_LOGICAL_OPERATORS.jetCommonSettings!104)
+                        (create.TokenSet!98
+                          EQEQ!100
+                          EXCLEQ!101
+                          EQEQEQ!102
+                          EXCLEQEQEQ!103))))
+(let ((a!9 (aroundInside!133 (spaceIf!131 (aroundInside!133 (spaceIf!131 a!8
+                                                                         SPACE_AROUND_EQUALITY_OPERATORS.jetCommonSettings!99)
+                                                            (create.TokenSet!98
+                                                              LT!72
+                                                              GT!70
+                                                              LTEQ!96
+                                                              GTEQ!97)
+                                                            BINARY_EXPRESSION!92)
+                                          SPACE_AROUND_RELATIONAL_OPERATORS.jetCommonSettings!95)
+                             (create.TokenSet!94 PLUS!84 MINUS!83)
+                             BINARY_EXPRESSION!92))
+      (a!38 (aroundInside!133 (spaceIf!131 (aroundInside!133 (spaceIf!131 a!37
+                                                                          SPACE_AROUND_EQUALITY_OPERATORS.jetCommonSettings!99)
+                                                             (create.TokenSet!98
+                                                               LT!72
+                                                               GT!70
+                                                               LTEQ!96
+                                                               GTEQ!97)
+                                                             BINARY_EXPRESSION!92)
+                                           SPACE_AROUND_RELATIONAL_OPERATORS.jetCommonSettings!95)
+                              (create.TokenSet!94 PLUS!84 MINUS!83)
+                              BINARY_EXPRESSION!92))
+      (a!67 (aroundInside!133 (spaceIf!131 (aroundInside!133 (spaceIf!131 a!66
+                                                                          SPACE_AROUND_EQUALITY_OPERATORS.jetCommonSettings!99)
+                                                             (create.TokenSet!98
+                                                               LT!72
+                                                               GT!70
+                                                               LTEQ!96
+                                                               GTEQ!97)
+                                                             BINARY_EXPRESSION!92)
+                                           SPACE_AROUND_RELATIONAL_OPERATORS.jetCommonSettings!95)
+                              (create.TokenSet!94 PLUS!84 MINUS!83)
+                              BINARY_EXPRESSION!92))
+      (a!92 (aroundInside!133 (spaceIf!131 (aroundInside!133 (spaceIf!131 a!91
+                                                                          SPACE_AROUND_EQUALITY_OPERATORS.jetCommonSettings!99)
+                                                             (create.TokenSet!98
+                                                               LT!72
+                                                               GT!70
+                                                               LTEQ!96
+                                                               GTEQ!97)
+                                                             BINARY_EXPRESSION!92)
+                                           SPACE_AROUND_RELATIONAL_OPERATORS.jetCommonSettings!95)
+                              (create.TokenSet!94 PLUS!84 MINUS!83)
+                              BINARY_EXPRESSION!92)))
+(let ((a!10 (around!132 (spaceIf!131 (aroundInside!133 (spaceIf!131 a!9
+                                                                    SPACE_AROUND_ADDITIVE_OPERATORS.jetCommonSettings!93)
+                                                       (create.TokenSet!91
+                                                         MUL!88
+                                                         DIV!89
+                                                         PERC!90)
+                                                       BINARY_EXPRESSION!92)
+                                     SPACE_AROUND_MULTIPLICATIVE_OPERATORS.jetCommonSettings!87)
+                        (create.TokenSet!86
+                          PLUSPLUS!80
+                          MINUSMINUS!81
+                          EXCLEXCL!82
+                          MINUS!83
+                          PLUS!84
+                          EXCL!85)))
+      (a!39 (around!132 (spaceIf!131 (aroundInside!133 (spaceIf!131 a!38
+                                                                    SPACE_AROUND_ADDITIVE_OPERATORS.jetCommonSettings!93)
+                                                       (create.TokenSet!91
+                                                         MUL!88
+                                                         DIV!89
+                                                         PERC!90)
+                                                       BINARY_EXPRESSION!92)
+                                     SPACE_AROUND_MULTIPLICATIVE_OPERATORS.jetCommonSettings!87)
+                        (create.TokenSet!86
+                          PLUSPLUS!80
+                          MINUSMINUS!81
+                          EXCLEXCL!82
+                          MINUS!83
+                          PLUS!84
+                          EXCL!85)))
+      (a!68 (around!132 (spaceIf!131 (aroundInside!133 (spaceIf!131 a!67
+                                                                    SPACE_AROUND_ADDITIVE_OPERATORS.jetCommonSettings!93)
+                                                       (create.TokenSet!91
+                                                         MUL!88
+                                                         DIV!89
+                                                         PERC!90)
+                                                       BINARY_EXPRESSION!92)
+                                     SPACE_AROUND_MULTIPLICATIVE_OPERATORS.jetCommonSettings!87)
+                        (create.TokenSet!86
+                          PLUSPLUS!80
+                          MINUSMINUS!81
+                          EXCLEXCL!82
+                          MINUS!83
+                          PLUS!84
+                          EXCL!85)))
+      (a!93 (around!132 (spaceIf!131 (aroundInside!133 (spaceIf!131 a!92
+                                                                    SPACE_AROUND_ADDITIVE_OPERATORS.jetCommonSettings!93)
+                                                       (create.TokenSet!91
+                                                         MUL!88
+                                                         DIV!89
+                                                         PERC!90)
+                                                       BINARY_EXPRESSION!92)
+                                     SPACE_AROUND_MULTIPLICATIVE_OPERATORS.jetCommonSettings!87)
+                        (create.TokenSet!86
+                          PLUSPLUS!80
+                          MINUSMINUS!81
+                          EXCLEXCL!82
+                          MINUS!83
+                          PLUS!84
+                          EXCL!85))))
+(let ((a!11 (beforeInside!130 (spaceIf!131 (around!132 (spaceIf!131 a!10
+                                                                    SPACE_AROUND_UNARY_OPERATOR.jetCommonSettings!79)
+                                                       RANGE!78)
+                                           SPACE_AROUND_RANGE.jetSettings!77)
+                              BLOCK!76
+                              FUN!60))
+      (a!40 (beforeInside!130 (spaceIf!131 (around!132 (spaceIf!131 a!39
+                                                                    SPACE_AROUND_UNARY_OPERATOR.jetCommonSettings!79)
+                                                       RANGE!78)
+                                           SPACE_AROUND_RANGE.jetSettings!77)
+                              BLOCK!76
+                              FUN!60))
+      (a!69 (beforeInside!130 (spaceIf!131 (around!132 (spaceIf!131 a!68
+                                                                    SPACE_AROUND_UNARY_OPERATOR.jetCommonSettings!79)
+                                                       RANGE!78)
+                                           SPACE_AROUND_RANGE.jetSettings!77)
+                              BLOCK!76
+                              FUN!60))
+      (a!94 (beforeInside!130 (spaceIf!131 (around!132 (spaceIf!131 a!93
+                                                                    SPACE_AROUND_UNARY_OPERATOR.jetCommonSettings!79)
+                                                       RANGE!78)
+                                           SPACE_AROUND_RANGE.jetSettings!77)
+                              BLOCK!76
+                              FUN!60)))
+(let ((a!12 (beforeInside!130 (spaces!134 (afterInside!129 (spaceIf!131 a!11
+                                                                        SPACE_BEFORE_METHOD_LBRACE.jetCommonSettings!75)
+                                                           LPAR!65
+                                                           VALUE_PARAMETER_LIST!74)
+                                          0)
+                              RPAR!33
+                              VALUE_PARAMETER_LIST!74))
+      (a!41 (beforeInside!130 (spaces!134 (afterInside!129 (spaceIf!131 a!40
+                                                                        SPACE_BEFORE_METHOD_LBRACE.jetCommonSettings!75)
+                                                           LPAR!65
+                                                           VALUE_PARAMETER_LIST!74)
+                                          0)
+                              RPAR!33
+                              VALUE_PARAMETER_LIST!74))
+      (a!70 (beforeInside!130 (spaces!134 (afterInside!129 (spaceIf!131 a!69
+                                                                        SPACE_BEFORE_METHOD_LBRACE.jetCommonSettings!75)
+                                                           LPAR!65
+                                                           VALUE_PARAMETER_LIST!74)
+                                          0)
+                              RPAR!33
+                              VALUE_PARAMETER_LIST!74))
+      (a!95 (beforeInside!130 (spaces!134 (afterInside!129 (spaceIf!131 a!94
+                                                                        SPACE_BEFORE_METHOD_LBRACE.jetCommonSettings!75)
+                                                           LPAR!65
+                                                           VALUE_PARAMETER_LIST!74)
+                                          0)
+                              RPAR!33
+                              VALUE_PARAMETER_LIST!74)))
+(let ((a!13 (beforeInside!130 (spaces!134 (afterInside!129 (spaces!134 a!12 0)
+                                                           LT!72
+                                                           TYPE_PARAMETER_LIST!73)
+                                          0)
+                              GT!70
+                              TYPE_PARAMETER_LIST!73))
+      (a!42 (beforeInside!130 (spaces!134 (afterInside!129 (spaces!134 a!41 0)
+                                                           LT!72
+                                                           TYPE_PARAMETER_LIST!73)
+                                          0)
+                              GT!70
+                              TYPE_PARAMETER_LIST!73))
+      (a!71 (beforeInside!130 (spaces!134 (afterInside!129 (spaces!134 a!70 0)
+                                                           LT!72
+                                                           TYPE_PARAMETER_LIST!73)
+                                          0)
+                              GT!70
+                              TYPE_PARAMETER_LIST!73))
+      (a!96 (beforeInside!130 (spaces!134 (afterInside!129 (spaces!134 a!95 0)
+                                                           LT!72
+                                                           TYPE_PARAMETER_LIST!73)
+                                          0)
+                              GT!70
+                              TYPE_PARAMETER_LIST!73)))
+(let ((a!14 (beforeInside!130 (spaces!134 (afterInside!129 (spaces!134 a!13 0)
+                                                           LPAR!65
+                                                           VALUE_ARGUMENT_LIST!50)
+                                          0)
+                              RPAR!33
+                              VALUE_ARGUMENT_LIST!50))
+      (a!43 (beforeInside!130 (spaces!134 (afterInside!129 (spaces!134 a!42 0)
+                                                           LPAR!65
+                                                           VALUE_ARGUMENT_LIST!50)
+                                          0)
+                              RPAR!33
+                              VALUE_ARGUMENT_LIST!50))
+      (a!72 (beforeInside!130 (spaces!134 (afterInside!129 (spaces!134 a!71 0)
+                                                           LPAR!65
+                                                           VALUE_ARGUMENT_LIST!50)
+                                          0)
+                              RPAR!33
+                              VALUE_ARGUMENT_LIST!50))
+      (a!97 (beforeInside!130 (spaces!134 (afterInside!129 (spaces!134 a!96 0)
+                                                           LPAR!65
+                                                           VALUE_ARGUMENT_LIST!50)
+                                          0)
+                              RPAR!33
+                              VALUE_ARGUMENT_LIST!50)))
+(let ((a!15 (beforeInside!130 (spaces!134 (afterInside!129 (spaces!134 a!14 0)
+                                                           LT!72
+                                                           TYPE_ARGUMENT_LIST!71)
+                                          0)
+                              GT!70
+                              TYPE_ARGUMENT_LIST!71))
+      (a!44 (beforeInside!130 (spaces!134 (afterInside!129 (spaces!134 a!43 0)
+                                                           LT!72
+                                                           TYPE_ARGUMENT_LIST!71)
+                                          0)
+                              GT!70
+                              TYPE_ARGUMENT_LIST!71))
+      (a!73 (beforeInside!130 (spaces!134 (afterInside!129 (spaces!134 a!72 0)
+                                                           LT!72
+                                                           TYPE_ARGUMENT_LIST!71)
+                                          0)
+                              GT!70
+                              TYPE_ARGUMENT_LIST!71))
+      (a!98 (beforeInside!130 (spaces!134 (afterInside!129 (spaces!134 a!97 0)
+                                                           LT!72
+                                                           TYPE_ARGUMENT_LIST!71)
+                                          0)
+                              GT!70
+                              TYPE_ARGUMENT_LIST!71)))
+(let ((a!16 (betweenInside!135
+              (spacing!136 (betweenInside!135
+                             (spaces!134 a!15 0)
+                             FOR_KEYWORD!68
+                             LPAR!65
+                             FOR!69)
+                           1
+                           1
+                           0
+                           0
+                           0)
+              IF_KEYWORD!67
+              LPAR!65
+              IF!36))
+      (a!45 (betweenInside!135
+              (spacing!136 (betweenInside!135
+                             (spaces!134 a!44 0)
+                             FOR_KEYWORD!68
+                             LPAR!65
+                             FOR!69)
+                           1
+                           1
+                           0
+                           0
+                           0)
+              IF_KEYWORD!67
+              LPAR!65
+              IF!36))
+      (a!74 (betweenInside!135
+              (spacing!136 (betweenInside!135
+                             (spaces!134 a!73 0)
+                             FOR_KEYWORD!68
+                             LPAR!65
+                             FOR!69)
+                           1
+                           1
+                           0
+                           0
+                           0)
+              IF_KEYWORD!67
+              LPAR!65
+              IF!36))
+      (a!99 (betweenInside!135
+              (spacing!136 (betweenInside!135
+                             (spaces!134 a!98 0)
+                             FOR_KEYWORD!68
+                             LPAR!65
+                             FOR!69)
+                           1
+                           1
+                           0
+                           0
+                           0)
+              IF_KEYWORD!67
+              LPAR!65
+              IF!36)))
+(let ((a!17 (betweenInside!135
+              (spacing!136 (betweenInside!135
+                             (spacing!136 a!16 1 1 0 0 0)
+                             WHILE_KEYWORD!64
+                             LPAR!65
+                             WHILE!66)
+                           1
+                           1
+                           0
+                           0
+                           0)
+              WHILE_KEYWORD!64
+              LPAR!65
+              DO_WHILE!63))
+      (a!46 (betweenInside!135
+              (spacing!136 (betweenInside!135
+                             (spacing!136 a!45 1 1 0 0 0)
+                             WHILE_KEYWORD!64
+                             LPAR!65
+                             WHILE!66)
+                           1
+                           1
+                           0
+                           0
+                           0)
+              WHILE_KEYWORD!64
+              LPAR!65
+              DO_WHILE!63))
+      (a!75 (afterInside!129 (spaceIf!131 (beforeInside!130 (spacing!136 a!74
+                                                                         1
+                                                                         1
+                                                                         0
+                                                                         0
+                                                                         0)
+                                                            COLON!52
+                                                            PROPERTY!61)
+                                          SPACE_BEFORE_TYPE_COLON.jetSettings!59)
+                             COLON!52
+                             PROPERTY!61))
+      (a!100 (afterInside!129 (spaceIf!131 (beforeInside!130 (spacing!136 a!99
+                                                                          1
+                                                                          1
+                                                                          0
+                                                                          0
+                                                                          0)
+                                                             COLON!52
+                                                             PROPERTY!61)
+                                           SPACE_BEFORE_TYPE_COLON.jetSettings!59)
+                              COLON!52
+                              PROPERTY!61)))
+(let ((a!18 (afterInside!129 (spaces!134 (aroundInside!133 (spacing!136 a!17
+                                                                        1
+                                                                        1
+                                                                        0
+                                                                        0
+                                                                        0)
+                                                           WHILE_KEYWORD!64
+                                                           DO_WHILE!63)
+                                         1)
+                             DO_KEYWORD!62
+                             DO_WHILE!63))
+      (a!47 (afterInside!129 (spaces!134 (aroundInside!133 (spacing!136 a!46
+                                                                        1
+                                                                        1
+                                                                        0
+                                                                        0
+                                                                        0)
+                                                           WHILE_KEYWORD!64
+                                                           DO_WHILE!63)
+                                         1)
+                             DO_KEYWORD!62
+                             DO_WHILE!63))
+      (a!76 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!75
+                                                                         SPACE_AFTER_TYPE_COLON.jetSettings!57)
+                                                            COLON!52
+                                                            FUN!60)
+                                          SPACE_BEFORE_TYPE_COLON.jetSettings!59)
+                             COLON!52
+                             FUN!60))
+      (a!101 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!100
+                                                                          SPACE_AFTER_TYPE_COLON.jetSettings!57)
+                                                             COLON!52
+                                                             FUN!60)
+                                           SPACE_BEFORE_TYPE_COLON.jetSettings!59)
+                              COLON!52
+                              FUN!60)))
+(let ((a!19 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaces!134 a!18 1)
+                                                            COLON!52
+                                                            PROPERTY!61)
+                                          SPACE_BEFORE_TYPE_COLON.jetSettings!59)
+                             COLON!52
+                             PROPERTY!61))
+      (a!48 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaces!134 a!47 1)
+                                                            COLON!52
+                                                            PROPERTY!61)
+                                          SPACE_BEFORE_TYPE_COLON.jetSettings!59)
+                             COLON!52
+                             PROPERTY!61))
+      (a!77 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!76
+                                                                         SPACE_AFTER_TYPE_COLON.jetSettings!57)
+                                                            COLON!52
+                                                            VALUE_PARAMETER!58)
+                                          SPACE_BEFORE_TYPE_COLON.jetSettings!59)
+                             COLON!52
+                             VALUE_PARAMETER!58))
+      (a!102 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!101
+                                                                          SPACE_AFTER_TYPE_COLON.jetSettings!57)
+                                                             COLON!52
+                                                             VALUE_PARAMETER!58)
+                                           SPACE_BEFORE_TYPE_COLON.jetSettings!59)
+                              COLON!52
+                              VALUE_PARAMETER!58)))
+(let ((a!20 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!19
+                                                                         SPACE_AFTER_TYPE_COLON.jetSettings!57)
+                                                            COLON!52
+                                                            FUN!60)
+                                          SPACE_BEFORE_TYPE_COLON.jetSettings!59)
+                             COLON!52
+                             FUN!60))
+      (a!49 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!48
+                                                                         SPACE_AFTER_TYPE_COLON.jetSettings!57)
+                                                            COLON!52
+                                                            FUN!60)
+                                          SPACE_BEFORE_TYPE_COLON.jetSettings!59)
+                             COLON!52
+                             FUN!60))
+      (a!78 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!77
+                                                                         SPACE_AFTER_TYPE_COLON.jetSettings!57)
+                                                            COLON!52
+                                                            TYPE_CONSTRAINT!56)
+                                          SPACE_BEFORE_EXTEND_COLON.jetSettings!54)
+                             COLON!52
+                             TYPE_CONSTRAINT!56))
+      (a!103 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!102
+                                                                          SPACE_AFTER_TYPE_COLON.jetSettings!57)
+                                                             COLON!52
+                                                             TYPE_CONSTRAINT!56)
+                                           SPACE_BEFORE_EXTEND_COLON.jetSettings!54)
+                              COLON!52
+                              TYPE_CONSTRAINT!56)))
+(let ((a!21 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!20
+                                                                         SPACE_AFTER_TYPE_COLON.jetSettings!57)
+                                                            COLON!52
+                                                            VALUE_PARAMETER!58)
+                                          SPACE_BEFORE_TYPE_COLON.jetSettings!59)
+                             COLON!52
+                             VALUE_PARAMETER!58))
+      (a!50 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!49
+                                                                         SPACE_AFTER_TYPE_COLON.jetSettings!57)
+                                                            COLON!52
+                                                            VALUE_PARAMETER!58)
+                                          SPACE_BEFORE_TYPE_COLON.jetSettings!59)
+                             COLON!52
+                             VALUE_PARAMETER!58))
+      (a!79 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!78
+                                                                         SPACE_AFTER_EXTEND_COLON.jetSettings!51)
+                                                            COLON!52
+                                                            CLASS!55)
+                                          SPACE_BEFORE_EXTEND_COLON.jetSettings!54)
+                             COLON!52
+                             CLASS!55))
+      (a!104 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!103
+                                                                          SPACE_AFTER_EXTEND_COLON.jetSettings!51)
+                                                             COLON!52
+                                                             CLASS!55)
+                                           SPACE_BEFORE_EXTEND_COLON.jetSettings!54)
+                              COLON!52
+                              CLASS!55)))
+(let ((a!22 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!21
+                                                                         SPACE_AFTER_TYPE_COLON.jetSettings!57)
+                                                            COLON!52
+                                                            TYPE_CONSTRAINT!56)
+                                          SPACE_BEFORE_EXTEND_COLON.jetSettings!54)
+                             COLON!52
+                             TYPE_CONSTRAINT!56))
+      (a!51 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!50
+                                                                         SPACE_AFTER_TYPE_COLON.jetSettings!57)
+                                                            COLON!52
+                                                            TYPE_CONSTRAINT!56)
+                                          SPACE_BEFORE_EXTEND_COLON.jetSettings!54)
+                             COLON!52
+                             TYPE_CONSTRAINT!56))
+      (a!80 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!79
+                                                                         SPACE_AFTER_EXTEND_COLON.jetSettings!51)
+                                                            COLON!52
+                                                            TYPE_PARAMETER!53)
+                                          SPACE_BEFORE_EXTEND_COLON.jetSettings!54)
+                             COLON!52
+                             TYPE_PARAMETER!53))
+      (a!105 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!104
+                                                                          SPACE_AFTER_EXTEND_COLON.jetSettings!51)
+                                                             COLON!52
+                                                             TYPE_PARAMETER!53)
+                                           SPACE_BEFORE_EXTEND_COLON.jetSettings!54)
+                              COLON!52
+                              TYPE_PARAMETER!53)))
+(let ((a!23 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!22
+                                                                         SPACE_AFTER_EXTEND_COLON.jetSettings!51)
+                                                            COLON!52
+                                                            CLASS!55)
+                                          SPACE_BEFORE_EXTEND_COLON.jetSettings!54)
+                             COLON!52
+                             CLASS!55))
+      (a!52 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!51
+                                                                         SPACE_AFTER_EXTEND_COLON.jetSettings!51)
+                                                            COLON!52
+                                                            CLASS!55)
+                                          SPACE_BEFORE_EXTEND_COLON.jetSettings!54)
+                             COLON!52
+                             CLASS!55))
+      (a!81 (beforeInside!130 (spaces!134 (between!126 (spaceIf!131 a!80
+                                                                    SPACE_AFTER_EXTEND_COLON.jetSettings!51)
+                                                       VALUE_ARGUMENT_LIST!50
+                                                       FUNCTION_LITERAL_EXPRESSION!39)
+                                          1)
+                              ARROW!42
+                              FUNCTION_LITERAL!49))
+      (a!106 (beforeInside!130 (spaces!134 (between!126 (spaceIf!131 a!105
+                                                                     SPACE_AFTER_EXTEND_COLON.jetSettings!51)
+                                                        VALUE_ARGUMENT_LIST!50
+                                                        FUNCTION_LITERAL_EXPRESSION!39)
+                                           1)
+                               ARROW!42
+                               FUNCTION_LITERAL!49)))
+(let ((a!24 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!23
+                                                                         SPACE_AFTER_EXTEND_COLON.jetSettings!51)
+                                                            COLON!52
+                                                            TYPE_PARAMETER!53)
+                                          SPACE_BEFORE_EXTEND_COLON.jetSettings!54)
+                             COLON!52
+                             TYPE_PARAMETER!53))
+      (a!53 (afterInside!129 (spaceIf!131 (beforeInside!130 (spaceIf!131 a!52
+                                                                         SPACE_AFTER_EXTEND_COLON.jetSettings!51)
+                                                            COLON!52
+                                                            TYPE_PARAMETER!53)
+                                          SPACE_BEFORE_EXTEND_COLON.jetSettings!54)
+                             COLON!52
+                             TYPE_PARAMETER!53))
+      (a!82 (beforeInside!130 (spaceIf!131 (aroundInside!133 (spaceIf!131 a!81
+                                                                          SPACE_BEFORE_LAMBDA_ARROW.jetSettings!48)
+                                                             ARROW!42
+                                                             WHEN_ENTRY!47)
+                                           SPACE_AROUND_WHEN_ARROW.jetSettings!46)
+                              LBRACE!44
+                              WHEN!45))
+      (a!107 (beforeInside!130 (spaceIf!131 (aroundInside!133 (spaceIf!131 a!106
+                                                                           SPACE_BEFORE_LAMBDA_ARROW.jetSettings!48)
+                                                              ARROW!42
+                                                              WHEN_ENTRY!47)
+                                            SPACE_AROUND_WHEN_ARROW.jetSettings!46)
+                               LBRACE!44
+                               WHEN!45)))
+(let ((a!25 (beforeInside!130 (spaces!134 (between!126 (spaceIf!131 a!24
+                                                                    SPACE_AFTER_EXTEND_COLON.jetSettings!51)
+                                                       VALUE_ARGUMENT_LIST!50
+                                                       FUNCTION_LITERAL_EXPRESSION!39)
+                                          1)
+                              ARROW!42
+                              FUNCTION_LITERAL!49))
+      (a!54 (beforeInside!130 (spaces!134 (between!126 (spaceIf!131 a!53
+                                                                    SPACE_AFTER_EXTEND_COLON.jetSettings!51)
+                                                       VALUE_ARGUMENT_LIST!50
+                                                       FUNCTION_LITERAL_EXPRESSION!39)
+                                          1)
+                              ARROW!42
+                              FUNCTION_LITERAL!49))
+      (a!83 (betweenInside!135
+              (spaceIf!131 (aroundInside!133 (spacing!136 a!82 1 1 0 1 0)
+                                             ARROW!42
+                                             FUNCTION_TYPE!43)
+                           SPACE_AROUND_FUNCTION_TYPE_ARROW.jetSettings!41)
+              REFERENCE_EXPRESSION!38
+              FUNCTION_LITERAL_EXPRESSION!39
+              CALL_EXPRESSION!40))
+      (a!108 (betweenInside!135
+               (spaceIf!131 (aroundInside!133 (spacing!136 a!107 1 1 0 1 0)
+                                              ARROW!42
+                                              FUNCTION_TYPE!43)
+                            SPACE_AROUND_FUNCTION_TYPE_ARROW.jetSettings!41)
+               REFERENCE_EXPRESSION!38
+               FUNCTION_LITERAL_EXPRESSION!39
+               CALL_EXPRESSION!40)))
+(let ((a!26 (beforeInside!130 (spaceIf!131 (aroundInside!133 (spaceIf!131 a!25
+                                                                          SPACE_BEFORE_LAMBDA_ARROW.jetSettings!48)
+                                                             ARROW!42
+                                                             WHEN_ENTRY!47)
+                                           SPACE_AROUND_WHEN_ARROW.jetSettings!46)
+                              LBRACE!44
+                              WHEN!45))
+      (a!55 (beforeInside!130 (spaceIf!131 (aroundInside!133 (spaceIf!131 a!54
+                                                                          SPACE_BEFORE_LAMBDA_ARROW.jetSettings!48)
+                                                             ARROW!42
+                                                             WHEN_ENTRY!47)
+                                           SPACE_AROUND_WHEN_ARROW.jetSettings!46)
+                              LBRACE!44
+                              WHEN!45)))
+(let ((a!27 (betweenInside!135
+              (spaceIf!131 (aroundInside!133 (spacing!136 a!26 1 1 0 1 0)
+                                             ARROW!42
+                                             FUNCTION_TYPE!43)
+                           SPACE_AROUND_FUNCTION_TYPE_ARROW.jetSettings!41)
+              REFERENCE_EXPRESSION!38
+              FUNCTION_LITERAL_EXPRESSION!39
+              CALL_EXPRESSION!40))
+      (a!56 (betweenInside!135
+              (spaceIf!131 (aroundInside!133 (spacing!136 a!55 1 1 0 1 0)
+                                             ARROW!42
+                                             FUNCTION_TYPE!43)
+                           SPACE_AROUND_FUNCTION_TYPE_ARROW.jetSettings!41)
+              REFERENCE_EXPRESSION!38
+              FUNCTION_LITERAL_EXPRESSION!39
+              CALL_EXPRESSION!40)))
+(let ((a!28 (betweenInside!135
+              (spaces!134 (aroundInside!133 (spaces!134 a!27 1)
+                                            ELSE_KEYWORD!37
+                                            IF!36)
+                          1)
+              RPAR!33
+              THEN!35
+              IF!36))
+      (a!57 (betweenInside!135
+              (spaces!134 (aroundInside!133 (spaces!134 a!56 1)
+                                            ELSE_KEYWORD!37
+                                            IF!36)
+                          1)
+              RPAR!33
+              THEN!35
+              IF!36)))
+(let ((a!29 (= ret_4_0!7
+               (spaces!134 (between!126 (spaces!134 a!28 1) RPAR!33 BODY!34) 1)))
+      (a!58 (= ret_3_0!6
+               (spaces!134 (between!126 (spaces!134 a!57 1) RPAR!33 BODY!34) 1))))
+  (and (= settings_4_0!3 settings_3_0!2)
+       (= settings_3_0!2 settings_2_0!1)
+       (= settings_2_0!1 settings_1_0!0)
+       (= jetCommonSettings_1_1!12
+          (Anonymous0!11 settings_1_0!0 INSTANCE.JetLanguage!10))
+       (= jetCommonSettings_2_1!14
+          (Anonymous0!11 settings_2_0!1 INSTANCE.JetLanguage!10))
+       (= jetCommonSettings_3_1!16
+          (Anonymous0!11 settings_3_0!2 INSTANCE.JetLanguage!10))
+       (= jetCommonSettings_4_1!18
+          (Anonymous0!11 settings_4_0!3 INSTANCE.JetLanguage!10))
+       (= jetSettings_1_1!21 (Anonymous1!20 settings_1_0!0))
+       (= jetSettings_2_1!23 (Anonymous1!20 settings_2_0!1))
+       (= jetSettings_3_1!25 (Anonymous1!20 settings_3_0!2))
+       (= jetSettings_4_1!27 (Anonymous1!20 settings_4_0!3))
+       (= settings_1_1!29
+          (Anonymous2!28 settings_1_0!0 INSTANCE.JetLanguage!10))
+       (= settings_2_1!30
+          (Anonymous2!28 settings_2_0!1 INSTANCE.JetLanguage!10))
+       (= settings_3_1!31
+          (Anonymous2!28 settings_3_0!2 INSTANCE.JetLanguage!10))
+       (= settings_4_1!32
+          (Anonymous2!28 settings_4_0!3 INSTANCE.JetLanguage!10))
+       a!29
+       a!58
+       (= ret_2_0!5 (spaces!134 a!83 1))
+       (= ret_1_0!4 (spaces!134 a!108 1))))))))))))))))))))))))))))))))
+verify: semantic conflict VC
+(let ((a!1 (=> (not (and (= ret_1_0!4 ret_2_0!5)))
+               (and (= ret_4_0!7 ret_2_0!5))))
+      (a!2 (=> (not (and (= ret_1_0!4 ret_3_0!6)))
+               (and (= ret_4_0!7 ret_3_0!6)))))
+(let ((a!3 (or (and (and (= ret_4_0!7 ret_2_0!5))
+                    (and (= ret_4_0!7 ret_3_0!6))
+                    (= ret_1_0!4 ret_4_0!7))
+               (and a!1 a!2))))
+  (and a!3)))

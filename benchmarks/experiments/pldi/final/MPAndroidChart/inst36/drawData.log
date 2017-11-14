@@ -1,0 +1,463 @@
+verify: relational VC
+(let ((a!1 (and (= c_4_0!3 c_3_0!2)
+                (= c_3_0!2 c_2_0!1)
+                (= c_2_0!1 c_1_0!0)
+                (= mBitmapCanvas_4_0!7 mBitmapCanvas_3_0!6)
+                (= mBitmapCanvas_3_0!6 mBitmapCanvas_2_0!5)
+                (= mBitmapCanvas_2_0!5 mBitmapCanvas_1_0!4)
+                (= mCenterTextPaint_4_0!11 mCenterTextPaint_3_0!10)
+                (= mCenterTextPaint_3_0!10 mCenterTextPaint_2_0!9)
+                (= mCenterTextPaint_2_0!9 mCenterTextPaint_1_0!8)
+                (= mChart_4_0!15 mChart_3_0!14)
+                (= mChart_3_0!14 mChart_2_0!13)
+                (= mChart_2_0!13 mChart_1_0!12)
+                (= mDrawBitmap_4_0!19 mDrawBitmap_3_0!18)
+                (= mDrawBitmap_3_0!18 mDrawBitmap_2_0!17)
+                (= mDrawBitmap_2_0!17 mDrawBitmap_1_0!16)
+                (= mHolePaint_4_0!23 mHolePaint_3_0!22)
+                (= mHolePaint_3_0!22 mHolePaint_2_0!21)
+                (= mHolePaint_2_0!21 mHolePaint_1_0!20)
+                (= mHolePaint_4_0!27 mHolePaint_3_0!26)
+                (= mHolePaint_3_0!26 mHolePaint_2_0!25)
+                (= mHolePaint_2_0!25 mHolePaint_1_0!24)
+                (= mTransparentCirclePaint_4_0!31
+                   mTransparentCirclePaint_3_0!30)
+                (= mTransparentCirclePaint_3_0!30
+                   mTransparentCirclePaint_2_0!29)
+                (= mTransparentCirclePaint_2_0!29
+                   mTransparentCirclePaint_1_0!28)))
+      (a!2 (or (= mDrawBitmap_4_0!19 0)
+               (not (= (getWidth!61 mDrawBitmap_4_0!19)
+                       getChartWidth.mViewPortHandler!62))
+               (not (= (getHeight!63 mDrawBitmap_4_0!19)
+                       getChartHeight.mViewPortHandler!64))))
+      (a!3 (or (= mDrawBitmap_3_0!18 0)
+               (not (= getChartHeight.mViewPortHandler!64
+                       (getHeight!63 mDrawBitmap_3_0!18)))))
+      (a!5 (or (= mDrawBitmap_2_0!17 0)
+               (not (= (getWidth!61 mDrawBitmap_2_0!17)
+                       getChartWidth.mViewPortHandler!62))
+               (not (= (getHeight!63 mDrawBitmap_2_0!17)
+                       getChartHeight.mViewPortHandler!64)))))
+(let ((a!4 (and (and a!1
+                     a!2
+                     (= mDrawBitmap_4_1!65
+                        (createBitmap.Bitmap!67
+                          getChartWidth.mViewPortHandler!62
+                          getChartHeight.mViewPortHandler!64
+                          Config.ARGB_8888.Bitmap!66)))
+                a!3
+                (= mDrawBitmap_3_1!68
+                   (createBitmap.Bitmap!67
+                     getChartWidth.mViewPortHandler!62
+                     getChartHeight.mViewPortHandler!64
+                     Config.ARGB_8888.Bitmap!66))))
+      (a!10 (and (and a!1
+                      a!2
+                      (= mDrawBitmap_4_1!65
+                         (createBitmap.Bitmap!67
+                           getChartWidth.mViewPortHandler!62
+                           getChartHeight.mViewPortHandler!64
+                           Config.ARGB_8888.Bitmap!66)))
+                 (not a!3)))
+      (a!16 (and (and a!1 (not a!2))
+                 a!3
+                 (= mDrawBitmap_3_1!88
+                    (createBitmap.Bitmap!89
+                      getChartWidth.mViewPortHandler!62
+                      getChartHeight.mViewPortHandler!64
+                      Config.ARGB_8888.Bitmap!66))))
+      (a!21 (and (and (and a!1 (not a!2)) (not a!3))
+                 a!5
+                 (= mDrawBitmap_2_1!99
+                    (createBitmap.Bitmap!100
+                      getChartWidth.mViewPortHandler!62
+                      getChartHeight.mViewPortHandler!64
+                      Config.ARGB_4444.Bitmap!70))))
+      (a!23 (and (and (and a!1 (not a!2)) (not a!3)) (not a!5))))
+(let ((a!6 (and (and a!4
+                     a!5
+                     (= mDrawBitmap_2_1!69
+                        (createBitmap.Bitmap!67
+                          getChartWidth.mViewPortHandler!62
+                          getChartHeight.mViewPortHandler!64
+                          Config.ARGB_4444.Bitmap!70)))
+                (= mDrawBitmap_1_0!16 0)
+                (= mDrawBitmap_1_1!71
+                   (createBitmap.Bitmap!67
+                     getChartWidth.mViewPortHandler!62
+                     getChartHeight.mViewPortHandler!64
+                     Config.ARGB_4444.Bitmap!70))
+                (= mBitmapCanvas_1_1!72 (NewCanvas!73 mDrawBitmap_1_1!71))
+                (= mBitmapCanvas_1_2 mBitmapCanvas_1_1!72)
+                (= mDrawBitmap_1_2 mDrawBitmap_1_1!71)))
+      (a!7 (and (and a!4
+                     a!5
+                     (= mDrawBitmap_2_1!69
+                        (createBitmap.Bitmap!67
+                          getChartWidth.mViewPortHandler!62
+                          getChartHeight.mViewPortHandler!64
+                          Config.ARGB_4444.Bitmap!70)))
+                (not (= mDrawBitmap_1_0!16 0))
+                (= mBitmapCanvas_1_2 mBitmapCanvas_1_0!4)
+                (= mDrawBitmap_1_2 mDrawBitmap_1_0!16)))
+      (a!8 (or (and (and a!4 (not a!5))
+                    (= mDrawBitmap_1_0!16 0)
+                    (= mDrawBitmap_1_1!75
+                       (createBitmap.Bitmap!67
+                         getChartWidth.mViewPortHandler!62
+                         getChartHeight.mViewPortHandler!64
+                         Config.ARGB_4444.Bitmap!70))
+                    (= mBitmapCanvas_1_1!76 (NewCanvas!77 mDrawBitmap_1_1!75))
+                    (= mBitmapCanvas_1_2 mBitmapCanvas_1_1!76)
+                    (= mDrawBitmap_1_2 mDrawBitmap_1_1!75))
+               (and (and a!4 (not a!5))
+                    (not (= mDrawBitmap_1_0!16 0))
+                    (= mBitmapCanvas_1_2 mBitmapCanvas_1_0!4)
+                    (= mDrawBitmap_1_2 mDrawBitmap_1_0!16))))
+      (a!11 (and (and a!10
+                      a!5
+                      (= mDrawBitmap_2_1!79
+                         (createBitmap.Bitmap!67
+                           getChartWidth.mViewPortHandler!62
+                           getChartHeight.mViewPortHandler!64
+                           Config.ARGB_4444.Bitmap!70)))
+                 (= mDrawBitmap_1_0!16 0)
+                 (= mDrawBitmap_1_1!80
+                    (createBitmap.Bitmap!67
+                      getChartWidth.mViewPortHandler!62
+                      getChartHeight.mViewPortHandler!64
+                      Config.ARGB_4444.Bitmap!70))
+                 (= mBitmapCanvas_1_1!81 (NewCanvas!82 mDrawBitmap_1_1!80))
+                 (= mBitmapCanvas_1_2 mBitmapCanvas_1_1!81)
+                 (= mDrawBitmap_1_2 mDrawBitmap_1_1!80)))
+      (a!12 (and (and a!10
+                      a!5
+                      (= mDrawBitmap_2_1!79
+                         (createBitmap.Bitmap!67
+                           getChartWidth.mViewPortHandler!62
+                           getChartHeight.mViewPortHandler!64
+                           Config.ARGB_4444.Bitmap!70)))
+                 (not (= mDrawBitmap_1_0!16 0))
+                 (= mBitmapCanvas_1_2 mBitmapCanvas_1_0!4)
+                 (= mDrawBitmap_1_2 mDrawBitmap_1_0!16)))
+      (a!13 (or (and (and a!10 (not a!5))
+                     (= mDrawBitmap_1_0!16 0)
+                     (= mDrawBitmap_1_1!84
+                        (createBitmap.Bitmap!67
+                          getChartWidth.mViewPortHandler!62
+                          getChartHeight.mViewPortHandler!64
+                          Config.ARGB_4444.Bitmap!70))
+                     (= mBitmapCanvas_1_1!85 (NewCanvas!86 mDrawBitmap_1_1!84))
+                     (= mBitmapCanvas_1_2 mBitmapCanvas_1_1!85)
+                     (= mDrawBitmap_1_2 mDrawBitmap_1_1!84))
+                (and (and a!10 (not a!5))
+                     (not (= mDrawBitmap_1_0!16 0))
+                     (= mBitmapCanvas_1_2 mBitmapCanvas_1_0!4)
+                     (= mDrawBitmap_1_2 mDrawBitmap_1_0!16))))
+      (a!17 (and (and a!16
+                      a!5
+                      (= mDrawBitmap_2_1!90
+                         (createBitmap.Bitmap!89
+                           getChartWidth.mViewPortHandler!62
+                           getChartHeight.mViewPortHandler!64
+                           Config.ARGB_4444.Bitmap!70)))
+                 (= mDrawBitmap_1_0!16 0)
+                 (= mDrawBitmap_1_1!91
+                    (createBitmap.Bitmap!89
+                      getChartWidth.mViewPortHandler!62
+                      getChartHeight.mViewPortHandler!64
+                      Config.ARGB_4444.Bitmap!70))
+                 (= mBitmapCanvas_1_1!92 (NewCanvas!93 mDrawBitmap_1_1!91))
+                 (= mBitmapCanvas_1_2 mBitmapCanvas_1_1!92)
+                 (= mDrawBitmap_1_2 mDrawBitmap_1_1!91)))
+      (a!18 (and (and a!16
+                      a!5
+                      (= mDrawBitmap_2_1!90
+                         (createBitmap.Bitmap!89
+                           getChartWidth.mViewPortHandler!62
+                           getChartHeight.mViewPortHandler!64
+                           Config.ARGB_4444.Bitmap!70)))
+                 (not (= mDrawBitmap_1_0!16 0))
+                 (= mBitmapCanvas_1_2 mBitmapCanvas_1_0!4)
+                 (= mDrawBitmap_1_2 mDrawBitmap_1_0!16)))
+      (a!19 (or (and (and a!16 (not a!5))
+                     (= mDrawBitmap_1_0!16 0)
+                     (= mDrawBitmap_1_1!95
+                        (createBitmap.Bitmap!89
+                          getChartWidth.mViewPortHandler!62
+                          getChartHeight.mViewPortHandler!64
+                          Config.ARGB_4444.Bitmap!70))
+                     (= mBitmapCanvas_1_1!96 (NewCanvas!97 mDrawBitmap_1_1!95))
+                     (= mBitmapCanvas_1_2 mBitmapCanvas_1_1!96)
+                     (= mDrawBitmap_1_2 mDrawBitmap_1_1!95))
+                (and (and a!16 (not a!5))
+                     (not (= mDrawBitmap_1_0!16 0))
+                     (= mBitmapCanvas_1_2 mBitmapCanvas_1_0!4)
+                     (= mDrawBitmap_1_2 mDrawBitmap_1_0!16))))
+      (a!22 (or (and a!21
+                     (= mDrawBitmap_1_0!16 0)
+                     (= mDrawBitmap_1_1!101
+                        (createBitmap.Bitmap!100
+                          getChartWidth.mViewPortHandler!62
+                          getChartHeight.mViewPortHandler!64
+                          Config.ARGB_4444.Bitmap!70))
+                     (= mBitmapCanvas_1_1!102
+                        (NewCanvas!103 mDrawBitmap_1_1!101))
+                     (= mBitmapCanvas_1_2 mBitmapCanvas_1_1!102)
+                     (= mDrawBitmap_1_2 mDrawBitmap_1_1!101))
+                (and a!21
+                     (not (= mDrawBitmap_1_0!16 0))
+                     (= mBitmapCanvas_1_2 mBitmapCanvas_1_0!4)
+                     (= mDrawBitmap_1_2 mDrawBitmap_1_0!16))))
+      (a!24 (or (and a!23
+                     (= mDrawBitmap_1_0!16 0)
+                     (= mDrawBitmap_1_1!105
+                        (createBitmap.Bitmap!106
+                          getChartWidth.mViewPortHandler!62
+                          getChartHeight.mViewPortHandler!64
+                          Config.ARGB_4444.Bitmap!70))
+                     (= mBitmapCanvas_1_1!107
+                        (NewCanvas!108 mDrawBitmap_1_1!105))
+                     (= mBitmapCanvas_1_2 mBitmapCanvas_1_1!107)
+                     (= mDrawBitmap_1_2 mDrawBitmap_1_1!105))
+                (and a!23
+                     (not (= mDrawBitmap_1_0!16 0))
+                     (= mBitmapCanvas_1_2 mBitmapCanvas_1_0!4)
+                     (= mDrawBitmap_1_2 mDrawBitmap_1_0!16)))))
+(let ((a!9 (or (and (or a!6 a!7)
+                    (= mBitmapCanvas_2_1!74 (NewCanvas!73 mDrawBitmap_2_1!69))
+                    (= mBitmapCanvas_1_3 mBitmapCanvas_1_2)
+                    (= mBitmapCanvas_2_2 mBitmapCanvas_2_1!74)
+                    (= mDrawBitmap_1_3 mDrawBitmap_1_2)
+                    (= mDrawBitmap_2_2 mDrawBitmap_2_1!69))
+               (and a!8
+                    (= mBitmapCanvas_1_3 mBitmapCanvas_1_2)
+                    (= mBitmapCanvas_2_2 mBitmapCanvas_2_0!5)
+                    (= mDrawBitmap_1_3 mDrawBitmap_1_2)
+                    (= mDrawBitmap_2_2 mDrawBitmap_2_0!17))))
+      (a!14 (or (and (or a!11 a!12)
+                     (= mBitmapCanvas_2_1!83 (NewCanvas!82 mDrawBitmap_2_1!79))
+                     (= mBitmapCanvas_1_3 mBitmapCanvas_1_2)
+                     (= mBitmapCanvas_2_2 mBitmapCanvas_2_1!83)
+                     (= mDrawBitmap_1_3 mDrawBitmap_1_2)
+                     (= mDrawBitmap_2_2 mDrawBitmap_2_1!79))
+                (and a!13
+                     (= mBitmapCanvas_1_3 mBitmapCanvas_1_2)
+                     (= mBitmapCanvas_2_2 mBitmapCanvas_2_0!5)
+                     (= mDrawBitmap_1_3 mDrawBitmap_1_2)
+                     (= mDrawBitmap_2_2 mDrawBitmap_2_0!17))))
+      (a!20 (or (and (or a!17 a!18)
+                     (= mBitmapCanvas_2_1!94 (NewCanvas!93 mDrawBitmap_2_1!90))
+                     (= mBitmapCanvas_1_3 mBitmapCanvas_1_2)
+                     (= mBitmapCanvas_2_2 mBitmapCanvas_2_1!94)
+                     (= mDrawBitmap_1_3 mDrawBitmap_1_2)
+                     (= mDrawBitmap_2_2 mDrawBitmap_2_1!90))
+                (and a!19
+                     (= mBitmapCanvas_1_3 mBitmapCanvas_1_2)
+                     (= mBitmapCanvas_2_2 mBitmapCanvas_2_0!5)
+                     (= mDrawBitmap_1_3 mDrawBitmap_1_2)
+                     (= mDrawBitmap_2_2 mDrawBitmap_2_0!17))))
+      (a!25 (or (and a!22
+                     (= mBitmapCanvas_2_1!104
+                        (NewCanvas!103 mDrawBitmap_2_1!99))
+                     (= mBitmapCanvas_1_3 mBitmapCanvas_1_2)
+                     (= mBitmapCanvas_2_2 mBitmapCanvas_2_1!104)
+                     (= mDrawBitmap_1_3 mDrawBitmap_1_2)
+                     (= mDrawBitmap_2_2 mDrawBitmap_2_1!99))
+                (and a!24
+                     (= mBitmapCanvas_1_3 mBitmapCanvas_1_2)
+                     (= mBitmapCanvas_2_2 mBitmapCanvas_2_0!5)
+                     (= mDrawBitmap_1_3 mDrawBitmap_1_2)
+                     (= mDrawBitmap_2_2 mDrawBitmap_2_0!17)))))
+(let ((a!15 (or (and a!9
+                     (= mBitmapCanvas_3_1!78 (NewCanvas!73 mDrawBitmap_3_1!68))
+                     (= mBitmapCanvas_1_4 mBitmapCanvas_1_3)
+                     (= mBitmapCanvas_2_3 mBitmapCanvas_2_2)
+                     (= mBitmapCanvas_3_2 mBitmapCanvas_3_1!78)
+                     (= mDrawBitmap_1_4 mDrawBitmap_1_3)
+                     (= mDrawBitmap_2_3 mDrawBitmap_2_2)
+                     (= mDrawBitmap_3_2 mDrawBitmap_3_1!68))
+                (and a!14
+                     (= mBitmapCanvas_1_4 mBitmapCanvas_1_3)
+                     (= mBitmapCanvas_2_3 mBitmapCanvas_2_2)
+                     (= mBitmapCanvas_3_2 mBitmapCanvas_3_0!6)
+                     (= mDrawBitmap_1_4 mDrawBitmap_1_3)
+                     (= mDrawBitmap_2_3 mDrawBitmap_2_2)
+                     (= mDrawBitmap_3_2 mDrawBitmap_3_0!18))))
+      (a!26 (or (and a!20
+                     (= mBitmapCanvas_3_1!98 (NewCanvas!93 mDrawBitmap_3_1!88))
+                     (= mBitmapCanvas_1_4 mBitmapCanvas_1_3)
+                     (= mBitmapCanvas_2_3 mBitmapCanvas_2_2)
+                     (= mBitmapCanvas_3_2 mBitmapCanvas_3_1!98)
+                     (= mDrawBitmap_1_4 mDrawBitmap_1_3)
+                     (= mDrawBitmap_2_3 mDrawBitmap_2_2)
+                     (= mDrawBitmap_3_2 mDrawBitmap_3_1!88))
+                (and a!25
+                     (= mBitmapCanvas_1_4 mBitmapCanvas_1_3)
+                     (= mBitmapCanvas_2_3 mBitmapCanvas_2_2)
+                     (= mBitmapCanvas_3_2 mBitmapCanvas_3_0!6)
+                     (= mDrawBitmap_1_4 mDrawBitmap_1_3)
+                     (= mDrawBitmap_2_3 mDrawBitmap_2_2)
+                     (= mDrawBitmap_3_2 mDrawBitmap_3_0!18)))))
+(let ((a!27 (or (and a!15
+                     (= mBitmapCanvas_4_1!87 (NewCanvas!73 mDrawBitmap_4_1!65))
+                     (= mBitmapCanvas_1_5 mBitmapCanvas_1_4)
+                     (= mBitmapCanvas_2_4 mBitmapCanvas_2_3)
+                     (= mBitmapCanvas_3_3 mBitmapCanvas_3_2)
+                     (= mBitmapCanvas_4_2 mBitmapCanvas_4_1!87)
+                     (= mDrawBitmap_1_5 mDrawBitmap_1_4)
+                     (= mDrawBitmap_2_4 mDrawBitmap_2_3)
+                     (= mDrawBitmap_3_3 mDrawBitmap_3_2)
+                     (= mDrawBitmap_4_2 mDrawBitmap_4_1!65))
+                (and a!26
+                     (= mBitmapCanvas_1_5 mBitmapCanvas_1_4)
+                     (= mBitmapCanvas_2_4 mBitmapCanvas_2_3)
+                     (= mBitmapCanvas_3_3 mBitmapCanvas_3_2)
+                     (= mBitmapCanvas_4_2 mBitmapCanvas_4_0!7)
+                     (= mDrawBitmap_1_5 mDrawBitmap_1_4)
+                     (= mDrawBitmap_2_4 mDrawBitmap_2_3)
+                     (= mDrawBitmap_3_3 mDrawBitmap_3_2)
+                     (= mDrawBitmap_4_2 mDrawBitmap_4_0!19)))))
+  (and a!27
+       (= mChart_1_1!112 (Anonymous0!111 mChart_1_0!12))
+       (= mChart_2_1!113 (Anonymous0!111 mChart_2_0!13))
+       (= mChart_3_1!114 (Anonymous0!111 mChart_3_0!14))
+       (= mChart_4_1!115 (Anonymous0!111 mChart_4_0!15))
+       (= c_1_1!121
+          (Anonymous1!120 drawDataSet!116 c_1_0!0 set!117 wiz_i!118 pieData!119))
+       (= c_2_1!122
+          (Anonymous1!120 drawDataSet!116 c_2_0!1 set!117 wiz_i!118 pieData!119))
+       (= c_3_1!123
+          (Anonymous1!120 drawDataSet!116 c_3_0!2 set!117 wiz_i!118 pieData!119))
+       (= c_4_1!124
+          (Anonymous1!120 drawDataSet!116 c_4_0!3 set!117 wiz_i!118 pieData!119))
+       (= drawDataSet_1_1!127
+          (Anonymous2!126 c_1_1!121 set!117 wiz_i!118 pieData!119))
+       (= drawDataSet_2_1!129
+          (Anonymous2!126 c_2_1!122 set!117 wiz_i!118 pieData!119))
+       (= drawDataSet_3_1!131
+          (Anonymous2!126 c_3_1!123 set!117 wiz_i!118 pieData!119))
+       (= drawDataSet_4_1!133
+          (Anonymous2!126 c_4_1!124 set!117 wiz_i!118 pieData!119))
+       (= pieData_1_1!136 (Anonymous3!135 mChart_1_1!112 wiz_i!118))
+       (= pieData_2_1!138 (Anonymous3!135 mChart_2_1!113 wiz_i!118))
+       (= pieData_3_1!140 (Anonymous3!135 mChart_3_1!114 wiz_i!118))
+       (= pieData_4_1!142 (Anonymous3!135 mChart_4_1!115 wiz_i!118))
+       (= set_1_1!145
+          (Anonymous4!144 pieData_1_1!136
+                          wiz_i!118
+                          drawDataSet_1_1!127
+                          c_1_1!121))
+       (= set_2_1!147
+          (Anonymous4!144 pieData_2_1!138
+                          wiz_i!118
+                          drawDataSet_2_1!129
+                          c_2_1!122))
+       (= set_3_1!149
+          (Anonymous4!144 pieData_3_1!140
+                          wiz_i!118
+                          drawDataSet_3_1!131
+                          c_3_1!123))
+       (= set_4_1!151
+          (Anonymous4!144 pieData_4_1!142
+                          wiz_i!118
+                          drawDataSet_4_1!133
+                          c_4_1!124))
+       (= wiz_i_1_1!154 (Anonymous5!153 pieData_1_1!136))
+       (= wiz_i_2_1!156 (Anonymous5!153 pieData_2_1!138))
+       (= wiz_i_3_1!158 (Anonymous5!153 pieData_3_1!140))
+       (= wiz_i_4_1!160 (Anonymous5!153 pieData_4_1!142))
+       (= ret_mBitmapCanvas_1_0!32 mBitmapCanvas_1_5)
+       (= ret_mCenterTextPaint_1_0!36 mCenterTextPaint_1_0!8)
+       (= ret_mChart_1_0!40 mChart_1_1!112)
+       (= ret_mDrawBitmap_1_0!44 mDrawBitmap_1_5)
+       (= ret_mHolePaint_1_0!52 mHolePaint_1_0!24)
+       (= ret_mTransparentCirclePaint_1_0!56 mTransparentCirclePaint_1_0!28)
+       (= ret_mBitmapCanvas_2_0!33 mBitmapCanvas_2_4)
+       (= ret_mCenterTextPaint_2_0!37 mCenterTextPaint_2_0!9)
+       (= ret_mChart_2_0!41 mChart_2_1!113)
+       (= ret_mDrawBitmap_2_0!45 mDrawBitmap_2_4)
+       (= ret_mHolePaint_2_0!53 mHolePaint_2_0!25)
+       (= ret_mTransparentCirclePaint_2_0!57 mTransparentCirclePaint_2_0!29)
+       (= ret_mBitmapCanvas_3_0!34 mBitmapCanvas_3_3)
+       (= ret_mCenterTextPaint_3_0!38 mCenterTextPaint_3_0!10)
+       (= ret_mChart_3_0!42 mChart_3_1!114)
+       (= ret_mDrawBitmap_3_0!46 mDrawBitmap_3_3)
+       (= ret_mHolePaint_3_0!54 mHolePaint_3_0!26)
+       (= ret_mTransparentCirclePaint_3_0!58 mTransparentCirclePaint_3_0!30)
+       (= ret_mBitmapCanvas_4_0!35 mBitmapCanvas_4_2)
+       (= ret_mCenterTextPaint_4_0!39 mCenterTextPaint_4_0!11)
+       (= ret_mChart_4_0!43 mChart_4_1!115)
+       (= ret_mDrawBitmap_4_0!47 mDrawBitmap_4_2)
+       (= ret_mHolePaint_4_0!55 mHolePaint_4_0!27)
+       (= ret_mTransparentCirclePaint_4_0!59 mTransparentCirclePaint_4_0!31))))))))
+verify: semantic conflict VC
+(let ((a!1 (=> (not (and (= ret_mTransparentCirclePaint_1_0!56
+                            ret_mTransparentCirclePaint_2_0!57)))
+               (and (= ret_mTransparentCirclePaint_4_0!59
+                       ret_mTransparentCirclePaint_2_0!57))))
+      (a!2 (=> (not (and (= ret_mTransparentCirclePaint_1_0!56
+                            ret_mTransparentCirclePaint_3_0!58)))
+               (and (= ret_mTransparentCirclePaint_4_0!59
+                       ret_mTransparentCirclePaint_3_0!58))))
+      (a!4 (=> (not (and (= ret_mHolePaint_1_0!52 ret_mHolePaint_2_0!53)))
+               (and (= ret_mHolePaint_4_0!55 ret_mHolePaint_2_0!53))))
+      (a!5 (=> (not (and (= ret_mHolePaint_1_0!52 ret_mHolePaint_3_0!54)))
+               (and (= ret_mHolePaint_4_0!55 ret_mHolePaint_3_0!54))))
+      (a!7 (=> (not (and (= ret_mHolePaint_1_0!48 ret_mHolePaint_2_0!49)))
+               (and (= ret_mHolePaint_4_0!51 ret_mHolePaint_2_0!49))))
+      (a!8 (=> (not (and (= ret_mHolePaint_1_0!48 ret_mHolePaint_3_0!50)))
+               (and (= ret_mHolePaint_4_0!51 ret_mHolePaint_3_0!50))))
+      (a!10 (=> (not (and (= ret_mDrawBitmap_1_0!44 ret_mDrawBitmap_2_0!45)))
+                (and (= ret_mDrawBitmap_4_0!47 ret_mDrawBitmap_2_0!45))))
+      (a!11 (=> (not (and (= ret_mDrawBitmap_1_0!44 ret_mDrawBitmap_3_0!46)))
+                (and (= ret_mDrawBitmap_4_0!47 ret_mDrawBitmap_3_0!46))))
+      (a!13 (=> (not (and (= ret_mChart_1_0!40 ret_mChart_2_0!41)))
+                (and (= ret_mChart_4_0!43 ret_mChart_2_0!41))))
+      (a!14 (=> (not (and (= ret_mChart_1_0!40 ret_mChart_3_0!42)))
+                (and (= ret_mChart_4_0!43 ret_mChart_3_0!42))))
+      (a!16 (=> (not (and (= ret_mCenterTextPaint_1_0!36
+                             ret_mCenterTextPaint_2_0!37)))
+                (and (= ret_mCenterTextPaint_4_0!39 ret_mCenterTextPaint_2_0!37))))
+      (a!17 (=> (not (and (= ret_mCenterTextPaint_1_0!36
+                             ret_mCenterTextPaint_3_0!38)))
+                (and (= ret_mCenterTextPaint_4_0!39 ret_mCenterTextPaint_3_0!38))))
+      (a!19 (=> (not (and (= ret_mBitmapCanvas_1_0!32 ret_mBitmapCanvas_2_0!33)))
+                (and (= ret_mBitmapCanvas_4_0!35 ret_mBitmapCanvas_2_0!33))))
+      (a!20 (=> (not (and (= ret_mBitmapCanvas_1_0!32 ret_mBitmapCanvas_3_0!34)))
+                (and (= ret_mBitmapCanvas_4_0!35 ret_mBitmapCanvas_3_0!34)))))
+(let ((a!3 (or (and (and (= ret_mTransparentCirclePaint_4_0!59
+                            ret_mTransparentCirclePaint_2_0!57))
+                    (and (= ret_mTransparentCirclePaint_4_0!59
+                            ret_mTransparentCirclePaint_3_0!58))
+                    (= ret_mTransparentCirclePaint_1_0!56
+                       ret_mTransparentCirclePaint_4_0!59))
+               (and a!1 a!2)))
+      (a!6 (or (and (and (= ret_mHolePaint_4_0!55 ret_mHolePaint_2_0!53))
+                    (and (= ret_mHolePaint_4_0!55 ret_mHolePaint_3_0!54))
+                    (= ret_mHolePaint_1_0!52 ret_mHolePaint_4_0!55))
+               (and a!4 a!5)))
+      (a!9 (or (and (and (= ret_mHolePaint_4_0!51 ret_mHolePaint_2_0!49))
+                    (and (= ret_mHolePaint_4_0!51 ret_mHolePaint_3_0!50))
+                    (= ret_mHolePaint_1_0!48 ret_mHolePaint_4_0!51))
+               (and a!7 a!8)))
+      (a!12 (or (and (and (= ret_mDrawBitmap_4_0!47 ret_mDrawBitmap_2_0!45))
+                     (and (= ret_mDrawBitmap_4_0!47 ret_mDrawBitmap_3_0!46))
+                     (= ret_mDrawBitmap_1_0!44 ret_mDrawBitmap_4_0!47))
+                (and a!10 a!11)))
+      (a!15 (or (and (and (= ret_mChart_4_0!43 ret_mChart_2_0!41))
+                     (and (= ret_mChart_4_0!43 ret_mChart_3_0!42))
+                     (= ret_mChart_1_0!40 ret_mChart_4_0!43))
+                (and a!13 a!14)))
+      (a!18 (or (and (and (= ret_mCenterTextPaint_4_0!39
+                             ret_mCenterTextPaint_2_0!37))
+                     (and (= ret_mCenterTextPaint_4_0!39
+                             ret_mCenterTextPaint_3_0!38))
+                     (= ret_mCenterTextPaint_1_0!36 ret_mCenterTextPaint_4_0!39))
+                (and a!16 a!17)))
+      (a!21 (or (and (and (= ret_mBitmapCanvas_4_0!35 ret_mBitmapCanvas_2_0!33))
+                     (and (= ret_mBitmapCanvas_4_0!35 ret_mBitmapCanvas_3_0!34))
+                     (= ret_mBitmapCanvas_1_0!32 ret_mBitmapCanvas_4_0!35))
+                (and a!19 a!20))))
+  (and a!3 a!6 a!9 a!12 a!15 a!18 a!21)))

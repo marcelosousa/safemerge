@@ -1,0 +1,872 @@
+verify: relational VC
+(let ((a!1 (and (= context_4_0!3 context_3_0!2)
+                (= context_3_0!2 context_2_0!1)
+                (= context_2_0!1 context_1_0!0)
+                (= chunk_4_0!7 chunk_3_0!6)
+                (= chunk_3_0!6 chunk_2_0!5)
+                (= chunk_2_0!5 chunk_1_0!4)
+                (= dirtyFilesHolder_4_0!11 dirtyFilesHolder_3_0!10)
+                (= dirtyFilesHolder_3_0!10 dirtyFilesHolder_2_0!9)
+                (= dirtyFilesHolder_2_0!9 dirtyFilesHolder_1_0!8)
+                (= outputConsumer_4_0!15 outputConsumer_3_0!14)
+                (= outputConsumer_3_0!14 outputConsumer_2_0!13)
+                (= outputConsumer_2_0!13 outputConsumer_1_0!12)
+                (= COMPILABLE_FILE_EXTENSIONS_4_0!19
+                   COMPILABLE_FILE_EXTENSIONS_3_0!18)
+                (= COMPILABLE_FILE_EXTENSIONS_3_0!18
+                   COMPILABLE_FILE_EXTENSIONS_2_0!17)
+                (= COMPILABLE_FILE_EXTENSIONS_2_0!17
+                   COMPILABLE_FILE_EXTENSIONS_1_0!16)
+                (= KOTLIN_BUILDER_NAME_4_0!23 KOTLIN_BUILDER_NAME_3_0!22)
+                (= KOTLIN_BUILDER_NAME_3_0!22 KOTLIN_BUILDER_NAME_2_0!21)
+                (= KOTLIN_BUILDER_NAME_2_0!21 KOTLIN_BUILDER_NAME_1_0!20)
+                (= MODULE_NAME_4_0!27 MODULE_NAME_3_0!26)
+                (= MODULE_NAME_3_0!26 MODULE_NAME_2_0!25)
+                (= MODULE_NAME_2_0!25 MODULE_NAME_1_0!24)
+                (= messageCollector_1_1!49
+                   (NewMessageCollectorAdapter!50 context_1_0!0))
+                (= messageCollector_2_1!51
+                   (NewMessageCollectorAdapter!50 context_2_0!1))
+                (= messageCollector_3_1!52
+                   (NewMessageCollectorAdapter!50 context_3_0!2))
+                (= messageCollector_4_1!53
+                   (NewMessageCollectorAdapter!50 context_4_0!3))))
+      (a!20 (= outputFile_4_1!150
+               (NewFile!153 outputDir_4_1!121
+                            (+ (getModule.getName!151
+                                 representativeTarget_4_2!126)
+                               _STR_CONST_.js!152))))
+      (a!21 (= outputFile_3_1!155
+               (NewFile!153 outputDir_3_1!119
+                            (+ (getModule.getName!151
+                                 representativeTarget_3_2!125)
+                               _STR_CONST_.js!152))))
+      (a!23 (= outputFile_2_1!158
+               (NewFile!153 outputDir_2_1!117
+                            (+ (getModule.getName!151
+                                 representativeTarget_2_2!124)
+                               _STR_CONST_.js!152))))
+      (a!24 (= outputFile_1_1!160
+               (NewFile!153 outputDir_1_1!115
+                            (+ (getModule.getName!151
+                                 representativeTarget_1_2!123)
+                               _STR_CONST_.js!152))))
+      (a!28 (= outputFile_1_1!171
+               (NewFile!153 outputDir_1_1!115
+                            (+ (getModule.getName!151
+                                 representativeTarget_1_2!123)
+                               _STR_CONST_.js!152))))
+      (a!33 (= outputFile_2_1!183
+               (NewFile!153 outputDir_2_1!117
+                            (+ (getModule.getName!151
+                                 representativeTarget_2_2!124)
+                               _STR_CONST_.js!152))))
+      (a!34 (= outputFile_1_1!185
+               (NewFile!153 outputDir_1_1!115
+                            (+ (getModule.getName!151
+                                 representativeTarget_1_2!123)
+                               _STR_CONST_.js!152))))
+      (a!38 (= outputFile_1_1!194
+               (NewFile!153 outputDir_1_1!115
+                            (+ (getModule.getName!151
+                                 representativeTarget_1_2!123)
+                               _STR_CONST_.js!152))))
+      (a!43 (= outputFile_3_1!204
+               (NewFile!206 outputDir_3_1!119
+                            (+ (getModule.getName!205
+                                 representativeTarget_3_2!125)
+                               _STR_CONST_.js!152))))
+      (a!44 (= outputFile_2_1!209
+               (NewFile!206 outputDir_2_1!117
+                            (+ (getModule.getName!205
+                                 representativeTarget_2_2!124)
+                               _STR_CONST_.js!152))))
+      (a!46 (= outputFile_1_1!211
+               (NewFile!206 outputDir_1_1!115
+                            (+ (getModule.getName!205
+                                 representativeTarget_1_2!123)
+                               _STR_CONST_.js!152))))
+      (a!50 (= outputFile_1_1!220
+               (NewFile!206 outputDir_1_1!115
+                            (+ (getModule.getName!205
+                                 representativeTarget_1_2!123)
+                               _STR_CONST_.js!152))))
+      (a!54 (= outputFile_2_1!231
+               (NewFile!233 outputDir_2_1!117
+                            (+ (getModule.getName!232
+                                 representativeTarget_2_2!124)
+                               _STR_CONST_.js!152))))
+      (a!55 (= outputFile_1_1!235
+               (NewFile!233 outputDir_1_1!115
+                            (+ (getModule.getName!232
+                                 representativeTarget_1_2!123)
+                               _STR_CONST_.js!152))))
+      (a!59 (= outputFile_1_1!244
+               (NewFile!246 outputDir_1_1!115
+                            (+ (getModule.getName!245
+                                 representativeTarget_1_2!123)
+                               _STR_CONST_.js!152)))))
+(let ((a!2 (and (and a!1 (= (isJavaPluginEnabled!54 context_3_0!2) 0))
+                (= (isJavaPluginEnabled!54 context_1_0!0) 0)
+                (= ret_1_0!28 NOTHING_DONE.ExitCode!59)
+                (= ret_COMPILABLE_FILE_EXTENSIONS_1_0!32
+                   COMPILABLE_FILE_EXTENSIONS_1_0!16)
+                (= ret_KOTLIN_BUILDER_NAME_1_0!36 KOTLIN_BUILDER_NAME_1_0!20)
+                (= ret_MODULE_NAME_1_0!40 MODULE_NAME_1_0!24)))
+      (a!3 (and (and a!1 (= (isJavaPluginEnabled!54 context_3_0!2) 0))
+                (not (= (isJavaPluginEnabled!54 context_1_0!0) 0))))
+      (a!4 (and a!1 (not (= (isJavaPluginEnabled!54 context_3_0!2) 0)))))
+(let ((a!5 (and a!4 (not (= (isJavaPluginEnabled!54 context_1_0!0) 0)))))
+(let ((a!6 (or (and a!4
+                    (= (isJavaPluginEnabled!54 context_1_0!0) 0)
+                    (= ret_1_0!28 NOTHING_DONE.ExitCode!59)
+                    (= ret_COMPILABLE_FILE_EXTENSIONS_1_0!32
+                       COMPILABLE_FILE_EXTENSIONS_1_0!16)
+                    (= ret_KOTLIN_BUILDER_NAME_1_0!36
+                       KOTLIN_BUILDER_NAME_1_0!20)
+                    (= ret_MODULE_NAME_1_0!40 MODULE_NAME_1_0!24))
+               a!5)))
+(let ((a!7 (or (and (or a!2 a!3)
+                    (= ret_3_0!30 NOTHING_DONE.ExitCode!59)
+                    (= ret_COMPILABLE_FILE_EXTENSIONS_3_0!34
+                       COMPILABLE_FILE_EXTENSIONS_3_0!18)
+                    (= ret_KOTLIN_BUILDER_NAME_3_0!38
+                       KOTLIN_BUILDER_NAME_3_0!22)
+                    (= ret_MODULE_NAME_3_0!42 MODULE_NAME_3_0!26))
+               (and a!6))))
+(let ((a!8 (and a!7
+                (not (> (getModules.size!63 chunk_1_0!4) 1))
+                (not (> (getModules.size!63 chunk_2_0!5) 1))
+                (not (> (getModules.size!63 chunk_3_0!6) 1))
+                (not (> (getModules.size!63 chunk_4_0!7) 1))
+                (= MODULE_NAME_1_2 MODULE_NAME_1_0!24)
+                (= MODULE_NAME_2_2 MODULE_NAME_2_0!25)
+                (= MODULE_NAME_3_2 MODULE_NAME_3_0!26)
+                (= MODULE_NAME_4_2 MODULE_NAME_4_0!27)
+                (= chunk_1_2 chunk_1_0!4)
+                (= chunk_2_2 chunk_2_0!5)
+                (= chunk_3_2 chunk_3_0!6)
+                (= chunk_4_2 chunk_4_0!7)
+                (= messageCollector_1_3 messageCollector_1_1!49)
+                (= messageCollector_2_3 messageCollector_2_1!51)
+                (= messageCollector_3_3 messageCollector_3_1!52)
+                (= messageCollector_4_3 messageCollector_4_1!53))))
+(let ((a!9 (or (and a!7
+                    (> (getModules.size!63 chunk_1_0!4) 1)
+                    (> (getModules.size!63 chunk_2_0!5) 1)
+                    (> (getModules.size!63 chunk_3_0!6) 1)
+                    (> (getModules.size!63 chunk_4_0!7) 1)
+                    (= MODULE_NAME_1_1!67
+                       (Anonymous0!66 messageCollector_1_1!49
+                                      WARNING!64
+                                      StringUtil!65
+                                      chunk_1_0!4
+                                      MODULE_NAME_1_0!24
+                                      MODULE_NAME_1_0!24
+                                      NO_LOCATION.CompilerMessageLocation!57))
+                    (= MODULE_NAME_2_1!68
+                       (Anonymous0!66 messageCollector_2_1!51
+                                      WARNING!64
+                                      StringUtil!65
+                                      chunk_2_0!5
+                                      MODULE_NAME_2_0!25
+                                      MODULE_NAME_2_0!25
+                                      NO_LOCATION.CompilerMessageLocation!57))
+                    (= MODULE_NAME_3_1!69
+                       (Anonymous0!66 messageCollector_3_1!52
+                                      WARNING!64
+                                      StringUtil!65
+                                      chunk_3_0!6
+                                      MODULE_NAME_3_0!26
+                                      MODULE_NAME_3_0!26
+                                      NO_LOCATION.CompilerMessageLocation!57))
+                    (= MODULE_NAME_4_1!70
+                       (Anonymous0!66 messageCollector_4_1!53
+                                      WARNING!64
+                                      StringUtil!65
+                                      chunk_4_0!7
+                                      MODULE_NAME_4_0!27
+                                      MODULE_NAME_4_0!27
+                                      NO_LOCATION.CompilerMessageLocation!57))
+                    (= chunk_1_1!72
+                       (Anonymous1!71 messageCollector_1_1!49
+                                      WARNING!64
+                                      StringUtil!65
+                                      chunk_1_0!4
+                                      MODULE_NAME_1_1!67
+                                      MODULE_NAME_1_1!67
+                                      NO_LOCATION.CompilerMessageLocation!57))
+                    (= chunk_2_1!73
+                       (Anonymous1!71 messageCollector_2_1!51
+                                      WARNING!64
+                                      StringUtil!65
+                                      chunk_2_0!5
+                                      MODULE_NAME_2_1!68
+                                      MODULE_NAME_2_1!68
+                                      NO_LOCATION.CompilerMessageLocation!57))
+                    (= chunk_3_1!74
+                       (Anonymous1!71 messageCollector_3_1!52
+                                      WARNING!64
+                                      StringUtil!65
+                                      chunk_3_0!6
+                                      MODULE_NAME_3_1!69
+                                      MODULE_NAME_3_1!69
+                                      NO_LOCATION.CompilerMessageLocation!57))
+                    (= chunk_4_1!75
+                       (Anonymous1!71 messageCollector_4_1!53
+                                      WARNING!64
+                                      StringUtil!65
+                                      chunk_4_0!7
+                                      MODULE_NAME_4_1!70
+                                      MODULE_NAME_4_1!70
+                                      NO_LOCATION.CompilerMessageLocation!57))
+                    (= messageCollector_1_2!77
+                       (Anonymous2!76 messageCollector_1_1!49
+                                      WARNING!64
+                                      StringUtil!65
+                                      chunk_1_1!72
+                                      MODULE_NAME_1_1!67
+                                      MODULE_NAME_1_1!67
+                                      NO_LOCATION.CompilerMessageLocation!57))
+                    (= messageCollector_2_2!78
+                       (Anonymous2!76 messageCollector_2_1!51
+                                      WARNING!64
+                                      StringUtil!65
+                                      chunk_2_1!73
+                                      MODULE_NAME_2_1!68
+                                      MODULE_NAME_2_1!68
+                                      NO_LOCATION.CompilerMessageLocation!57))
+                    (= messageCollector_3_2!79
+                       (Anonymous2!76 messageCollector_3_1!52
+                                      WARNING!64
+                                      StringUtil!65
+                                      chunk_3_1!74
+                                      MODULE_NAME_3_1!69
+                                      MODULE_NAME_3_1!69
+                                      NO_LOCATION.CompilerMessageLocation!57))
+                    (= messageCollector_4_2!80
+                       (Anonymous2!76 messageCollector_4_1!53
+                                      WARNING!64
+                                      StringUtil!65
+                                      chunk_4_1!75
+                                      MODULE_NAME_4_1!70
+                                      MODULE_NAME_4_1!70
+                                      NO_LOCATION.CompilerMessageLocation!57))
+                    (= ret_1_0!28 NOTHING_DONE.ExitCode!59)
+                    (= ret_COMPILABLE_FILE_EXTENSIONS_1_0!32
+                       COMPILABLE_FILE_EXTENSIONS_1_0!16)
+                    (= ret_KOTLIN_BUILDER_NAME_1_0!36
+                       KOTLIN_BUILDER_NAME_1_0!20)
+                    (= ret_MODULE_NAME_1_0!40 MODULE_NAME_1_1!67)
+                    (= ret_2_0!29 NOTHING_DONE.ExitCode!59)
+                    (= ret_COMPILABLE_FILE_EXTENSIONS_2_0!33
+                       COMPILABLE_FILE_EXTENSIONS_2_0!17)
+                    (= ret_KOTLIN_BUILDER_NAME_2_0!37
+                       KOTLIN_BUILDER_NAME_2_0!21)
+                    (= ret_MODULE_NAME_2_0!41 MODULE_NAME_2_1!68)
+                    (= ret_3_0!30 NOTHING_DONE.ExitCode!59)
+                    (= ret_COMPILABLE_FILE_EXTENSIONS_3_0!34
+                       COMPILABLE_FILE_EXTENSIONS_3_0!18)
+                    (= ret_KOTLIN_BUILDER_NAME_3_0!38
+                       KOTLIN_BUILDER_NAME_3_0!22)
+                    (= ret_MODULE_NAME_3_0!42 MODULE_NAME_3_1!69)
+                    (= ret_4_0!31 NOTHING_DONE.ExitCode!59)
+                    (= ret_COMPILABLE_FILE_EXTENSIONS_4_0!35
+                       COMPILABLE_FILE_EXTENSIONS_4_0!19)
+                    (= ret_KOTLIN_BUILDER_NAME_4_0!39
+                       KOTLIN_BUILDER_NAME_4_0!23)
+                    (= ret_MODULE_NAME_4_0!43 MODULE_NAME_4_1!70)
+                    (= MODULE_NAME_1_2 MODULE_NAME_1_1!67)
+                    (= MODULE_NAME_2_2 MODULE_NAME_2_1!68)
+                    (= MODULE_NAME_3_2 MODULE_NAME_3_1!69)
+                    (= MODULE_NAME_4_2 MODULE_NAME_4_1!70)
+                    (= chunk_1_2 chunk_1_1!72)
+                    (= chunk_2_2 chunk_2_1!73)
+                    (= chunk_3_2 chunk_3_1!74)
+                    (= chunk_4_2 chunk_4_1!75)
+                    (= messageCollector_1_3 messageCollector_1_2!77)
+                    (= messageCollector_2_3 messageCollector_2_2!78)
+                    (= messageCollector_3_3 messageCollector_3_2!79)
+                    (= messageCollector_4_3 messageCollector_4_2!80))
+               a!8)))
+(let ((a!10 (and a!9
+                 (= representativeTarget_1_1!85
+                    (representativeTarget!86 chunk_1_2))
+                 (= representativeTarget_2_1!87
+                    (representativeTarget!86 chunk_2_2))
+                 (= representativeTarget_3_1!88
+                    (representativeTarget!86 chunk_3_2))
+                 (= representativeTarget_4_1!89
+                    (representativeTarget!86 chunk_4_2)))))
+(let ((a!11 (and a!10
+                 (not (= (hasDirtyFiles!90 dirtyFilesHolder_1_0!8) 0))
+                 (not (= (hasDirtyFiles!90 dirtyFilesHolder_2_0!9) 0))
+                 (not (= (hasDirtyFiles!90 dirtyFilesHolder_3_0!10) 0))
+                 (not (= (hasDirtyFiles!90 dirtyFilesHolder_4_0!11) 0)))))
+(let ((a!12 (or (and a!10
+                     (= (hasDirtyFiles!90 dirtyFilesHolder_1_0!8) 0)
+                     (= (hasDirtyFiles!90 dirtyFilesHolder_2_0!9) 0)
+                     (= (hasDirtyFiles!90 dirtyFilesHolder_3_0!10) 0)
+                     (= (hasDirtyFiles!90 dirtyFilesHolder_4_0!11) 0)
+                     (= ret_1_0!28 NOTHING_DONE.ExitCode!59)
+                     (= ret_COMPILABLE_FILE_EXTENSIONS_1_0!32
+                        COMPILABLE_FILE_EXTENSIONS_1_0!16)
+                     (= ret_KOTLIN_BUILDER_NAME_1_0!36
+                        KOTLIN_BUILDER_NAME_1_0!20)
+                     (= ret_MODULE_NAME_1_0!40 MODULE_NAME_1_2)
+                     (= ret_2_0!29 NOTHING_DONE.ExitCode!59)
+                     (= ret_COMPILABLE_FILE_EXTENSIONS_2_0!33
+                        COMPILABLE_FILE_EXTENSIONS_2_0!17)
+                     (= ret_KOTLIN_BUILDER_NAME_2_0!37
+                        KOTLIN_BUILDER_NAME_2_0!21)
+                     (= ret_MODULE_NAME_2_0!41 MODULE_NAME_2_2)
+                     (= ret_3_0!30 NOTHING_DONE.ExitCode!59)
+                     (= ret_COMPILABLE_FILE_EXTENSIONS_3_0!34
+                        COMPILABLE_FILE_EXTENSIONS_3_0!18)
+                     (= ret_KOTLIN_BUILDER_NAME_3_0!38
+                        KOTLIN_BUILDER_NAME_3_0!22)
+                     (= ret_MODULE_NAME_3_0!42 MODULE_NAME_3_2)
+                     (= ret_4_0!31 NOTHING_DONE.ExitCode!59)
+                     (= ret_COMPILABLE_FILE_EXTENSIONS_4_0!35
+                        COMPILABLE_FILE_EXTENSIONS_4_0!19)
+                     (= ret_KOTLIN_BUILDER_NAME_4_0!39
+                        KOTLIN_BUILDER_NAME_4_0!23)
+                     (= ret_MODULE_NAME_4_0!43 MODULE_NAME_4_2))
+                a!11)))
+(let ((a!13 (and a!12
+                 (= sourceFiles_1_1!95
+                    (getAllKotlinSourceFiles.KotlinSourceFileCollector!96
+                      representativeTarget_1_1!85))
+                 (= sourceFiles_2_1!97
+                    (getAllKotlinSourceFiles.KotlinSourceFileCollector!96
+                      representativeTarget_2_1!87))
+                 (= sourceFiles_3_1!98
+                    (getAllKotlinSourceFiles.KotlinSourceFileCollector!96
+                      representativeTarget_3_1!88))
+                 (= sourceFiles_4_1!99
+                    (getAllKotlinSourceFiles.KotlinSourceFileCollector!96
+                      representativeTarget_4_1!89)))))
+(let ((a!14 (and a!13
+                 (not (= (isEmpty!100 sourceFiles_1_1!95) 1))
+                 (not (= (isEmpty!100 sourceFiles_2_1!97) 1))
+                 (not (= (isEmpty!100 sourceFiles_3_1!98) 1))
+                 (not (= (isEmpty!100 sourceFiles_4_1!99) 1)))))
+(let ((a!15 (or (and a!13
+                     (= (isEmpty!100 sourceFiles_1_1!95) 1)
+                     (= (isEmpty!100 sourceFiles_2_1!97) 1)
+                     (= (isEmpty!100 sourceFiles_3_1!98) 1)
+                     (= (isEmpty!100 sourceFiles_4_1!99) 1)
+                     (= ret_1_0!28 NOTHING_DONE.ExitCode!59)
+                     (= ret_COMPILABLE_FILE_EXTENSIONS_1_0!32
+                        COMPILABLE_FILE_EXTENSIONS_1_0!16)
+                     (= ret_KOTLIN_BUILDER_NAME_1_0!36
+                        KOTLIN_BUILDER_NAME_1_0!20)
+                     (= ret_MODULE_NAME_1_0!40 MODULE_NAME_1_2)
+                     (= ret_2_0!29 NOTHING_DONE.ExitCode!59)
+                     (= ret_COMPILABLE_FILE_EXTENSIONS_2_0!33
+                        COMPILABLE_FILE_EXTENSIONS_2_0!17)
+                     (= ret_KOTLIN_BUILDER_NAME_2_0!37
+                        KOTLIN_BUILDER_NAME_2_0!21)
+                     (= ret_MODULE_NAME_2_0!41 MODULE_NAME_2_2)
+                     (= ret_3_0!30 NOTHING_DONE.ExitCode!59)
+                     (= ret_COMPILABLE_FILE_EXTENSIONS_3_0!34
+                        COMPILABLE_FILE_EXTENSIONS_3_0!18)
+                     (= ret_KOTLIN_BUILDER_NAME_3_0!38
+                        KOTLIN_BUILDER_NAME_3_0!22)
+                     (= ret_MODULE_NAME_3_0!42 MODULE_NAME_3_2)
+                     (= ret_4_0!31 NOTHING_DONE.ExitCode!59)
+                     (= ret_COMPILABLE_FILE_EXTENSIONS_4_0!35
+                        COMPILABLE_FILE_EXTENSIONS_4_0!19)
+                     (= ret_KOTLIN_BUILDER_NAME_4_0!39
+                        KOTLIN_BUILDER_NAME_4_0!23)
+                     (= ret_MODULE_NAME_4_0!43 MODULE_NAME_4_2))
+                a!14)))
+(let ((a!16 (and a!15
+                 (= environment_1_1!106
+                    (Anonymous3!105 CompilerEnvironment!102
+                                    PathUtil!103
+                                    outputDir!104))
+                 (= environment_2_1!108
+                    (Anonymous3!105 CompilerEnvironment!102
+                                    PathUtil!103
+                                    outputDir!104))
+                 (= environment_3_1!110
+                    (Anonymous3!105 CompilerEnvironment!102
+                                    PathUtil!103
+                                    outputDir!104))
+                 (= environment_4_1!112
+                    (Anonymous3!105 CompilerEnvironment!102
+                                    PathUtil!103
+                                    outputDir!104))
+                 (= outputDir_1_1!115
+                    (Anonymous4!114 representativeTarget_1_1!85
+                                    CompilerEnvironment!102
+                                    PathUtil!103))
+                 (= outputDir_2_1!117
+                    (Anonymous4!114 representativeTarget_2_1!87
+                                    CompilerEnvironment!102
+                                    PathUtil!103))
+                 (= outputDir_3_1!119
+                    (Anonymous4!114 representativeTarget_3_1!88
+                                    CompilerEnvironment!102
+                                    PathUtil!103))
+                 (= outputDir_4_1!121
+                    (Anonymous4!114 representativeTarget_4_1!89
+                                    CompilerEnvironment!102
+                                    PathUtil!103))
+                 (= representativeTarget_1_2!123
+                    (Anonymous5!122 representativeTarget_1_1!85))
+                 (= representativeTarget_2_2!124
+                    (Anonymous5!122 representativeTarget_2_1!87))
+                 (= representativeTarget_3_2!125
+                    (Anonymous5!122 representativeTarget_3_1!88))
+                 (= representativeTarget_4_2!126
+                    (Anonymous5!122 representativeTarget_4_1!89)))))
+(let ((a!17 (and a!16
+                 (not (= (success!127 environment_1_1!106) 0))
+                 (not (= (success!127 environment_2_1!108) 0))
+                 (not (= (success!127 environment_3_1!110) 0))
+                 (not (= (success!127 environment_4_1!112) 0))
+                 (= environment_1_3 environment_1_1!106)
+                 (= environment_2_3 environment_2_1!108)
+                 (= environment_3_3 environment_3_1!110)
+                 (= environment_4_3 environment_4_1!112)
+                 (= messageCollector_1_5 messageCollector_1_3)
+                 (= messageCollector_2_5 messageCollector_2_3)
+                 (= messageCollector_3_5 messageCollector_3_3)
+                 (= messageCollector_4_5 messageCollector_4_3))))
+(let ((a!18 (or (and a!16
+                     (= (success!127 environment_1_1!106) 0)
+                     (= (success!127 environment_2_1!108) 0)
+                     (= (success!127 environment_3_1!110) 0)
+                     (= (success!127 environment_4_1!112) 0)
+                     (= environment_1_2!129
+                        (Anonymous6!128 environment_1_1!106
+                                        messageCollector_1_3))
+                     (= environment_2_2!130
+                        (Anonymous6!128 environment_2_1!108
+                                        messageCollector_2_3))
+                     (= environment_3_2!131
+                        (Anonymous6!128 environment_3_1!110
+                                        messageCollector_3_3))
+                     (= environment_4_2!132
+                        (Anonymous6!128 environment_4_1!112
+                                        messageCollector_4_3))
+                     (= messageCollector_1_4!134
+                        (Anonymous7!133 environment_1_2!129
+                                        messageCollector_1_3))
+                     (= messageCollector_2_4!135
+                        (Anonymous7!133 environment_2_2!130
+                                        messageCollector_2_3))
+                     (= messageCollector_3_4!136
+                        (Anonymous7!133 environment_3_2!131
+                                        messageCollector_3_3))
+                     (= messageCollector_4_4!137
+                        (Anonymous7!133 environment_4_2!132
+                                        messageCollector_4_3))
+                     (= ret_1_0!28 ABORT.ExitCode!138)
+                     (= ret_COMPILABLE_FILE_EXTENSIONS_1_0!32
+                        COMPILABLE_FILE_EXTENSIONS_1_0!16)
+                     (= ret_KOTLIN_BUILDER_NAME_1_0!36
+                        KOTLIN_BUILDER_NAME_1_0!20)
+                     (= ret_MODULE_NAME_1_0!40 MODULE_NAME_1_2)
+                     (= ret_2_0!29 ABORT.ExitCode!138)
+                     (= ret_COMPILABLE_FILE_EXTENSIONS_2_0!33
+                        COMPILABLE_FILE_EXTENSIONS_2_0!17)
+                     (= ret_KOTLIN_BUILDER_NAME_2_0!37
+                        KOTLIN_BUILDER_NAME_2_0!21)
+                     (= ret_MODULE_NAME_2_0!41 MODULE_NAME_2_2)
+                     (= ret_3_0!30 ABORT.ExitCode!138)
+                     (= ret_COMPILABLE_FILE_EXTENSIONS_3_0!34
+                        COMPILABLE_FILE_EXTENSIONS_3_0!18)
+                     (= ret_KOTLIN_BUILDER_NAME_3_0!38
+                        KOTLIN_BUILDER_NAME_3_0!22)
+                     (= ret_MODULE_NAME_3_0!42 MODULE_NAME_3_2)
+                     (= ret_4_0!31 ABORT.ExitCode!138)
+                     (= ret_COMPILABLE_FILE_EXTENSIONS_4_0!35
+                        COMPILABLE_FILE_EXTENSIONS_4_0!19)
+                     (= ret_KOTLIN_BUILDER_NAME_4_0!39
+                        KOTLIN_BUILDER_NAME_4_0!23)
+                     (= ret_MODULE_NAME_4_0!43 MODULE_NAME_4_2)
+                     (= environment_1_3 environment_1_2!129)
+                     (= environment_2_3 environment_2_2!130)
+                     (= environment_3_3 environment_3_2!131)
+                     (= environment_4_3 environment_4_2!132)
+                     (= messageCollector_1_5 messageCollector_1_4!134)
+                     (= messageCollector_2_5 messageCollector_2_4!135)
+                     (= messageCollector_3_5 messageCollector_3_4!136)
+                     (= messageCollector_4_5 messageCollector_4_4!137))
+                a!17)))
+(let ((a!19 (and a!18
+                 (= outputItemCollector_1_1!141
+                    (Anonymous8!140 outputDir_1_1!115))
+                 (= outputItemCollector_2_1!143
+                    (Anonymous8!140 outputDir_2_1!117))
+                 (= outputItemCollector_3_1!145
+                    (Anonymous8!140 outputDir_3_1!119))
+                 (= outputItemCollector_4_1!147
+                    (Anonymous8!140 outputDir_4_1!121)))))
+(let ((a!22 (and (and a!19
+                      (= (isJsKotlinModule.JpsUtils!148
+                           representativeTarget_4_2!126)
+                         1)
+                      a!20)
+                 (= (isJsKotlinModule.JpsUtils!148 representativeTarget_3_2!125)
+                    1)
+                 a!21))
+      (a!32 (and (and a!19
+                      (= (isJsKotlinModule.JpsUtils!148
+                           representativeTarget_4_2!126)
+                         1)
+                      a!20)
+                 (not (= (isJsKotlinModule.JpsUtils!148
+                           representativeTarget_3_2!125)
+                         1))
+                 (= moduleFile_3_1!179
+                    (generateModuleDescription.KotlinBuilderModuleScriptGenerator!180
+                      context_3_0!2
+                      representativeTarget_3_2!125
+                      sourceFiles_3_1!98))))
+      (a!42 (and a!19
+                 (not (= (isJsKotlinModule.JpsUtils!148
+                           representativeTarget_4_2!126)
+                         1))
+                 (= moduleFile_4_1!201
+                    (generateModuleDescription.KotlinBuilderModuleScriptGenerator!202
+                      context_4_0!3
+                      representativeTarget_4_2!126
+                      sourceFiles_4_1!99)))))
+(let ((a!25 (and (and a!22
+                      (= (isJsKotlinModule!156 representativeTarget_2_2!124) 1)
+                      a!23)
+                 (= (isJsKotlinModule!156 representativeTarget_1_2!123) 1)
+                 a!24))
+      (a!26 (and (and a!22
+                      (= (isJsKotlinModule!156 representativeTarget_2_2!124) 1)
+                      a!23)
+                 (not (= (isJsKotlinModule!156 representativeTarget_1_2!123) 1))
+                 (= moduleFile_1_1!164
+                    (generateModuleDescription.KotlinBuilderModuleScriptGenerator!165
+                      context_1_0!0
+                      representativeTarget_1_2!123
+                      sourceFiles_1_1!95))))
+      (a!27 (and a!22
+                 (not (= (isJsKotlinModule!156 representativeTarget_2_2!124) 1))
+                 (= moduleFile_2_1!168
+                    (generateModuleDescription.KotlinBuilderModuleScriptGenerator!169
+                      context_2_0!1
+                      representativeTarget_2_2!124
+                      sourceFiles_2_1!97))))
+      (a!35 (and (and a!32
+                      (= (isJsKotlinModule!181 representativeTarget_2_2!124) 1)
+                      a!33)
+                 (= (isJsKotlinModule!181 representativeTarget_1_2!123) 1)
+                 a!34))
+      (a!36 (and (and a!32
+                      (= (isJsKotlinModule!181 representativeTarget_2_2!124) 1)
+                      a!33)
+                 (not (= (isJsKotlinModule!181 representativeTarget_1_2!123) 1))
+                 (= moduleFile_1_1!189
+                    (generateModuleDescription.KotlinBuilderModuleScriptGenerator!180
+                      context_1_0!0
+                      representativeTarget_1_2!123
+                      sourceFiles_1_1!95))))
+      (a!37 (and a!32
+                 (not (= (isJsKotlinModule!181 representativeTarget_2_2!124) 1))
+                 (= moduleFile_2_1!192
+                    (generateModuleDescription.KotlinBuilderModuleScriptGenerator!180
+                      context_2_0!1
+                      representativeTarget_2_2!124
+                      sourceFiles_2_1!97))))
+      (a!45 (and (and a!42
+                      (= (isJsKotlinModule.JpsUtils!148
+                           representativeTarget_3_2!125)
+                         1)
+                      a!43)
+                 (= (isJsKotlinModule!207 representativeTarget_2_2!124) 1)
+                 a!44))
+      (a!49 (and (and a!42
+                      (= (isJsKotlinModule.JpsUtils!148
+                           representativeTarget_3_2!125)
+                         1)
+                      a!43)
+                 (not (= (isJsKotlinModule!207 representativeTarget_2_2!124) 1))
+                 (= moduleFile_2_1!218
+                    (generateModuleDescription.KotlinBuilderModuleScriptGenerator!202
+                      context_2_0!1
+                      representativeTarget_2_2!124
+                      sourceFiles_2_1!97))))
+      (a!53 (and a!42
+                 (not (= (isJsKotlinModule.JpsUtils!148
+                           representativeTarget_3_2!125)
+                         1))
+                 (= moduleFile_3_1!228
+                    (generateModuleDescription.KotlinBuilderModuleScriptGenerator!202
+                      context_3_0!2
+                      representativeTarget_3_2!125
+                      sourceFiles_3_1!98)))))
+(let ((a!29 (and a!27
+                 (not (= (isJsKotlinModule!156 representativeTarget_1_2!123) 1))
+                 (= moduleFile_1_1!175
+                    (generateModuleDescription.KotlinBuilderModuleScriptGenerator!169
+                      context_1_0!0
+                      representativeTarget_1_2!123
+                      sourceFiles_1_1!95))))
+      (a!39 (and a!37
+                 (not (= (isJsKotlinModule!181 representativeTarget_1_2!123) 1))
+                 (= moduleFile_1_1!198
+                    (generateModuleDescription.KotlinBuilderModuleScriptGenerator!180
+                      context_1_0!0
+                      representativeTarget_1_2!123
+                      sourceFiles_1_1!95))))
+      (a!47 (and a!45
+                 (not (= (isJsKotlinModule!207 representativeTarget_1_2!123) 1))
+                 (= moduleFile_1_1!215
+                    (generateModuleDescription.KotlinBuilderModuleScriptGenerator!202
+                      context_1_0!0
+                      representativeTarget_1_2!123
+                      sourceFiles_1_1!95))))
+      (a!51 (and a!49
+                 (not (= (isJsKotlinModule!207 representativeTarget_1_2!123) 1))
+                 (= moduleFile_1_1!224
+                    (generateModuleDescription.KotlinBuilderModuleScriptGenerator!202
+                      context_1_0!0
+                      representativeTarget_1_2!123
+                      sourceFiles_1_1!95))))
+      (a!56 (and (and a!53
+                      (= (isJsKotlinModule!229 representativeTarget_2_2!124) 1)
+                      a!54)
+                 (= (isJsKotlinModule!229 representativeTarget_1_2!123) 1)
+                 a!55))
+      (a!57 (and (and a!53
+                      (= (isJsKotlinModule!229 representativeTarget_2_2!124) 1)
+                      a!54)
+                 (not (= (isJsKotlinModule!229 representativeTarget_1_2!123) 1))
+                 (= moduleFile_1_1!239
+                    (generateModuleDescription.KotlinBuilderModuleScriptGenerator!202
+                      context_1_0!0
+                      representativeTarget_1_2!123
+                      sourceFiles_1_1!95))))
+      (a!58 (and a!53
+                 (not (= (isJsKotlinModule!229 representativeTarget_2_2!124) 1))
+                 (= moduleFile_2_1!242
+                    (generateModuleDescription.KotlinBuilderModuleScriptGenerator!202
+                      context_2_0!1
+                      representativeTarget_2_2!124
+                      sourceFiles_2_1!97)))))
+(let ((a!30 (or (and a!27
+                     (= (isJsKotlinModule!156 representativeTarget_1_2!123) 1)
+                     a!28)
+                a!29))
+      (a!40 (or (and a!37
+                     (= (isJsKotlinModule!181 representativeTarget_1_2!123) 1)
+                     a!38)
+                a!39))
+      (a!48 (or (and a!45
+                     (= (isJsKotlinModule!207 representativeTarget_1_2!123) 1)
+                     a!46)
+                a!47))
+      (a!52 (or (and a!49
+                     (= (isJsKotlinModule!207 representativeTarget_1_2!123) 1)
+                     a!50)
+                a!51))
+      (a!60 (and a!58
+                 (not (= (isJsKotlinModule!229 representativeTarget_1_2!123) 1))
+                 (= moduleFile_1_1!250
+                    (generateModuleDescription.KotlinBuilderModuleScriptGenerator!202
+                      context_1_0!0
+                      representativeTarget_1_2!123
+                      sourceFiles_1_1!95)))))
+(let ((a!31 (and (or (and (or a!25 a!26)) (and a!30))))
+      (a!41 (and (or (and (or a!35 a!36)) (and a!40))))
+      (a!61 (or (and a!58
+                     (= (isJsKotlinModule!229 representativeTarget_1_2!123) 1)
+                     a!59)
+                a!60)))
+(let ((a!62 (and (or (and (or a!56 a!57)) (and a!61)))))
+(let ((a!63 (or (and (or (and a!48) (and a!52))) a!62)))
+  (and (or (and (or a!31 a!41)) (and a!63))
+       (= outputConsumer_1_1!256
+          (Anonymous9!255 outputConsumer_1_0!12
+                          representativeTarget_1_2!123
+                          outputItem!252
+                          paths!253
+                          wiz_i!254
+                          outputItemCollector_1_1!141))
+       (= outputConsumer_2_1!257
+          (Anonymous9!255 outputConsumer_2_0!13
+                          representativeTarget_2_2!124
+                          outputItem!252
+                          paths!253
+                          wiz_i!254
+                          outputItemCollector_2_1!143))
+       (= outputConsumer_3_1!258
+          (Anonymous9!255 outputConsumer_3_0!14
+                          representativeTarget_3_2!125
+                          outputItem!252
+                          paths!253
+                          wiz_i!254
+                          outputItemCollector_3_1!145))
+       (= outputConsumer_4_1!259
+          (Anonymous9!255 outputConsumer_4_0!15
+                          representativeTarget_4_2!126
+                          outputItem!252
+                          paths!253
+                          wiz_i!254
+                          outputItemCollector_4_1!147))
+       (= outputItem_1_1!262
+          (Anonymous10!261 outputItemCollector_1_1!141
+                           wiz_i!254
+                           outputConsumer_1_1!256
+                           representativeTarget_1_2!123
+                           paths!253))
+       (= outputItem_2_1!264
+          (Anonymous10!261 outputItemCollector_2_1!143
+                           wiz_i!254
+                           outputConsumer_2_1!257
+                           representativeTarget_2_2!124
+                           paths!253))
+       (= outputItem_3_1!266
+          (Anonymous10!261 outputItemCollector_3_1!145
+                           wiz_i!254
+                           outputConsumer_3_1!258
+                           representativeTarget_3_2!125
+                           paths!253))
+       (= outputItem_4_1!268
+          (Anonymous10!261 outputItemCollector_4_1!147
+                           wiz_i!254
+                           outputConsumer_4_1!259
+                           representativeTarget_4_2!126
+                           paths!253))
+       (= outputItemCollector_1_2!270
+          (Anonymous11!269 outputItemCollector_1_1!141 wiz_i!254))
+       (= outputItemCollector_2_2!271
+          (Anonymous11!269 outputItemCollector_2_1!143 wiz_i!254))
+       (= outputItemCollector_3_2!272
+          (Anonymous11!269 outputItemCollector_3_1!145 wiz_i!254))
+       (= outputItemCollector_4_2!273
+          (Anonymous11!269 outputItemCollector_4_1!147 wiz_i!254))
+       (= paths_1_1!276
+          (Anonymous12!275 outputConsumer_1_1!256
+                           representativeTarget_1_2!123
+                           outputItem_1_1!262
+                           wiz_i!254
+                           outputItemCollector_1_2!270))
+       (= paths_2_1!278
+          (Anonymous12!275 outputConsumer_2_1!257
+                           representativeTarget_2_2!124
+                           outputItem_2_1!264
+                           wiz_i!254
+                           outputItemCollector_2_2!271))
+       (= paths_3_1!280
+          (Anonymous12!275 outputConsumer_3_1!258
+                           representativeTarget_3_2!125
+                           outputItem_3_1!266
+                           wiz_i!254
+                           outputItemCollector_3_2!272))
+       (= paths_4_1!282
+          (Anonymous12!275 outputConsumer_4_1!259
+                           representativeTarget_4_2!126
+                           outputItem_4_1!268
+                           wiz_i!254
+                           outputItemCollector_4_2!273))
+       (= representativeTarget_1_3!284
+          (Anonymous13!283 outputConsumer_1_1!256
+                           representativeTarget_1_2!123
+                           outputItem_1_1!262
+                           paths_1_1!276
+                           wiz_i!254
+                           outputItemCollector_1_2!270))
+       (= representativeTarget_2_3!285
+          (Anonymous13!283 outputConsumer_2_1!257
+                           representativeTarget_2_2!124
+                           outputItem_2_1!264
+                           paths_2_1!278
+                           wiz_i!254
+                           outputItemCollector_2_2!271))
+       (= representativeTarget_3_3!286
+          (Anonymous13!283 outputConsumer_3_1!258
+                           representativeTarget_3_2!125
+                           outputItem_3_1!266
+                           paths_3_1!280
+                           wiz_i!254
+                           outputItemCollector_3_2!272))
+       (= representativeTarget_4_3!287
+          (Anonymous13!283 outputConsumer_4_1!259
+                           representativeTarget_4_2!126
+                           outputItem_4_1!268
+                           paths_4_1!282
+                           wiz_i!254
+                           outputItemCollector_4_2!273))
+       (= wiz_i_1_1!290 (Anonymous14!289 outputItemCollector_1_2!270))
+       (= wiz_i_2_1!292 (Anonymous14!289 outputItemCollector_2_2!271))
+       (= wiz_i_3_1!294 (Anonymous14!289 outputItemCollector_3_2!272))
+       (= wiz_i_4_1!296 (Anonymous14!289 outputItemCollector_4_2!273))
+       (= ret_1_0!28 OK.ExitCode!297)
+       (= ret_COMPILABLE_FILE_EXTENSIONS_1_0!32
+          COMPILABLE_FILE_EXTENSIONS_1_0!16)
+       (= ret_KOTLIN_BUILDER_NAME_1_0!36 KOTLIN_BUILDER_NAME_1_0!20)
+       (= ret_MODULE_NAME_1_0!40 MODULE_NAME_1_2)
+       (= ret_2_0!29 OK.ExitCode!297)
+       (= ret_COMPILABLE_FILE_EXTENSIONS_2_0!33
+          COMPILABLE_FILE_EXTENSIONS_2_0!17)
+       (= ret_KOTLIN_BUILDER_NAME_2_0!37 KOTLIN_BUILDER_NAME_2_0!21)
+       (= ret_MODULE_NAME_2_0!41 MODULE_NAME_2_2)
+       (= ret_3_0!30 OK.ExitCode!297)
+       (= ret_COMPILABLE_FILE_EXTENSIONS_3_0!34
+          COMPILABLE_FILE_EXTENSIONS_3_0!18)
+       (= ret_KOTLIN_BUILDER_NAME_3_0!38 KOTLIN_BUILDER_NAME_3_0!22)
+       (= ret_MODULE_NAME_3_0!42 MODULE_NAME_3_2)
+       (= ret_4_0!31 OK.ExitCode!297)
+       (= ret_COMPILABLE_FILE_EXTENSIONS_4_0!35
+          COMPILABLE_FILE_EXTENSIONS_4_0!19)
+       (= ret_KOTLIN_BUILDER_NAME_4_0!39 KOTLIN_BUILDER_NAME_4_0!23)
+       (= ret_MODULE_NAME_4_0!43 MODULE_NAME_4_2))))))))))))))))))))))))))
+verify: semantic conflict VC
+(let ((a!1 (=> (not (and (= ret_MODULE_NAME_1_0!40 ret_MODULE_NAME_2_0!41)))
+               (and (= ret_MODULE_NAME_4_0!43 ret_MODULE_NAME_2_0!41))))
+      (a!2 (=> (not (and (= ret_MODULE_NAME_1_0!40 ret_MODULE_NAME_3_0!42)))
+               (and (= ret_MODULE_NAME_4_0!43 ret_MODULE_NAME_3_0!42))))
+      (a!4 (=> (not (and (= ret_KOTLIN_BUILDER_NAME_1_0!36
+                            ret_KOTLIN_BUILDER_NAME_2_0!37)))
+               (and (= ret_KOTLIN_BUILDER_NAME_4_0!39
+                       ret_KOTLIN_BUILDER_NAME_2_0!37))))
+      (a!5 (=> (not (and (= ret_KOTLIN_BUILDER_NAME_1_0!36
+                            ret_KOTLIN_BUILDER_NAME_3_0!38)))
+               (and (= ret_KOTLIN_BUILDER_NAME_4_0!39
+                       ret_KOTLIN_BUILDER_NAME_3_0!38))))
+      (a!7 (=> (not (and (= ret_COMPILABLE_FILE_EXTENSIONS_1_0!32
+                            ret_COMPILABLE_FILE_EXTENSIONS_2_0!33)))
+               (and (= ret_COMPILABLE_FILE_EXTENSIONS_4_0!35
+                       ret_COMPILABLE_FILE_EXTENSIONS_2_0!33))))
+      (a!8 (=> (not (and (= ret_COMPILABLE_FILE_EXTENSIONS_1_0!32
+                            ret_COMPILABLE_FILE_EXTENSIONS_3_0!34)))
+               (and (= ret_COMPILABLE_FILE_EXTENSIONS_4_0!35
+                       ret_COMPILABLE_FILE_EXTENSIONS_3_0!34))))
+      (a!10 (=> (not (and (= ret_1_0!28 ret_2_0!29)))
+                (and (= ret_4_0!31 ret_2_0!29))))
+      (a!11 (=> (not (and (= ret_1_0!28 ret_3_0!30)))
+                (and (= ret_4_0!31 ret_3_0!30)))))
+(let ((a!3 (or (and (and (= ret_MODULE_NAME_4_0!43 ret_MODULE_NAME_2_0!41))
+                    (and (= ret_MODULE_NAME_4_0!43 ret_MODULE_NAME_3_0!42))
+                    (= ret_MODULE_NAME_1_0!40 ret_MODULE_NAME_4_0!43))
+               (and a!1 a!2)))
+      (a!6 (or (and (and (= ret_KOTLIN_BUILDER_NAME_4_0!39
+                            ret_KOTLIN_BUILDER_NAME_2_0!37))
+                    (and (= ret_KOTLIN_BUILDER_NAME_4_0!39
+                            ret_KOTLIN_BUILDER_NAME_3_0!38))
+                    (= ret_KOTLIN_BUILDER_NAME_1_0!36
+                       ret_KOTLIN_BUILDER_NAME_4_0!39))
+               (and a!4 a!5)))
+      (a!9 (or (and (and (= ret_COMPILABLE_FILE_EXTENSIONS_4_0!35
+                            ret_COMPILABLE_FILE_EXTENSIONS_2_0!33))
+                    (and (= ret_COMPILABLE_FILE_EXTENSIONS_4_0!35
+                            ret_COMPILABLE_FILE_EXTENSIONS_3_0!34))
+                    (= ret_COMPILABLE_FILE_EXTENSIONS_1_0!32
+                       ret_COMPILABLE_FILE_EXTENSIONS_4_0!35))
+               (and a!7 a!8)))
+      (a!12 (or (and (and (= ret_4_0!31 ret_2_0!29))
+                     (and (= ret_4_0!31 ret_3_0!30))
+                     (= ret_1_0!28 ret_4_0!31))
+                (and a!10 a!11))))
+  (and a!3 a!6 a!9 a!12)))

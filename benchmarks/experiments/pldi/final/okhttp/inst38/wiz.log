@@ -1,0 +1,196 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+verify: (Ident "OkHttpClient",Ident "copyWithDefaults",[])
+[(Ident "authenticator",[RefType (ClassRefType (ClassType [(Ident "OkAuthenticator",[])]))]),(Ident "connectionPool",[RefType (ClassRefType (ClassType [(Ident "ConnectionPool",[])]))]),(Ident "cookieHandler",[RefType (ClassRefType (ClassType [(Ident "CookieHandler",[])]))]),(Ident "failedRoutes",[RefType (ClassRefType (ClassType [(Ident "Set",[ActualType (ClassRefType (ClassType [(Ident "Route",[])]))])]))]),(Ident "followProtocolRedirects",[PrimType BooleanT]),(Ident "hostnameVerifier",[RefType (ClassRefType (ClassType [(Ident "HostnameVerifier",[])]))]),(Ident "proxy",[RefType (ClassRefType (ClassType [(Ident "Proxy",[])]))]),(Ident "proxySelector",[RefType (ClassRefType (ClassType [(Ident "ProxySelector",[])]))]),(Ident "responseCache",[RefType (ClassRefType (ClassType [(Ident "ResponseCache",[])]))]),(Ident "sslSocketFactory",[RefType (ClassRefType (ClassType [(Ident "SSLSocketFactory",[])]))]),(Ident "DEFAULT_TRANSPORTS",[RefType (ClassRefType (ClassType [(Ident "List",[ActualType (ClassRefType (ClassType [(Ident "String",[])]))])]))]),(Ident "failedRoutes",[RefType (ClassRefType (ClassType [(Ident "Set",[ActualType (ClassRefType (ClassType [(Ident "Route",[])]))])]))]),(Ident "transports",[RefType (ClassRefType (ClassType [(Ident "List",[ActualType (ClassRefType (ClassType [(Ident "String",[])]))])]))])]
+verify: result = Sat
+wiz: |HOLE|   = 4
+wiz: LOC HOLE = 4
+Semantic conflict found:
+proxySelector.result_3_1!136 -> 17
+authenticator_2_0!1 -> 1
+proxy_2_0!25 -> 7
+hostnameVerifier_2_0!21 -> 6
+authenticator.result_2_1!164 -> 23
+ConnectionPool!170 -> 24
+ret_connectionPool_2_0!61 -> 2
+ret_sslSocketFactory_4_0!95 -> 10
+ret_transports_2_0!105 -> (_ as-array k!189)
+failedRoutes_1_0!12 -> 4
+ret_DEFAULT_TRANSPORTS_2_0!97 -> (_ as-array k!188)
+failedRoutes_2_0!45 -> 11
+proxySelector.result_1_1!132 -> 17
+connectionPool_2_0!5 -> 2
+responseCache.result_2_1!144 -> 19
+ret_hostnameVerifier_3_0!78 -> 6
+authenticator.result_4_1!168 -> 23
+cookieHandler_3_0!10 -> 3
+ret_followProtocolRedirects_4_0!75 -> 5
+proxySelector_1_0!28 -> 8
+sslSocketFactory_4_0!39 -> 10
+cookieHandler.result_3_1!126 -> 15
+result_2_1!116 -> 12
+authenticator.result_3_1!166 -> 23
+ret_cookieHandler_1_0!64 -> 3
+ret_failedRoutes_4_0!103 -> 11
+followProtocolRedirects.result_1_1!181 -> 26
+ret_proxy_4_0!83 -> 7
+ret_responseCache_1_0!88 -> 9
+responseCache_2_0!33 -> 9
+ret_proxySelector_4_0!87 -> 8
+failedRoutes_1_0!44 -> 11
+connectionPool.result_3_1!176 -> 25
+ret_hostnameVerifier_4_0!79 -> 6
+ret_followProtocolRedirects_1_0!72 -> 5
+result_3_1!113 -> 13
+transports_4_0!51 -> (_ as-array k!189)
+proxySelector_3_0!30 -> 8
+cookieHandler.result_1_1!122 -> 15
+followProtocolRedirects.result_2_1!183 -> 26
+connectionPool.result_4_1!178 -> 25
+ret_hostnameVerifier_2_0!77 -> 6
+ret_DEFAULT_TRANSPORTS_3_0!98 -> (_ as-array k!188)
+ret_proxy_1_0!80 -> 7
+transports_3_0!50 -> (_ as-array k!189)
+ret_responseCache_3_0!90 -> 9
+ret_failedRoutes_1_0!100 -> 11
+result_4_1!110 -> 12
+ret_proxy_2_0!81 -> 7
+responseCache.result_4_1!148 -> 19
+ret_DEFAULT_TRANSPORTS_1_0!96 -> (_ as-array k!188)
+ret_hostnameVerifier_1_0!76 -> 6
+cookieHandler_2_0!9 -> 3
+connectionPool_1_0!4 -> 2
+DEFAULT_TRANSPORTS_3_0!42 -> (_ as-array k!188)
+transports_1_0!48 -> (_ as-array k!189)
+sslSocketFactory_1_0!36 -> 10
+cookieHandler_4_0!11 -> 3
+ret_cookieHandler_2_0!65 -> 3
+DEFAULT_TRANSPORTS_4_0!43 -> (_ as-array k!188)
+authenticator_1_0!0 -> 1
+hostnameVerifier_4_0!23 -> 6
+responseCache.result_3_1!146 -> 19
+SYSTEM_DEFAULT.HttpAuthenticator!160 -> 22
+ret_proxy_3_0!82 -> 7
+ret_4_0!55 -> 12
+ret_connectionPool_4_0!63 -> 2
+proxy_1_0!24 -> 7
+sslSocketFactory_2_0!37 -> 10
+followProtocolRedirects_1_0!16 -> 5
+ret_responseCache_2_0!89 -> 9
+ret_transports_1_0!104 -> (_ as-array k!189)
+ret_authenticator_4_0!59 -> 1
+ret_followProtocolRedirects_2_0!73 -> 5
+ret_cookieHandler_4_0!67 -> 3
+proxySelector.result_4_1!138 -> 17
+cookieHandler_1_0!8 -> 3
+connectionPool.result_1_1!172 -> 25
+proxy_4_0!27 -> 7
+sslSocketFactory.result_3_1!156 -> 21
+ResponseCache!140 -> 18
+connectionPool.result_2_1!174 -> 25
+failedRoutes_2_0!13 -> 4
+cookieHandler.result_4_1!128 -> 15
+ret_transports_4_0!107 -> (_ as-array k!189)
+ret_connectionPool_1_0!60 -> 2
+responseCache_3_0!34 -> 9
+proxySelector_2_0!29 -> 8
+hostnameVerifier_3_0!22 -> 6
+authenticator_3_0!2 -> 1
+failedRoutes_4_0!15 -> 4
+proxySelector.result_2_1!134 -> 17
+ret_failedRoutes_2_0!101 -> 11
+ret_proxySelector_1_0!84 -> 8
+result_1_1!118 -> 13
+followProtocolRedirects_4_0!19 -> 5
+failedRoutes_4_0!47 -> 11
+ret_followProtocolRedirects_3_0!74 -> 5
+responseCache_4_0!35 -> 9
+authenticator_4_0!3 -> 1
+hostnameVerifier_1_0!20 -> 6
+ret_authenticator_2_0!57 -> 1
+ret_connectionPool_3_0!62 -> 2
+cookieHandler.result_2_1!124 -> 15
+ret_failedRoutes_3_0!102 -> 11
+ret_transports_3_0!106 -> (_ as-array k!189)
+followProtocolRedirects.result_4_1!187 -> 26
+ProxySelector!130 -> 16
+ret_3_0!54 -> 13
+ret_authenticator_3_0!58 -> 1
+ret_DEFAULT_TRANSPORTS_4_0!99 -> (_ as-array k!188)
+ret_failedRoutes_1_0!68 -> 29
+connectionPool_3_0!6 -> 2
+proxySelector_4_0!31 -> 8
+DEFAULT_TRANSPORTS_1_0!40 -> (_ as-array k!188)
+sslSocketFactory.result_2_1!154 -> 21
+ret_proxySelector_3_0!86 -> 8
+NewOkHttpClient!114 -> 13
+ret_cookieHandler_3_0!66 -> 3
+HttpsURLConnection!150 -> 20
+connectionPool_4_0!7 -> 2
+ret_proxySelector_2_0!85 -> 8
+responseCache.result_1_1!142 -> 19
+transports_2_0!49 -> (_ as-array k!189)
+followProtocolRedirects.result_3_1!185 -> 26
+ret_authenticator_1_0!56 -> 1
+proxy_3_0!26 -> 7
+failedRoutes_3_0!14 -> 4
+followProtocolRedirects_2_0!17 -> 5
+CookieHandler!120 -> 14
+ret_sslSocketFactory_3_0!94 -> 10
+authenticator.result_1_1!162 -> 23
+failedRoutes_3_0!46 -> 11
+ret_2_0!53 -> 12
+sslSocketFactory.result_4_1!158 -> 21
+sslSocketFactory.result_1_1!152 -> 21
+ret_failedRoutes_4_0!71 -> 27
+ret_failedRoutes_3_0!70 -> 28
+ret_1_0!52 -> 13
+sslSocketFactory_3_0!38 -> 10
+responseCache_1_0!32 -> 9
+followProtocolRedirects_3_0!18 -> 5
+DEFAULT_TRANSPORTS_2_0!41 -> (_ as-array k!188)
+ret_sslSocketFactory_2_0!93 -> 10
+ret_sslSocketFactory_1_0!92 -> 10
+ret_responseCache_4_0!91 -> 9
+Anonymous2!141 -> {
+  9 9 9 9 18 -> 19
+  else -> 19
+}
+k!188 -> {
+  15
+}
+NewOkHttpClient!111 -> {
+  0 -> 12
+  else -> 12
+}
+Anonymous6!180 -> {
+  5 5 -> 26
+  else -> 26
+}
+Anonymous0!121 -> {
+  3 3 3 3 14 -> 15
+  else -> 15
+}
+Anonymous4!161 -> {
+  1 1 1 1 22 -> 23
+  else -> 23
+}
+k!189 -> {
+  15
+}
+Anonymous1!131 -> {
+  8 8 8 8 16 -> 17
+  else -> 17
+}
+Anonymous3!151 -> {
+  10 10 10 10 20 -> 21
+  else -> 21
+}
+Anonymous5!171 -> {
+  2 2 2 2 24 -> 25
+  else -> 25
+}
+

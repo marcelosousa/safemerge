@@ -1,0 +1,178 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+verify: (Ident "NestedInnerQueryParseSupport",Ident "setPathLevel",[])
+[(Ident "childFilter",[RefType (ClassRefType (ClassType [(Ident "BitDocIdSetFilter",[])]))]),(Ident "filterFound",[PrimType BooleanT]),(Ident "filterParsed",[PrimType BooleanT]),(Ident "innerFilter",[RefType (ClassRefType (ClassType [(Ident "Query",[])]))]),(Ident "innerQuery",[RefType (ClassRefType (ClassType [(Ident "Query",[])]))]),(Ident "nestedObjectMapper",[RefType (ClassRefType (ClassType [(Ident "ObjectMapper",[])]))]),(Ident "parentFilter",[RefType (ClassRefType (ClassType [(Ident "BitDocIdSetFilter",[])]))]),(Ident "parentObjectMapper",[RefType (ClassRefType (ClassType [(Ident "ObjectMapper",[])]))]),(Ident "parseContext",[RefType (ClassRefType (ClassType [(Ident "QueryParseContext",[])]))]),(Ident "path",[RefType (ClassRefType (ClassType [(Ident "String",[])]))]),(Ident "queryFound",[PrimType BooleanT]),(Ident "queryParsed",[PrimType BooleanT]),(Ident "source",[RefType (ClassRefType (ClassType [(Ident "BytesReference",[])]))]),(Ident "shardContext",[RefType (ClassRefType (ClassType [(Ident "QueryShardContext",[])]))]),(Ident "childFilter",[RefType (ClassRefType (ClassType [(Ident "Filter",[])]))])]
+verify: result = Sat
+wiz: |HOLE|   = 5
+wiz: LOC HOLE = 5
+Semantic conflict found:
+queryParsed_3_0!46 -> 12
+source_3_0!50 -> 13
+ret_nestedObjectMapper_2_0!81 -> 6
+parentFilter_3_1!139 -> 22
+parseContext_3_0!34 -> 9
+ret_childFilter_1_0!60 -> 30
+path_3_0!38 -> 10
+innerQuery_1_0!16 -> 5
+ret_path_1_0!96 -> 10
+ret_filterFound_4_0!67 -> 2
+ret_source_4_0!111 -> 13
+objectMapper_3_1!125 -> 17
+source_4_0!51 -> 13
+ret_childFilter_4_0!119 -> 23
+queryFound_3_0!42 -> 11
+filterParsed_4_0!11 -> 3
+parentFilter_4_2 -> 20
+childFilter_3_0!58 -> 15
+ret_nestedObjectMapper_3_0!82 -> 6
+source_2_0!49 -> 13
+filterParsed_2_0!9 -> 3
+nestedObjectMapper_1_0!20 -> 6
+shardContext_4_0!55 -> 14
+parentObjectMapper_2_1!149 -> 26
+parentFilter_4_0!27 -> 7
+parentObjectMapper_2_0!29 -> 8
+path_2_0!37 -> 10
+childFilter_1_1!145 -> 25
+childFilter_1_0!56 -> 15
+queryParsed_2_0!45 -> 12
+queryFound_2_0!41 -> 11
+ret_shardContext_3_0!114 -> 14
+parentFilter_4_1!141 -> 20
+childFilter_4_0!59 -> 15
+childFilter_4_0!3 -> 1
+ret_path_3_0!98 -> 10
+childFilter_2_0!57 -> 15
+source_1_0!48 -> 13
+innerFilter_4_0!15 -> 4
+ret_filterFound_1_0!64 -> 2
+filterParsed_3_0!10 -> 3
+parseContext_2_0!33 -> 9
+parentFilter_1_2 -> 18
+parentObjectMapper_3_0!30 -> 8
+childFilter_4_1!142 -> 23
+parentObjectMapper_3_1!148 -> 27
+ret_queryFound_2_0!101 -> 11
+parentObjectMapper_4_0!31 -> 8
+ret_parentObjectMapper_1_0!88 -> 27
+ret_queryFound_1_0!100 -> 11
+innerFilter_1_0!12 -> 4
+parentObjectMapper_1_0!28 -> 8
+parentFilter_3_0!26 -> 7
+childFilter_3_0!2 -> 1
+queryParsed_4_0!47 -> 12
+childFilter_3_1!143 -> 23
+ret_nestedObjectMapper_1_0!80 -> 6
+ret_path_2_0!97 -> 10
+ret_path_4_0!99 -> 10
+ret_filterFound_2_0!65 -> 2
+parentFilter_1_1!133 -> 18
+ret_shardContext_1_0!112 -> 14
+filterParsed_1_0!8 -> 3
+nestedObjectMapper_2_0!21 -> 6
+path_1_0!36 -> 10
+ret_parentFilter_1_0!84 -> 18
+ret_parentFilter_2_0!85 -> 20
+ret_shardContext_2_0!113 -> 14
+ret_innerQuery_3_0!78 -> 5
+ret_queryFound_3_0!102 -> 11
+ret_innerQuery_4_0!79 -> 5
+ret_shardContext_4_0!115 -> 14
+ret_innerQuery_2_0!77 -> 5
+ret_innerQuery_1_0!76 -> 5
+ret_childFilter_2_0!117 -> 24
+ret_source_2_0!109 -> 13
+ret_parseContext_2_0!93 -> 9
+ret_filterFound_3_0!66 -> 2
+ret_childFilter_2_0!61 -> 29
+parseContext_4_0!35 -> 9
+ret_parentFilter_3_0!86 -> 22
+childFilter_2_1!144 -> 24
+parentFilter_2_1!137 -> 20
+innerQuery_3_0!18 -> 5
+shardContext_1_0!52 -> 14
+queryParsed_1_0!44 -> 12
+ret_parentObjectMapper_2_0!89 -> 26
+ret_queryParsed_1_0!104 -> 12
+path_4_0!39 -> 10
+parentFilter_2_2 -> 20
+ret_queryFound_4_0!103 -> 11
+innerFilter_3_0!14 -> 4
+ret_source_1_0!108 -> 13
+innerQuery_4_0!19 -> 5
+ret_queryParsed_4_0!107 -> 12
+ret_queryParsed_3_0!106 -> 12
+ret_parseContext_3_0!94 -> 9
+parentFilter_3_2 -> 22
+ret_parseContext_4_0!95 -> 9
+ret_parseContext_1_0!92 -> 9
+ret_innerFilter_3_0!74 -> 4
+innerQuery_2_0!17 -> 5
+objectMapper_2_1!127 -> 16
+objectMapper_1_1!129 -> 17
+childFilter_1_0!0 -> 1
+ret_filterParsed_3_0!70 -> 3
+ret_source_3_0!110 -> 13
+parentObjectMapper_1_1!150 -> 27
+filterFound_4_0!7 -> 2
+ret_childFilter_3_0!118 -> 23
+queryFound_1_0!40 -> 11
+ret_parentObjectMapper_3_0!90 -> 27
+childFilter_2_0!1 -> 1
+ret_childFilter_1_0!116 -> 25
+ret_queryParsed_2_0!105 -> 12
+parentFilter_1_0!24 -> 7
+innerFilter_2_0!13 -> 4
+ret_parentObjectMapper_4_0!91 -> 26
+objectMapper_4_1!122 -> 16
+ret_innerFilter_2_0!73 -> 4
+filterFound_1_0!4 -> 2
+ret_filterParsed_4_0!71 -> 3
+parentFilter_2_0!25 -> 7
+filterFound_3_0!6 -> 2
+nestedObjectMapper_4_0!23 -> 6
+ret_nestedObjectMapper_4_0!83 -> 6
+parentObjectMapper_4_1!146 -> 26
+ret_innerFilter_1_0!72 -> 4
+shardContext_3_0!54 -> 14
+ret_innerFilter_4_0!75 -> 4
+ret_childFilter_4_0!63 -> 28
+shardContext_2_0!53 -> 14
+nestedObjectMapper_3_0!22 -> 6
+filterFound_2_0!5 -> 2
+parseContext_1_0!32 -> 9
+ret_filterParsed_1_0!68 -> 3
+ret_parentFilter_4_0!87 -> 20
+ret_filterParsed_2_0!69 -> 3
+queryFound_4_0!43 -> 11
+bitsetFilter!135 -> {
+  9 19 -> 18
+  else -> 18
+}
+nestedTypeFilter!134 -> {
+  17 -> 19
+  16 -> 21
+  6 -> 23
+  else -> 19
+}
+bitsetFilter!132 -> {
+  14 21 -> 20
+  9 19 -> 22
+  14 23 -> 24
+  9 23 -> 25
+  else -> 20
+}
+nestedScope.getObjectMapper!123 -> {
+  14 -> 16
+  9 -> 17
+  else -> 16
+}
+nestedScope.nextLevel!147 -> {
+  14 6 -> 26
+  9 6 -> 27
+  else -> 26
+}
+

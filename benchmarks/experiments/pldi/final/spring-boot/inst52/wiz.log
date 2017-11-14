@@ -1,0 +1,80 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+verify: (Ident "RedisCacheConfiguration",Ident "cacheManager",[RefType (ClassRefType (ClassType [(Ident "RedisTemplate",[ActualType (ClassRefType (ClassType [(Ident "Object",[])])),ActualType (ClassRefType (ClassType [(Ident "Object",[])]))])]))])
+[(Ident "cacheProperties",[RefType (ClassRefType (ClassType [(Ident "CacheProperties",[])]))]),(Ident "customizerInvoker",[RefType (ClassRefType (ClassType [(Ident "CacheManagerCustomizerInvoker",[])]))]),(Ident "customizerInvoker",[RefType (ClassRefType (ClassType [(Ident "CacheManagerCustomizers",[])]))])]
+verify: result = Sat
+wiz: |HOLE|   = 3
+wiz: LOC HOLE = 3
+Semantic conflict found:
+cacheProperties_1_0!4 -> 1
+ret_4_0!19 -> 9
+customizerInvoker_4_0!11 -> 2
+cacheNames_3_1!60 -> 8
+cacheNames_4_1!62 -> 8
+cacheManager_4_2!53 -> 7
+customizerInvoker_4_0!15 -> 3
+cacheManager_2_2!51 -> 7
+customizerInvoker_3_0!14 -> 3
+cacheProperties_2_1!45 -> 5
+customizerInvoker_2_0!9 -> 2
+redisTemplate_4_0!3 -> 0
+ret_cacheProperties_3_0!22 -> 5
+ret_customizerInvoker_3_0!30 -> 3
+ret_cacheProperties_1_0!20 -> 5
+cacheManager_1_2!50 -> 7
+ret_customizerInvoker_1_0!24 -> 12
+redisTemplate_3_0!2 -> 0
+cacheNames!48 -> 6
+cacheManager_1_1!37 -> 4
+redisTemplate_1_0!0 -> 0
+customizerInvoker_2_0!13 -> 3
+cacheManager_3_1!40 -> 4
+cacheProperties_1_1!44 -> 5
+customizerInvoker_3_0!10 -> 2
+customizerInvoker_1_0!12 -> 3
+cacheProperties_3_0!6 -> 1
+cacheManager_2_1!39 -> 4
+redisTemplate_2_0!1 -> 0
+cacheProperties_4_0!7 -> 1
+cacheManager_4_1!41 -> 4
+cacheManager_3_2!52 -> 7
+cacheNames_2_1!58 -> 8
+ret_3_0!18 -> 9
+cacheProperties_4_1!47 -> 5
+ret_customizerInvoker_4_0!31 -> 3
+ret_cacheProperties_2_0!21 -> 5
+customizerInvoker_1_0!8 -> 2
+ret_2_0!17 -> 7
+ret_customizerInvoker_2_0!29 -> 3
+cacheProperties_2_0!5 -> 1
+cacheNames_1_1!56 -> 8
+ret_cacheProperties_4_0!23 -> 5
+ret_1_0!16 -> 7
+ret_customizerInvoker_3_0!26 -> 11
+ret_customizerInvoker_1_0!28 -> 3
+ret_customizerInvoker_4_0!27 -> 10
+cacheProperties_3_1!46 -> 5
+Anonymous1!49 -> {
+  4 6 -> 7
+  else -> 7
+}
+Anonymous0!43 -> {
+  1 -> 5
+  else -> 5
+}
+customize!63 -> {
+  3 7 -> 9
+  else -> 9
+}
+NewRedisCacheManager!38 -> {
+  0 -> 4
+  else -> 4
+}
+Anonymous2!55 -> {
+  5 7 -> 8
+  else -> 8
+}
+

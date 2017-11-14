@@ -1,0 +1,117 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+verify: (Ident "Restarter",Ident "prepare",[RefType (ClassRefType (ClassType [(Ident "ConfigurableApplicationContext",[])]))])
+[(Ident "INSTANCE_MONITOR",[RefType (ClassRefType (ClassType [(Ident "Object",[])]))]),(Ident "NO_ARGS",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "String",[])]))))]),(Ident "applicationClassLoader",[RefType (ClassRefType (ClassType [(Ident "ClassLoader",[])]))]),(Ident "args",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "String",[])]))))]),(Ident "attributes",[RefType (ClassRefType (ClassType [(Ident "Map",[ActualType (ClassRefType (ClassType [(Ident "String",[])])),ActualType (ClassRefType (ClassType [(Ident "Object",[])]))])]))]),(Ident "classLoaderFiles",[RefType (ClassRefType (ClassType [(Ident "ClassLoaderFiles",[])]))]),(Ident "enabled",[PrimType BooleanT]),(Ident "exceptionHandler",[RefType (ClassRefType (ClassType [(Ident "UncaughtExceptionHandler",[])]))]),(Ident "finished",[PrimType BooleanT]),(Ident "forceReferenceCleanup",[PrimType BooleanT]),(Ident "initialUrls",[RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "URL",[])]))))]),(Ident "instance",[RefType (ClassRefType (ClassType [(Ident "Restarter",[])]))]),(Ident "leakSafeThreads",[RefType (ClassRefType (ClassType [(Ident "BlockingDeque",[ActualType (ClassRefType (ClassType [(Ident "LeakSafeThread",[])]))])]))]),(Ident "logger",[RefType (ClassRefType (ClassType [(Ident "Log",[])]))]),(Ident "mainClassName",[RefType (ClassRefType (ClassType [(Ident "String",[])]))]),(Ident "monitor",[RefType (ClassRefType (ClassType [(Ident "Object",[])]))]),(Ident "rootContext",[RefType (ClassRefType (ClassType [(Ident "ConfigurableApplicationContext",[])]))]),(Ident "stopLock",[RefType (ClassRefType (ClassType [(Ident "Lock",[])]))]),(Ident "urls",[RefType (ClassRefType (ClassType [(Ident "Set",[ActualType (ClassRefType (ClassType [(Ident "URL",[])]))])]))]),(Ident "rootContexts",[RefType (ClassRefType (ClassType [(Ident "List",[ActualType (ClassRefType (ClassType [(Ident "ConfigurableApplicationContext",[])]))])]))])]
+verify: result = Sat
+wiz: |HOLE|   = 2
+wiz: LOC HOLE = 2
+Semantic conflict found:
+exceptionHandler_2_0!33 -> 7
+INSTANCE_MONITOR_4_0!7 -> 2
+forceReferenceCleanup_4_0!43 -> 9
+initialUrls_4_0!47 -> (_ as-array k!175)
+applicationClassLoader_2_0!13 -> 3
+mainClassName_4_0!63 -> 13
+mainClassName_1_0!60 -> 13
+applicationContext_3_0!2 -> 0
+classLoaderFiles_4_0!27 -> 5
+stopLock_1_0!72 -> 16
+urls_4_0!79 -> 17
+urls_1_0!76 -> 17
+rootContext_3_1!171 -> 0
+NO_ARGS_3_0!10 -> (_ as-array k!173)
+enabled_3_0!30 -> 6
+initialUrls_2_0!45 -> (_ as-array k!175)
+finished_4_0!39 -> 8
+finished_1_0!36 -> 8
+NO_ARGS_1_0!8 -> (_ as-array k!173)
+classLoaderFiles_2_0!25 -> 5
+logger_1_0!56 -> 12
+instance_4_0!51 -> 10
+instance_1_0!48 -> 10
+leakSafeThreads_4_0!55 -> 11
+INSTANCE_MONITOR_3_0!6 -> 2
+urls_3_0!78 -> 17
+rootContexts_1_0!80 -> (_ as-array k!176)
+leakSafeThreads_1_0!52 -> 11
+ret_INSTANCE_MONITOR_1_0!84 -> 18
+finished_2_0!37 -> 8
+logger_3_0!58 -> 12
+initialUrls_3_0!46 -> (_ as-array k!175)
+applicationClassLoader_1_0!12 -> 3
+stopLock_3_0!74 -> 16
+ret_INSTANCE_MONITOR_2_0!85 -> 19
+initialUrls_1_0!44 -> (_ as-array k!175)
+classLoaderFiles_1_0!24 -> 5
+attributes_2_0!21 -> 4
+rootContexts_3_0!82 -> (_ as-array k!176)
+rootContexts_2_0!81 -> (_ as-array k!176)
+monitor_2_0!65 -> 14
+rootContext_1_0!68 -> 15
+instance_2_0!49 -> 10
+rootContexts_4_0!83 -> (_ as-array k!176)
+NO_ARGS_2_0!9 -> (_ as-array k!173)
+args_4_0!19 -> (_ as-array k!174)
+urls_2_0!77 -> 17
+forceReferenceCleanup_3_0!42 -> 9
+args_3_0!18 -> (_ as-array k!174)
+applicationContext_1_0!0 -> 0
+attributes_4_0!23 -> 4
+attributes_1_0!20 -> 4
+monitor_4_0!67 -> 14
+monitor_3_0!66 -> 14
+rootContext_2_0!69 -> 15
+args_1_0!16 -> (_ as-array k!174)
+enabled_1_0!28 -> 6
+leakSafeThreads_3_0!54 -> 11
+rootContext_3_0!70 -> 15
+exceptionHandler_1_0!32 -> 7
+monitor_1_0!64 -> 14
+exceptionHandler_3_0!34 -> 7
+logger_4_0!59 -> 12
+rootContext_1_1!172 -> 0
+INSTANCE_MONITOR_1_0!4 -> 2
+INSTANCE_MONITOR_2_0!5 -> 2
+logger_2_0!57 -> 12
+args_2_0!17 -> (_ as-array k!174)
+mainClassName_2_0!61 -> 13
+enabled_2_0!29 -> 6
+stopLock_4_0!75 -> 16
+applicationContext_4_0!3 -> 0
+classLoaderFiles_3_0!26 -> 5
+rootContext_4_0!71 -> 15
+ret_INSTANCE_MONITOR_4_0!87 -> 20
+applicationClassLoader_4_0!15 -> 3
+finished_3_0!38 -> 8
+stopLock_2_0!73 -> 16
+applicationContext_2_0!1 -> 0
+enabled_4_0!31 -> 6
+instance_3_0!50 -> 10
+leakSafeThreads_2_0!53 -> 11
+NO_ARGS_4_0!11 -> (_ as-array k!173)
+attributes_3_0!22 -> 4
+exceptionHandler_4_0!35 -> 7
+mainClassName_3_0!62 -> 13
+forceReferenceCleanup_1_0!40 -> 9
+applicationClassLoader_3_0!14 -> 3
+forceReferenceCleanup_2_0!41 -> 9
+k!175 -> {
+  5
+}
+instanceOf!166 -> {
+  0 -> 21
+  else -> 21
+}
+k!176 -> {
+  5
+}
+k!173 -> {
+  5
+}
+k!174 -> {
+  5
+}
+

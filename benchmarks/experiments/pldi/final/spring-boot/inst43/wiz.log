@@ -1,0 +1,282 @@
+Parsing files...
+Parsing o...
+Parsing a...
+Parsing b...
+Parsing m...
+verify: (Ident "UndertowEmbeddedServletContainerFactory",Ident "createDeploymentManager",[RefType (ClassRefType (ClassType [(Ident "ServletContextInitializer",[])]))])
+[(Ident "NO_CLASSES",[RefType (ClassRefType (ClassType [(Ident "Set",[ActualType (ClassRefType (ClassType [(Ident "Class",[Wildcard Nothing])]))])]))]),(Ident "bufferSize",[RefType (ClassRefType (ClassType [(Ident "Integer",[])]))]),(Ident "buffersPerRegion",[RefType (ClassRefType (ClassType [(Ident "Integer",[])]))]),(Ident "builderCustomizers",[RefType (ClassRefType (ClassType [(Ident "List",[ActualType (ClassRefType (ClassType [(Ident "UndertowBuilderCustomizer",[])]))])]))]),(Ident "deploymentInfoCustomizers",[RefType (ClassRefType (ClassType [(Ident "List",[ActualType (ClassRefType (ClassType [(Ident "UndertowDeploymentInfoCustomizer",[])]))])]))]),(Ident "directBuffers",[RefType (ClassRefType (ClassType [(Ident "Boolean",[])]))]),(Ident "ioThreads",[RefType (ClassRefType (ClassType [(Ident "Integer",[])]))]),(Ident "resourceLoader",[RefType (ClassRefType (ClassType [(Ident "ResourceLoader",[])]))]),(Ident "workerThreads",[RefType (ClassRefType (ClassType [(Ident "Integer",[])]))]),(Ident "accessLogDirectory",[RefType (ClassRefType (ClassType [(Ident "File",[])]))]),(Ident "accessLogEnabled",[PrimType BooleanT]),(Ident "accessLogPattern",[RefType (ClassRefType (ClassType [(Ident "String",[])]))]),(Ident "useForwardHeaders",[PrimType BooleanT])]
+verify: result = Sat
+wiz: |HOLE|   = 4
+wiz: LOC HOLE = 11
+Semantic conflict found:
+ret_deploymentInfoCustomizers_2_0!77 -> (_ as-array k!289)
+deployment_3_1!123 -> 18
+wiz_i!160 -> 23
+ret_accessLogPattern_4_0!107 -> 12
+deploymentInfoCustomizers_1_0!20 -> (_ as-array k!288)
+useForwardHeaders_1_0!52 -> 13
+ret_NO_CLASSES_4_0!63 -> 3
+ret_accessLogEnabled_2_0!101 -> 11
+configureMimeMappings_1_1!177 -> 25
+initializers_4_0!3 -> 2
+deploymentInfoCustomizers_4_1!165 -> (_ as-array k!289)
+initializers_2_1!146 -> 21
+getServletClassLoader_4_1!143 -> 20
+NO_CLASSES_2_0!5 -> 3
+bufferSize_1_0!8 -> 4
+builderCustomizers_3_0!18 -> (_ as-array k!287)
+NO_CLASSES_3_0!6 -> 3
+Servlets!114 -> 14
+initializers_1_1!145 -> 21
+configureErrorPages_2_1!170 -> 24
+deployment_3_2!199 -> 30
+getDocumentRootResourceManager_2_1!205 -> 31
+isRegisterDefaultServlet!193 -> 27
+getDocumentRootResourceManager_4_1!209 -> 31
+isAccessLogEnabled!228 -> 35
+workerThreads_4_0!39 -> 9
+sessionManager_2_1!270 -> 40
+sessionTimeout_1_1!280 -> 43
+ret_deploymentInfoCustomizers_1_0!76 -> (_ as-array k!289)
+ret_resourceLoader_1_0!88 -> 8
+ret_accessLogDirectory_1_0!96 -> 10
+getServletClassLoader_2_1!139 -> 20
+ret_ioThreads_2_0!85 -> 7
+ret_accessLogEnabled_3_0!102 -> 11
+resourceLoader_1_0!32 -> 8
+workerThreads_3_0!38 -> 9
+ret_useForwardHeaders_3_0!110 -> 13
+ret_buffersPerRegion_3_0!70 -> 5
+ret_directBuffers_1_0!80 -> 6
+accessLogEnabled_1_0!44 -> 11
+accessLogPattern_3_0!50 -> 12
+buffersPerRegion_4_0!15 -> 5
+ioThreads_2_0!29 -> 7
+accessLogDirectory_3_0!42 -> 10
+ret_bufferSize_1_0!64 -> 4
+accessLogEnabled_3_0!46 -> 11
+registerServletContainerInitializerToDriveServletContextInitializers_1_1!151 -> 22
+deployment_2_1!121 -> 18
+resourceLoader_2_0!33 -> 8
+deploymentInfoCustomizers_2_1!163 -> (_ as-array k!289)
+ret_bufferSize_2_0!65 -> 4
+manager_3_1!234 -> 36
+configureErrorPages_3_1!172 -> 24
+accessLogDirectory_4_0!43 -> 10
+NONE.ServletStackTraces!194 -> 28
+ret_deploymentInfoCustomizers_3_0!78 -> (_ as-array k!289)
+accessLogDirectory_1_0!40 -> 10
+buffersPerRegion_1_0!12 -> 5
+isRegisterDefaultServlet_4_1!218 -> 32
+accessLogEnabled_2_0!45 -> 11
+useForwardHeaders_4_0!55 -> 13
+registerServletContainerInitializerToDriveServletContextInitializers_2_1!153 -> 22
+isRegisterDefaultServlet_3_1!216 -> 32
+manager_1_1!256 -> 39
+ret_ioThreads_3_0!86 -> 7
+resourceLoader_3_0!34 -> 8
+getContextPath_2_1!130 -> 19
+deploymentInfoCustomizers_3_1!164 -> (_ as-array k!289)
+ret_NO_CLASSES_3_0!62 -> 3
+buffersPerRegion_3_0!14 -> 5
+initializers_2_0!1 -> 2
+deploymentInfoCustomizers_4_0!23 -> (_ as-array k!288)
+getContextPath_1_1!128 -> 19
+getContextPath_3_1!132 -> 19
+ret_workerThreads_3_0!94 -> 9
+accessLogPattern_4_0!51 -> 12
+ret_accessLogPattern_3_0!106 -> 12
+registerServletContainerInitializerToDriveServletContextInitializers_4_1!157 -> 22
+ret_deploymentInfoCustomizers_4_0!79 -> (_ as-array k!289)
+ret_accessLogDirectory_4_0!99 -> 10
+registerServletContainerInitializerToDriveServletContextInitializers!115 -> 15
+getDocumentRootResourceManager!195 -> 29
+ret_useForwardHeaders_2_0!109 -> 13
+sessionManager_3_1!271 -> 41
+builderCustomizers_1_0!16 -> (_ as-array k!287)
+accessLogPattern_2_0!49 -> 12
+NO_CLASSES_1_0!4 -> 3
+deploymentInfoCustomizers_2_0!21 -> (_ as-array k!288)
+customizer_4_1!192 -> 26
+deployment_4_1!125 -> 18
+ret_resourceLoader_2_0!89 -> 8
+ret_builderCustomizers_4_0!75 -> (_ as-array k!287)
+ret_workerThreads_4_0!95 -> 9
+wiz_i_2_1!223 -> 33
+ret_directBuffers_2_0!81 -> 6
+isRegisterDefaultServlet_1_1!212 -> 32
+ret_accessLogDirectory_3_0!98 -> 10
+ret_1_0!56 -> 39
+ret_buffersPerRegion_4_0!71 -> 5
+customizer_3_1!190 -> 26
+configureMimeMappings_3_1!181 -> 25
+getSessionTimeout!281 -> 0
+getDocumentRootResourceManager_1_1!203 -> 31
+directBuffers_2_0!25 -> 6
+Anonymous11!211 -> 32
+getDocumentRootResourceManager_3_1!207 -> 31
+resourceLoader_4_0!35 -> 8
+useForwardHeaders_2_0!53 -> 13
+getContextPath!117 -> 17
+registerServletContainerInitializerToDriveServletContextInitializers_3_1!155 -> 22
+deploymentInfoCustomizers_1_1!162 -> (_ as-array k!289)
+deployment_1_2!197 -> 30
+bufferSize_3_0!10 -> 4
+wiz_i_3_1!225 -> 33
+accessLogDirectory_2_0!41 -> 10
+manager_2_1!253 -> 39
+sessionManager_4_1!272 -> 42
+sessionTimeout_3_1!284 -> 43
+wiz_i_1_1!221 -> 33
+ret_buffersPerRegion_1_0!68 -> 5
+ret_workerThreads_1_0!92 -> 9
+ret_workerThreads_2_0!93 -> 9
+ret_accessLogDirectory_2_0!97 -> 10
+isRegisterDefaultServlet_2_1!214 -> 32
+ret_ioThreads_1_0!84 -> 7
+bufferSize_2_0!9 -> 4
+ret_useForwardHeaders_1_0!108 -> 13
+NO_CLASSES_4_0!7 -> 3
+deployment_1_1!119 -> 18
+getServletClassLoader_3_1!141 -> 20
+ret_accessLogPattern_1_0!104 -> 12
+initializers_3_1!147 -> 21
+workerThreads_2_0!37 -> 9
+ret_directBuffers_4_0!83 -> 6
+accessLogEnabled_4_0!47 -> 11
+initializers_4_1!148 -> 21
+configureErrorPages_1_1!168 -> 24
+bufferSize_4_0!11 -> 4
+builderCustomizers_2_0!17 -> (_ as-array k!287)
+getServletClassLoader_1_1!137 -> 20
+ret_2_0!57 -> 39
+directBuffers_4_0!27 -> 6
+manager_4_1!251 -> 38
+customizer_2_1!188 -> 26
+sessionManager_1_1!268 -> 40
+ret_3_0!58 -> 34
+ret_buffersPerRegion_2_0!69 -> 5
+ioThreads_4_0!31 -> 7
+deploymentInfoCustomizers_3_0!22 -> (_ as-array k!288)
+ioThreads_3_0!30 -> 7
+getContextPath_4_1!134 -> 19
+deployment_2_2!198 -> 30
+isPersistSession!237 -> 37
+ret_resourceLoader_4_0!91 -> 8
+deployment_4_2!200 -> 30
+ret_accessLogPattern_2_0!105 -> 12
+wiz_i_4_1!227 -> 33
+ret_builderCustomizers_3_0!74 -> (_ as-array k!287)
+builderCustomizers_4_0!19 -> (_ as-array k!287)
+ret_useForwardHeaders_4_0!111 -> 13
+getServletClassLoader!116 -> 16
+ret_resourceLoader_3_0!90 -> 8
+directBuffers_1_0!24 -> 6
+ret_bufferSize_3_0!66 -> 4
+sessionTimeout_4_1!285 -> 43
+ret_builderCustomizers_1_0!72 -> (_ as-array k!287)
+initializers_1_0!0 -> 2
+initializers_3_0!2 -> 2
+ret_NO_CLASSES_1_0!60 -> 3
+configureMimeMappings_2_1!179 -> 25
+directBuffers_3_0!26 -> 6
+sessionTimeout_2_1!283 -> 43
+accessLogPattern_1_0!48 -> 12
+configureErrorPages_4_1!174 -> 24
+ret_accessLogEnabled_1_0!100 -> 11
+ret_4_0!59 -> 38
+useForwardHeaders_3_0!54 -> 13
+customizer_1_1!186 -> 26
+workerThreads_1_0!36 -> 9
+manager_3_1!231 -> 34
+ret_directBuffers_3_0!82 -> 6
+ret_NO_CLASSES_2_0!61 -> 3
+ret_bufferSize_4_0!67 -> 4
+ret_ioThreads_4_0!87 -> 7
+configureMimeMappings_4_1!183 -> 25
+buffersPerRegion_2_0!13 -> 5
+ioThreads_1_0!28 -> 7
+ret_builderCustomizers_2_0!73 -> (_ as-array k!287)
+ret_accessLogEnabled_4_0!103 -> 11
+Anonymous1!127 -> {
+  18 -> 19
+  else -> 19
+}
+k!289 -> {
+  44 -> 45
+  else -> 45
+}
+Anonymous7!176 -> {
+  18 -> 25
+  else -> 25
+}
+Anonymous8!185 -> {
+  (_ as-array k!289) 23 18 -> 26
+  else -> 26
+}
+Anonymous9!196 -> {
+  18 14 27 24 28 29 25 26 23 (_ as-array k!289) -> 30
+  else -> 30
+}
+k!288 -> {
+  44 -> 46
+  else -> 46
+}
+defaultContainer.addDeployment.Servlets!254 -> {
+  30 -> 39
+  else -> 39
+}
+Anonymous12!220 -> {
+  (_ as-array k!289) -> 33
+  else -> 33
+}
+k!287 -> {
+  15
+}
+Anonymous0!118 -> {
+  14 15 2 16 17 -> 18
+  else -> 18
+}
+Anonymous4!150 -> {
+  18 21 -> 22
+  else -> 22
+}
+Anonymous5!161 -> {
+  (_ as-array k!288) 23 -> (_ as-array k!289)
+  else -> (_ as-array k!289)
+}
+Anonymous10!202 -> {
+  30 -> 31
+  else -> 31
+}
+newContainer.addDeployment.Servlets!232 -> {
+  30 -> 38
+  else -> 38
+}
+Anonymous3!144 -> {
+  15 18 2 -> 21
+  else -> 21
+}
+wiz_cond!282 -> {
+  false 0 (- 1) -> 43
+  else -> 43
+}
+Anonymous2!136 -> {
+  18 -> 20
+  else -> 20
+}
+Anonymous6!167 -> {
+  18 -> 24
+  else -> 24
+}
+newContainer.addDeployment.Servlets!235 -> {
+  30 -> 36
+  else -> 36
+}
+getDeployment.getSessionManager!269 -> {
+  39 -> 40
+  34 -> 41
+  38 -> 42
+  else -> 40
+}
+
