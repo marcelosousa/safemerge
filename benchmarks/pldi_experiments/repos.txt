@@ -6,5 +6,4 @@ MPAndroidChart                 git@github.com:PhilJay/MPAndroidChart.git
 kotlin                         git@github.com:JetBrains/kotlin.git
 spring-boot                    git@github.com:spring-projects/spring-boot.git
 iosched                        git@github.com:google/iosched.git
-picasso                        git@github.com:square/picasso.git
 libgdx                         git@github.com:libgdx/libgdx.git

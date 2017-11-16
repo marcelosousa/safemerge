@@ -360,7 +360,8 @@ class_diff cls_name cl@(cl_o:cls) (stats,r) =
              MethodBody m_bdy = mth_body m_m
              code_m = show m_bdy 
              mcat   = get_meth_category (M.null fields) code_m 
-         in if ctx == 9 && mcat /= LComplex && (mcat /= LStateless || modFields fields (findLhs m_m)) 
+             isStat = mcat == LStateless && (not $ modFields fields (findLhs m_m))
+         in if ctx == 9 -- && mcat /= LComplex && (mcat /= LStateless || modFields fields (findLhs m_m)) 
             -- | This is a potential interesting merge instance
             then let stats3 = inc_m_context ctx $ inc_meth_changed stats2
                      mident = (cls,mi,mty)
@@ -402,8 +403,9 @@ get_stats fields ident ctx o a b m st =
           code_m = show m_bdy 
           st1    = inc_meth_edits st
           mcat   = get_meth_category (M.null fields) code_m 
+          isStat = if mcat == LStateless && (not $ modFields fields (findLhs m)) then LStateless else mcat
           ecat   = get_edit_category e_m
-          sum    = if mcat == LComplex then error "get_stats" else MSum ctx Nothing mcat ecat
+          sum    = MSum ctx Nothing isStat ecat
           st'    = inc_meth_size_dist (length $ lines code_m) $ inc_edit_size_dist (length e_m) st 
       in add_to_map ident sum $ inc_meth_edits $ up_meth_cat mcat $ up_edit_cat ecat st'
 

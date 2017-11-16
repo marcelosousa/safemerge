@@ -62,8 +62,9 @@ liff_main [o,m,a,b] (stats,i) ch@(Change _ f) = do
       if null merges 
       then return (stats',i)
       else do
-        k <- foldM (\_i ident -> printInst _i [o,m,a,b] f ident (l_map lstats) o_str a_str b_str m_str) i merges 
-        return (stats',k + 1)
+        -- k <- foldM (\_i ident -> printInst _i [o,m,a,b] f ident (l_map lstats) o_str a_str b_str m_str) i merges 
+        -- return (stats',k + 1)
+        return (stats',i)
     _ -> return (inc_show_errs stats,i)
 
 printInst :: Int -> [String] -> FilePath -> MethInst -> Map MIdent MSummary -> String -> String -> String -> String -> IO Int  
