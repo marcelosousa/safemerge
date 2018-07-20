@@ -1,8 +1,0 @@
-digraph product {
-n0 [label=< <B>n0</B>: (x:=1)>, shape=box]
-n0 -> n1
-n1 [label=< <B>n1</B>: (y:=2)>, shape=box]
-n1 -> n2
-n2 [label=< <B>n2</B>: (z:=3)>, shape=box]
-n2 -> exit
-}

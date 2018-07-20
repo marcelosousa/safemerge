@@ -97,7 +97,7 @@ diff4gen_meth ident o a b m =
   let (no, eo, ea) = edit_member_gen o a 
       (nno, eab)   = gen_edit edit_member_gen no b [eo,ea]
   in case gen_edit edit_member_gen nno m eab of
-      (fo,[[]]) -> Nothing -- Just (ident, fo, [], [], [], [])
+      (fo,[[]]) -> Just (ident, fo, [], [], [], [])
       (fo, [e_o,e_a,e_b,e_m]) ->
         let -- (n_fo,[n_e_o,n_e_a,n_e_b,n_e_m]) = opt_holes fo [e_o,e_a,e_b,e_m] 
             _o = fst $ apply_edit_member fo e_o
@@ -109,7 +109,7 @@ diff4gen_meth ident o a b m =
             checks = [o == _o, a == _a, b == _b, m == _m] 
         in if all id checks 
            then Just nres 
-           else Nothing  
+           else error "diff4gen_meth" -- Nothing  
       (fo, xs) -> Nothing -- T.trace ("diff4: strange result: " ++ show (length xs)) $ Nothing -- (ident,fo, [],[],[],[])
 
 gen_edit :: (a -> a -> (a,Edit,Edit)) -> a -> a -> [Edit] -> (a, [Edit])

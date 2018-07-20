@@ -120,6 +120,7 @@ inc_context n c =
        7 -> c { aEm_bdiff_nr    = v }  
        8 -> c { bEm_adiff_nr    = v }  
        9 -> c { all_diff_nr     = v }  
+       _ -> c
 
 join_context :: MContexts -> MContexts -> MContexts
 join_context c1 c2 = 
@@ -351,7 +352,7 @@ class_diff cls_name cl@(cl_o:cls) (stats,r) =
  where
    -- | Method level
    class_diff' :: FieldInfo -> [MemberInfo] -> Ident -> MemberSig -> MemberDecl -> (LiffStats,[MIdent]) -> (LiffStats,[MIdent])
-   class_diff' fields [mi_a,mi_b,mi_m] cls mth_sig@(mi,mty) m_o (stats,r) =
+   class_diff' fields [mi_a,mi_b,mi_m] cls mth_sig@(mi,mty) m_o (stats,r) = trace ("class_diff for method " ++ (show mth_sig)) $ 
     let stats1 = inc_meth_class stats 
     in case (M.lookup mth_sig mi_a, M.lookup mth_sig mi_b, M.lookup mth_sig mi_m) of
        (Just m_a, Just m_b, Just m_m) ->
@@ -361,7 +362,7 @@ class_diff cls_name cl@(cl_o:cls) (stats,r) =
              code_m = show m_bdy 
              mcat   = get_meth_category (M.null fields) code_m 
              isStat = mcat == LStateless && (not $ modFields fields (findLhs m_m))
-         in if ctx == 9 -- && mcat /= LComplex && (mcat /= LStateless || modFields fields (findLhs m_m)) 
+         in trace ("class_diff result " ++ show ctx) $ if ctx /= 0 -- && mcat /= LComplex && (mcat /= LStateless || modFields fields (findLhs m_m)) 
             -- | This is a potential interesting merge instance
             then let stats3 = inc_m_context ctx $ inc_meth_changed stats2
                      mident = (cls,mi,mty)
@@ -433,7 +434,8 @@ get_merge_context o a b m
   | o /= a && a == m && b /= m && o /= m = 7
   --  8. {O} {A} {M,B}   
   | o /= a && o /= b && a /= b && b == m = 8
-  | otherwise = 0
+  | o == a && o == b && o == m && a == b && a == m = 0
+  | otherwise = 10
  
 get_meth_category :: Bool -> String -> MethCategory 
 get_meth_category fields code = 

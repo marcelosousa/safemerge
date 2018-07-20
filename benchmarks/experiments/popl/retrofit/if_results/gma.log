@@ -1,9 +1,0 @@
--------------------------------------------
-Inst: 1
-File: retrofit-adapters/rxjava2/src/main/java/retrofit2/adapter/rxjava2/RxJava2CallAdapterFactory.java
-Meth: [(Ident "RxJava2CallAdapterFactory",Ident "get",[RefType (ClassRefType (ClassType [(Ident "Type",[])])),RefType (ArrayType (RefType (ClassRefType (ClassType [(Ident "Annotation",[])])))),RefType (ClassRefType (ClassType [(Ident "Retrofit",[])]))])]
-Orig: 47cc621c7736cace218be341f9b480add64c9083
-VarA: dec2f1a675a77c12bd28f8f9a25a45a9cc31888d
-VarB: 8ceb21ec575a5c6785f9098723b4b6a09214ed75
-Merg: e134cfd0fad5643b832ad9a37a336a8f7e019a17
-Done

@@ -89,6 +89,7 @@ runOption opt = case opt of
     putStrLn $ printDepInfo depInfo
   Diff2 o a -> diff2 o a
   Diff4 f -> do 
+    print $ "runOption diff4: " ++ f
     let o = f ++ "_o.java"
         a = f ++ "_a.java"
         b = f ++ "_b.java"

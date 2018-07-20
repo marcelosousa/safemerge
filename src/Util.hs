@@ -2,7 +2,7 @@ module Util where
 
 import qualified Debug.Trace as T
 
-trace a b = b -- T.trace a b
+trace a b = T.trace a b
 
 pair :: [a] -> [(a,a)]
 pair [] = []

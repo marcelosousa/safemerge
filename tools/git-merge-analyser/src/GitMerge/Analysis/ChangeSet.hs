@@ -52,10 +52,9 @@ is_interesting stats c@(Change ty file) =
   let c1 = case ty of 
         ChangedBoth -> True
         _ -> False 
-      -- c2 = takeExtension file == ".c"
       c2 = takeExtension file == ".java"
       stats' = inc_total_files stats
       stats1 = if c2 then inc_file_java stats' else stats'
-  in if c1 && c2
+  in if c2
      then (inc_file_both stats1, True)
      else (stats1, False)
